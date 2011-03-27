@@ -10,7 +10,7 @@ class PluginTest extends \PHPUnit_Framework_TestCase
     /**
      * @var Plugin
      */
-    protected $object;
+    protected $plugin;
 
     /**
      * Sets up the fixture, for example, opens a network connection.
@@ -19,7 +19,7 @@ class PluginTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         parent::setUp();
-        $this->object = new Plugin;
+        $this->plugin = new MockPlugin;
     }
 
     /**
@@ -51,5 +51,13 @@ class PluginTest extends \PHPUnit_Framework_TestCase
         $this->markTestIncomplete(
           'This test has not been implemented yet.'
         );
+    }
+    
+    public function test__invoke()
+    {
+        $plugin = $this->plugin;
+        $actual = $plugin();
+        $expect = "Hello Plugin";
+        $this->assertSame($expect, $actual);
     }
 }

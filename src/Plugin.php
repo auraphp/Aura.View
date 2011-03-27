@@ -34,7 +34,7 @@ abstract class Plugin
      * @return string The escaped value.
      * 
      */
-    protected function escape($value)
+    public function escape($value)
     {
         return htmlspecialchars(
             $value,
@@ -53,7 +53,7 @@ abstract class Plugin
      * @return string The HTML for the attributes.
      * 
      */
-    protected function attribs(array $attribs)
+    public function attribs(array $attribs)
     {
         $html = '';
         foreach ($attribs as $key => $val) {

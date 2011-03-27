@@ -1,5 +1,6 @@
 <?php
 namespace aura\view;
+use aura\di\ForgeInterface;
 
 /**
  * 
@@ -20,7 +21,7 @@ class PluginRegistry
     public function get($name)
     {
         if (! isset($this->map[$name])) {
-            throw new Exception_PluginRegistryMap("No plugin class mapped to '$name'.");
+            throw new Exception_PluginNotMapped($name);
         }
         
         if (is_string($this->map[$name])) {
