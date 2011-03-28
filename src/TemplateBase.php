@@ -28,7 +28,7 @@ abstract class TemplateBase
      */
     private $_escape_charset = 'UTF-8';
     
-    private $_escape_quotes = ENT_COMPAT;
+    private $_escape_quotes = ENT_QUOTES;
     
     /**
      * 

@@ -30,27 +30,41 @@ class PluginTest extends \PHPUnit_Framework_TestCase
     {
         parent::tearDown();
     }
-
-    /**
-     * @todo Implement testSetEscapeQuotes().
-     */
-    public function testSetEscapeQuotes()
+    
+    public function testEscape()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+        $raw = '<\'single\' "double">';
+        $expect = '&lt;&#039;single&#039; &quot;double&quot;&gt;';
+        $actual = $this->plugin->escape($raw);
+        $this->assertSame($expect, $actual);
+        
+        $this->plugin->setEscapeQuotes(ENT_COMPAT);
+        $raw = '<\'single\' "double">';
+        $expect = '&lt;\'single\' &quot;double&quot;&gt;';
+        $actual = $this->plugin->escape($raw);
+        $this->assertSame($expect, $actual);
+        
+        // should add some alternative chars here (like euro sign)
+        $this->plugin->setEscapeCharset('ISO-8859-15');
+        $raw = '<\'single\' "double">';
+        $expect = '&lt;\'single\' &quot;double&quot;&gt;';
+        $actual = $this->plugin->escape($raw);
+        $this->assertSame($expect, $actual);
     }
-
-    /**
-     * @todo Implement testSetEscapeCharset().
-     */
-    public function testSetEscapeCharset()
+    
+    public function testAttribs()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
+        $attribs = array(
+            'foo' => 'bar',
+            'nim' => '',
+            'baz' => array('dib', 'zim', 'gir'),
+            'required' => true,
+            'optional' => false,
         );
+        
+        $expect = ' foo="bar" baz="dib zim gir" required';
+        $actual = $this->plugin->attribs($attribs);
+        $this->assertSame($expect, $actual);
     }
     
     public function test__invoke()

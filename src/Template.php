@@ -22,8 +22,11 @@ class Template extends TemplateBase
      */
     public function fetch($name, array $vars = array())
     {
-        unset($name, $vars);
-        extract(func_get_arg(1), EXTR_SKIP);
+        unset($name);
+        if ($vars) {
+            unset($vars);
+            extract(func_get_arg(1), EXTR_SKIP);
+        }
         ob_start();
         require $this->find(func_get_arg(0));
         return ob_get_clean();

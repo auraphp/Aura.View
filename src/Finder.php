@@ -24,6 +24,11 @@ class Finder
     // cache of found files
     protected $found = array();
     
+    public function __construct(array $paths = array())
+    {
+        $this->paths = $paths;
+    }
+    
     /**
      * 
      * Gets a copy of the current paths.
@@ -41,9 +46,9 @@ class Finder
      * Adds one path to the paths.
      * 
      * {{code: php
-     *     $finder->addPath('path/1');
-     *     $finder->addPath('path/2');
-     *     $finder->addPath('path/3');
+     *     $finder->unshiftPath('path/1');
+     *     $finder->unshiftPath('path/2');
+     *     $finder->unshiftPath('path/3');
      *     // $finder->get() reveals that the directory search order will be
      *     // 'path/3/', 'path/2/', 'path/1/', because the later adds
      *     // override the newer ones.
@@ -54,9 +59,15 @@ class Finder
      * @return void
      * 
      */
-    public function addPath($path)
+    public function unshiftPath($path)
     {
         array_unshift($this->paths, rtrim($path, DIRECTORY_SEPARATOR));
+        $this->found = array();
+    }
+    
+    public function pushPath($path)
+    {
+        $this->paths[] = rtrim($path, DIRECTORY_SEPARATOR);
         $this->found = array();
     }
     
@@ -65,7 +76,7 @@ class Finder
      * Sets the paths directly.
      * 
      * {{code: php
-     *      $finder->addPaths(array(
+     *      $finder->unshiftPaths(array(
      *          'path/1',
      *          'path/2',
      *          'path/3',

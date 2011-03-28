@@ -62,16 +62,24 @@ class FinderTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($expect, $actual);
     }
 
-    /**
-     * @todo Implement testAddPath().
-     */
-    public function testAddPath()
+    public function testUnshiftPath()
     {
         foreach ($this->dirs as $path) {
-            $this->finder->addPath($path);
+            $this->finder->unshiftPath($path);
         }
         
         $expect = array_values(array_reverse($this->dirs));
+        $actual = $this->finder->getPaths();
+        $this->assertSame($expect, $actual);
+    }
+
+    public function testPushPath()
+    {
+        foreach ($this->dirs as $path) {
+            $this->finder->pushPath($path);
+        }
+        
+        $expect = array_values($this->dirs);
         $actual = $this->finder->getPaths();
         $this->assertSame($expect, $actual);
     }

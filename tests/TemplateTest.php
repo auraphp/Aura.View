@@ -21,10 +21,15 @@ class TemplateTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         parent::setUp();
+    }
+    
+    protected function newTemplate(array $paths = array())
+    {
         $forge = new Forge(new Config);
-        $plugin_registry = new PluginRegistry($forge);
-        $finder = new Finder;
-        $this->template = new Template($plugin_registry, $finder);
+        $map = array('mockPlugin' => 'aura\view\MockPlugin');
+        $plugin_registry = new PluginRegistry($forge, $map);
+        $finder = new Finder($paths);
+        return new Template($plugin_registry, $finder);
     }
     
     /**
@@ -41,12 +46,13 @@ class TemplateTest extends \PHPUnit_Framework_TestCase
      */
     public function test__setGetIssetUnset()
     {
-        $this->assertFalse(isset($this->template->foo));
-        $this->template->foo = 'bar';
-        $this->assertTrue(isset($this->template->foo));
-        $this->assertSame('bar', $this->template->foo);
-        unset($this->template->foo);
-        $this->assertFalse(isset($this->template->foo));
+        $template = $this->newTemplate();
+        $this->assertFalse(isset($template->foo));
+        $template->foo = 'bar';
+        $this->assertTrue(isset($template->foo));
+        $this->assertSame('bar', $template->foo);
+        unset($template->foo);
+        $this->assertFalse(isset($template->foo));
     }
     
     /**
@@ -54,10 +60,10 @@ class TemplateTest extends \PHPUnit_Framework_TestCase
      */
     public function test__call()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+        $template = $this->newTemplate();
+        $expect = 'Hello Plugin';
+        $actual = $template->mockPlugin();
+        $this->assertSame($expect, $actual);
     }
 
     /**
@@ -65,52 +71,43 @@ class TemplateTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetAndGetData()
     {
+        $template = $this->newTemplate();
         $expect = array();
-        $actual = $this->template->getData();
+        $actual = $template->getData();
         $this->assertSame($expect, $actual);
         
         $data = array(
             'foo' => 'bar'
         );
         
-        $this->template->setData($data);
-        $this->assertSame('bar', $this->template->foo);
+        $template->setData($data);
+        $this->assertSame('bar', $template->foo);
         
-        $actual = $this->template->getData();
+        $actual = $template->getData();
         $this->assertSame($data, $actual);
     }
 
-    /**
-     * @todo Implement testSetEscapeQuotes().
-     */
-    public function testSetEscapeQuotes()
-    {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
-    }
-
-    /**
-     * @todo Implement testSetEscapeCharset().
-     */
-    public function testSetEscapeCharset()
-    {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
-    }
-
-    /**
-     * @todo Implement testEscape().
-     */
     public function testEscape()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+        $template = $this->newTemplate();
+        
+        $raw = '<\'single\' "double">';
+        $expect = '&lt;&#039;single&#039; &quot;double&quot;&gt;';
+        $actual = $template->escape($raw);
+        $this->assertSame($expect, $actual);
+        
+        $template->setEscapeQuotes(ENT_COMPAT);
+        $raw = '<\'single\' "double">';
+        $expect = '&lt;\'single\' &quot;double&quot;&gt;';
+        $actual = $template->escape($raw);
+        $this->assertSame($expect, $actual);
+        
+        // should add some alternative chars here (like euro sign)
+        $template->setEscapeCharset('ISO-8859-15');
+        $raw = '<\'single\' "double">';
+        $expect = '&lt;\'single\' &quot;double&quot;&gt;';
+        $actual = $template->escape($raw);
+        $this->assertSame($expect, $actual);
     }
 
     /**
@@ -118,20 +115,95 @@ class TemplateTest extends \PHPUnit_Framework_TestCase
      */
     public function testFind()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+        // prepare a set of directories and files
+        $base = __DIR__ . DIRECTORY_SEPARATOR . 'tmp';
+        $list = array('foo', 'bar', 'baz');
+        $dirs = array();
+        foreach ($list as $dir) {
+            // make dir for the finder
+            $dirs[$dir] = $base . DIRECTORY_SEPARATOR . $dir;
+            mkdir($dirs[$dir], 0777, true);
+            
+            // place the same file in each dir
+            $file = $dirs[$dir] . DIRECTORY_SEPARATOR . 'zim.php';
+            file_put_contents($file, 'empty');
+        }
+        
+        // now find it; should be the same as the one at the beginning
+        // of the paths
+        $template = $this->newTemplate($dirs);
+        $actual = $template->find('zim');
+        $expect = $dirs['foo'] . DIRECTORY_SEPARATOR . 'zim.php';
+        $this->assertSame($expect, $actual);
+        
+        // remove the directories and files
+        foreach ($dirs as $dir) {
+            unlink($dir . DIRECTORY_SEPARATOR . 'zim.php');
+            rmdir($dir);
+        }
+    }
+    
+    public function testFetch()
+    {
+        // the template file
+        $file = __DIR__ . DIRECTORY_SEPARATOR
+              . 'tmp' . DIRECTORY_SEPARATOR
+              . 'fetch' . DIRECTORY_SEPARATOR
+              . 'zim.php';
+        
+        // the template code
+        $code = '<?php echo $this->mockPlugin() . " " . $this->foo;';
+        
+        // put it in place
+        $dir = dirname($file);
+        mkdir($dir, 0777, true);
+        file_put_contents($file, $code);
+        
+        // get a template object
+        $template = $this->newTemplate(array($dir));
+        $template->foo = 'bar';
+        $actual = $template->fetch('zim');
+        $expect = 'Hello Plugin bar';
+        $this->assertSame($expect, $actual);
+        
+        // remove the file and dir
+        unlink($file);
+        rmdir($dir);
+    }
+    
+    public function testFetchExtract()
+    {
+        // the template file
+        $file = __DIR__ . DIRECTORY_SEPARATOR
+              . 'tmp' . DIRECTORY_SEPARATOR
+              . 'fetch' . DIRECTORY_SEPARATOR
+              . 'foo.php';
+        
+        // the template code
+        $code = '<?php echo $this->mockPlugin() . " " . $foo;';
+        
+        // put it in place
+        $dir = dirname($file);
+        mkdir($dir, 0777, true);
+        file_put_contents($file, $code);
+        
+        // get a template object
+        $template = $this->newTemplate(array($dir));
+        $actual = $template->fetch('foo', array('foo' => 'dib'));
+        $expect = 'Hello Plugin dib';
+        $this->assertSame($expect, $actual);
+        
+        // remove the file and dir
+        unlink($file);
+        rmdir($dir);
     }
     
     /**
-     * @todo Implement testFetch().
+     * @expectedException aura\view\Exception_TemplateNotFound
      */
-    public function testFetch()
+    public function testFindTemplateNotFound()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+        $template = $this->newTemplate();
+        $template->find('no_such_template');
     }
 }

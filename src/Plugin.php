@@ -11,7 +11,7 @@ abstract class Plugin
      */
     protected $escape_charset = 'UTF-8';
     
-    protected $escape_quotes = ENT_COMPAT;
+    protected $escape_quotes = ENT_QUOTES;
     
     abstract public function __invoke();
     
@@ -70,8 +70,12 @@ abstract class Plugin
             }
             
             // add to the attributes
-            $html .= ' ' . $this->escape($key)
-                   .  '="' . $this->escape($val) . '"';
+            if ($val === true) {
+                $html .= ' ' . $this->escape($key);
+            } else {
+                $html .= ' ' . $this->escape($key)
+                       .  '="' . $this->escape($val) . '"';
+            }
         }
         
         // done
