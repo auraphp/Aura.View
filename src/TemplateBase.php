@@ -7,20 +7,14 @@ namespace aura\view;
  * 
  * This implementation is good for all (X)HTML and XML template
  * formats, and provides a built-in escaping mechanism for values,
- * along with lazy-loading and persistence of helper objects.
+ * along with lazy-loading and persistence of plugin objects.
  * 
  * Also supports "partial" templates with variables extracted within
  * the partial-template scope.
  * 
- * @category Aura
- * 
- * @package Aura_View PHP-based TemplateView system.
- * 
- * @author Paul M. Jones <pmjones@solarphp.com>
+ * @package aura.view
  * 
  * @license http://opensource.org/licenses/bsd-license.php BSD
- * 
- * @version $Id$
  * 
  */
 abstract class TemplateBase
@@ -47,11 +41,13 @@ abstract class TemplateBase
     
     private $_data = array();
     
+    private $_plugin_registry;
+    
     public function __construct(
         PluginRegistry $plugin_registry,
         Finder $finder
     ) {
-        $this->_helper_registry = $helper_registry;
+        $this->_plugin_registry = $plugin_registry;
         $this->_finder = $finder;
     }
     
@@ -77,13 +73,13 @@ abstract class TemplateBase
     
     /**
      * 
-     * Executes a helper method with arbitrary parameters.
+     * Executes a plugin method with arbitrary parameters.
      * 
-     * @param string $name The helper name.
+     * @param string $name The plugin name.
      * 
-     * @param array $args The parameters passed to the helper.
+     * @param array $args The parameters passed to the plugin.
      * 
-     * @return string The helper output.
+     * @return string The plugin output.
      * 
      */
     public function __call($name, $args)
@@ -114,7 +110,7 @@ abstract class TemplateBase
     
     /**
      * 
-     * Built-in helper for escaping output.
+     * Built-in plugin for escaping output.
      * 
      * @param scalar $value The value to escape.
      * 

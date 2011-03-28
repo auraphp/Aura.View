@@ -1,5 +1,7 @@
 <?php
 namespace aura\view;
+use aura\di\Forge;
+use aura\di\Config;
 
 /**
  * Test class for Template.
@@ -19,9 +21,12 @@ class TemplateTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         parent::setUp();
-        $this->object = new Template;
+        $forge = new Forge(new Config);
+        $plugin_registry = new PluginRegistry($forge);
+        $finder = new Finder;
+        $this->template = new Template($plugin_registry, $finder);
     }
-
+    
     /**
      * Tears down the fixture, for example, closes a network connection.
      * This method is called after a test is executed.
@@ -31,6 +36,94 @@ class TemplateTest extends \PHPUnit_Framework_TestCase
         parent::tearDown();
     }
 
+    /**
+     * @todo Implement test__get().
+     */
+    public function test__setGetIssetUnset()
+    {
+        $this->assertFalse(isset($this->template->foo));
+        $this->template->foo = 'bar';
+        $this->assertTrue(isset($this->template->foo));
+        $this->assertSame('bar', $this->template->foo);
+        unset($this->template->foo);
+        $this->assertFalse(isset($this->template->foo));
+    }
+    
+    /**
+     * @todo Implement test__call().
+     */
+    public function test__call()
+    {
+        // Remove the following lines when you implement this test.
+        $this->markTestIncomplete(
+          'This test has not been implemented yet.'
+        );
+    }
+
+    /**
+     * @todo Implement testSetData().
+     */
+    public function testSetAndGetData()
+    {
+        $expect = array();
+        $actual = $this->template->getData();
+        $this->assertSame($expect, $actual);
+        
+        $data = array(
+            'foo' => 'bar'
+        );
+        
+        $this->template->setData($data);
+        $this->assertSame('bar', $this->template->foo);
+        
+        $actual = $this->template->getData();
+        $this->assertSame($data, $actual);
+    }
+
+    /**
+     * @todo Implement testSetEscapeQuotes().
+     */
+    public function testSetEscapeQuotes()
+    {
+        // Remove the following lines when you implement this test.
+        $this->markTestIncomplete(
+          'This test has not been implemented yet.'
+        );
+    }
+
+    /**
+     * @todo Implement testSetEscapeCharset().
+     */
+    public function testSetEscapeCharset()
+    {
+        // Remove the following lines when you implement this test.
+        $this->markTestIncomplete(
+          'This test has not been implemented yet.'
+        );
+    }
+
+    /**
+     * @todo Implement testEscape().
+     */
+    public function testEscape()
+    {
+        // Remove the following lines when you implement this test.
+        $this->markTestIncomplete(
+          'This test has not been implemented yet.'
+        );
+    }
+
+    /**
+     * @todo Implement testFind().
+     */
+    public function testFind()
+    {
+        // Remove the following lines when you implement this test.
+        $this->markTestIncomplete(
+          'This test has not been implemented yet.'
+        );
+    }
+    
     /**
      * @todo Implement testFetch().
      */
