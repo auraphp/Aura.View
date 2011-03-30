@@ -44,11 +44,11 @@ abstract class TemplateBase
     private $_plugin_registry;
     
     public function __construct(
-        PluginRegistry $plugin_registry,
-        Finder $finder
+        Finder $finder,
+        PluginRegistry $plugin_registry
     ) {
-        $this->_plugin_registry = $plugin_registry;
         $this->_finder = $finder;
+        $this->_plugin_registry = $plugin_registry;
     }
     
     public function __get($key)
@@ -69,6 +69,11 @@ abstract class TemplateBase
     public function __unset($key)
     {
         unset($this->_data[$key]);
+    }
+    
+    public function setPaths(array $paths = array())
+    {
+        $this->_finder->setPaths($paths);
     }
     
     /**

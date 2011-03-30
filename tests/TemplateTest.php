@@ -26,10 +26,10 @@ class TemplateTest extends \PHPUnit_Framework_TestCase
     protected function newTemplate(array $paths = array())
     {
         $forge = new Forge(new Config);
+        $finder = new Finder($paths);
         $map = array('mockPlugin' => 'aura\view\MockPlugin');
         $plugin_registry = new PluginRegistry($forge, $map);
-        $finder = new Finder($paths);
-        return new Template($plugin_registry, $finder);
+        return new Template($finder, $plugin_registry);
     }
     
     /**

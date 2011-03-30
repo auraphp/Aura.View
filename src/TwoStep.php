@@ -4,13 +4,22 @@ class TwoStep
 {
     protected $view_name;
     
-    protected $view_data;
+    protected $view_data = array();
+    
+    protected $view_paths = array();
     
     protected $layout_name;
     
-    protected $layout_data;
+    protected $layout_data = array();
     
-    protected $content_var;
+    protected $layout_paths = array();
+    
+    protected $content_var = 'content_from_view';
+    
+    public function __construct(Template $template)
+    {
+        $this->template = $template;
+    }
     
     public function setViewName($view_name)
     {
@@ -22,9 +31,9 @@ class TwoStep
         $this->view_data = $view_data;
     }
     
-    public function setViewFinder($view_finder)
+    public function setViewPaths(array $view_paths = array())
     {
-        $this->view_finder = $view_finder;
+        $this->view_paths = $view_paths;
     }
     
     public function setLayoutName($layout_name)
@@ -37,9 +46,9 @@ class TwoStep
         $this->layout_data = $layout_data;
     }
     
-    public function setLayoutFinder($layout_finder)
+    public function setLayoutPaths($layout_paths)
     {
-        $this->layout_finder = $layout_finder;
+        $this->layout_paths = $layout_paths;
     }
     
     public function setContentVar($content_var)
@@ -47,24 +56,30 @@ class TwoStep
         $this->content_var = $content_var;
     }
     
-    public function render($view_finder, $layout_finder)
+    public function render()
     {
+        // no view? no layout? nothing to render.
+        if (! $this->view_name && ! $this->layout_name) {
+            return;
+        }
+        
+        // render the view and get its content for the layout
         if ($this->view_name) {
-            $tpl = $this->template_factory->newInstance();
-            $tpl->setData($view_data);
-            $tpl->setFinder($view_finder);
-            $content = $view->fetch($this->view_name);
+            $this->template->setData($this->view_data);
+            $this->template->setPaths($this->view_paths);
+            $content = $this->template->fetch($this->view_name);
         } else {
             $content = null;
         }
         
+        // render the layout and inject the view content.
+        // reuse the same template object; we lose $this data from the earlier
+        // view, but we retain the plugin instances.
         if ($this->layout_name) {
-            // reuse the same template object, although
-            // we lose any $this data from the earlier view
             $this->layout_data[$this->content_var] = $content;
-            $tpl->setData($layout_data);
-            $tpl->setFinder($layout_finder);
-            return $tpl->fetch($layout_name);
+            $this->template->setData($this->layout_data);
+            $this->template->setPaths($this->layout_paths);
+            return $this->template->fetch($this->layout_name);
         } else {
             return $content;
         }
