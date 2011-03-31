@@ -14,7 +14,7 @@ class TwoStep
     
     protected $layout_paths = array();
     
-    protected $content_var = 'content_from_view';
+    protected $content_var = 'layout_content';
     
     public function __construct(Template $template)
     {
