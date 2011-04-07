@@ -1,6 +1,6 @@
 <?php
-namespace aura\view;
-abstract class Plugin
+namespace aura\view\helper;
+abstract class AbstractHelper
 {
     /**
      * 
@@ -13,7 +13,7 @@ abstract class Plugin
     
     protected $escape_quotes = ENT_QUOTES;
     
-    abstract public function __invoke();
+    protected $indent = '    ';
     
     public function setEscapeQuotes($quotes)
     {
@@ -25,6 +25,11 @@ abstract class Plugin
         $this->escape_charset = $charset;
     }
     
+    public function setIndent($indent)
+    {
+        $this->indent = $indent;
+    }
+    
     /**
      * 
      * Escapes output.
@@ -34,7 +39,7 @@ abstract class Plugin
      * @return string The escaped value.
      * 
      */
-    public function escape($value)
+    protected function escape($value)
     {
         return htmlspecialchars(
             $value,
@@ -53,7 +58,7 @@ abstract class Plugin
      * @return string The HTML for the attributes.
      * 
      */
-    public function attribs(array $attribs)
+    protected function attribs(array $attribs)
     {
         $html = '';
         foreach ($attribs as $key => $val) {

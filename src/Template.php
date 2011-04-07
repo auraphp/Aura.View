@@ -7,7 +7,7 @@ namespace aura\view;
  * have access to TemplateBase private properties.
  * 
  */
-class Template extends TemplateBase
+class Template extends AbstractTemplate
 {
     /**
      * 

@@ -7,7 +7,7 @@ namespace aura\view;
  * 
  * This implementation is good for all (X)HTML and XML template
  * formats, and provides a built-in escaping mechanism for values,
- * along with lazy-loading and persistence of plugin objects.
+ * along with lazy-loading and persistence of helper objects.
  * 
  * Also supports "partial" templates with variables extracted within
  * the partial-template scope.
@@ -17,38 +17,46 @@ namespace aura\view;
  * @license http://opensource.org/licenses/bsd-license.php BSD
  * 
  */
-abstract class TemplateBase
+abstract class AbstractTemplate
 {
     /**
      * 
-     * Parameters for escaping.
-     * 
-     * @var array
-     * 
-     */
-    private $_escape_charset = 'UTF-8';
-    
-    private $_escape_quotes = ENT_QUOTES;
-    
-    /**
-     * 
-     * View "finder" (to find views in a directory stack).
+     * View "finder" (to find views in a path stack).
      * 
      * @var Finder
      * 
      */
     private $_finder;
     
+    /**
+     * 
+     * Data assigned to the template.
+     * 
+     * @var array
+     * 
+     */
     private $_data = array();
     
-    private $_plugin_registry;
+    /**
+     * 
+     * A registry for helper objects, so that repeated calls to the same 
+     * helper use the same object.
+     * 
+     * @var HelperRegistry
+     * 
+     */
+    private $_helper_registry;
     
+    /**
+     * 
+     * 
+     */
     public function __construct(
         Finder $finder,
-        PluginRegistry $plugin_registry
+        HelperRegistry $helper_registry
     ) {
         $this->_finder = $finder;
-        $this->_plugin_registry = $plugin_registry;
+        $this->_helper_registry = $helper_registry;
     }
     
     public function __get($key)
@@ -76,23 +84,6 @@ abstract class TemplateBase
         $this->_finder->setPaths($paths);
     }
     
-    /**
-     * 
-     * Executes a plugin method with arbitrary parameters.
-     * 
-     * @param string $name The plugin name.
-     * 
-     * @param array $args The parameters passed to the plugin.
-     * 
-     * @return string The plugin output.
-     * 
-     */
-    public function __call($name, $args)
-    {
-        $plugin = $this->_plugin_registry->get($name);
-        return call_user_func_array(array($plugin, '__invoke'), $args);
-    }
-    
     public function setData($data)
     {
         $this->_data = $data;
@@ -101,34 +92,6 @@ abstract class TemplateBase
     public function getData()
     {
         return $this->_data;
-    }
-    
-    public function setEscapeQuotes($quotes)
-    {
-        $this->_escape_quotes = $quotes;
-    }
-    
-    public function setEscapeCharset($charset)
-    {
-        $this->_escape_charset = $charset;
-    }
-    
-    /**
-     * 
-     * Built-in plugin for escaping output.
-     * 
-     * @param scalar $value The value to escape.
-     * 
-     * @return string The escaped value.
-     * 
-     */
-    public function escape($value)
-    {
-        return htmlspecialchars(
-            $value,
-            $this->_escape_quotes,
-            $this->_escape_charset
-        );
     }
     
     /**
@@ -155,6 +118,16 @@ abstract class TemplateBase
         
         // done!
         return $file;
+    }
+    
+    public function getHelper($class)
+    {
+        return $this->_helper_registry->getInstance($class);
+    }
+    
+    public function newHelper($class)
+    {
+        return $this->_helper_registry->newInstance($class);
     }
     
     abstract public function fetch($name, array $vars = array());

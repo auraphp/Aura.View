@@ -1,7 +1,11 @@
 <?php
-$di->setter['aura\view\TemplateBase']['setEscapeQuotes']  = ENT_COMPAT;
-$di->setter['aura\view\TemplateBase']['setEscapeCharset'] = 'UTF-8';
-$di->setter['aura\view\Plugin']['setEscapeQuotes']  = ENT_COMPAT;
-$di->setter['aura\view\Plugin']['setEscapeCharset'] = 'UTF-8';
+$di->params['aura\view\AbstractTemplate']['helper_registry'] = $di->lazyNew('aura\view\HelperRegistry');
 
-$di->params['aura\view\Template']['plugin_registry'] = $di->lazyNew('aura\view\PluginRegistry');
+$di->params['aura\view\helper\Datetime']['format']['date'] = 'Y-m-d H:i:s';
+$di->params['aura\view\helper\Datetime']['format']['time'] = 'H:i:s';
+$di->params['aura\view\helper\Datetime']['format']['datetime'] = 'Y-m-d H:i:s';
+$di->params['aura\view\helper\Datetime']['format']['default'] = 'Y-m-d H:i:s';
+
+$di->setter['aura\view\helper\AbstractHelper']['setEscapeQuotes']  = ENT_COMPAT;
+$di->setter['aura\view\helper\AbstractHelper']['setEscapeCharset'] = 'UTF-8';
+

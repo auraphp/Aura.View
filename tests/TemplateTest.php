@@ -26,10 +26,11 @@ class TemplateTest extends \PHPUnit_Framework_TestCase
     protected function newTemplate(array $paths = array())
     {
         $forge = new Forge(new Config);
-        $finder = new Finder($paths);
-        $map = array('mockPlugin' => 'aura\view\MockPlugin');
-        $plugin_registry = new PluginRegistry($forge, $map);
-        return new Template($finder, $plugin_registry);
+        $finder = new Finder();
+        $helper_registry = new HelperRegistry($forge);
+        $template = new Template($finder, $helper_registry);
+        $template->setPaths($paths);
+        return $template;
     }
     
     /**
@@ -56,17 +57,6 @@ class TemplateTest extends \PHPUnit_Framework_TestCase
     }
     
     /**
-     * @todo Implement test__call().
-     */
-    public function test__call()
-    {
-        $template = $this->newTemplate();
-        $expect = 'Hello Plugin';
-        $actual = $template->mockPlugin();
-        $this->assertSame($expect, $actual);
-    }
-
-    /**
      * @todo Implement testSetData().
      */
     public function testSetAndGetData()
@@ -85,29 +75,6 @@ class TemplateTest extends \PHPUnit_Framework_TestCase
         
         $actual = $template->getData();
         $this->assertSame($data, $actual);
-    }
-
-    public function testEscape()
-    {
-        $template = $this->newTemplate();
-        
-        $raw = '<\'single\' "double">';
-        $expect = '&lt;&#039;single&#039; &quot;double&quot;&gt;';
-        $actual = $template->escape($raw);
-        $this->assertSame($expect, $actual);
-        
-        $template->setEscapeQuotes(ENT_COMPAT);
-        $raw = '<\'single\' "double">';
-        $expect = '&lt;\'single\' &quot;double&quot;&gt;';
-        $actual = $template->escape($raw);
-        $this->assertSame($expect, $actual);
-        
-        // should add some alternative chars here (like euro sign)
-        $template->setEscapeCharset('ISO-8859-15');
-        $raw = '<\'single\' "double">';
-        $expect = '&lt;\'single\' &quot;double&quot;&gt;';
-        $actual = $template->escape($raw);
-        $this->assertSame($expect, $actual);
     }
 
     /**
@@ -152,7 +119,7 @@ class TemplateTest extends \PHPUnit_Framework_TestCase
               . 'zim.php';
         
         // the template code
-        $code = '<?php echo $this->mockPlugin() . " " . $this->foo;';
+        $code = '<?php echo $this->foo; ?>';
         
         // put it in place
         $dir = dirname($file);
@@ -163,7 +130,7 @@ class TemplateTest extends \PHPUnit_Framework_TestCase
         $template = $this->newTemplate(array($dir));
         $template->foo = 'bar';
         $actual = $template->fetch('zim');
-        $expect = 'Hello Plugin bar';
+        $expect = 'bar';
         $this->assertSame($expect, $actual);
         
         // remove the file and dir
@@ -180,7 +147,7 @@ class TemplateTest extends \PHPUnit_Framework_TestCase
               . 'foo.php';
         
         // the template code
-        $code = '<?php echo $this->mockPlugin() . " " . $foo;';
+        $code = '<?php echo $foo; ?>';
         
         // put it in place
         $dir = dirname($file);
@@ -190,7 +157,7 @@ class TemplateTest extends \PHPUnit_Framework_TestCase
         // get a template object
         $template = $this->newTemplate(array($dir));
         $actual = $template->fetch('foo', array('foo' => 'dib'));
-        $expect = 'Hello Plugin dib';
+        $expect = 'dib';
         $this->assertSame($expect, $actual);
         
         // remove the file and dir
@@ -205,5 +172,23 @@ class TemplateTest extends \PHPUnit_Framework_TestCase
     {
         $template = $this->newTemplate();
         $template->find('no_such_template');
+    }
+    
+    public function testGetHelper()
+    {
+        $template = $this->newTemplate();
+        $actual = $template->getHelper('aura\view\helper\Escape');
+        $this->assertType('aura\view\helper\Escape', $actual);
+        $again = $template->getHelper('aura\view\helper\Escape');
+        $this->assertSame($actual, $again);
+    }
+    
+    public function testNewHelper()
+    {
+        $template = $this->newTemplate();
+        $actual = $template->newHelper('aura\view\helper\Escape');
+        $this->assertType('aura\view\helper\Escape', $actual);
+        $again = $template->newHelper('aura\view\helper\Escape');
+        $this->assertNotSame($actual, $again);
     }
 }
