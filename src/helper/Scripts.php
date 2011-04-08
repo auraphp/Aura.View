@@ -9,13 +9,23 @@ use aura\view\Helper;
  */
 class Scripts extends AbstractHelper
 {
-    protected $scripts_head = array();
-    
-    protected $scripts_foot = array();
+    protected $scripts = array();
     
     /**
      * 
-     * Returns a <script></script> tag.
+     * Returns the helper so you can call methods on it.
+     * 
+     * @return $this
+     * 
+     */
+    public function __invoke()
+    {
+        return $this;
+    }
+    
+    /**
+     * 
+     * Adds a script.
      * 
      * @param string $src The source href for the script.
      * 
@@ -26,36 +36,6 @@ class Scripts extends AbstractHelper
      */
     public function add($src, $pos = 100, array $attribs = array())
     {
-        $tag = $this->tag($src, $attribs);
-        $this->scripts_head[$tag] = $pos;
-    }
-    
-    public function addFoot($src, $pos = 100, array $attribs = array())
-    {
-        $tag = $this->tag($src, $attribs);
-        $this->scripts_foot[$tag] = $pos;
-    }
-    
-    public function get()
-    {
-        asort($this->scripts_head);
-        $scripts = array_keys($this->scripts_head);
-        return $this->indent 
-             . implode(PHP_EOL . $this->indent, $scripts)
-             . PHP_EOL;
-    }
-    
-    public function getFoot()
-    {
-        asort($this->scripts_foot);
-        $scripts = array_keys($this->scripts_foot);
-        return $this->indent 
-             . implode(PHP_EOL . $this->indent, $scripts)
-             . PHP_EOL;
-    }
-    
-    protected function tag($src, array $attribs = array())
-    {
         $src = $this->escape($src);
         unset($attribs['src']);
         if (empty($attribs['type'])) {
@@ -63,6 +43,16 @@ class Scripts extends AbstractHelper
         }
         
         $attr = $this->attribs($attribs);
-        return "<script src=\"$src\"$attr></script>";
+        $tag = "<script src=\"$src\"$attr></script>";
+        $this->scripts[$tag] = $pos;
+    }
+    
+    public function get()
+    {
+        asort($this->scripts);
+        $scripts = array_keys($this->scripts);
+        return $this->indent 
+             . implode(PHP_EOL . $this->indent, $scripts)
+             . PHP_EOL;
     }
 }

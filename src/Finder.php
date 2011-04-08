@@ -1,13 +1,18 @@
 <?php
+/**
+ * 
+ * This file is part of the Aura Project for PHP.
+ * 
+ * @license http://opensource.org/licenses/bsd-license.php BSD
+ * 
+ */
 namespace aura\view;
 
 /**
  * 
  * Finds files in user-defined path hierarchies.
  * 
- * As you add directory paths, they are searched first when you call
- * find($file).  This allows users to add override paths so their files will
- * be used instead of default files.
+ * @package aura.view
  * 
  */
 class Finder
@@ -21,9 +26,23 @@ class Finder
      */
     protected $paths = array();
     
-    // cache of found files
+    /**
+     * 
+     * A cache of found files, so we do not need to search the path stack
+     * for a particular file more than once.
+     * 
+     * @var array
+     * 
+     */
     protected $found = array();
     
+    /**
+     * 
+     * Constructor.
+     * 
+     * @param array $paths The default path stack for this Finder.
+     * 
+     */
     public function __construct(array $paths = array())
     {
         $this->paths = $paths;
@@ -31,7 +50,7 @@ class Finder
     
     /**
      * 
-     * Gets a copy of the current paths.
+     * Gets a copy of the current path stack.
      * 
      * @return array
      * 
@@ -43,15 +62,14 @@ class Finder
     
     /**
      * 
-     * Adds one path to the paths.
+     * Adds one path to the top of the path stack.
      * 
      * {{code: php
      *     $finder->unshiftPath('path/1');
      *     $finder->unshiftPath('path/2');
      *     $finder->unshiftPath('path/3');
      *     // $finder->get() reveals that the directory search order will be
-     *     // 'path/3/', 'path/2/', 'path/1/', because the later adds
-     *     // override the newer ones.
+     *     // 'path/3/', 'path/2/', 'path/1/'.
      * }}
      * 
      * @param array|string $path The directories to add to the paths.
@@ -65,6 +83,23 @@ class Finder
         $this->found = array();
     }
     
+    /**
+     * 
+     * Adds one path to the end of the path stack.
+     * 
+     * {{code: php
+     *     $finder->unshiftPath('path/1');
+     *     $finder->unshiftPath('path/2');
+     *     $finder->unshiftPath('path/3');
+     *     // $finder->get() reveals that the directory search order will be
+     *     // 'path/1/', 'path/2/', 'path/3/'.
+     * }}
+     * 
+     * @param array|string $path The directories to add to the paths.
+     * 
+     * @return void
+     * 
+     */
     public function pushPath($path)
     {
         $this->paths[] = rtrim($path, DIRECTORY_SEPARATOR);

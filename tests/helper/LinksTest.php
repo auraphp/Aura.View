@@ -10,7 +10,13 @@ class LinksTest extends \PHPUnit_Framework_TestCase
     public function test__invoke()
     {
         $links = new Links;
-        $this->assertType('aura\view\helper\Links', $links);
+        $actual = $links();
+        $this->assertType('aura\view\helper\Links', $actual);
+    }
+    
+    public function testAddAndGet()
+    {
+        $links = new Links;
         
         $links->add(array(
             'rel' => 'prev',
@@ -35,7 +41,6 @@ class LinksTest extends \PHPUnit_Framework_TestCase
     public function testSetIndent()
     {
         $links = new Links;
-        $this->assertType('aura\view\helper\Links', $links);
         
         $links->setIndent('  ');
         

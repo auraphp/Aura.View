@@ -10,7 +10,13 @@ class StylesTest extends \PHPUnit_Framework_TestCase
     public function test__invoke()
     {
         $styles = new Styles;
-        $this->assertType('aura\view\helper\Styles', $styles);
+        $actual = $styles();
+        $this->assertType('aura\view\helper\Styles', $actual);
+    }
+    
+    public function testAddAndGet()
+    {
+        $styles = new Styles;
         
         $styles->add('/css/middle.css');
         $styles->add('/css/last.css', 150);
@@ -30,7 +36,6 @@ class StylesTest extends \PHPUnit_Framework_TestCase
     public function testSetIndentAndAttribs()
     {
         $styles = new Styles;
-        $this->assertType('aura\view\helper\Styles', $styles);
         
         $styles->setIndent('  ');
         $styles->add('/css/middle.css', null, array('media' => 'print'));

@@ -23,9 +23,10 @@ class HelperRegistryTest extends \PHPUnit_Framework_TestCase
     {
         parent::setUp();
         $forge = new Forge(new Config);
-        $this->registry = new HelperRegistry($forge);
+        $map = array('mockHelper' => 'aura\view\helper\MockHelper');
+        $this->registry = new HelperRegistry($forge, $map);
     }
-
+    
     /**
      * Tears down the fixture, for example, closes a network connection.
      * This method is called after a test is executed.
@@ -41,11 +42,19 @@ class HelperRegistryTest extends \PHPUnit_Framework_TestCase
     public function testGetInstance()
     {
         // can we get a helper?
-        $first = $this->registry->getInstance('aura\view\helper\Escape');
-        $this->assertType('aura\view\helper\Escape', $first);
+        $first = $this->registry->getInstance('mockHelper');
+        $this->assertType('aura\view\helper\MockHelper', $first);
         
         // is it always the same?
-        $again = $this->registry->getInstance('aura\view\helper\Escape');
+        $again = $this->registry->getInstance('mockHelper');
         $this->assertSame($first, $again);
+    }
+    
+    /**
+     * @expectedException aura\view\Exception_HelperNotMapped
+     */
+    public function testGetInstanceNotMapped()
+    {
+        $first = $this->registry->getInstance('noSuchHelper');
     }
 }

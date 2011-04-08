@@ -7,13 +7,19 @@ namespace aura\view\helper;
  */
 class MetasTest extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * @todo Implement test__invoke().
-     */
     public function test__invoke()
     {
         $metas = new Metas;
-        $this->assertType('aura\view\helper\Metas', $metas);
+        $actual = $metas();
+        $this->assertType('aura\view\helper\Metas', $actual);
+    }
+    
+    /**
+     * @todo Implement test__invoke().
+     */
+    public function testAddAndGet()
+    {
+        $metas = new Metas;
         
         $metas->addHttp('Location', '/redirect/to/here');
         $metas->addName('foo', 'bar');

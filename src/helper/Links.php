@@ -13,6 +13,18 @@ class Links extends AbstractHelper
     
     /**
      * 
+     * Returns the helper so you can call methods on it.
+     * 
+     * @return $this
+     * 
+     */
+    public function __invoke()
+    {
+        return $this;
+    }
+    
+    /**
+     * 
      * Returns a <link ... /> tag.
      * 
      * @param array $attribs Attributes for the <link> tag.

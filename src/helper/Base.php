@@ -1,21 +1,29 @@
 <?php
+/**
+ * 
+ * This file is part of the Aura Project for PHP.
+ * 
+ * @license http://opensource.org/licenses/bsd-license.php BSD
+ * 
+ */
 namespace aura\view\helper;
-use aura\view\Helper;
 
 /**
  * 
- * Helper for <base /> tags.
+ * Helper to generate `<base ... />` tags.
+ * 
+ * @package aura.view
  * 
  */
 class Base extends AbstractHelper
 {
     /**
      * 
-     * Returns a <base ... /> tag.
+     * Returns a `<base ... />` tag.
      * 
-     * @param string|Solar_Uri $spec The base HREF.
+     * @param string $href The base href.
      * 
-     * @return string The <base ... /> tag.
+     * @return string The `<base ... />` tag.
      * 
      */
     public function __invoke($href)

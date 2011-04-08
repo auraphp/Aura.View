@@ -7,6 +7,13 @@ namespace aura\view\helper;
  */
 class ScriptsTest extends \PHPUnit_Framework_TestCase
 {
+    public function test__invoke()
+    {
+        $scripts = new Scripts;
+        $actual = $scripts();
+        $this->assertType('aura\view\helper\Scripts', $actual);
+    }
+    
     /**
      * @todo Implement testSetIndent().
      */
@@ -30,7 +37,7 @@ class ScriptsTest extends \PHPUnit_Framework_TestCase
     /**
      * @todo Implement testAddHead().
      */
-    public function testAdd()
+    public function testAddAndGet()
     {
         $scripts = new Scripts;
         $scripts->add('/js/middle.js');
@@ -38,25 +45,6 @@ class ScriptsTest extends \PHPUnit_Framework_TestCase
         $scripts->add('/js/first.js', 50);
         
         $actual = $scripts->get();
-        
-        $expect = '    <script src="/js/first.js" type="text/javascript"></script>' . PHP_EOL
-                . '    <script src="/js/middle.js" type="text/javascript"></script>' . PHP_EOL
-                . '    <script src="/js/last.js" type="text/javascript"></script>' . PHP_EOL;
-        
-        $this->assertSame($expect, $actual);
-    }
-
-    /**
-     * @todo Implement testAddFoot().
-     */
-    public function testAddFoot()
-    {
-        $scripts = new Scripts;
-        $scripts->addFoot('/js/middle.js');
-        $scripts->addFoot('/js/last.js', 150);
-        $scripts->addFoot('/js/first.js', 50);
-        
-        $actual = $scripts->getFoot();
         
         $expect = '    <script src="/js/first.js" type="text/javascript"></script>' . PHP_EOL
                 . '    <script src="/js/middle.js" type="text/javascript"></script>' . PHP_EOL

@@ -1,6 +1,12 @@
 <?php
+/**
+ * 
+ * This file is part of the Aura Project for PHP.
+ * 
+ * @license http://opensource.org/licenses/bsd-license.php BSD
+ * 
+ */
 namespace aura\view\helper;
-use aura\view\Helper;
 
 /**
  * 
@@ -8,9 +14,12 @@ use aura\view\Helper;
  * 
  * Default format is "Y-m-d H:i:s".
  * 
+ * @package aura.view
+ * 
  */
 class Datetime extends AbstractHelper
 {
+    
     protected $format = array(
         'date'     => 'Y-m-d',
         'time'     => 'H:i:s',

@@ -15,6 +15,18 @@ class Title extends AbstractHelper
     
     /**
      * 
+     * Returns the helper so you can call methods on it.
+     * 
+     * @return $this
+     * 
+     */
+    public function __invoke()
+    {
+        return $this;
+    }
+    
+    /**
+     * 
      * Sets the <title> string.
      * 
      * @param string $title The title string.

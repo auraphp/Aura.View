@@ -13,6 +13,18 @@ class Metas extends AbstractHelper
     
     /**
      * 
+     * Returns the helper so you can call methods on it.
+     * 
+     * @return $this
+     * 
+     */
+    public function __invoke()
+    {
+        return $this;
+    }
+    
+    /**
+     * 
      * Returns a <meta ... /> tag.
      * 
      * @param array $attribs Attributes for the <link> tag.

@@ -27,7 +27,8 @@ class TemplateTest extends \PHPUnit_Framework_TestCase
     {
         $forge = new Forge(new Config);
         $finder = new Finder();
-        $helper_registry = new HelperRegistry($forge);
+        $map = array('mockHelper' => 'aura\view\helper\MockHelper');
+        $helper_registry = new HelperRegistry($forge, $map);
         $template = new Template($finder, $helper_registry);
         $template->setPaths($paths);
         return $template;
@@ -56,6 +57,13 @@ class TemplateTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse(isset($template->foo));
     }
     
+    public function test__call()
+    {
+        $template = $this->newTemplate();
+        $actual = $template->mockHelper();
+        $this->assertSame('Hello Helper', $actual);
+    }
+    
     /**
      * @todo Implement testSetData().
      */
@@ -76,7 +84,7 @@ class TemplateTest extends \PHPUnit_Framework_TestCase
         $actual = $template->getData();
         $this->assertSame($data, $actual);
     }
-
+    
     /**
      * @todo Implement testFind().
      */
@@ -177,18 +185,18 @@ class TemplateTest extends \PHPUnit_Framework_TestCase
     public function testGetHelper()
     {
         $template = $this->newTemplate();
-        $actual = $template->getHelper('aura\view\helper\Escape');
-        $this->assertType('aura\view\helper\Escape', $actual);
-        $again = $template->getHelper('aura\view\helper\Escape');
+        $actual = $template->getHelper('mockHelper');
+        $this->assertType('aura\view\helper\MockHelper', $actual);
+        $again = $template->getHelper('mockHelper');
         $this->assertSame($actual, $again);
     }
     
     public function testNewHelper()
     {
         $template = $this->newTemplate();
-        $actual = $template->newHelper('aura\view\helper\Escape');
-        $this->assertType('aura\view\helper\Escape', $actual);
-        $again = $template->newHelper('aura\view\helper\Escape');
+        $actual = $template->newHelper('mockHelper');
+        $this->assertType('aura\view\helper\MockHelper', $actual);
+        $again = $template->newHelper('mockHelper');
         $this->assertNotSame($actual, $again);
     }
 }

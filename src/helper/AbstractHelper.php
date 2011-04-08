@@ -1,30 +1,86 @@
 <?php
+/**
+ * 
+ * This file is part of the Aura Project for PHP.
+ * 
+ * @license http://opensource.org/licenses/bsd-license.php BSD
+ * 
+ */
 namespace aura\view\helper;
+
+/**
+ * 
+ * Abstract helper base class.
+ * 
+ * @package aura.view
+ * 
+ */
 abstract class AbstractHelper
 {
     /**
      * 
-     * Parameters for escaping.
+     * The character set to use when escaping.
      * 
-     * @var array
+     * @var string
      * 
      */
     protected $escape_charset = 'UTF-8';
     
+    /**
+     * 
+     * The quote style to use when escaping.
+     * 
+     * @var int
+     * 
+     */
     protected $escape_quotes = ENT_QUOTES;
     
+    /**
+     * 
+     * Use this as one level of indentation for output.
+     * 
+     * @var string
+     * 
+     */
     protected $indent = '    ';
     
-    public function setEscapeQuotes($quotes)
-    {
-        $this->escape_quotes = $quotes;
-    }
-    
+    /**
+     * 
+     * Sets the character set to use when escaping.
+     * 
+     * @param string $charset The character set, e.g. 'UTF-8'.
+     * 
+     * @return void
+     * 
+     */
     public function setEscapeCharset($charset)
     {
         $this->escape_charset = $charset;
     }
     
+    /**
+     * 
+     * Sets the quote style to use when escaping.
+     * 
+     * @param int $quotes The quote style constant, e.g. `ENT_QUOTES`.
+     * 
+     * @return void
+     * 
+     */
+    public function setEscapeQuotes($quotes)
+    {
+        $this->escape_quotes = $quotes;
+    }
+    
+    /**
+     * 
+     * Sets the string to use for one level of indentation.
+     * 
+     * @param string $indent The indent string.
+     * 
+     * @return void
+     * 
+     */
     public function setIndent($indent)
     {
         $this->indent = $indent;
@@ -32,7 +88,7 @@ abstract class AbstractHelper
     
     /**
      * 
-     * Escapes output.
+     * Escapes values intended for output.
      * 
      * @param scalar $value The value to escape.
      * 
@@ -50,12 +106,12 @@ abstract class AbstractHelper
     
     /**
      * 
-     * Converts an associative array to an attribute string.
+     * Converts an associative array to an escaped attribute string.
      * 
      * @param array $attribs From this array, each key-value pair is 
      * converted to an attribute name and value.
      * 
-     * @return string The HTML for the attributes.
+     * @return string The escaped attributes string.
      * 
      */
     protected function attribs(array $attribs)

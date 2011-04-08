@@ -7,6 +7,13 @@ namespace aura\view\helper;
  */
 class TitleTest extends \PHPUnit_Framework_TestCase
 {
+    public function test__invoke()
+    {
+        $title = new Title;
+        $actual = $title();
+        $this->assertType('aura\view\helper\Title', $actual);
+    }
+    
     /**
      * @todo Implement test__invoke().
      */

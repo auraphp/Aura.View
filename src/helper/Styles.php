@@ -13,6 +13,18 @@ class Styles extends AbstractHelper
     
     /**
      * 
+     * Returns the helper so you can call methods on it.
+     * 
+     * @return $this
+     * 
+     */
+    public function __invoke()
+    {
+        return $this;
+    }
+    
+    /**
+     * 
      * Returns a <link rel="stylesheet" ... /> tag.
      * 
      * @param string $href The source href for the stylesheet.
