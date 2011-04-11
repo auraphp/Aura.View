@@ -1,7 +1,6 @@
 <?php
 namespace aura\view;
-use aura\di\Forge;
-use aura\di\Config;
+use aura\di\Container;
 
 /**
  * Test class for Template.
@@ -25,12 +24,16 @@ class TemplateTest extends \PHPUnit_Framework_TestCase
     
     protected function newTemplate(array $paths = array())
     {
-        $forge = new Forge(new Config);
         $finder = new Finder();
-        $map = array('mockHelper' => 'aura\view\helper\MockHelper');
-        $helper_registry = new HelperRegistry($forge, $map);
-        $template = new Template($finder, $helper_registry);
+        
+        $helper_container = new Container;
+        $helper_container->set('mockHelper', function () {
+            return new \aura\view\helper\MockHelper;
+        });
+        
+        $template = new Template($finder, $helper_container);
         $template->setPaths($paths);
+        
         return $template;
     }
     
@@ -189,14 +192,5 @@ class TemplateTest extends \PHPUnit_Framework_TestCase
         $this->assertType('aura\view\helper\MockHelper', $actual);
         $again = $template->getHelper('mockHelper');
         $this->assertSame($actual, $again);
-    }
-    
-    public function testNewHelper()
-    {
-        $template = $this->newTemplate();
-        $actual = $template->newHelper('mockHelper');
-        $this->assertType('aura\view\helper\MockHelper', $actual);
-        $again = $template->newHelper('mockHelper');
-        $this->assertNotSame($actual, $again);
     }
 }

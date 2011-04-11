@@ -7,6 +7,7 @@
  * 
  */
 namespace aura\view;
+use aura\di\Container;
 
 /**
  * 
@@ -39,13 +40,13 @@ abstract class AbstractTemplate
     
     /**
      * 
-     * A registry for helper objects, so that repeated calls to the same 
+     * A Container for helper objects, so that repeated calls to the same 
      * helper use the same object.
      * 
-     * @var HelperRegistry
+     * @var aura\di\Container
      * 
      */
-    private $_helper_registry;
+    private $_helper_container;
     
     /**
      * 
@@ -53,16 +54,16 @@ abstract class AbstractTemplate
      * 
      * @param Finder $finder A template finder.
      * 
-     * @param HelperRegistry $helper_registry A registry for helpers attached
+     * @param HelperRegistry $helper_container A container for helpers attached
      * to this template.
      * 
      */
     public function __construct(
         Finder $finder,
-        HelperRegistry $helper_registry
+        Container $helper_container
     ) {
         $this->_finder = $finder;
-        $this->_helper_registry = $helper_registry;
+        $this->_helper_container = $helper_container;
     }
     
     /**
@@ -211,7 +212,7 @@ abstract class AbstractTemplate
     
     /**
      * 
-     * Retrieves a shared helper from the helper registry.
+     * Retrieves a shared helper from the helper container.
      * 
      * @param string $name The helper to retrieve.
      * 
@@ -220,22 +221,7 @@ abstract class AbstractTemplate
      */
     public function getHelper($name)
     {
-        return $this->_helper_registry->getInstance($name);
-    }
-    
-    /**
-     * 
-     * Creates a new helper; it is not stored in the registry and is not 
-     * shared.
-     * 
-     * @param string $name The helper to create.
-     * 
-     * @return mixed
-     * 
-     */
-    public function newHelper($name)
-    {
-        return $this->_helper_registry->newInstance($name);
+        return $this->_helper_container->get($name);
     }
     
     /**
