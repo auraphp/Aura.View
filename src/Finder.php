@@ -65,11 +65,11 @@ class Finder
      * Adds one path to the top of the path stack.
      * 
      * {{code: php
-     *     $finder->unshiftPath('path/1');
-     *     $finder->unshiftPath('path/2');
-     *     $finder->unshiftPath('path/3');
-     *     // $finder->get() reveals that the directory search order will be
-     *     // 'path/3/', 'path/2/', 'path/1/'.
+     *     $finder->prepend('/path/1');
+     *     $finder->prepend('/path/2');
+     *     $finder->prepend('/path/3');
+     *     // $finder->getPaths() reveals that the directory search order will be
+     *     // '/path/3/', '/path/2/', '/path/1/'.
      * }}
      * 
      * @param array|string $path The directories to add to the paths.
@@ -77,7 +77,7 @@ class Finder
      * @return void
      * 
      */
-    public function unshiftPath($path)
+    public function prepend($path)
     {
         array_unshift($this->paths, rtrim($path, DIRECTORY_SEPARATOR));
         $this->found = array();
@@ -88,11 +88,11 @@ class Finder
      * Adds one path to the end of the path stack.
      * 
      * {{code: php
-     *     $finder->unshiftPath('path/1');
-     *     $finder->unshiftPath('path/2');
-     *     $finder->unshiftPath('path/3');
-     *     // $finder->get() reveals that the directory search order will be
-     *     // 'path/1/', 'path/2/', 'path/3/'.
+     *     $finder->append('/path/1');
+     *     $finder->append('/path/2');
+     *     $finder->append('/path/3');
+     *     // $finder->getPaths() reveals that the directory search order will be
+     *     // '/path/1/', '/path/2/', '/path/3/'.
      * }}
      * 
      * @param array|string $path The directories to add to the paths.
@@ -100,7 +100,7 @@ class Finder
      * @return void
      * 
      */
-    public function pushPath($path)
+    public function append($path)
     {
         $this->paths[] = rtrim($path, DIRECTORY_SEPARATOR);
         $this->found = array();
@@ -111,13 +111,13 @@ class Finder
      * Sets the paths directly.
      * 
      * {{code: php
-     *      $finder->unshiftPaths(array(
-     *          'path/1',
-     *          'path/2',
-     *          'path/3',
+     *      $finder->setPaths(array(
+     *          '/path/1',
+     *          '/path/2',
+     *          '/path/3',
      *      ));
-     *      // $finder->get() reveals that the search order will be
-     *      // 'path/1/', 'path/2/', 'path/3/'.
+     *      // $finder->getPaths() reveals that the search order will be
+     *      // '/path/1', '/path/2', '/path/3'.
      * }}
      * 
      * @param array|string $path The directories to add to the paths.
@@ -135,21 +135,18 @@ class Finder
      * 
      * Finds a file in the paths.
      * 
-     * Relative paths are honored as part of the include_path.
-     * 
      * {{code: php
-     *     $finder->add('path/1');
-     *     $finder->add('path/2');
-     *     $finder->add('path/3');
+     *     $finder->append('/path/1');
+     *     $finder->append('/path/2');
+     *     $finder->append('/path/3');
      *     
      *     $file = $finder->find('file.php');
      *     // $file is now the first instance of 'file.php' found from the         
-     *     // directory paths, looking first in 'path/3/file.php', then            
-     *     // 'path/2/file.php', then finally 'path/1/file.php'.
+     *     // assigned paths, looking first for '/path/3/file.php', then for
+     *     // '/path/2/file.php', then finally for '/path/1/file.php'.
      * }}
      * 
-     * @param string $file The file to find using the directory paths
-     * and the include_path.
+     * @param string $file The file to find using the assigned paths.
      * 
      * @return mixed The absolute path to the file, or false if not
      * found using the paths.
@@ -157,20 +154,48 @@ class Finder
      */
     public function find($file)
     {
+        // is the file location cached?
         if (isset($this->found[$file])) {
             return $this->found[$file];
         }
         
+        // is the file in the assigned paths?
         foreach ($this->paths as $path) {
-            try {
-                $spec = $path . DIRECTORY_SEPARATOR . $file;
-                $obj = new \SplFileObject($spec, 'r', true);
-                $this->found[$file] = $obj->getRealPath();
-                return $this->found[$file];
-            } catch (\RuntimeException $e) {
-                continue;
+            $found = $this->fileExists($path . DIRECTORY_SEPARATOR . $file);
+            if ($found) {
+                $this->found[$file] = $found;
+                return $found;
             }
         }
+        
+        // can we find it directly?
+        $found = $this->fileExists($file);
+        if ($found) {
+            $this->found[$file] = $found;
+            return $found;
+        }
+        
+        // never found it
         return false;
+    }
+    
+    /**
+     * 
+     * Checks to see if a file exists at a particular location.
+     * 
+     * @param string $file The file to find.
+     * 
+     * @return mixed The absolute path to the file, or false if not
+     * found.
+     * 
+     */
+    protected function fileExists($file)
+    {
+        try {
+            $obj = new \SplFileObject($file, 'r', false);
+            return $obj->getRealPath();
+        } catch (\RuntimeException $e) {
+            return false;
+        }
     }
 }

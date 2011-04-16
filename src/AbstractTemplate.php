@@ -185,6 +185,18 @@ abstract class AbstractTemplate
     
     /**
      * 
+     * Returns the helper container.
+     * 
+     * @return aura\di\Container
+     * 
+     */
+    public function getHelperContainer()
+    {
+        return $this->_helper_container;
+    }
+    
+    /**
+     * 
      * Returns the path to the requested template script; searches through
      * $this->paths to find the first matching template.
      * 
@@ -210,6 +222,11 @@ abstract class AbstractTemplate
         return $file;
     }
     
+    public function getFinder()
+    {
+        return $this->_finder;
+    }
+    
     /**
      * 
      * Retrieves a shared helper from the helper container.
@@ -221,7 +238,11 @@ abstract class AbstractTemplate
      */
     public function getHelper($name)
     {
-        return $this->_helper_container->get($name);
+        try {
+            return $this->_helper_container->get($name);
+        } catch (\aura\di\Exception_ServiceNotFound $e) {
+            throw new Exception_HelperNotMapped($name);
+        }
     }
     
     /**

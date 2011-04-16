@@ -62,10 +62,10 @@ class FinderTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($expect, $actual);
     }
 
-    public function testUnshiftPath()
+    public function testPrepend()
     {
         foreach ($this->dirs as $path) {
-            $this->finder->unshiftPath($path);
+            $this->finder->prepend($path);
         }
         
         $expect = array_values(array_reverse($this->dirs));
@@ -73,10 +73,10 @@ class FinderTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($expect, $actual);
     }
 
-    public function testPushPath()
+    public function testAppend()
     {
         foreach ($this->dirs as $path) {
-            $this->finder->pushPath($path);
+            $this->finder->append($path);
         }
         
         $expect = array_values($this->dirs);

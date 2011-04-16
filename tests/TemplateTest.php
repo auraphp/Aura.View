@@ -1,6 +1,8 @@
 <?php
 namespace aura\view;
 use aura\di\Container;
+use aura\di\Forge;
+use aura\di\Config;
 
 /**
  * Test class for Template.
@@ -26,7 +28,7 @@ class TemplateTest extends \PHPUnit_Framework_TestCase
     {
         $finder = new Finder();
         
-        $helper_container = new Container;
+        $helper_container = new Container(new Forge(new Config));
         $helper_container->set('mockHelper', function () {
             return new \aura\view\helper\MockHelper;
         });
@@ -149,6 +151,42 @@ class TemplateTest extends \PHPUnit_Framework_TestCase
         rmdir($dir);
     }
     
+    
+    public function testFetchDirect()
+    {
+        // the template file
+        $file = __DIR__ . DIRECTORY_SEPARATOR
+              . 'tmp' . DIRECTORY_SEPARATOR
+              . 'fetch' . DIRECTORY_SEPARATOR
+              . 'zim.php';
+        
+        // the template code
+        $code = '<?php echo $this->foo; ?>';
+        
+        // put it in place
+        $dir = dirname($file);
+        mkdir($dir, 0777, true);
+        file_put_contents($file, $code);
+        
+        // get a template object
+        $template = $this->newTemplate();
+        $template->foo = 'bar';
+        
+        // fetch it
+        $actual = $template->fetch($file);
+        $expect = 'bar';
+        $this->assertSame($expect, $actual);
+        
+        // fetch it again for coverage
+        $actual = $template->fetch($file);
+        $expect = 'bar';
+        $this->assertSame($expect, $actual);
+        
+        // remove the file and dir
+        unlink($file);
+        rmdir($dir);
+    }
+    
     public function testFetchExtract()
     {
         // the template file
@@ -192,5 +230,28 @@ class TemplateTest extends \PHPUnit_Framework_TestCase
         $this->assertType('aura\view\helper\MockHelper', $actual);
         $again = $template->getHelper('mockHelper');
         $this->assertSame($actual, $again);
+    }
+    
+    /**
+     * @expectedException aura\view\Exception_HelperNotMapped
+     */
+    public function testGetHelperNotMapped()
+    {
+        $template = $this->newTemplate();
+        $actual = $template->getHelper('noSuchHelper');
+    }
+    
+    public function testGetHelperContainer()
+    {
+        $template = $this->newTemplate();
+        $actual = $template->getHelperContainer();
+        $this->assertType('aura\di\Container', $actual);
+    }
+    
+    public function testGetFinder()
+    {
+        $template = $this->newTemplate();
+        $actual = $template->getFinder();
+        $this->assertType('aura\view\Finder', $actual);
     }
 }
