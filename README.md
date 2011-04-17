@@ -1,7 +1,7 @@
 Introduction
 ============
 
-The Aura View package is an implementation of the [TemplateView](http://martinfowler.com/eaaCatalog/templateView.html) pattern, with support for helpers and path stacks.  It adheres to the "use PHP for your presentation logic" ideology, and is preceded by systems such as [Savant](http://phpsavant.com), [Zend_View](http://framework.zend.com/manual/en/zend.view.html), and [Solar_View](http://solarphp.com/class/Solar_View).
+The Aura View package is an implementation of the [TemplateView](http://martinfowler.com/eaaCatalog/templateView.html) pattern, with support for helpers and path stacks.  It adheres to the "use PHP for presentation logic" ideology, and is preceded by systems such as [Savant](http://phpsavant.com), [Zend_View](http://framework.zend.com/manual/en/zend.view.html), and [Solar_View](http://solarphp.com/class/Solar_View).
 
 This package depends on the [Aura DI](https://github.com/auraphp/aura.di) package.
 
@@ -25,7 +25,7 @@ Then use the Template object to `fetch()` the output of a template script.
     // business logic
     echo $template->fetch('/path/to/tpl.php');
 
-Alternatively, you can add the `aura.di/src` and `aura.view/src` directories to your autoloader, and instantiate manually:
+Alternatively, we can add the `aura.di/src` and `aura.view/src` directories to an autoloader, and instantiate manually:
 
     <?php
     use aura\di\Container;
@@ -39,24 +39,27 @@ Alternatively, you can add the `aura.di/src` and `aura.view/src` directories to 
         // a template finder
         new Finder
     );
-    
+
+Note that if we instantiate manually, we will need to configure the `Container` manually to add helper services.
+
+
 Assigning Data
 --------------
 
-You can assign variables to the template script by setting properties on the template object, like so:
+We can assign variables to the template script by setting properties on the template object, like so:
 
     <?php
     // business logic
     $template->var = 'World';
 
-You can then reference those properties from within the template script using `$this`:
+We can then reference those properties from within the template script using `$this`:
 
     <?php
     // template script
     $e = $this->getHelper('escape');
     echo $e($this->var);
 
-You can assign multiple data properties at once using `setData()`:
+We can assign multiple data properties at once using `setData()`:
 
     <?php
     // business logic
@@ -71,7 +74,7 @@ Note that the array keys will map to object properties, so make sure they are va
 Writing Template Scripts
 ------------------------
 
-Aura View template scripts are written in plain PHP and do not require you to learn a new markup language.  The `Template` object executes the template scripts inside the `Template` object scope, so use of `$this` refers to the `Template` object.  The following is an example script:
+Aura View template scripts are written in plain PHP and do not require a new markup language.  The `Template` object executes the template scripts inside the `Template` object scope, so use of `$this` refers to the `Template` object.  The following is an example script:
 
     <?php $e = $this->getHelper('escape'); ?>
     <html>
@@ -85,7 +88,7 @@ Aura View template scripts are written in plain PHP and do not require you to le
     </body>
     </html>
 
-You can use any PHP code you would normally use. (This may require discipline on the part of the template script author to restrict himself to presentation-related logic only.)  You may wish to use the alternative PHP syntax for conditionals and loops:
+We can use any PHP code we would normally use. (This may require discipline on the part of the template script author to restrict himself to presentation-related logic only.)  We may wish to use the alternative PHP syntax for conditionals and loops:
 
     <?php if ($this->message): ?>
         <p>The message is <?php echo $e($this->message); ?></p>
@@ -103,7 +106,7 @@ Using Helpers
 
 Aura View comes with various `Helper` classes to encapsulate common presentation logic.  These helpers are mapped to the `Template` object through a `HelperContainer`. They can be called as methods on the `Template`.  The default helpers are added to the `HelperContainer` by the `instance.php` script.
 
-The single-most important helper is `$this->escape()`. You should use it every time you need to echo or print assigned variables.  (All of the other helpers apply escaping automatically.)
+The single-most important helper is `$this->escape()`. We should use it every time we need to echo or print assigned variables.  (All of the other helpers apply escaping automatically.)
 
 The other helpers include:
 
@@ -155,11 +158,78 @@ Advanced Usage
 The Template Finder
 -------------------
 
-Partial Templates
------------------
+Although we can use an absolute template script path with `fetch()`, it is more powerful to specify one or more paths where template scripts are located. Then we can `fetch()` based on a template name, and the `Finder` will search through the assigned paths for that template.  This allows us to specify baseline templates, and override them as needed.
+
+To tell the `Finder` where to find template scripts, get it from the `Template` and use `setPaths()`.
+
+    <?php
+    // business logic
+    $finder = $template->getFinder();
+    
+    // set the paths where templates can be found
+    $finder->setPaths(array(
+        '/path/to/templates/foo',
+        '/path/to/templates/bar',
+        '/path/to/templates/baz',
+    ));
+
+Now when we call `fetch()`, the `Template` object will use the `Finder` to look through those directories for the template script we specified.
+
+For example, if we call `echo $template->fetch('tpl');` the `Finder` will look through each of the directories in turn to use the first 'tpl.php' template script it finds.  This allows us to set up several locations for templates, and put replacement templates in locations the `Finder` will get to before the baseline ones.
+
 
 Template Composition
 --------------------
+
+It often makes sense to split one template up into multiple pieces.  This allows us to keep logical separations between different pieces of content.  We might have a header section, a navigation section, a sidebar, and so on.
+
+We can use the `$this->find()` method in a template script to find a template, and then `include` it wherever we like.  For example:
+
+    <?php
+        // template script
+        $e = $this->getHelper('escape');
+    ?>
+    <html>
+    <head>
+        <?php include $this->find('head'); ?>
+    </head>
+    <body>
+        <?php include $this->find('branding'); ?>
+        <?php include $this->find('navigation'); ?>
+        <p>Hello, <?php echo $this->var; ?>!</p>
+        <?php include $this->find('footer'); ?>
+    </body>
+    </html>
+
+Templates that we `include` in this way will share the scope of the template they are included from.
+
+
+Template Partials
+-----------------
+
+Template partials are a scope-separated way of splitting up templates.  We can `fetch()` other templates from within a template; template scripts that are fetched in this way will *not* share the scope of the template they are called from.  In addition, we can pass an array of variables to be [extract](http://php.net/extract)ed into the partial template.
+
+For example, given the following partial template ...
+
+    <?php
+    // partial template named '_partial.php'.
+    // note that we use $name, not $this->name.
+    $e = $this->getHelper('escape');
+    echo "    <li>" . $e($name) . "</li>" . PHP_EOL;
+
+... we can `fetch()` it from within another template:
+
+    <?php
+    // main template. assume $this->list is an array
+    // of names.
+    foreach ($this->list as $item) {
+        $template_name = '_partial';
+        $template_vars = array('name' => $item);
+        echo $this->fetch($template_name, $template_vars);
+    }
+
+That will run the `$template_name` template script in a separate scope, and extract the `$template_vars` array in that separate scope.
+
 
 Writing Helpers
 ---------------

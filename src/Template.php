@@ -22,22 +22,20 @@ class Template extends AbstractTemplate
      * 
      * Fetches the output from a template.
      * 
-     * @param string $name The template name to use.
+     * @param string $__name__ The template name to use.
      * 
-     * @param array $vars Variables to extract into the local scope.
+     * @param array $__vars__ Variables to extract into the local scope.
      * 
      * @return string
      * 
      */
-    public function fetch($name, array $vars = array())
+    public function fetch($__name__, array $__vars__ = array())
     {
-        unset($name);
-        if ($vars) {
-            unset($vars);
-            extract(func_get_arg(1), EXTR_SKIP);
+        if ($__vars__) {
+            extract($__vars__, EXTR_SKIP);
         }
         ob_start();
-        require $this->find(func_get_arg(0));
+        require $this->find($__name__);
         return ob_get_clean();
     }
 }
