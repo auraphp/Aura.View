@@ -104,11 +104,26 @@ We can use any PHP code we would normally use. (This may require discipline on t
 Using Helpers
 -------------
 
-Aura View comes with various `Helper` classes to encapsulate common presentation logic.  These helpers are mapped to the `Template` object through a `HelperContainer`. They can be called as methods on the `Template`.  The default helpers are added to the `HelperContainer` by the `instance.php` script.
+Aura View comes with various `Helper` classes to encapsulate common presentation logic.  These helpers are mapped to the `Template` object through a `HelperContainer`. We can call a helper in one of two ways:
 
-The single-most important helper is `$this->escape()`. We should use it every time we need to echo or print assigned variables.  (All of the other helpers apply escaping automatically.)
+- As a method on the `Template` object
 
-The other helpers include:
+- Via `getHelper()` to get the helper as an object of its own
+
+The single-most important helper is `$this->escape()`. We should use it every time we need to echo or print assigned variables.  (All of the other helpers apply escaping automatically.)  You can call it like so:
+
+    <?php
+    // template script
+    echo $this->escape($this->var);
+
+Or like so:
+
+    <?php
+    // template script
+    $e = $this->getHelper('escape');
+    echo $e($this->var);
+
+Other helpers that are part of Aura View include:
 
 - `$this->anchor($href, $text)` returns an `<a href="$href">$text</a>` tag
 
@@ -154,6 +169,7 @@ The other helpers include:
 
 Advanced Usage
 ==============
+
 
 The Template Finder
 -------------------
