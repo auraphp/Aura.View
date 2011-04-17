@@ -72,17 +72,27 @@ class TemplateTest extends \PHPUnit_Framework_TestCase
     /**
      * @todo Implement testSetData().
      */
-    public function testSetAndGetData()
+    public function testAddSetAndGetData()
     {
         $template = $this->newTemplate();
         $expect = array();
         $actual = $template->getData();
         $this->assertSame($expect, $actual);
         
+        // add data
+        $template->foo = 'bar';
+        $template->addData(array('baz' => 'dib'));
+        $expect = array(
+            'foo' => 'bar',
+            'baz' => 'dib',
+        );
+        $actual = $template->getData();
+        $this->assertSame($expect, $actual);
+        
+        // set data
         $data = array(
             'foo' => 'bar'
         );
-        
         $template->setData($data);
         $this->assertSame('bar', $template->foo);
         

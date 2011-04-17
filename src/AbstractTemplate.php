@@ -157,7 +157,23 @@ abstract class AbstractTemplate
     
     /**
      * 
-     * Sets all template variables at once.
+     * Merges new data with the existing template data.
+     * 
+     * @param array $data An array of key-value pairs where the keys are 
+     * template variable names, and the values are the variable values.
+     * 
+     * @return void
+     * 
+     */
+    public function addData(array $data = array())
+    {
+        $this->_data = array_merge($this->_data, $data);
+    }
+    
+    /**
+     * 
+     * Replaces all template data at once; this will remove all previous
+     * data.
      * 
      * @param array $data An array of key-value pairs where the keys are 
      * template variable names, and the values are the variable values.

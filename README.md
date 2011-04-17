@@ -59,17 +59,26 @@ We can then reference those properties from within the template script using `$t
     $e = $this->getHelper('escape');
     echo $e($this->var);
 
-We can assign multiple data properties at once using `setData()`:
+We can add multiple data properties at once using `addData()` (this will merge new values with the existing ones).
 
     <?php
     // business logic
-    $template->setData(array(
+    $template->addData(array(
         'foo' => 'Value of foo',
         'bar' => 'Value of bar',
     ));
 
-Note that the array keys will map to object properties, so make sure they are valid as property names.
+(Note that the array keys will map to object properties, so make sure they are valid as property names.)
 
+Finally, we can replace all the `Template` data values at once using `setData()`.
+
+    <?php
+    // business logic
+    // this will remove $var, $foo, and $bar from the template
+    $template->setData(array(
+        'baz' => 'Value of baz',
+        'dib' => 'Value of dib',
+    ));
 
 Writing Template Scripts
 ------------------------
