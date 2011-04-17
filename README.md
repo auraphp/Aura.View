@@ -113,7 +113,7 @@ We can use any PHP code we would normally use. (This may require discipline on t
 Using Helpers
 -------------
 
-Aura View comes with various `Helper` classes to encapsulate common presentation logic.  These helpers are mapped to the `Template` object through a `HelperContainer`. We can call a helper in one of two ways:
+Aura View comes with various `Helper` classes to encapsulate common presentation logic.  These helpers are mapped to the `Template` object through a helper `Container`. We can call a helper in one of two ways:
 
 - As a method on the `Template` object
 
@@ -259,3 +259,42 @@ That will run the `$template_name` template script in a separate scope, and extr
 Writing Helpers
 ---------------
 
+There are two steps to adding new helpers:
+
+1. Write a helper class
+
+2. Add that class as a service in the helper `Container`
+
+Writing a helper class is straightforoward:  extend `AbstractHelper` with an `__invoke()` method.  The following helper, for example, applies ROT-13 to a string.
+
+    <?php
+    namespace vendor\view\helper;
+    use aura\view\helper\AbstractHelper;
+    
+    class Obfuscate extends AbstractHelper
+    {
+        public function __invoke($string)
+        {
+            return $this->escape(str_rot13($input));
+        }
+    }
+
+Always escape output coming from a helper.  Err on the side of escaping, rather than not escaping.
+
+Now that we have a helper class, you can add it to the helper `Container` like so:
+
+    <?php
+    // business logic
+    $hc = $template->getHelperContainer();
+    
+    $hc->set('obfuscate', function() use ($hc) {
+        return $hc->newInstance('vendor\view\helper\Obfuscate');
+    });
+    
+The service name in the helper `Container` doubles as a method name on the template.  This means we can call the helper via `$this->obfucate()`:
+
+    <?php
+    // template script
+    echo $this->obfuscate('plain text');
+
+Please examine the classes in `aura\view\helper` for more complex and powerful examples.
