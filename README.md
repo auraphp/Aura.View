@@ -17,7 +17,7 @@ The easiest way to instantiate a new template with all the associated helpers is
     <?php
     // business logic
     require_once '/path/to/aura.di/src.php';
-    $template = require '/path/to/aura.view/script/instance.php';
+    $template = require '/path/to/aura.view/scripts/instance.php';
 
 Then use the Template object to `fetch()` the output of a template script.
 
