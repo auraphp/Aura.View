@@ -12,14 +12,14 @@ Basic Usage
 Instantiation
 -------------
 
-The easiest way to instantiate a new template with all the associated helpers is to include the aura.di dependency sources, then call the `instance.php` script.
+The easiest way to instantiate a new `Template` with all the associated helpers is to include the [Aura DI](https://github.com/auraphp/aura.di) package source, then call the `instance.php` script.
 
     <?php
     // business logic
     require_once '/path/to/aura.di/src.php';
     $template = require '/path/to/aura.view/scripts/instance.php';
 
-Then use the Template object to `fetch()` the output of a template script.
+Then use the `Template` object to `fetch()` the output of a template script.
 
     <?php
     // business logic
@@ -40,13 +40,13 @@ Alternatively, we can add the `aura.di/src` and `aura.view/src` directories to a
         new Finder
     );
 
-Note that if we instantiate manually, we will need to configure the `Container` manually to add helper services.
+(Note that if we instantiate manually, we will need to configure the `Container` manually to add helper services. See the "Helpers" section near the end of this page for more information.)
 
 
 Assigning Data
 --------------
 
-We can assign variables to the template script by setting properties on the template object, like so:
+We can assign variables to the template script by setting properties on the `Template` object, like so:
 
     <?php
     // business logic
@@ -59,7 +59,7 @@ We can then reference those properties from within the template script using `$t
     $e = $this->getHelper('escape');
     echo $e($this->var);
 
-We can add multiple data properties at once using `addData()` (this will merge new values with the existing ones).
+We can add multiple data properties at once, merging new values with existing ones, by using `addData()`.
 
     <?php
     // business logic
@@ -80,10 +80,11 @@ Finally, we can replace all the `Template` data values at once using `setData()`
         'dib' => 'Value of dib',
     ));
 
+
 Writing Template Scripts
 ------------------------
 
-Aura View template scripts are written in plain PHP and do not require a new markup language.  The `Template` object executes the template scripts inside the `Template` object scope, so use of `$this` refers to the `Template` object.  The following is an example script:
+Aura View template scripts are written in plain PHP and do not require a new markup language.  The template scripts are executed inside the `Template` object scope, so use of `$this` refers to the `Template` object.  The following is an example script:
 
     <?php $e = $this->getHelper('escape'); ?>
     <html>
@@ -200,7 +201,7 @@ To tell the `Finder` where to find template scripts, get it from the `Template` 
 
 Now when we call `fetch()`, the `Template` object will use the `Finder` to look through those directories for the template script we specified.
 
-For example, if we call `echo $template->fetch('tpl');` the `Finder` will look through each of the directories in turn to use the first 'tpl.php' template script it finds.  This allows us to set up several locations for templates, and put replacement templates in locations the `Finder` will get to before the baseline ones.
+For example, if we `echo $template->fetch('tpl')` the `Finder` will look through each of the directories in turn to use the first 'tpl.php' template script it finds.  This allows us to set up several locations for templates, and put replacement templates in locations the `Finder` will get to before the baseline ones.
 
 
 Template Composition
@@ -221,7 +222,7 @@ We can use the `$this->find()` method in a template script to find a template, a
     <body>
         <?php include $this->find('branding'); ?>
         <?php include $this->find('navigation'); ?>
-        <p>Hello, <?php echo $this->var; ?>!</p>
+        <p>Hello, <?php echo $e($this->var); ?>!</p>
         <?php include $this->find('footer'); ?>
     </body>
     </html>
@@ -232,7 +233,7 @@ Templates that we `include` in this way will share the scope of the template the
 Template Partials
 -----------------
 
-Template partials are a scope-separated way of splitting up templates.  We can `fetch()` other templates from within a template; template scripts that are fetched in this way will *not* share the scope of the template they are called from.  In addition, we can pass an array of variables to be [extract](http://php.net/extract)ed into the partial template.
+Template partials are a scope-separated way of splitting up templates.  We can `fetch()` other templates from within a template; template scripts that are fetched in this way will *not* share the scope of the template they are called from (although `$this` will still be available).  In addition, we can pass an array of variables to be [`extract`](http://php.net/extract)ed into the partial template.
 
 For example, given the following partial template ...
 
@@ -245,15 +246,14 @@ For example, given the following partial template ...
 ... we can `fetch()` it from within another template:
 
     <?php
-    // main template. assume $this->list is an array
-    // of names.
+    // main template. assume $this->list is an array of names.
     foreach ($this->list as $item) {
         $template_name = '_partial';
         $template_vars = array('name' => $item);
         echo $this->fetch($template_name, $template_vars);
     }
 
-That will run the `$template_name` template script in a separate scope, and extract the `$template_vars` array in that separate scope.
+That will run the `$template_name` template script in a separate scope, and extract the `$template_vars` array within that separate scope.
 
 
 Writing Helpers
@@ -281,7 +281,7 @@ Writing a helper class is straightforoward:  extend `AbstractHelper` with an `__
 
 Always escape output coming from a helper.  Err on the side of escaping, rather than not escaping.
 
-Now that we have a helper class, you can add it to the helper `Container` like so:
+Now that we have a helper class, you can add it as a service in the helper `Container` like so:
 
     <?php
     // business logic
@@ -291,10 +291,12 @@ Now that we have a helper class, you can add it to the helper `Container` like s
         return $hc->newInstance('vendor\view\helper\Obfuscate');
     });
     
-The service name in the helper `Container` doubles as a method name on the template.  This means we can call the helper via `$this->obfucate()`:
+The service name in the helper `Container` doubles as a method name on the `Template` object.  This means we can call the helper via `$this->obfuscate()`:
 
     <?php
     // template script
     echo $this->obfuscate('plain text');
+
+Note that we can use any method name for the helper, although it is generally useful to name the service for the helper class.
 
 Please examine the classes in `aura\view\helper` for more complex and powerful examples.
