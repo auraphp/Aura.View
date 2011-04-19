@@ -4,6 +4,7 @@ require_once __DIR__ . '/src/Exception.php';
 require_once __DIR__ . '/src/Exception/TemplateNotFound.php';
 require_once __DIR__ . '/src/Finder.php';
 require_once __DIR__ . '/src/Template.php';
+require_once __DIR__ . '/src/TwoStep.php';
 require_once __DIR__ . '/src/helper/AbstractHelper.php';
 require_once __DIR__ . '/src/helper/Anchor.php';
 require_once __DIR__ . '/src/helper/Attribs.php';

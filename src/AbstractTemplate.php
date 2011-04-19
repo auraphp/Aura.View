@@ -201,7 +201,7 @@ abstract class AbstractTemplate
     
     /**
      * 
-     * Returns the helper container.
+     * Returns the helper Container object.
      * 
      * @return aura\di\Container
      * 
@@ -238,6 +238,13 @@ abstract class AbstractTemplate
         return $file;
     }
     
+    /**
+     * 
+     * Returns the Finder object.
+     * 
+     * @return Finder
+     * 
+     */
     public function getFinder()
     {
         return $this->_finder;
