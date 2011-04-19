@@ -231,11 +231,11 @@ class TwoStep
         }
         
         // render the layout and inject the view content.
-        // reuse the same template object; we lose $this data from the earlier
-        // view, but we retain the plugin instances.
+        // note that we *add* the layout data, which merges it with the
+        // previous view data instead of removing it.
         if ($this->layout_name) {
             $this->layout_data[$this->content_var] = $content;
-            $this->template->setData($this->layout_data);
+            $this->template->addData($this->layout_data);
             $this->template->setPaths($this->layout_paths);
             return $this->template->fetch($this->layout_name);
         } else {
