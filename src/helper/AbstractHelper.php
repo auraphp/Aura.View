@@ -132,10 +132,10 @@ abstract class AbstractHelper
             
             // add to the attributes
             if ($val === true) {
-                $html .= ' ' . $this->escape($key);
+                $html .= $this->escape($key) . ' ';
             } else {
-                $html .= ' ' . $this->escape($key)
-                       .  '="' . $this->escape($val) . '"';
+                $html .= $this->escape($key)
+                       .  '="' . $this->escape($val) . '" ';
             }
         }
         
