@@ -4,7 +4,7 @@ use aura\view\Helper;
 
 /**
  * 
- * Helper for a generic <link ... /> tag.
+ * Helper for a stack of <meta ... /> tags.
  * 
  */
 class Metas extends AbstractHelper
@@ -29,13 +29,13 @@ class Metas extends AbstractHelper
      * 
      * @param array $attribs Attributes for the <link> tag.
      * 
-     * @return string The <meta ... /> tag.
+     * @return void
      * 
      */
     public function add(array $attribs = array())
     {
         $attr = $this->attribs($attribs);
-        $this->metas[] = "<meta$attr />";
+        $this->metas[] = "<meta $attr />";
     }
     
     /**
@@ -46,14 +46,14 @@ class Metas extends AbstractHelper
      * 
      * @param string $content The content value.
      * 
-     * @return string The <meta http-equiv="" content="" /> tag.
+     * @return void
      * 
      */
     public function addHttp($http_equiv, $content)
     {
         $this->add(array(
             'http-equiv' => $http_equiv,
-            'content' => $content,
+            'content'    => $content,
         ));
     }
     
@@ -65,17 +65,24 @@ class Metas extends AbstractHelper
      * 
      * @param string $content The content value.
      * 
-     * @return string The <meta name="" content="" /> tag.
+     * @return void
      * 
      */
     public function addName($name, $content)
     {
         $this->add(array(
-            'name' => $name,
+            'name'    => $name,
             'content' => $content,
         ));
     }
     
+    /**
+     * 
+     * Returns the stack of <meta ... /> tags as a single block.
+     * 
+     * @return string The <meta ... /> tags.
+     * 
+     */
     public function get()
     {
         return $this->indent 

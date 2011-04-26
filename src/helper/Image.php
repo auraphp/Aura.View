@@ -33,7 +33,7 @@ class Image extends AbstractHelper
             $attribs['alt'] = basename($src);
         }
         
-        return '<img src="' . $this->escape($src) . '"'
+        return '<img src="' . $this->escape($src) . '" '
              . $this->attribs($attribs) . ' />';
     }
 }

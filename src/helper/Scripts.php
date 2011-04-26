@@ -4,7 +4,7 @@ use aura\view\Helper;
 
 /**
  * 
- * Helper for <script> tags from a public Solar resource.
+ * Helper for a stack of <script> tags.
  * 
  */
 class Scripts extends AbstractHelper
@@ -25,13 +25,13 @@ class Scripts extends AbstractHelper
     
     /**
      * 
-     * Adds a script.
+     * Adds a <script> tag to the stack.
      * 
      * @param string $src The source href for the script.
      * 
      * @param array $attribs Additional attributes for the <script> tag.
      * 
-     * @return string The <script></script> tag.
+     * @return void
      * 
      */
     public function add($src, $pos = 100, array $attribs = array())
@@ -43,10 +43,17 @@ class Scripts extends AbstractHelper
         }
         
         $attr = $this->attribs($attribs);
-        $tag = "<script src=\"$src\"$attr></script>";
+        $tag = "<script src=\"$src\" $attr></script>";
         $this->scripts[$tag] = $pos;
     }
     
+    /**
+     * 
+     * Returns the stack of <script> tags as a single block.
+     * 
+     * @return string The <script> tags.
+     * 
+     */
     public function get()
     {
         asort($this->scripts);

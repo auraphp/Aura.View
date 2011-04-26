@@ -32,16 +32,9 @@ class Anchor extends AbstractHelper
      */
     public function __invoke($href, $text, array $attribs = array())
     {
-        // escape the href and text
-        $href = $this->escape($href);
+        // escape the text
         $text = $this->escape($text);
-        
-        // make sure we don't overwrite the href attribute
-        unset($attribs['href']);
-        $attr = $this->attribs($attribs);
-        
-        // build text and return
-        return "<a href=\"$href\"$attr>$text</a>";
+        return $this->raw($href, $text, $attribs);
     }
     
     /**
@@ -65,9 +58,13 @@ class Anchor extends AbstractHelper
         
         // make sure we don't overwrite the href attribute
         unset($attribs['href']);
-        $attr = $this->attribs($attribs);
         
         // build text and return
-        return "<a href=\"$href\"$attr>$text</a>";
+        if ($attribs) {
+            $attr = $this->attribs($attribs);
+            return "<a href=\"$href\" $attr>$text</a>";
+        } else {
+            return "<a href=\"$href\">$text</a>";
+        }
     }
 }

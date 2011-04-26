@@ -25,7 +25,7 @@ class Styles extends AbstractHelper
     
     /**
      * 
-     * Returns a <link rel="stylesheet" ... /> tag.
+     * Adds a <link rel="stylesheet" ... /> tag to the stack.
      * 
      * @param string $href The source href for the stylesheet.
      * 
@@ -53,15 +53,23 @@ class Styles extends AbstractHelper
         }
         
         unset($attribs['rel']);
-        unset($attribs['type']);
         unset($attribs['href']);
+        unset($attribs['type']);
         unset($attribs['media']);
         
         $attr = $this->attribs($base + $attribs);
-        $tag = "<link$attr />";
+        $tag = "<link $attr />";
         $this->styles[$tag] = $pos;
     }
     
+    /**
+     * 
+     * Returns the stack of <link rel="stylesheet" ... /> tags as a single 
+     * block.
+     * 
+     * @return string The <link rel="stylesheet" ... /> tags.
+     * 
+     */
     public function get()
     {
         asort($this->styles);

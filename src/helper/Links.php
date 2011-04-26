@@ -4,7 +4,7 @@ use aura\view\Helper;
 
 /**
  * 
- * Helper for a generic <link ... /> tag.
+ * Helper for a stack of <link ... /> tags.
  * 
  */
 class Links extends AbstractHelper
@@ -25,19 +25,26 @@ class Links extends AbstractHelper
     
     /**
      * 
-     * Returns a <link ... /> tag.
+     * Adda a <link ... /> tag to the stack.
      * 
      * @param array $attribs Attributes for the <link> tag.
      * 
-     * @return string The <link ... /> tag.
+     * @return void
      * 
      */
     public function add(array $attribs = array())
     {
         $attr = $this->attribs($attribs);
-        $this->links[] = "<link$attr />";
+        $this->links[] = "<link $attr />";
     }
     
+    /**
+     * 
+     * Returns the stack of <link ... /> tags as a single block.
+     * 
+     * @return string The <link ... /> tags.
+     * 
+     */
     public function get()
     {
         return $this->indent 

@@ -15,7 +15,7 @@ class AttribsTest extends \PHPUnit_Framework_TestCase
             'optional' => false,
         );
         
-        $expect = ' foo="bar" baz="dib zim gir" required';
+        $expect = 'foo="bar" baz="dib zim gir" required';
         $actual = $attribs($values);
         $this->assertSame($expect, $actual);
     }

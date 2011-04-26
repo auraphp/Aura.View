@@ -116,7 +116,12 @@ abstract class AbstractHelper
      */
     protected function attribs(array $attribs)
     {
-        $html = '';
+        // pre-empt processing
+        if (! $attribs) {
+            return '';
+        }
+        
+        $html = array();
         foreach ($attribs as $key => $val) {
             
             // space-separate multiple values
@@ -132,14 +137,14 @@ abstract class AbstractHelper
             
             // add to the attributes
             if ($val === true) {
-                $html .= ' ' . $this->escape($key);
+                $html[] = $this->escape($key);
             } else {
-                $html .= ' ' . $this->escape($key)
-                       .  '="' . $this->escape($val) . '"';
+                $html[] = $this->escape($key)
+                        .  '="' . $this->escape($val) . '"';
             }
         }
         
         // done
-        return $html;
+        return implode(' ', $html);
     }
 }
