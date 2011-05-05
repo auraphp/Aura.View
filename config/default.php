@@ -3,6 +3,9 @@
 $di->params['aura\view\Template']['helper_container'] = $di->lazyCloneContainer('view_helper');
 $di->params['aura\view\Template']['finder'] = $di->lazyNew('aura\view\Finder');
 
+// params for TwoStep instances
+$di->params['aura\view\TwoStep']['template'] = $di->lazyNew('aura\view\Template');
+
 // create a new sub-container
 $vhc = $di->newContainer('view_helper');
 
