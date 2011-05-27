@@ -19,4 +19,13 @@ class AttribsTest extends \PHPUnit_Framework_TestCase
         $actual = $attribs($values);
         $this->assertSame($expect, $actual);
     }
+    
+    public function test__invokeNoAttribs()
+    {
+        $attribs = new Attribs;
+        $values = array();
+        $expect = '';
+        $actual = $attribs($values);
+        $this->assertSame($expect, $actual);
+    }
 }

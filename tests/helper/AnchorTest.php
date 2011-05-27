@@ -24,4 +24,13 @@ class AnchorTest extends \PHPUnit_Framework_TestCase
         $expect = '<a href="/path/to/script.php?foo=bar&amp;zim=gir"><this></a>';
         $this->assertSame($expect, $actual);
     }
+    
+    public function testWithAttribs()
+    {
+        $href = '/path/to/script.php';
+        $anchor = new Anchor;
+        $actual = $anchor->raw($href, 'foo', array('bar' => 'baz'));
+        $expect = '<a href="/path/to/script.php" bar="baz">foo</a>';
+        $this->assertSame($expect, $actual);
+    }
 }
