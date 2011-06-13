@@ -80,7 +80,7 @@ class TwoStep
      * @var string
      * 
      */
-    protected $content_var = 'layout_content';
+    protected $layout_content_var = 'layout_content';
     
     /**
      * 
@@ -148,6 +148,11 @@ class TwoStep
         $this->view_paths = $view_paths;
     }
     
+    public function addViewPath($path)
+    {
+        $this->view_paths[] = $path;
+    }
+    
     /**
      * 
      * Sets the name of the outer layout template.
@@ -191,19 +196,24 @@ class TwoStep
         $this->layout_paths = $layout_paths;
     }
     
+    public function addLayoutPath($path)
+    {
+        $this->layout_paths[] = $path;
+    }
+    
     /**
      * 
      * Sets the name of the variable in the outer layout template that should 
      * be replaced with the output of the inner view template.
      * 
-     * @param string $content_var
+     * @param string $layout_content_var
      * 
      * @return void
      * 
      */
-    public function setContentVar($content_var)
+    public function setLayoutContentVar($layout_content_var)
     {
-        $this->content_var = $content_var;
+        $this->layout_content_var = $layout_content_var;
     }
     
     /**
@@ -234,7 +244,7 @@ class TwoStep
         // note that we *add* the layout data, which merges it with the
         // previous view data instead of removing it.
         if ($this->layout_name) {
-            $this->layout_data[$this->content_var] = $content;
+            $this->layout_data[$this->layout_content_var] = $content;
             $this->template->addData($this->layout_data);
             $this->template->setPaths($this->layout_paths);
             return $this->template->fetch($this->layout_name);

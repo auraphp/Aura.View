@@ -80,7 +80,27 @@ class TwoStepTest extends \PHPUnit_Framework_TestCase
         $this->twostep->setLayoutName('layout_name');
         $this->twostep->setLayoutData(array('layout_var' => 'Hello '));
         $this->twostep->setLayoutPaths(array($this->dirs['bar'], $this->dirs['baz']));
-        $this->twostep->setContentVar('content_var');
+        $this->twostep->setLayoutContentVar('content_var');
+        
+        $expect = '<div>Hello World!</div>';
+        $actual = $this->twostep->render();
+        $this->assertSame($expect, $actual);
+    }
+    
+    /**
+     * @todo Implement testRender().
+     */
+    public function testRenderByAddPath()
+    {
+        $this->twostep->setViewName('view_name');
+        $this->twostep->setViewData(array('view_var' => 'World!'));
+        $this->twostep->addViewPath($this->dirs['bar']);
+        $this->twostep->addViewPath($this->dirs['foo']);
+        $this->twostep->setLayoutName('layout_name');
+        $this->twostep->setLayoutData(array('layout_var' => 'Hello '));
+        $this->twostep->addLayoutPath($this->dirs['bar']);
+        $this->twostep->addLayoutPath($this->dirs['baz']);
+        $this->twostep->setLayoutContentVar('content_var');
         
         $expect = '<div>Hello World!</div>';
         $actual = $this->twostep->render();
@@ -103,7 +123,7 @@ class TwoStepTest extends \PHPUnit_Framework_TestCase
         $this->twostep->setLayoutName('layout_name');
         $this->twostep->setLayoutData(array('layout_var' => 'Hello '));
         $this->twostep->setLayoutPaths(array($this->dirs['bar'], $this->dirs['baz']));
-        $this->twostep->setContentVar('content_var');
+        $this->twostep->setLayoutContentVar('content_var');
         
         $expect = '<div>Hello </div>';
         $actual = $this->twostep->render();
