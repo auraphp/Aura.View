@@ -1,5 +1,5 @@
 <?php
-namespace aura\view\helper;
+namespace Aura\View\helper;
 
 /**
  * Test class for Styles.
@@ -11,7 +11,7 @@ class StylesTest extends \PHPUnit_Framework_TestCase
     {
         $styles = new Styles;
         $actual = $styles();
-        $this->assertType('aura\view\helper\Styles', $actual);
+        $this->assertType('Aura\View\helper\Styles', $actual);
     }
     
     public function testAddAndGet()

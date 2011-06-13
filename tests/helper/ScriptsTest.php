@@ -1,5 +1,5 @@
 <?php
-namespace aura\view\helper;
+namespace Aura\View\helper;
 
 /**
  * Test class for Scripts.
@@ -11,7 +11,7 @@ class ScriptsTest extends \PHPUnit_Framework_TestCase
     {
         $scripts = new Scripts;
         $actual = $scripts();
-        $this->assertType('aura\view\helper\Scripts', $actual);
+        $this->assertType('Aura\View\helper\Scripts', $actual);
     }
     
     /**

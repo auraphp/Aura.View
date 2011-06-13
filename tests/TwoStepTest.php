@@ -1,8 +1,8 @@
 <?php
-namespace aura\view;
-use aura\di\Container;
-use aura\di\Forge;
-use aura\di\Config;
+namespace Aura\View;
+use Aura\Di\Container;
+use Aura\Di\Forge;
+use Aura\Di\Config;
 
 /**
  * Test class for TwoStep.
@@ -27,7 +27,7 @@ class TwoStepTest extends \PHPUnit_Framework_TestCase
         
         $helper_container = new Container(new Forge(new Config));
         $helper_container->set('mockHelper', function () {
-            return new \aura\view\helper\MockHelper;
+            return new \Aura\View\helper\MockHelper;
         });
         
         $template = new Template($finder, $helper_container);

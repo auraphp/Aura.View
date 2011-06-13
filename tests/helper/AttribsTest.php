@@ -1,5 +1,5 @@
 <?php
-namespace aura\view\helper;
+namespace Aura\View\helper;
 
 class AttribsTest extends \PHPUnit_Framework_TestCase
 {

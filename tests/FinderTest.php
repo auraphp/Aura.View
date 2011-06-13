@@ -1,5 +1,5 @@
 <?php
-namespace aura\view;
+namespace Aura\View;
 
 /**
  * Test class for Finder.

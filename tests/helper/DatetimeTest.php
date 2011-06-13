@@ -1,5 +1,5 @@
 <?php
-namespace aura\view\helper;
+namespace Aura\View\helper;
 
 /**
  * Test class for Datetime.

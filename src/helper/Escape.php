@@ -1,5 +1,5 @@
 <?php
-namespace aura\view\helper;
+namespace Aura\View\helper;
 class Escape extends AbstractHelper
 {
     public function __invoke($text)

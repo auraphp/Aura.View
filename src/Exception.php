@@ -1,3 +1,3 @@
 <?php
-namespace aura\view;
+namespace Aura\View;
 class Exception extends \Exception {}

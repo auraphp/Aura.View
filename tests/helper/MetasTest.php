@@ -1,5 +1,5 @@
 <?php
-namespace aura\view\helper;
+namespace Aura\View\helper;
 
 /**
  * Test class for Metas.
@@ -11,7 +11,7 @@ class MetasTest extends \PHPUnit_Framework_TestCase
     {
         $metas = new Metas;
         $actual = $metas();
-        $this->assertType('aura\view\helper\Metas', $actual);
+        $this->assertType('Aura\View\helper\Metas', $actual);
     }
     
     /**

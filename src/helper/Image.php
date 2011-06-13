@@ -1,6 +1,6 @@
 <?php
-namespace aura\view\helper;
-use aura\view\Helper;
+namespace Aura\View\helper;
+use Aura\View\Helper;
 
 
 /**

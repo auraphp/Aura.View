@@ -1,5 +1,5 @@
 <?php
-namespace aura\view\helper;
+namespace Aura\View\helper;
 
 /**
  * Test class for Links.
@@ -11,7 +11,7 @@ class LinksTest extends \PHPUnit_Framework_TestCase
     {
         $links = new Links;
         $actual = $links();
-        $this->assertType('aura\view\helper\Links', $actual);
+        $this->assertType('Aura\View\helper\Links', $actual);
     }
     
     public function testAddAndGet()

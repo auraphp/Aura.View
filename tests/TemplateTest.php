@@ -1,8 +1,8 @@
 <?php
-namespace aura\view;
-use aura\di\Container;
-use aura\di\Forge;
-use aura\di\Config;
+namespace Aura\View;
+use Aura\Di\Container;
+use Aura\Di\Forge;
+use Aura\Di\Config;
 
 /**
  * Test class for Template.
@@ -30,7 +30,7 @@ class TemplateTest extends \PHPUnit_Framework_TestCase
         
         $helper_container = new Container(new Forge(new Config));
         $helper_container->set('mockHelper', function () {
-            return new \aura\view\helper\MockHelper;
+            return new \Aura\View\helper\MockHelper;
         });
         
         $template = new Template($finder, $helper_container);
@@ -225,7 +225,7 @@ class TemplateTest extends \PHPUnit_Framework_TestCase
     }
     
     /**
-     * @expectedException aura\view\Exception_TemplateNotFound
+     * @expectedException Aura\View\Exception\TemplateNotFound
      */
     public function testFindTemplateNotFound()
     {
@@ -237,13 +237,13 @@ class TemplateTest extends \PHPUnit_Framework_TestCase
     {
         $template = $this->newTemplate();
         $actual = $template->getHelper('mockHelper');
-        $this->assertType('aura\view\helper\MockHelper', $actual);
+        $this->assertType('Aura\View\helper\MockHelper', $actual);
         $again = $template->getHelper('mockHelper');
         $this->assertSame($actual, $again);
     }
     
     /**
-     * @expectedException aura\view\Exception_HelperNotMapped
+     * @expectedException Aura\View\Exception\HelperNotMapped
      */
     public function testGetHelperNotMapped()
     {
@@ -255,13 +255,13 @@ class TemplateTest extends \PHPUnit_Framework_TestCase
     {
         $template = $this->newTemplate();
         $actual = $template->getHelperContainer();
-        $this->assertType('aura\di\Container', $actual);
+        $this->assertType('Aura\Di\Container', $actual);
     }
     
     public function testGetFinder()
     {
         $template = $this->newTemplate();
         $actual = $template->getFinder();
-        $this->assertType('aura\view\Finder', $actual);
+        $this->assertType('Aura\View\Finder', $actual);
     }
 }

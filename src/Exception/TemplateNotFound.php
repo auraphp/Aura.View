@@ -1,3 +1,3 @@
 <?php
-namespace aura\view;
-class Exception_TemplateNotFound extends Exception {}
+namespace Aura\View\Exception;
+class TemplateNotFound extends \Aura\View\Exception {}

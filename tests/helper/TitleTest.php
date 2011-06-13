@@ -1,5 +1,5 @@
 <?php
-namespace aura\view\helper;
+namespace Aura\View\helper;
 
 /**
  * Test class for Title.
@@ -11,7 +11,7 @@ class TitleTest extends \PHPUnit_Framework_TestCase
     {
         $title = new Title;
         $actual = $title();
-        $this->assertType('aura\view\helper\Title', $actual);
+        $this->assertType('Aura\View\helper\Title', $actual);
     }
     
     /**
@@ -21,7 +21,7 @@ class TitleTest extends \PHPUnit_Framework_TestCase
     {
         $title = new Title;
         
-        $this->assertType('aura\view\helper\Title', $title);
+        $this->assertType('Aura\View\helper\Title', $title);
         
         $title->set('This & That');
         

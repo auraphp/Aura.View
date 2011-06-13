@@ -6,8 +6,8 @@
  * @license http://opensource.org/licenses/bsd-license.php BSD
  * 
  */
-namespace aura\view;
-use aura\di\Container;
+namespace Aura\View;
+use Aura\Di\Container;
 
 /**
  * 
@@ -43,7 +43,7 @@ abstract class AbstractTemplate
      * A Container for helper objects, so that repeated calls to the same 
      * helper use the same object.
      * 
-     * @var aura\di\Container
+     * @var Aura\Di\Container
      * 
      */
     private $_helper_container;
@@ -203,7 +203,7 @@ abstract class AbstractTemplate
      * 
      * Returns the helper Container object.
      * 
-     * @return aura\di\Container
+     * @return Aura\Di\Container
      * 
      */
     public function getHelperContainer()
@@ -231,7 +231,7 @@ abstract class AbstractTemplate
         // find the path to the template
         $file = $this->_finder->find($name);
         if (! $file) {
-            throw new Exception_TemplateNotFound($name);
+            throw new Exception\TemplateNotFound($name);
         }
         
         // done!
@@ -263,8 +263,8 @@ abstract class AbstractTemplate
     {
         try {
             return $this->_helper_container->get($name);
-        } catch (\aura\di\Exception_ServiceNotFound $e) {
-            throw new Exception_HelperNotMapped($name);
+        } catch (\Aura\Di\Exception\ServiceNotFound $e) {
+            throw new Exception\HelperNotMapped($name);
         }
     }
     

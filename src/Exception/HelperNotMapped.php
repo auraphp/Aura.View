@@ -1,3 +1,3 @@
 <?php
-namespace aura\view;
-class Exception_HelperNotMapped extends Exception {}
+namespace Aura\View\Exception;
+class HelperNotMapped extends \Aura\View\Exception {}
