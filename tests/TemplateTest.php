@@ -30,7 +30,7 @@ class TemplateTest extends \PHPUnit_Framework_TestCase
         
         $helper_container = new Container(new Forge(new Config));
         $helper_container->set('mockHelper', function () {
-            return new \Aura\View\helper\MockHelper;
+            return new \Aura\View\Helper\MockHelper;
         });
         
         $template = new Template($finder, $helper_container);
@@ -106,7 +106,7 @@ class TemplateTest extends \PHPUnit_Framework_TestCase
     public function testFind()
     {
         // prepare a set of directories and files
-        $base = __DIR__ . DIRECTORY_SEPARATOR . 'tmp';
+        $base = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'tmp';
         $list = array('foo', 'bar', 'baz');
         $dirs = array();
         foreach ($list as $dir) {
@@ -237,7 +237,7 @@ class TemplateTest extends \PHPUnit_Framework_TestCase
     {
         $template = $this->newTemplate();
         $actual = $template->getHelper('mockHelper');
-        $this->assertType('Aura\View\helper\MockHelper', $actual);
+        $this->assertType('Aura\View\Helper\MockHelper', $actual);
         $again = $template->getHelper('mockHelper');
         $this->assertSame($actual, $again);
     }

@@ -1,5 +1,5 @@
 <?php
-namespace Aura\View\helper;
+namespace Aura\View\Helper;
 
 class EscapeTest extends \PHPUnit_Framework_TestCase
 {

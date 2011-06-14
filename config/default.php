@@ -10,60 +10,60 @@ $di->params['Aura\View\TwoStep']['template'] = $di->lazyNew('Aura\View\Template'
 $vhc = $di->newContainer('view_helper');
 
 // date-time formats
-$vhc->params['Aura\View\helper\Datetime']['format']['date'] = 'Y-m-d H:i:s';
-$vhc->params['Aura\View\helper\Datetime']['format']['time'] = 'H:i:s';
-$vhc->params['Aura\View\helper\Datetime']['format']['datetime'] = 'Y-m-d H:i:s';
-$vhc->params['Aura\View\helper\Datetime']['format']['default'] = 'Y-m-d H:i:s';
+$vhc->params['Aura\View\Helper\Datetime']['format']['date'] = 'Y-m-d H:i:s';
+$vhc->params['Aura\View\Helper\Datetime']['format']['time'] = 'H:i:s';
+$vhc->params['Aura\View\Helper\Datetime']['format']['datetime'] = 'Y-m-d H:i:s';
+$vhc->params['Aura\View\Helper\Datetime']['format']['default'] = 'Y-m-d H:i:s';
 
 // escaping values
-$vhc->setter['Aura\View\helper\AbstractHelper']['setEscapeQuotes']  = ENT_COMPAT;
-$vhc->setter['Aura\View\helper\AbstractHelper']['setEscapeCharset'] = 'UTF-8';
+$vhc->setter['Aura\View\Helper\AbstractHelper']['setEscapeQuotes']  = ENT_COMPAT;
+$vhc->setter['Aura\View\Helper\AbstractHelper']['setEscapeCharset'] = 'UTF-8';
 
 // set services on the sub-container
 $vhc->set('anchor', function() use ($vhc) {
-    return $vhc->newInstance('Aura\View\helper\Anchor');
+    return $vhc->newInstance('Aura\View\Helper\Anchor');
 });
 
 $vhc->set('attribs', function() use ($vhc) {
-    return $vhc->newInstance('Aura\View\helper\Attribs');
+    return $vhc->newInstance('Aura\View\Helper\Attribs');
 });
 
 $vhc->set('base', function() use ($vhc) {
-    return $vhc->newInstance('Aura\View\helper\Base');
+    return $vhc->newInstance('Aura\View\Helper\Base');
 });
 
 $vhc->set('datetime', function() use ($vhc) {
-    return $vhc->newInstance('Aura\View\helper\Datetime');
+    return $vhc->newInstance('Aura\View\Helper\Datetime');
 });
 
 $vhc->set('escape', function() use ($vhc) {
-    return $vhc->newInstance('Aura\View\helper\Escape');
+    return $vhc->newInstance('Aura\View\Helper\Escape');
 });
 
 $vhc->set('image', function() use ($vhc) {
-    return $vhc->newInstance('Aura\View\helper\Image');
+    return $vhc->newInstance('Aura\View\Helper\Image');
 });
 
 $vhc->set('links', function() use ($vhc) {
-    return $vhc->newInstance('Aura\View\helper\Links');
+    return $vhc->newInstance('Aura\View\Helper\Links');
 });
 
 $vhc->set('metas', function() use ($vhc) {
-    return $vhc->newInstance('Aura\View\helper\Metas');
+    return $vhc->newInstance('Aura\View\Helper\Metas');
 });
 
 $vhc->set('scripts', function() use ($vhc) {
-    return $vhc->newInstance('Aura\View\helper\Scripts');
+    return $vhc->newInstance('Aura\View\Helper\Scripts');
 });
 
 $vhc->set('scriptsFoot', function() use ($vhc) {
-    return $vhc->newInstance('Aura\View\helper\Scripts');
+    return $vhc->newInstance('Aura\View\Helper\Scripts');
 });
 
 $vhc->set('styles', function() use ($vhc) {
-    return $vhc->newInstance('Aura\View\helper\Styles');
+    return $vhc->newInstance('Aura\View\Helper\Styles');
 });
 
 $vhc->set('title', function() use ($vhc) {
-    return $vhc->newInstance('Aura\View\helper\Title');
+    return $vhc->newInstance('Aura\View\Helper\Title');
 });

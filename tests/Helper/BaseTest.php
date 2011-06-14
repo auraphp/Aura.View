@@ -1,5 +1,5 @@
 <?php
-namespace Aura\View\helper;
+namespace Aura\View\Helper;
 
 /**
  * Test class for Base.

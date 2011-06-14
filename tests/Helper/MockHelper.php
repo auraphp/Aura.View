@@ -1,5 +1,5 @@
 <?php
-namespace Aura\View\helper;
+namespace Aura\View\Helper;
 class MockHelper extends AbstractHelper
 {
     public function __invoke()

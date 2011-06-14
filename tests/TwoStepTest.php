@@ -27,7 +27,7 @@ class TwoStepTest extends \PHPUnit_Framework_TestCase
         
         $helper_container = new Container(new Forge(new Config));
         $helper_container->set('mockHelper', function () {
-            return new \Aura\View\helper\MockHelper;
+            return new \Aura\View\Helper\MockHelper;
         });
         
         $template = new Template($finder, $helper_container);
@@ -35,7 +35,7 @@ class TwoStepTest extends \PHPUnit_Framework_TestCase
         $this->twostep = new TwoStep($template);
         
         // prepare a set of directories for paths
-        $base = __DIR__ . DIRECTORY_SEPARATOR . 'tmp';
+        $base = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'tmp';
         $dirs = array('foo', 'bar', 'baz');
         foreach ($dirs as $dir) {
             $this->dirs[$dir] = $base . DIRECTORY_SEPARATOR . $dir;
