@@ -13,7 +13,7 @@ namespace Aura\View;
  * Provides a Two Step View pattern implementation; this allows for an 
  * inner "view" and and outer "layout" as commonly used by web apps.
  * 
- * @package aura.view
+ * @package Aura.View
  * 
  */
 class TwoStep

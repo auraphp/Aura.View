@@ -15,7 +15,7 @@ use Aura\Di\Container;
  * abstract so that the extended "real" Template class does not have access
  * to the private support properties herein.
  * 
- * @package aura.view
+ * @package Aura.View
  * 
  */
 abstract class AbstractTemplate

@@ -12,7 +12,7 @@ namespace Aura\View\helper;
  * 
  * Helper to generate `<a ... />` tags.
  * 
- * @package aura.view
+ * @package Aura.View
  * 
  */
 class Anchor extends AbstractHelper

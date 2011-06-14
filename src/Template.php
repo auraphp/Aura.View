@@ -13,7 +13,7 @@ namespace Aura\View;
  * Provides a concrete Template View pattern implementation; it does not
  * have access to the private support properties of the parent abstract.
  * 
- * @package aura.view
+ * @package Aura.View
  * 
  */
 class Template extends AbstractTemplate

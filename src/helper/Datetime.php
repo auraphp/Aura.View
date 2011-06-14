@@ -14,7 +14,7 @@ namespace Aura\View\helper;
  * 
  * Default format is "Y-m-d H:i:s".
  * 
- * @package aura.view
+ * @package Aura.View
  * 
  */
 class Datetime extends AbstractHelper

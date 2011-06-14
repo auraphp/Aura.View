@@ -12,7 +12,7 @@ namespace Aura\View\helper;
  * 
  * Abstract helper base class.
  * 
- * @package aura.view
+ * @package Aura.View
  * 
  */
 abstract class AbstractHelper

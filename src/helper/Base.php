@@ -12,7 +12,7 @@ namespace Aura\View\helper;
  * 
  * Helper to generate `<base ... />` tags.
  * 
- * @package aura.view
+ * @package Aura.View
  * 
  */
 class Base extends AbstractHelper

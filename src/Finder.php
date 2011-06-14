@@ -12,7 +12,7 @@ namespace Aura\View;
  * 
  * Finds files in user-defined path hierarchies.
  * 
- * @package aura.view
+ * @package Aura.View
  * 
  */
 class Finder

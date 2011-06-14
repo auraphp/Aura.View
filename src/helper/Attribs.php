@@ -12,7 +12,7 @@ namespace Aura\View\helper;
  * 
  * Helper to escape attributes.
  * 
- * @package aura.view
+ * @package Aura.View
  * 
  */
 class Attribs extends AbstractHelper
