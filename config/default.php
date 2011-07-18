@@ -1,4 +1,7 @@
 <?php
+//params for Route which is a route_map object
+$vhc->params['Aura\View\Helper\Route']['router_map'] = $di->lazyGet('router_map');
+
 // params for Template instances
 $di->params['Aura\View\Template']['helper_container'] = $di->lazyCloneContainer('view_helper');
 $di->params['Aura\View\Template']['finder'] = $di->lazyNew('Aura\View\Finder');
@@ -66,4 +69,8 @@ $vhc->set('styles', function() use ($vhc) {
 
 $vhc->set('title', function() use ($vhc) {
     return $vhc->newInstance('Aura\View\Helper\Title');
+});
+
+$vhc->set('route', function() use ($hc) {
+    return $hc->newInstance('Aura\View\Helper\Route');
 });
