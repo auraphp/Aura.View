@@ -6,8 +6,8 @@ $di->params['Aura\View\Template']['finder'] = $di->lazyNew('Aura\View\Finder');
 // params for TwoStep instances
 $di->params['Aura\View\TwoStep']['template'] = $di->lazyNew('Aura\View\Template');
 
-// create a new sub-container
-$vhc = $di->newContainer('view_helper');
+// get-or-create a sub-container
+$vhc = $di->subContainer('view_helper');
 
 // date-time formats
 $vhc->params['Aura\View\Helper\Datetime']['format']['date'] = 'Y-m-d H:i:s';
