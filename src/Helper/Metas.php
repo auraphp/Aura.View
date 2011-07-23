@@ -23,19 +23,22 @@ class Metas extends AbstractHelper
         return $this;
     }
     
-    /**
+	/**
      * 
      * Returns a <meta ... /> tag.
      * 
      * @param array $attribs Attributes for the <link> tag.
      * 
+     * @param int $pos The postion of meta tag in stack
+     * 
      * @return void
      * 
      */
-    public function add(array $attribs = array())
+    public function add(array $attribs = array(), $pos = 100)
     {
         $attr = $this->attribs($attribs);
-        $this->metas[] = "<meta $attr />";
+		$tag = "<meta $attr />";
+        $this->metas[$tag] = $pos;
     }
     
     /**
@@ -46,15 +49,17 @@ class Metas extends AbstractHelper
      * 
      * @param string $content The content value.
      * 
+     * @param int $pos The postion of meta tag in stack
+     * 
      * @return void
      * 
      */
-    public function addHttp($http_equiv, $content)
+    public function addHttp($http_equiv, $content, $pos = 100)
     {
         $this->add(array(
             'http-equiv' => $http_equiv,
             'content'    => $content,
-        ));
+        ), $pos);
     }
     
     /**
@@ -65,15 +70,17 @@ class Metas extends AbstractHelper
      * 
      * @param string $content The content value.
      * 
+     * @param int $pos The postion of meta tag in stack
+     * 
      * @return void
      * 
      */
-    public function addName($name, $content)
+    public function addName($name, $content, $pos = 100)
     {
         $this->add(array(
             'name'    => $name,
             'content' => $content,
-        ));
+        ), $pos);
     }
     
     /**
@@ -85,8 +92,10 @@ class Metas extends AbstractHelper
      */
     public function get()
     {
+    	asort($this->metas);
+        $metas = array_keys($this->metas);
         return $this->indent 
-             . implode(PHP_EOL . $this->indent, $this->metas)
+             . implode(PHP_EOL . $this->indent, $metas)
              . PHP_EOL;
     }
 }

@@ -47,6 +47,61 @@ class Scripts extends AbstractHelper
         $this->scripts[$tag] = $pos;
     }
     
+	/**
+     * 
+     * Adds a <script> tag to the stack.
+     * 
+     * @param string $code The code for the script.
+     * 
+     * @param string $pos The position in the array for the script.
+     * 
+     * @param array $attribs Additional attributes for the <script> tag.
+     * 
+     * @return void
+     * 
+     */
+    public function addInline($code, $pos = 100, array $attribs = array())
+    {
+        //unset($attribs['code']);
+        if (empty($attribs['type'])) {
+            $attribs['type'] = 'text/javascript';
+        }
+                
+        $attr = $this->attribs($attribs);
+        $tag = "<script " . $attr . ">\n"
+        	. $this->indent . trim($code) . "\n"
+        	. $this->indent . "</script>";
+        $this->scripts[$tag] = $pos;
+    }
+    
+    /**
+     * 
+     * Adds a conditional <script> tag to the stack.
+     * 
+     * @param string $src The source href for the script.
+     * 
+     * @param string $con The conditional for the script.
+     * 
+     * @param string $pos The position in the array for the script.
+     * 
+     * @param array $attribs Additional attributes for the <script> tag.
+     * 
+     * @return void
+     * 
+     */
+    public function addCond($src, $con, $pos = 100, array $attribs = array())
+    {
+        $src = $this->escape($src);
+        unset($attribs['src']);
+        if (empty($attribs['type'])) {
+            $attribs['type'] = 'text/javascript';
+        }
+                
+        $attr = $this->attribs($attribs);
+        $tag = "<!--[if $con]><script src=\"$src\" $attr></script><![endif]-->";
+        $this->scripts[$tag] = $pos;
+    }
+    
     /**
      * 
      * Returns the stack of <script> tags as a single block.
