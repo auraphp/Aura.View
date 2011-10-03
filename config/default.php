@@ -1,4 +1,9 @@
 <?php
+/**
+ * Package prefix for autoloader.
+ */
+$loader->addPrefix('Aura\View\\', dirname(__DIR__) . DIRECTORY_SEPARATOR . 'src');
+
 // params for Template instances
 $di->params['Aura\View\Template']['helper_container'] = $di->lazyCloneContainer('view_helper');
 $di->params['Aura\View\Template']['finder'] = $di->lazyNew('Aura\View\Finder');
