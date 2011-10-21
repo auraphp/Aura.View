@@ -11,7 +11,7 @@ class LinksTest extends \PHPUnit_Framework_TestCase
     {
         $links = new Links;
         $actual = $links();
-        $this->assertType('Aura\View\Helper\Links', $actual);
+        $this->assertInstanceOf('Aura\View\Helper\Links', $actual);
     }
     
     public function testAddAndGet()

@@ -11,7 +11,7 @@ class TitleTest extends \PHPUnit_Framework_TestCase
     {
         $title = new Title;
         $actual = $title();
-        $this->assertType('Aura\View\Helper\Title', $actual);
+        $this->assertInstanceOf('Aura\View\Helper\Title', $actual);
     }
     
     /**
@@ -21,7 +21,7 @@ class TitleTest extends \PHPUnit_Framework_TestCase
     {
         $title = new Title;
         
-        $this->assertType('Aura\View\Helper\Title', $title);
+        $this->assertInstanceOf('Aura\View\Helper\Title', $title);
         
         $title->set('This & That');
         

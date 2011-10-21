@@ -237,7 +237,7 @@ class TemplateTest extends \PHPUnit_Framework_TestCase
     {
         $template = $this->newTemplate();
         $actual = $template->getHelper('mockHelper');
-        $this->assertType('Aura\View\Helper\MockHelper', $actual);
+        $this->assertInstanceOf('Aura\View\Helper\MockHelper', $actual);
         $again = $template->getHelper('mockHelper');
         $this->assertSame($actual, $again);
     }
@@ -255,13 +255,13 @@ class TemplateTest extends \PHPUnit_Framework_TestCase
     {
         $template = $this->newTemplate();
         $actual = $template->getHelperContainer();
-        $this->assertType('Aura\Di\Container', $actual);
+        $this->assertInstanceOf('Aura\Di\Container', $actual);
     }
     
     public function testGetFinder()
     {
         $template = $this->newTemplate();
         $actual = $template->getFinder();
-        $this->assertType('Aura\View\Finder', $actual);
+        $this->assertInstanceOf('Aura\View\Finder', $actual);
     }
 }

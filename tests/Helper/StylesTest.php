@@ -11,7 +11,7 @@ class StylesTest extends \PHPUnit_Framework_TestCase
     {
         $styles = new Styles;
         $actual = $styles();
-        $this->assertType('Aura\View\Helper\Styles', $actual);
+        $this->assertInstanceOf('Aura\View\Helper\Styles', $actual);
     }
     
     public function testAddAndGet()

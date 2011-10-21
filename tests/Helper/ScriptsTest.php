@@ -11,7 +11,7 @@ class ScriptsTest extends \PHPUnit_Framework_TestCase
     {
         $scripts = new Scripts;
         $actual = $scripts();
-        $this->assertType('Aura\View\Helper\Scripts', $actual);
+        $this->assertInstanceOf('Aura\View\Helper\Scripts', $actual);
     }
     
     /**

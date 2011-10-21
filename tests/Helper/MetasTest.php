@@ -11,7 +11,7 @@ class MetasTest extends \PHPUnit_Framework_TestCase
     {
         $metas = new Metas;
         $actual = $metas();
-        $this->assertType('Aura\View\Helper\Metas', $actual);
+        $this->assertInstanceOf('Aura\View\Helper\Metas', $actual);
     }
     
     /**
