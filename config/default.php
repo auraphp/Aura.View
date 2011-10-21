@@ -72,3 +72,12 @@ $vhc->set('styles', function() use ($vhc) {
 $vhc->set('title', function() use ($vhc) {
     return $vhc->newInstance('Aura\View\Helper\Title');
 });
+
+//params for Route which is a route_map object
+$vhc->params['Aura\View\Helper\Route']['router_map'] = $di->lazyGet('router_map');
+
+//Route can be only used in Aura.View when Aura.Router is used, 
+//else will give fatal Error
+$vhc->set('route', function() use ($vhc) {
+    return $vhc->newInstance('Aura\View\Helper\Route');
+});
