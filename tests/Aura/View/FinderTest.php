@@ -24,7 +24,7 @@ class FinderTest extends \PHPUnit_Framework_TestCase
         $this->finder = new Finder;
         
         // prepare a set of directories for paths
-        $base = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'tmp';
+        $base = __DIR__ . DIRECTORY_SEPARATOR . 'tmp';
         $dirs = array('foo', 'bar', 'baz');
         foreach ($dirs as $dir) {
             $this->dirs[$dir] = $base . DIRECTORY_SEPARATOR . $dir;

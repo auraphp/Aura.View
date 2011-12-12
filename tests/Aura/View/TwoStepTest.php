@@ -1,8 +1,5 @@
 <?php
 namespace Aura\View;
-use Aura\Di\Container;
-use Aura\Di\Forge;
-use Aura\Di\Config;
 
 /**
  * Test class for TwoStep.
@@ -25,17 +22,17 @@ class TwoStepTest extends \PHPUnit_Framework_TestCase
         
         $finder = new Finder();
         
-        $helper_container = new Container(new Forge(new Config));
-        $helper_container->set('mockHelper', function () {
+        $helper_locator = new HelperLocator;
+        $helper_locator->set('mockHelper', function () {
             return new \Aura\View\Helper\MockHelper;
         });
         
-        $template = new Template($finder, $helper_container);
+        $template = new Template($finder, $helper_locator);
         
         $this->twostep = new TwoStep($template);
         
         // prepare a set of directories for paths
-        $base = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'tmp';
+        $base = __DIR__ . DIRECTORY_SEPARATOR . 'tmp';
         $dirs = array('foo', 'bar', 'baz');
         foreach ($dirs as $dir) {
             $this->dirs[$dir] = $base . DIRECTORY_SEPARATOR . $dir;

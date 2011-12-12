@@ -1,8 +1,5 @@
 <?php
 namespace Aura\View;
-use Aura\Di\Container;
-use Aura\Di\Forge;
-use Aura\Di\Config;
 
 /**
  * Test class for Template.
@@ -28,12 +25,12 @@ class TemplateTest extends \PHPUnit_Framework_TestCase
     {
         $finder = new Finder();
         
-        $helper_container = new Container(new Forge(new Config));
-        $helper_container->set('mockHelper', function () {
+        $helper_locator = new HelperLocator;
+        $helper_locator->set('mockHelper', function () {
             return new \Aura\View\Helper\MockHelper;
         });
         
-        $template = new Template($finder, $helper_container);
+        $template = new Template($finder, $helper_locator);
         $template->setPaths($paths);
         
         return $template;
@@ -106,7 +103,7 @@ class TemplateTest extends \PHPUnit_Framework_TestCase
     public function testFind()
     {
         // prepare a set of directories and files
-        $base = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'tmp';
+        $base = __DIR__ . DIRECTORY_SEPARATOR . 'tmp';
         $list = array('foo', 'bar', 'baz');
         $dirs = array();
         foreach ($list as $dir) {
@@ -251,11 +248,11 @@ class TemplateTest extends \PHPUnit_Framework_TestCase
         $actual = $template->getHelper('noSuchHelper');
     }
     
-    public function testGetHelperContainer()
+    public function testGetHelperLocator()
     {
         $template = $this->newTemplate();
-        $actual = $template->getHelperContainer();
-        $this->assertInstanceOf('Aura\Di\Container', $actual);
+        $actual = $template->getHelperLocator();
+        $this->assertInstanceOf('Aura\View\HelperLocator', $actual);
     }
     
     public function testGetFinder()

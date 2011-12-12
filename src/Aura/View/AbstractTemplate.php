@@ -7,7 +7,6 @@
  * 
  */
 namespace Aura\View;
-use Aura\Di\Container;
 
 /**
  * 
@@ -40,13 +39,13 @@ abstract class AbstractTemplate
     
     /**
      * 
-     * A Container for helper objects, so that repeated calls to the same 
+     * A ServiceLocator for helper objects, so that repeated calls to the same 
      * helper use the same object.
      * 
-     * @var Aura\Di\Container
+     * @var HelperLocator
      * 
      */
-    private $_helper_container;
+    private $_helper_locator;
     
     /**
      * 
@@ -54,16 +53,16 @@ abstract class AbstractTemplate
      * 
      * @param Finder $finder A template finder.
      * 
-     * @param HelperRegistry $helper_container A container for helpers attached
-     * to this template.
+     * @param HelperLocator $helper_locator A Service Locator for helpers
+     * attached to this template.
      * 
      */
     public function __construct(
-        Finder $finder,
-        Container $helper_container
+        Finder        $finder,
+        HelperLocator $helper_locator
     ) {
         $this->_finder = $finder;
-        $this->_helper_container = $helper_container;
+        $this->_helper_locator = $helper_locator;
     }
     
     /**
@@ -201,14 +200,14 @@ abstract class AbstractTemplate
     
     /**
      * 
-     * Returns the helper Container object.
+     * Returns the helper locator object.
      * 
-     * @return Aura\Di\Container
+     * @return HelperLocator
      * 
      */
-    public function getHelperContainer()
+    public function getHelperLocator()
     {
-        return $this->_helper_container;
+        return $this->_helper_locator;
     }
     
     /**
@@ -261,11 +260,7 @@ abstract class AbstractTemplate
      */
     public function getHelper($name)
     {
-        try {
-            return $this->_helper_container->get($name);
-        } catch (\Aura\Di\Exception\ServiceNotFound $e) {
-            throw new Exception\HelperNotMapped($name);
-        }
+        return $this->_helper_locator->get($name);
     }
     
     /**
