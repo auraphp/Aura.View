@@ -5,70 +5,67 @@
 $loader->addPrefix('Aura\View\\', dirname(__DIR__) . DIRECTORY_SEPARATOR . 'src');
 
 // params for Template instances
-$di->params['Aura\View\Template']['helper_container'] = $di->lazyCloneContainer('view_helper');
+$di->params['Aura\View\Template']['helper_locator'] = $di->lazyNew('Aura\View\HelperLocator');
 $di->params['Aura\View\Template']['finder'] = $di->lazyNew('Aura\View\Finder');
 
 // params for TwoStep instances
 $di->params['Aura\View\TwoStep']['template'] = $di->lazyNew('Aura\View\Template');
 
-// get-or-create a sub-container
-$vhc = $di->subContainer('view_helper');
-
 // date-time formats
-$vhc->params['Aura\View\Helper\Datetime']['format']['date'] = 'Y-m-d H:i:s';
-$vhc->params['Aura\View\Helper\Datetime']['format']['time'] = 'H:i:s';
-$vhc->params['Aura\View\Helper\Datetime']['format']['datetime'] = 'Y-m-d H:i:s';
-$vhc->params['Aura\View\Helper\Datetime']['format']['default'] = 'Y-m-d H:i:s';
+$di->params['Aura\View\Helper\Datetime']['format']['date'] = 'Y-m-d H:i:s';
+$di->params['Aura\View\Helper\Datetime']['format']['time'] = 'H:i:s';
+$di->params['Aura\View\Helper\Datetime']['format']['datetime'] = 'Y-m-d H:i:s';
+$di->params['Aura\View\Helper\Datetime']['format']['default'] = 'Y-m-d H:i:s';
 
 // escaping values
-$vhc->setter['Aura\View\Helper\AbstractHelper']['setEscapeQuotes']  = ENT_COMPAT;
-$vhc->setter['Aura\View\Helper\AbstractHelper']['setEscapeCharset'] = 'UTF-8';
+$di->setter['Aura\View\Helper\AbstractHelper']['setEscapeQuotes']  = ENT_COMPAT;
+$di->setter['Aura\View\Helper\AbstractHelper']['setEscapeCharset'] = 'UTF-8';
 
-// set services on the sub-container
-$vhc->set('anchor', function() use ($vhc) {
-    return $vhc->newInstance('Aura\View\Helper\Anchor');
-});
+// params for HelperLocator instances
+$di->params['Aura\View\HelperLocator']['registry']['anchor'] = function() use ($di) {
+    return $di->newInstance('Aura\View\Helper\Anchor');
+};
 
-$vhc->set('attribs', function() use ($vhc) {
-    return $vhc->newInstance('Aura\View\Helper\Attribs');
-});
+$di->params['Aura\View\HelperLocator']['registry']['attribs'] = function() use ($di) {
+    return $di->newInstance('Aura\View\Helper\Attribs');
+};
 
-$vhc->set('base', function() use ($vhc) {
-    return $vhc->newInstance('Aura\View\Helper\Base');
-});
+$di->params['Aura\View\HelperLocator']['registry']['base'] = function() use ($di) {
+    return $di->newInstance('Aura\View\Helper\Base');
+};
 
-$vhc->set('datetime', function() use ($vhc) {
-    return $vhc->newInstance('Aura\View\Helper\Datetime');
-});
+$di->params['Aura\View\HelperLocator']['registry']['datetime'] = function() use ($di) {
+    return $di->newInstance('Aura\View\Helper\Datetime');
+};
 
-$vhc->set('escape', function() use ($vhc) {
-    return $vhc->newInstance('Aura\View\Helper\Escape');
-});
+$di->params['Aura\View\HelperLocator']['registry']['escape'] = function() use ($di) {
+    return $di->newInstance('Aura\View\Helper\Escape');
+};
 
-$vhc->set('image', function() use ($vhc) {
-    return $vhc->newInstance('Aura\View\Helper\Image');
-});
+$di->params['Aura\View\HelperLocator']['registry']['image'] = function() use ($di) {
+    return $di->newInstance('Aura\View\Helper\Image');
+};
 
-$vhc->set('links', function() use ($vhc) {
-    return $vhc->newInstance('Aura\View\Helper\Links');
-});
+$di->params['Aura\View\HelperLocator']['registry']['links'] = function() use ($di) {
+    return $di->newInstance('Aura\View\Helper\Links');
+};
 
-$vhc->set('metas', function() use ($vhc) {
-    return $vhc->newInstance('Aura\View\Helper\Metas');
-});
+$di->params['Aura\View\HelperLocator']['registry']['metas'] = function() use ($di) {
+    return $di->newInstance('Aura\View\Helper\Metas');
+};
 
-$vhc->set('scripts', function() use ($vhc) {
-    return $vhc->newInstance('Aura\View\Helper\Scripts');
-});
+$di->params['Aura\View\HelperLocator']['registry']['scripts'] = function() use ($di) {
+    return $di->newInstance('Aura\View\Helper\Scripts');
+};
 
-$vhc->set('scriptsFoot', function() use ($vhc) {
-    return $vhc->newInstance('Aura\View\Helper\Scripts');
-});
+$di->params['Aura\View\HelperLocator']['registry']['scriptsFoot'] = function() use ($di) {
+    return $di->newInstance('Aura\View\Helper\Scripts');
+};
 
-$vhc->set('styles', function() use ($vhc) {
-    return $vhc->newInstance('Aura\View\Helper\Styles');
-});
+$di->params['Aura\View\HelperLocator']['registry']['styles'] = function() use ($di) {
+    return $di->newInstance('Aura\View\Helper\Styles');
+};
 
-$vhc->set('title', function() use ($vhc) {
-    return $vhc->newInstance('Aura\View\Helper\Title');
-});
+$di->params['Aura\View\HelperLocator']['registry']['title'] = function() use ($di) {
+    return $di->newInstance('Aura\View\Helper\Title');
+};
