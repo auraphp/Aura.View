@@ -8,11 +8,6 @@ namespace Aura\View;
 class TemplateTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var Template
-     */
-    protected $object;
-
-    /**
      * Sets up the fixture, for example, opens a network connection.
      * This method is called before a test is executed.
      */
@@ -23,7 +18,7 @@ class TemplateTest extends \PHPUnit_Framework_TestCase
     
     protected function newTemplate(array $paths = array())
     {
-        $finder = new Finder();
+        $finder = new TemplateFinder();
         
         $helper_locator = new HelperLocator;
         $helper_locator->set('mockHelper', function () {
@@ -103,7 +98,7 @@ class TemplateTest extends \PHPUnit_Framework_TestCase
     public function testFind()
     {
         // prepare a set of directories and files
-        $base = __DIR__ . DIRECTORY_SEPARATOR . 'tmp';
+        $base = dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . 'tmp';
         $list = array('foo', 'bar', 'baz');
         $dirs = array();
         foreach ($list as $dir) {
@@ -133,7 +128,7 @@ class TemplateTest extends \PHPUnit_Framework_TestCase
     public function testFetch()
     {
         // the template file
-        $file = __DIR__ . DIRECTORY_SEPARATOR
+        $file = dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR
               . 'tmp' . DIRECTORY_SEPARATOR
               . 'fetch' . DIRECTORY_SEPARATOR
               . 'zim.php';
@@ -162,7 +157,7 @@ class TemplateTest extends \PHPUnit_Framework_TestCase
     public function testFetchDirect()
     {
         // the template file
-        $file = __DIR__ . DIRECTORY_SEPARATOR
+        $file = dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR
               . 'tmp' . DIRECTORY_SEPARATOR
               . 'fetch' . DIRECTORY_SEPARATOR
               . 'zim.php';
@@ -197,7 +192,7 @@ class TemplateTest extends \PHPUnit_Framework_TestCase
     public function testFetchExtract()
     {
         // the template file
-        $file = __DIR__ . DIRECTORY_SEPARATOR
+        $file = dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR
               . 'tmp' . DIRECTORY_SEPARATOR
               . 'fetch' . DIRECTORY_SEPARATOR
               . 'foo.php';
@@ -255,10 +250,10 @@ class TemplateTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Aura\View\HelperLocator', $actual);
     }
     
-    public function testGetFinder()
+    public function testGetTemplateFinder()
     {
         $template = $this->newTemplate();
-        $actual = $template->getFinder();
-        $this->assertInstanceOf('Aura\View\Finder', $actual);
+        $actual = $template->getTemplateFinder();
+        $this->assertInstanceOf('Aura\View\TemplateFinder', $actual);
     }
 }
