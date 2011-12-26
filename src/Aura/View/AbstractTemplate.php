@@ -23,10 +23,10 @@ abstract class AbstractTemplate
      * 
      * View "finder" (to find views in a path stack).
      * 
-     * @var Finder
+     * @var TemplateFinder
      * 
      */
-    private $_finder;
+    private $_template_finder;
     
     /**
      * 
@@ -51,18 +51,18 @@ abstract class AbstractTemplate
      * 
      * Constructor.
      * 
-     * @param Finder $finder A template finder.
+     * @param TemplateFinder $finder A template finder.
      * 
      * @param HelperLocator $helper_locator A Service Locator for helpers
      * attached to this template.
      * 
      */
     public function __construct(
-        Finder        $finder,
-        HelperLocator $helper_locator
+        TemplateFinder $template_finder,
+        HelperLocator  $helper_locator
     ) {
-        $this->_finder = $finder;
-        $this->_helper_locator = $helper_locator;
+        $this->_template_finder = $template_finder;
+        $this->_helper_locator  = $helper_locator;
     }
     
     /**
@@ -151,7 +151,7 @@ abstract class AbstractTemplate
      */
     public function setPaths(array $paths = array())
     {
-        $this->_finder->setPaths($paths);
+        $this->_template_finder->setPaths($paths);
     }
     
     /**
@@ -228,7 +228,7 @@ abstract class AbstractTemplate
         }
         
         // find the path to the template
-        $file = $this->_finder->find($name);
+        $file = $this->_template_finder->find($name);
         if (! $file) {
             throw new Exception\TemplateNotFound($name);
         }
@@ -239,14 +239,14 @@ abstract class AbstractTemplate
     
     /**
      * 
-     * Returns the Finder object.
+     * Returns the TemplateFinder object.
      * 
-     * @return Finder
+     * @return TemplateFinder
      * 
      */
-    public function getFinder()
+    public function getTemplateFinder()
     {
-        return $this->_finder;
+        return $this->_template_finder;
     }
     
     /**
