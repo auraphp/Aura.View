@@ -6,7 +6,7 @@ $loader->addPrefix('Aura\View\\', dirname(__DIR__) . DIRECTORY_SEPARATOR . 'src'
 
 // params for Template instances
 $di->params['Aura\View\Template']['helper_locator'] = $di->lazyNew('Aura\View\HelperLocator');
-$di->params['Aura\View\Template']['finder'] = $di->lazyNew('Aura\View\Finder');
+$di->params['Aura\View\Template']['template_finder'] = $di->lazyNew('Aura\View\TemplateFinder');
 
 // params for TwoStep instances
 $di->params['Aura\View\TwoStep']['template'] = $di->lazyNew('Aura\View\Template');
