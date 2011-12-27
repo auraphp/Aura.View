@@ -10,6 +10,7 @@ $di->params['Aura\View\Template']['template_finder'] = $di->lazyNew('Aura\View\T
 
 // params for TwoStep instances
 $di->params['Aura\View\TwoStep']['template'] = $di->lazyNew('Aura\View\Template');
+$di->params['Aura\View\TwoStep']['format_types'] = $di->lazyNew('Aura\View\FormatTypes');
 
 // date-time formats
 $di->params['Aura\View\Helper\Datetime']['format']['date'] = 'Y-m-d H:i:s';
