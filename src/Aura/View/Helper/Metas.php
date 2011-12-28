@@ -17,6 +17,13 @@ namespace Aura\View\Helper;
  */
 class Metas extends AbstractHelper
 {
+    /**
+     * 
+     * The array of all metas added to the helper.
+     * 
+     * @var array
+     * 
+     */
     protected $metas = array();
     
     /**

@@ -19,7 +19,13 @@ namespace Aura\View\Helper;
  */
 class Datetime extends AbstractHelper
 {
-    
+    /**
+     * 
+     * An array of datetime formats.
+     * 
+     * @var array
+     * 
+     */
     protected $format = array(
         'date'     => 'Y-m-d',
         'time'     => 'H:i:s',
@@ -27,6 +33,13 @@ class Datetime extends AbstractHelper
         'default'  => 'Y-m-d H:i:s',
     );
     
+    /**
+     * 
+     * Constructor.
+     * 
+     * @param array $format Additional or override datetime formats.
+     * 
+     */
     public function __construct(array $format = array())
     {
         $this->format = array_merge($this->format, $format);

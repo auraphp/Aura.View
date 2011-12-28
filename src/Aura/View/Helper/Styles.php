@@ -17,6 +17,13 @@ namespace Aura\View\Helper;
  */
 class Styles extends AbstractHelper
 {
+    /**
+     * 
+     * The array of all styles added to the helper.
+     * 
+     * @var array
+     * 
+     */
     protected $styles = array();
     
     /**

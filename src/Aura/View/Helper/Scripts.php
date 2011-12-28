@@ -17,6 +17,13 @@ namespace Aura\View\Helper;
  */
 class Scripts extends AbstractHelper
 {
+    /**
+     * 
+     * The array of all scripts added to the helper.
+     * 
+     * @var array
+     * 
+     */
     protected $scripts = array();
     
     /**

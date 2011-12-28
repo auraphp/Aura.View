@@ -1,5 +1,22 @@
 <?php
+/**
+ * 
+ * This file is part of the Aura Project for PHP.
+ * 
+ * @license http://opensource.org/licenses/bsd-license.php BSD
+ * 
+ */
 namespace Aura\View;
+
+/**
+ * 
+ * Provides a mapping between .format file extensions and their Content-Type
+ * values. Also handles negotiation between an array of Accept headers and a
+ * list of available .format views to be rendered.
+ * 
+ * @package Aura.View
+ * 
+ */
 class FormatTypes
 {
     /**
@@ -93,11 +110,34 @@ class FormatTypes
         '.zip'      => 'application/zip',
     );
     
+    /**
+     * 
+     * Constructor.
+     * 
+     * @param array $map An array of additional or override .format mappings
+     * to Content-Type values.
+     * 
+     */
     public function __construct(array $map = array())
     {
         $this->map = array_merge($this->map, $map);
     }
     
+    /**
+     * 
+     * Given an array of acceptable Content-Type values and an array of 
+     * available .format views, picks an acceptable .format view.
+     * 
+     * @param array $accept An array of acceptable Content-Type values.
+     * 
+     * @param array $formats An array of available .format views.
+     * 
+     * @return string An acceptable .format view matching one of the
+     * Content-Type values.
+     * 
+     * @todo Handle '*' variations on $accept.
+     * 
+     */
     public function matchAcceptFormats(array $accept, array $formats)
     {
         foreach ($accept as $accept_type) {
@@ -113,6 +153,15 @@ class FormatTypes
         }
     }
     
+    /**
+     * 
+     * Returns the Content-Type for a particular .format file extension.
+     * 
+     * @param string $format The .format file extension.
+     * 
+     * @return string The mapped Content-Type value.
+     * 
+     */
     public function getContentType($format)
     {
         if (isset($this->map[$format])) {

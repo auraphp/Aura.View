@@ -10,13 +10,22 @@ namespace Aura\View\Helper;
 
 /**
  * 
- * Escape special characters
+ * Escapes special characters for HTML.
  * 
  * @package Aura.View
  * 
  */
 class Escape extends AbstractHelper
 {
+    /**
+     * 
+     * Escapes a text string.
+     * 
+     * @param string $text The text to escape.
+     * 
+     * @return string The escaped string.
+     * 
+     */
     public function __invoke($text)
     {
         return $this->escape($text);

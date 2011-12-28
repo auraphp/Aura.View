@@ -17,6 +17,13 @@ namespace Aura\View\Helper;
  */
 class Links extends AbstractHelper
 {
+    /**
+     * 
+     * The array of all links added to the helper.
+     * 
+     * @var array
+     * 
+     */
     protected $links = array();
     
     /**

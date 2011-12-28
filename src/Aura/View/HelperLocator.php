@@ -41,13 +41,17 @@ class HelperLocator
         }
     }
     
-    /*
-     * Set the registry with the name
+    /**
      * 
-     * @param string $name
+     * Sets a helper into the registry by name.
      * 
-     * @param string $spec
+     * @param string $name The helper name; this doubles as a method name
+     * when called from a template.
      * 
+     * @param string $spec The helper specification, typically a closure that
+     * builds and returns a helper object.
+     * 
+     * @return void
      * 
      */
     public function set($name, $spec)
@@ -55,12 +59,13 @@ class HelperLocator
         $this->registry[$name] = $spec;
     }
     
-    /*
-     * Gets from the registry 
+    /**
      * 
-     * @param string $name
+     * Gets a helper from the registry by name.
      * 
-     * @return string
+     * @param string $name The helper to retrieve.
+     * 
+     * @return AbstractHelper A helper object.
      * 
      */
     public function get($name)
