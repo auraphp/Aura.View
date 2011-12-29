@@ -3,6 +3,8 @@
  * 
  * This file is part of the Aura Project for PHP.
  * 
+ * @package Aura.View
+ * 
  * @license http://opensource.org/licenses/bsd-license.php BSD
  * 
  */
@@ -13,8 +15,6 @@ namespace Aura\View;
  * Provides an abstract TemplateView pattern implementation. We use an 
  * abstract so that the extended "real" Template class does not have access
  * to the private support properties herein.
- * 
- * @package Aura.View
  * 
  */
 abstract class AbstractTemplate

@@ -3,6 +3,8 @@
  * 
  * This file is part of the Aura Project for PHP.
  * 
+ * @package Aura.View
+ * 
  * @license http://opensource.org/licenses/bsd-license.php BSD
  * 
  */
@@ -13,8 +15,6 @@ namespace Aura\View\Helper;
  * Helper for a formatted timestamp using date() format codes.
  * 
  * Default format is "Y-m-d H:i:s".
- * 
- * @package Aura.View
  * 
  */
 class Datetime extends AbstractHelper

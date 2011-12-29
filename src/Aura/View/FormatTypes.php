@@ -3,6 +3,8 @@
  * 
  * This file is part of the Aura Project for PHP.
  * 
+ * @package Aura.View
+ * 
  * @license http://opensource.org/licenses/bsd-license.php BSD
  * 
  */
@@ -13,8 +15,6 @@ namespace Aura\View;
  * Provides a mapping between .format file extensions and their Content-Type
  * values. Also handles negotiation between an array of Accept headers and a
  * list of available .format views to be rendered.
- * 
- * @package Aura.View
  * 
  */
 class FormatTypes

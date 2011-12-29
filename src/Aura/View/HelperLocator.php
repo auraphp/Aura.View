@@ -3,6 +3,8 @@
  * 
  * This file is part of the Aura Project for PHP.
  * 
+ * @package Aura.View
+ * 
  * @license http://opensource.org/licenses/bsd-license.php BSD
  * 
  */
@@ -10,16 +12,14 @@ namespace Aura\View;
 
 /**
  * 
- * The Aura View Helper Locator
- * 
- * @package Aura.View
+ * A ServiceLocator implementation for loading and retaining helper objects.
  * 
  */
 class HelperLocator
 {
     /**
      * 
-     * A registry to store values
+     * A registry to retain helper objects.
      * 
      * @var array
      * 
@@ -30,8 +30,9 @@ class HelperLocator
      * 
      * Constructor.
      * 
-     * @param array $registry This will allow developers to use the DI system 
-     * of their choice to set up the helper locator.
+     * @param array $registry An array of key-value pairs where the key is the
+     * helper name (doubles as a method name) and the value is the helper
+     * object. The value may also be a closure that returns a helper object.
      * 
      */
     public function __construct(array $registry = array())
