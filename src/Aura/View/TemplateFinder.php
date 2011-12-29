@@ -65,10 +65,10 @@ class TemplateFinder
      * Adds one path to the top of the path stack.
      * 
      * {{code: php
-     *     $finder->prepend('/path/1');
-     *     $finder->prepend('/path/2');
-     *     $finder->prepend('/path/3');
-     *     // $finder->getPaths() reveals that the directory search order will be
+     *     $template_finder->prepend('/path/1');
+     *     $template_finder->prepend('/path/2');
+     *     $template_finder->prepend('/path/3');
+     *     // $template_finder->getPaths() reveals that the directory search order will be
      *     // '/path/3/', '/path/2/', '/path/1/'.
      * }}
      * 
@@ -88,10 +88,10 @@ class TemplateFinder
      * Adds one path to the end of the path stack.
      * 
      * {{code: php
-     *     $finder->append('/path/1');
-     *     $finder->append('/path/2');
-     *     $finder->append('/path/3');
-     *     // $finder->getPaths() reveals that the directory search order will be
+     *     $template_finder->append('/path/1');
+     *     $template_finder->append('/path/2');
+     *     $template_finder->append('/path/3');
+     *     // $template_finder->getPaths() reveals that the directory search order will be
      *     // '/path/1/', '/path/2/', '/path/3/'.
      * }}
      * 
@@ -111,12 +111,12 @@ class TemplateFinder
      * Sets the paths directly.
      * 
      * {{code: php
-     *      $finder->setPaths(array(
+     *      $template_finder->setPaths(array(
      *          '/path/1',
      *          '/path/2',
      *          '/path/3',
      *      ));
-     *      // $finder->getPaths() reveals that the search order will be
+     *      // $template_finder->getPaths() reveals that the search order will be
      *      // '/path/1', '/path/2', '/path/3'.
      * }}
      * 
@@ -136,11 +136,11 @@ class TemplateFinder
      * Finds a file in the paths.
      * 
      * {{code: php
-     *     $finder->append('/path/1');
-     *     $finder->append('/path/2');
-     *     $finder->append('/path/3');
+     *     $template_finder->append('/path/1');
+     *     $template_finder->append('/path/2');
+     *     $template_finder->append('/path/3');
      *     
-     *     $file = $finder->find('file.php');
+     *     $file = $template_finder->find('file.php');
      *     // $file is now the first instance of 'file.php' found from the         
      *     // assigned paths, looking first for '/path/3/file.php', then for
      *     // '/path/2/file.php', then finally for '/path/1/file.php'.

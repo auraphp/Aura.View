@@ -51,7 +51,7 @@ abstract class AbstractTemplate
      * 
      * Constructor.
      * 
-     * @param TemplateFinder $finder A template finder.
+     * @param TemplateFinder $template_finder A template finder.
      * 
      * @param HelperLocator $helper_locator A Service Locator for helpers
      * attached to this template.
