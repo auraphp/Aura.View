@@ -17,7 +17,7 @@ class MetasTest extends \PHPUnit_Framework_TestCase
     /**
      * @todo Implement test__invoke().
      */
-    public function testAddAndGet()
+    public function testAddAndGet_noPosition()
     {
         $metas = new Metas;
         

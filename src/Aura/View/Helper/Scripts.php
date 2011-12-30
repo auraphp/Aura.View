@@ -59,7 +59,38 @@ class Scripts extends AbstractHelper
         
         $attr = $this->attribs($attribs);
         $tag = "<script src=\"$src\" $attr></script>";
-        $this->scripts[$tag] = $pos;
+        $this->scripts[(int) $pos][] = $tag;
+    }
+    
+    /**
+     * 
+     * Adds a conditional `<!--[if ...]><script><![endif] -->` tag to the 
+     * stack.
+     * 
+     * @param string $exp The conditional expression for the script.
+     * 
+     * @param string $src The source href for the script.
+     * 
+     * @param string $pos The position in the array for the script.
+     * 
+     * @param array $attribs Additional attributes for the <script> tag.
+     * 
+     * @return void
+     * 
+     */
+    public function addCond($exp, $src, $pos = 100, array $attribs = array())
+    {
+        $src = $this->escape($src);
+        $exp = $this->escape($exp);
+        
+        unset($attribs['src']);
+        if (empty($attribs['type'])) {
+            $attribs['type'] = 'text/javascript';
+        }
+        
+        $attr = $this->attribs($attribs);
+        $tag = "<!--[if $exp]><script src=\"$src\" $attr></script><![endif]-->";
+        $this->scripts[(int) $pos][] = $tag;
     }
     
     /**
@@ -71,10 +102,13 @@ class Scripts extends AbstractHelper
      */
     public function get()
     {
-        asort($this->scripts);
-        $scripts = array_keys($this->scripts);
-        return $this->indent 
-             . implode(PHP_EOL . $this->indent, $scripts)
-             . PHP_EOL;
+        $html = '';
+        ksort($this->scripts);
+        foreach ($this->scripts as $list) {
+            foreach ($list as $script) {
+                $html .= $this->indent . $script . PHP_EOL;
+            }
+        }
+        return $html;
     }
 }

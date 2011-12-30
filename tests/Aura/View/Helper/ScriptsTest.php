@@ -21,9 +21,9 @@ class ScriptsTest extends \PHPUnit_Framework_TestCase
     {
         $scripts = new Scripts;
         $scripts->setIndent('  ');
+        $scripts->add('/js/first.js');
         $scripts->add('/js/middle.js');
-        $scripts->add('/js/last.js', 150);
-        $scripts->add('/js/first.js', 50);
+        $scripts->add('/js/last.js');
         
         $actual = $scripts->get();
         
@@ -40,14 +40,16 @@ class ScriptsTest extends \PHPUnit_Framework_TestCase
     public function testAddAndGet()
     {
         $scripts = new Scripts;
-        $scripts->add('/js/middle.js');
         $scripts->add('/js/last.js', 150);
         $scripts->add('/js/first.js', 50);
+        $scripts->add('/js/middle.js');
+        $scripts->addCond('ie6', '/js/ie6.js');
         
         $actual = $scripts->get();
         
         $expect = '    <script src="/js/first.js" type="text/javascript"></script>' . PHP_EOL
                 . '    <script src="/js/middle.js" type="text/javascript"></script>' . PHP_EOL
+                . '    <!--[if ie6]><script src="/js/ie6.js" type="text/javascript"></script><![endif]-->' . PHP_EOL
                 . '    <script src="/js/last.js" type="text/javascript"></script>' . PHP_EOL;
         
         $this->assertSame($expect, $actual);
