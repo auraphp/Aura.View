@@ -33,9 +33,11 @@ class HelperLocator
      * @param array $registry An array of key-value pairs where the key is the
      * helper name (doubles as a method name) and the value is the helper
      * object. The value may also be a closure that returns a helper object.
+     * Note that is has to be a closure, not just any callable, because the
+     * helper object itself might be callable.
      * 
      */
-    public function __construct(array $registry = array())
+    public function __construct(array $registry = [])
     {
         foreach ($registry as $name => $spec) {
             $this->set($name, $spec);

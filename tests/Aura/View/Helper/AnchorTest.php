@@ -29,7 +29,7 @@ class AnchorTest extends \PHPUnit_Framework_TestCase
     {
         $href = '/path/to/script.php';
         $anchor = new Anchor;
-        $actual = $anchor->raw($href, 'foo', array('bar' => 'baz'));
+        $actual = $anchor->raw($href, 'foo', ['bar' => 'baz']);
         $expect = '<a href="/path/to/script.php" bar="baz">foo</a>';
         $this->assertSame($expect, $actual);
     }

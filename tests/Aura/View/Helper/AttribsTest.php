@@ -7,13 +7,13 @@ class AttribsTest extends \PHPUnit_Framework_TestCase
     {
         $attribs = new Attribs;
         
-        $values = array(
+        $values = [
             'foo' => 'bar',
             'nim' => '',
-            'baz' => array('dib', 'zim', 'gir'),
+            'baz' => ['dib', 'zim', 'gir'],
             'required' => true,
             'optional' => false,
-        );
+        ];
         
         $expect = 'foo="bar" baz="dib zim gir" required';
         $actual = $attribs($values);
@@ -23,7 +23,7 @@ class AttribsTest extends \PHPUnit_Framework_TestCase
     public function test__invokeNoAttribs()
     {
         $attribs = new Attribs;
-        $values = array();
+        $values = [];
         $expect = '';
         $actual = $attribs($values);
         $this->assertSame($expect, $actual);

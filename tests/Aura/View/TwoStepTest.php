@@ -28,7 +28,7 @@ class TwoStepTest extends \PHPUnit_Framework_TestCase
         mkdir($this->tmp, 0777, true);
         
         // prepare a set of directories for paths
-        $dirs = array('foo', 'bar', 'baz');
+        $dirs = ['foo', 'bar', 'baz'];
         foreach ($dirs as $dir) {
             $this->dirs[$dir] = $this->tmp . DIRECTORY_SEPARATOR . $dir;
             mkdir($this->dirs[$dir], 0777, true);
@@ -87,10 +87,10 @@ class TwoStepTest extends \PHPUnit_Framework_TestCase
     
     public function testSetAndGetAccept()
     {
-        $expect = array(
+        $expect = [
             'text/html' => '1.0',
             'application/xhtml+xml' => '0.9',
-        );
+        ];
         
         $this->twostep->setAccept($expect);
         $actual = $this->twostep->getAccept();
@@ -107,8 +107,8 @@ class TwoStepTest extends \PHPUnit_Framework_TestCase
 
     public function testSetAndGetData()
     {
-        $inner_data = array('foo' => 'bar', 'baz' => 'dib');
-        $outer_data = array('zim' => 'gir', 'irk' => 'doom');
+        $inner_data = ['foo' => 'bar', 'baz' => 'dib'];
+        $outer_data = ['zim' => 'gir', 'irk' => 'doom'];
         $this->twostep->setInnerData($inner_data);
         $this->twostep->setOuterData($outer_data);
         $this->assertSame($inner_data, $this->twostep->getInnerData());
@@ -117,7 +117,7 @@ class TwoStepTest extends \PHPUnit_Framework_TestCase
 
     public function testSetAddAndGetInnerPaths()
     {
-        $expect = array($this->dirs['foo'], $this->dirs['bar']);
+        $expect = [$this->dirs['foo'], $this->dirs['bar']];
         $this->twostep->setInnerPaths($expect);
         $actual = $this->twostep->getInnerPaths();
         $this->assertSame($expect, $actual);
@@ -153,10 +153,10 @@ class TwoStepTest extends \PHPUnit_Framework_TestCase
     
     public function testSetAndGetInnerView_array()
     {
-        $expect = array(
+        $expect = [
             '.html' => 'inner.php',
             '.json' => 'inner.json.php',
-        );
+        ];
         
         $this->twostep->setInnerView($expect);
         
@@ -175,7 +175,7 @@ class TwoStepTest extends \PHPUnit_Framework_TestCase
     
     public function testSetAddAndGetOuterPaths()
     {
-        $expect = array($this->dirs['foo'], $this->dirs['bar']);
+        $expect = [$this->dirs['foo'], $this->dirs['bar']];
         $this->twostep->setOuterPaths($expect);
         $actual = $this->twostep->getOuterPaths();
         $this->assertSame($expect, $actual);
@@ -211,10 +211,10 @@ class TwoStepTest extends \PHPUnit_Framework_TestCase
     
     public function testSetAndGetOuterView_array()
     {
-        $expect = array(
+        $expect = [
             '.html' => 'outer.php',
             '.json' => 'outer.json.php',
-        );
+        ];
         
         $this->twostep->setOuterView($expect);
         
@@ -242,8 +242,8 @@ class TwoStepTest extends \PHPUnit_Framework_TestCase
     public function testRenderInnerView()
     {
         $this->twostep->setInnerView('inner_view');
-        $this->twostep->setInnerData(array('inner_var' => 'World!'));
-        $this->twostep->setInnerPaths(array($this->dirs['bar'], $this->dirs['foo']));
+        $this->twostep->setInnerData(['inner_var' => 'World!']);
+        $this->twostep->setInnerPaths([$this->dirs['bar'], $this->dirs['foo']]);
         $expect = 'World!';
         $actual = $this->twostep->renderInnerView();
         $this->assertSame($expect, $actual);
@@ -268,8 +268,8 @@ class TwoStepTest extends \PHPUnit_Framework_TestCase
     public function testRenderOuterView()
     {
         $this->twostep->setOuterView('outer_view');
-        $this->twostep->setOuterData(array('outer_var' => 'Hello'));
-        $this->twostep->setOuterPaths(array($this->dirs['bar'], $this->dirs['baz']));
+        $this->twostep->setOuterData(['outer_var' => 'Hello']);
+        $this->twostep->setOuterPaths([$this->dirs['bar'], $this->dirs['baz']]);
         
         $inner = 'World!';
         $expect = '<div>Hello World!</div>';
@@ -298,25 +298,25 @@ class TwoStepTest extends \PHPUnit_Framework_TestCase
     // don't set a format, let it negotiate one from accept headers
     public function testRender()
     {
-        $this->twostep->setAccept(array(
+        $this->twostep->setAccept([
             'text/html' => 1.0,
             'application/json' => 0.9,
-        ));
+        ]);
         
         $view = $this->twostep;
-        $this->twostep->setInnerView(array(
+        $this->twostep->setInnerView([
             '.html' => 'inner_view',
             '.json' => function() use ($view) {
                 return json_encode($view->getInnerData());
             },
-        ));
+        ]);
         
-        $this->twostep->setInnerData(array('inner_var' => 'World!'));
-        $this->twostep->setInnerPaths(array($this->dirs['bar'], $this->dirs['foo']));
+        $this->twostep->setInnerData(['inner_var' => 'World!']);
+        $this->twostep->setInnerPaths([$this->dirs['bar'], $this->dirs['foo']]);
         
         $this->twostep->setOuterView('outer_view');
-        $this->twostep->setOuterData(array('outer_var' => 'Hello'));
-        $this->twostep->setOuterPaths(array($this->dirs['bar'], $this->dirs['baz']));
+        $this->twostep->setOuterData(['outer_var' => 'Hello']);
+        $this->twostep->setOuterPaths([$this->dirs['bar'], $this->dirs['baz']]);
         
         $expect = '<div>Hello World!</div>';
         $actual = $this->twostep->render();
@@ -327,11 +327,11 @@ class TwoStepTest extends \PHPUnit_Framework_TestCase
     public function testRender_noAcceptFormats()
     {
         $this->twostep->setInnerView('inner_view');
-        $this->twostep->setInnerData(array('inner_var' => 'World!'));
-        $this->twostep->setInnerPaths(array($this->dirs['bar'], $this->dirs['foo']));
+        $this->twostep->setInnerData(['inner_var' => 'World!']);
+        $this->twostep->setInnerPaths([$this->dirs['bar'], $this->dirs['foo']]);
         $this->twostep->setOuterView('outer_view');
-        $this->twostep->setOuterData(array('outer_var' => 'Hello'));
-        $this->twostep->setOuterPaths(array($this->dirs['bar'], $this->dirs['baz']));
+        $this->twostep->setOuterData(['outer_var' => 'Hello']);
+        $this->twostep->setOuterPaths([$this->dirs['bar'], $this->dirs['baz']]);
         $expect = '<div>Hello World!</div>';
         $actual = $this->twostep->render();
         $this->assertSame($expect, $actual);

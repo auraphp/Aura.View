@@ -24,7 +24,7 @@ class Metas extends AbstractHelper
      * @var array
      * 
      */
-    protected $metas = array();
+    protected $metas = [];
     
     /**
      * 
@@ -49,7 +49,7 @@ class Metas extends AbstractHelper
      * @return void
      * 
      */
-    public function add(array $attribs = array(), $pos = 100)
+    public function add(array $attribs = [], $pos = 100)
     {
         $attr = $this->attribs($attribs);
         $this->metas[(int) $pos][] = "<meta $attr />";
@@ -70,10 +70,10 @@ class Metas extends AbstractHelper
      */
     public function addHttp($http_equiv, $content, $pos = 100)
     {
-        $attribs = array(
+        $attribs = [
             'http-equiv' => $http_equiv,
             'content'    => $content,
-        );
+        ];
         
         $this->add($attribs, $pos);
     }
@@ -93,10 +93,10 @@ class Metas extends AbstractHelper
      */
     public function addName($name, $content, $pos = 100)
     {
-        $attribs = array(
+        $attribs = [
             'name'    => $name,
             'content' => $content,
-        );
+        ];
         
         $this->add($attribs, $pos);
     }

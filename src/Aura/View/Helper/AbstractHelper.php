@@ -121,7 +121,7 @@ abstract class AbstractHelper
             return '';
         }
         
-        $html = array();
+        $html = [];
         foreach ($attribs as $key => $val) {
             
             // space-separate multiple values

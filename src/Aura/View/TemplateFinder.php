@@ -24,7 +24,7 @@ class TemplateFinder
      * @var array
      * 
      */
-    protected $paths = array();
+    protected $paths = [];
     
     /**
      * 
@@ -34,7 +34,7 @@ class TemplateFinder
      * @var array
      * 
      */
-    protected $found = array();
+    protected $found = [];
     
     /**
      * 
@@ -43,7 +43,7 @@ class TemplateFinder
      * @param array $paths The default path stack for this TemplateFinder.
      * 
      */
-    public function __construct(array $paths = array())
+    public function __construct(array $paths = [])
     {
         $this->paths = $paths;
     }
@@ -80,7 +80,7 @@ class TemplateFinder
     public function prepend($path)
     {
         array_unshift($this->paths, rtrim($path, DIRECTORY_SEPARATOR));
-        $this->found = array();
+        $this->found = [];
     }
     
     /**
@@ -103,7 +103,7 @@ class TemplateFinder
     public function append($path)
     {
         $this->paths[] = rtrim($path, DIRECTORY_SEPARATOR);
-        $this->found = array();
+        $this->found = [];
     }
     
     /**
@@ -111,11 +111,11 @@ class TemplateFinder
      * Sets the paths directly.
      * 
      * {{code: php
-     *      $template_finder->setPaths(array(
+     *      $template_finder->setPaths([
      *          '/path/1',
      *          '/path/2',
      *          '/path/3',
-     *      ));
+     *      ]);
      *      // $template_finder->getPaths() reveals that the search order will be
      *      // '/path/1', '/path/2', '/path/3'.
      * }}
@@ -128,7 +128,7 @@ class TemplateFinder
     public function setPaths($paths)
     {
         $this->paths = $paths;
-        $this->found = array();
+        $this->found = [];
     }
     
     /**

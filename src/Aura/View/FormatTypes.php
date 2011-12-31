@@ -26,7 +26,7 @@ class FormatTypes
      * @var array
      * 
      */
-    protected $map = array(
+    protected $map = [
         '.aif'      => 'audio/x-aiff',
         '.aifc'     => 'audio/x-aiff',
         '.aiff'     => 'audio/x-aiff',
@@ -108,7 +108,7 @@ class FormatTypes
         '.xpm'      => 'image/x-xpixmap',
         '.xwd'      => 'image/x-xwindowdump',
         '.zip'      => 'application/zip',
-    );
+    ];
     
     /**
      * 
@@ -118,7 +118,7 @@ class FormatTypes
      * to Content-Type values.
      * 
      */
-    public function __construct(array $map = array())
+    public function __construct(array $map = [])
     {
         $this->map = array_merge($this->map, $map);
     }

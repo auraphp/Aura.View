@@ -52,7 +52,7 @@ class TwoStep
      * @var array
      * 
      */
-    protected $inner_data = array();
+    protected $inner_data = [];
     
     /**
      * 
@@ -61,7 +61,7 @@ class TwoStep
      * @var array
      * 
      */
-    protected $inner_paths = array();
+    protected $inner_paths = [];
     
     /**
      * 
@@ -69,11 +69,10 @@ class TwoStep
      * 
      * - (string) A template file name.
      * 
-     * - (closure) A closure to execute. It should be of the format
-     * `function (...) uses (...) { ... };`.
+     * - (callable) A callable to execute. It should take no parameters.
      * 
      * - (array) An array where each element key is a .format name, and the
-     *   corresponding element value is a string or a closure. This type is
+     *   corresponding element value is a string or a callable. This type is
      *   most useful when allowing for multiple views using the same data.
      * 
      * @var mixed
@@ -108,7 +107,7 @@ class TwoStep
      * @var array
      * 
      */
-    protected $outer_data = array();
+    protected $outer_data = [];
     
     /**
      * 
@@ -117,7 +116,7 @@ class TwoStep
      * @var array
      * 
      */
-    protected $outer_paths = array();
+    protected $outer_paths = [];
     
     /**
      * 
@@ -125,12 +124,11 @@ class TwoStep
      * 
      * - (string) A template file name.
      * 
-     * - (closure) A closure to execute; it should be of the format
-     *   `function ($inner) uses (...) {...};` where `$inner` is the content 
-     *   of the inner view.
+     * - (callable) A callable to execute; it should be a single parameter,
+     *   `$inner`, which is the content of the inner view.
      * 
      * - (array) An array where each element key is a .format name, and the
-     *   corresponding element value is a string or a closure. This type is
+     *   corresponding element value is a string or a callable. This type is
      *   most useful when allowing for multiple views using the same data.
      * 
      * @var mixed
@@ -162,7 +160,7 @@ class TwoStep
      * @return void
      * 
      */
-    public function setAccept(array $accept = array())
+    public function setAccept(array $accept = [])
     {
         $this->accept = $accept;
     }
@@ -225,11 +223,10 @@ class TwoStep
      * 
      * - (string) A template file name.
      * 
-     * - (closure) A closure to execute; it should be of the format
-     *   `function (...) uses (...) {...};`.
+     * - (callable) A closure to execute; it should take no parameters.
      * 
      * - (array) An array where each element key is a .format name, and the
-     *   corresponding element value is a string or a closure. This type is
+     *   corresponding element value is a string or a callable. This type is
      *   most useful when allowing for multiple views using the same data.
      * 
      * @param mixed $inner_view The inner view specification.
@@ -295,7 +292,7 @@ class TwoStep
      * @return void
      * 
      */
-    public function setInnerPaths(array $inner_paths = array())
+    public function setInnerPaths(array $inner_paths = [])
     {
         $this->inner_paths = $inner_paths;
     }
@@ -332,12 +329,11 @@ class TwoStep
      * 
      * - (string) A template file name.
      * 
-     * - (closure) A closure to execute; it should be of the format
-     *   `function ($inner) uses (...) {...};` where `$inner` is the content 
-     *   of the inner view.
+     * - (callable) A callable to execute; it should take one parameter,
+     *   `$inner`, which is the content of the inner view.
      * 
      * - (array) An array where each element key is a .format name, and the
-     *   corresponding element value is a string or a closure. This type is
+     *   corresponding element value is a string or a callable. This type is
      *   most useful when allowing for multiple views using the same data.
      * 
      * @param mixed $outer_view The outer view specification.
@@ -401,7 +397,7 @@ class TwoStep
      * @return void
      * 
      */
-    public function setOuterPaths(array $outer_paths = array())
+    public function setOuterPaths(array $outer_paths = [])
     {
         $this->outer_paths = $outer_paths;
     }
@@ -503,8 +499,8 @@ class TwoStep
             // no view
             $inner = null;
             break;
-        case ($view instanceof \Closure):
-            // view is a closure
+        case (is_callable($view)):
+            // view is a callable
             $inner = $view();
             break;
         default:
@@ -534,8 +530,8 @@ class TwoStep
             // no view
             $outer = $inner;
             break;
-        case ($view instanceof \Closure):
-            // view is a closure
+        case (is_callable($view)):
+            // view is a callable
             $outer = $view($inner);
             break;
         default:

@@ -26,12 +26,12 @@ class Datetime extends AbstractHelper
      * @var array
      * 
      */
-    protected $format = array(
+    protected $format = [
         'date'     => 'Y-m-d',
         'time'     => 'H:i:s',
         'datetime' => 'Y-m-d H:i:s',
         'default'  => 'Y-m-d H:i:s',
-    );
+    ];
     
     /**
      * 
@@ -40,7 +40,7 @@ class Datetime extends AbstractHelper
      * @param array $format Additional or override datetime formats.
      * 
      */
-    public function __construct(array $format = array())
+    public function __construct(array $format = [])
     {
         $this->format = array_merge($this->format, $format);
     }

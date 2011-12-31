@@ -30,7 +30,7 @@ class Anchor extends AbstractHelper
      * @return string
      * 
      */
-    public function __invoke($href, $text, array $attribs = array())
+    public function __invoke($href, $text, array $attribs = [])
     {
         // escape the text
         $text = $this->escape($text);
@@ -51,7 +51,7 @@ class Anchor extends AbstractHelper
      * @return string
      * 
      */
-    public function raw($href, $text, array $attribs = array())
+    public function raw($href, $text, array $attribs = [])
     {
         // escape the href, but *not* the text
         $href = $this->escape($href);

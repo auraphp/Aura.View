@@ -12,7 +12,7 @@ class TemplateFinderTest extends \PHPUnit_Framework_TestCase
      */
     protected $finder;
 
-    protected $dirs = array();
+    protected $dirs = [];
     
     /**
      * Sets up the fixture, for example, opens a network connection.
@@ -25,7 +25,7 @@ class TemplateFinderTest extends \PHPUnit_Framework_TestCase
         
         // prepare a set of directories for paths
         $base = dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . 'tmp';
-        $dirs = array('foo', 'bar', 'baz');
+        $dirs = ['foo', 'bar', 'baz'];
         foreach ($dirs as $dir) {
             $this->dirs[$dir] = $base . DIRECTORY_SEPARATOR . $dir;
             mkdir($this->dirs[$dir], 0777, true);
@@ -51,7 +51,7 @@ class TemplateFinderTest extends \PHPUnit_Framework_TestCase
     public function testSetAndGetPaths()
     {
         // should be no paths yet
-        $expect = array();
+        $expect = [];
         $actual = $this->finder->getPaths();
         $this->assertSame($expect, $actual);
         

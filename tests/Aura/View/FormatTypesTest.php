@@ -4,10 +4,10 @@ class FormatTypesTest extends \PHPUnit_Framework_TestCase
 {
     public function test__constructAndGetContentType()
     {
-        $map = array(
+        $map = [
             '.txt' => 'example/override',
             '.new' => 'example/new',
-        );
+        ];
         
         $format_types = new FormatTypes($map);
         
@@ -33,17 +33,17 @@ class FormatTypesTest extends \PHPUnit_Framework_TestCase
     
     public function testMatchAcceptFormats()
     {
-        $accept = array(
+        $accept = [
             'text/html',
             'application/xhtml+xml',
             'application/json',
             'application/xml',
-        );
+        ];
         
-        $formats = array(
+        $formats = [
             '.json',
             '.xhtml',
-        );
+        ];
         
         // should find .xhtml first, since it shows up first for accept
         $format_types = new FormatTypes;
@@ -52,14 +52,14 @@ class FormatTypesTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($expect, $actual);
         
         // no such type
-        $accept = array(
+        $accept = [
             'application/no-such-type',
-        );
+        ];
         $actual = $format_types->matchAcceptFormats($accept, $formats);
         $this->assertNull($actual);
         
         // no such format
-        $formats = array('.nosuchformat');
+        $formats = ['.nosuchformat'];
         $actual = $format_types->matchAcceptFormats($accept, $formats);
         $this->assertNull($actual);
     }

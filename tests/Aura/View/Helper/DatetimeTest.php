@@ -9,7 +9,7 @@ class DatetimeTest extends \PHPUnit_Framework_TestCase
 {
     public function test__invoke()
     {
-        $datetime = new Datetime(array('special' => 'Ymd'));
+        $datetime = new Datetime(['special' => 'Ymd']);
         $spec = 'March 21, 2004, 11:45pm';
         
         // default format

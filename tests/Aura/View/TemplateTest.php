@@ -16,7 +16,7 @@ class TemplateTest extends \PHPUnit_Framework_TestCase
         parent::setUp();
     }
     
-    protected function newTemplate(array $paths = array())
+    protected function newTemplate(array $paths = [])
     {
         $finder = new TemplateFinder();
         
@@ -67,24 +67,24 @@ class TemplateTest extends \PHPUnit_Framework_TestCase
     public function testAddSetAndGetData()
     {
         $template = $this->newTemplate();
-        $expect = array();
+        $expect = [];
         $actual = $template->getData();
         $this->assertSame($expect, $actual);
         
         // add data
         $template->foo = 'bar';
-        $template->addData(array('baz' => 'dib'));
-        $expect = array(
+        $template->addData(['baz' => 'dib']);
+        $expect = [
             'foo' => 'bar',
             'baz' => 'dib',
-        );
+        ];
         $actual = $template->getData();
         $this->assertSame($expect, $actual);
         
         // set data
-        $data = array(
+        $data = [
             'foo' => 'bar'
-        );
+        ];
         $template->setData($data);
         $this->assertSame('bar', $template->foo);
         
@@ -99,8 +99,8 @@ class TemplateTest extends \PHPUnit_Framework_TestCase
     {
         // prepare a set of directories and files
         $base = dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . 'tmp';
-        $list = array('foo', 'bar', 'baz');
-        $dirs = array();
+        $list = ['foo', 'bar', 'baz'];
+        $dirs = [];
         foreach ($list as $dir) {
             // make dir for the finder
             $dirs[$dir] = $base . DIRECTORY_SEPARATOR . $dir;
@@ -142,7 +142,7 @@ class TemplateTest extends \PHPUnit_Framework_TestCase
         file_put_contents($file, $code);
         
         // get a template object
-        $template = $this->newTemplate(array($dir));
+        $template = $this->newTemplate([$dir]);
         $template->foo = 'bar';
         $actual = $template->fetch('zim');
         $expect = 'bar';
@@ -206,8 +206,8 @@ class TemplateTest extends \PHPUnit_Framework_TestCase
         file_put_contents($file, $code);
         
         // get a template object
-        $template = $this->newTemplate(array($dir));
-        $actual = $template->fetch('foo', array('foo' => 'dib'));
+        $template = $this->newTemplate([$dir]);
+        $actual = $template->fetch('foo', ['foo' => 'dib']);
         $expect = 'dib';
         $this->assertSame($expect, $actual);
         

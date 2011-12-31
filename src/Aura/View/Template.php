@@ -29,7 +29,7 @@ class Template extends AbstractTemplate
      * @return string
      * 
      */
-    public function fetch($__name__, array $__vars__ = array())
+    public function fetch($__name__, array $__vars__ = [])
     {
         if ($__vars__) {
             extract($__vars__, EXTR_SKIP);

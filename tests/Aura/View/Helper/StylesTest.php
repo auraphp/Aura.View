@@ -38,7 +38,7 @@ class StylesTest extends \PHPUnit_Framework_TestCase
         $styles = new Styles;
         
         $styles->setIndent('  ');
-        $styles->add('/css/middle.css', null, array('media' => 'print'));
+        $styles->add('/css/middle.css', null, ['media' => 'print']);
         $styles->add('/css/last.css', 150);
         $styles->add('/css/first.css', 50);
         

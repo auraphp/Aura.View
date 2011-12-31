@@ -18,15 +18,15 @@ class LinksTest extends \PHPUnit_Framework_TestCase
     {
         $links = new Links;
         
-        $links->add(array(
+        $links->add([
             'rel' => 'prev',
             'href' => '/path/to/prev?this&that',
-        ));
+        ]);
         
-        $links->add(array(
+        $links->add([
             'rel' => 'next',
             'href' => '/path/to/next?this&that',
-        ));
+        ]);
         
         $actual = $links->get();
         $expect = '    <link rel="prev" href="/path/to/prev?this&amp;that" />' . PHP_EOL
@@ -44,15 +44,15 @@ class LinksTest extends \PHPUnit_Framework_TestCase
         
         $links->setIndent('  ');
         
-        $links->add(array(
+        $links->add([
             'rel' => 'prev',
             'href' => '/path/to/prev?this&that',
-        ));
+        ]);
         
-        $links->add(array(
+        $links->add([
             'rel' => 'next',
             'href' => '/path/to/next?this&that',
-        ));
+        ]);
         
         $actual = $links->get();
         $expect = '  <link rel="prev" href="/path/to/prev?this&amp;that" />' . PHP_EOL

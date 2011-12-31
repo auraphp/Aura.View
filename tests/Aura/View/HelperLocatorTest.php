@@ -14,11 +14,11 @@ class HelperLocatorTest extends \PHPUnit_Framework_TestCase
 
     public function test__constructAndGet()
     {
-        $helper_locator = new HelperLocator(array(
+        $helper_locator = new HelperLocator([
             'mockHelper' => function() {
                 return new \Aura\View\Helper\MockHelper;
             },
-        ));
+        ]);
         
         $expect = 'Aura\View\Helper\MockHelper';
         $actual = $helper_locator->get('mockHelper');

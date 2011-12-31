@@ -24,7 +24,7 @@ class Styles extends AbstractHelper
      * @var array
      * 
      */
-    protected $styles = array();
+    protected $styles = [];
     
     /**
      * 
@@ -49,17 +49,17 @@ class Styles extends AbstractHelper
      * @return void
      * 
      */
-    public function add($href, $pos = 100, array $attribs = array())
+    public function add($href, $pos = 100, array $attribs = [])
     {
         if ($pos === null) {
             $pos = 100;
         }
         
-        $base = array(
+        $base = [
             'rel'   => 'stylesheet',
             'href'  => $href,
             'type'  => 'text/css',
-        );
+        ];
         
         if (! isset($attribs['media'])) {
             $base['media'] = 'screen';

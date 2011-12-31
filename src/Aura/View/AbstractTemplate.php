@@ -35,7 +35,7 @@ abstract class AbstractTemplate
      * @var array
      * 
      */
-    private $_data = array();
+    private $_data = [];
     
     /**
      * 
@@ -137,7 +137,7 @@ abstract class AbstractTemplate
     public function __call($name, $args)
     {
         $helper = $this->getHelper($name);
-        return call_user_func_array(array($helper, '__invoke'), $args);
+        return call_user_func_array($helper, $args);
     }
     
     /**
@@ -149,7 +149,7 @@ abstract class AbstractTemplate
      * @return void
      * 
      */
-    public function setPaths(array $paths = array())
+    public function setPaths(array $paths = [])
     {
         $this->_template_finder->setPaths($paths);
     }
@@ -164,7 +164,7 @@ abstract class AbstractTemplate
      * @return void
      * 
      */
-    public function addData(array $data = array())
+    public function addData(array $data = [])
     {
         $this->_data = array_merge($this->_data, $data);
     }
@@ -180,7 +180,7 @@ abstract class AbstractTemplate
      * @return void
      * 
      */
-    public function setData(array $data = array())
+    public function setData(array $data = [])
     {
         $this->_data = $data;
     }
@@ -274,5 +274,5 @@ abstract class AbstractTemplate
      * @return string
      * 
      */
-    abstract public function fetch($name, array $vars = array());
+    abstract public function fetch($name, array $vars = []);
 }
