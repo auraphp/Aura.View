@@ -46,10 +46,12 @@ class Scripts extends AbstractHelper
      * 
      * @param array $attribs Additional attributes for the <script> tag.
      * 
+     * @param int $pos The script position in the stack.
+     * 
      * @return void
      * 
      */
-    public function add($src, $pos = 100, array $attribs = [])
+    public function add($src, array $attribs = [], $pos = 100)
     {
         $src = $this->escape($src);
         unset($attribs['src']);
@@ -71,14 +73,14 @@ class Scripts extends AbstractHelper
      * 
      * @param string $src The source href for the script.
      * 
-     * @param string $pos The position in the array for the script.
-     * 
      * @param array $attribs Additional attributes for the <script> tag.
+     * 
+     * @param string $pos The script position in the stack.
      * 
      * @return void
      * 
      */
-    public function addCond($exp, $src, $pos = 100, array $attribs = [])
+    public function addCond($exp, $src, array $attribs = [], $pos = 100)
     {
         $src = $this->escape($src);
         $exp = $this->escape($exp);
