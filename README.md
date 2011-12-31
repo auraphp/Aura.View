@@ -145,6 +145,8 @@ Other helpers that are part of Aura View include:
 
     - `$this->scripts()->add($src)` adds a script tag to the helper.
     
+    - `$this->scripts()->addCond($exp, $src)` adds a script tag inside a conditional expression to the helper.
+    
     - `$this->scripts()->get()` returns all the added tags from the helper.
 
 - `$this->styles()` provides an object with methods that add to, and then retrieve, a series of `<link rel="stylesheet" ... />` tags.
