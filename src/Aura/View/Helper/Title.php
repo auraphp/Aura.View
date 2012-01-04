@@ -3,8 +3,6 @@
  * 
  * This file is part of the Aura Project for PHP.
  * 
- * @package Aura.View
- * 
  * @license http://opensource.org/licenses/bsd-license.php BSD
  * 
  */
@@ -14,6 +12,8 @@ namespace Aura\View\Helper;
  * 
  * Sets the title of the layout
  *  
+ * @package Aura.View
+ * 
  */
 class Title extends AbstractHelper
 {

@@ -3,8 +3,6 @@
  * 
  * This file is part of the Aura Project for PHP.
  * 
- * @package Aura.View
- * 
  * @license http://opensource.org/licenses/bsd-license.php BSD
  * 
  */
@@ -13,6 +11,8 @@ namespace Aura\View;
 /**
  * 
  * A ServiceLocator implementation for loading and retaining helper objects.
+ * 
+ * @package Aura.View
  * 
  */
 class HelperLocator

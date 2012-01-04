@@ -3,8 +3,6 @@
  * 
  * This file is part of the Aura Project for PHP.
  * 
- * @package Aura.View
- * 
  * @license http://opensource.org/licenses/bsd-license.php BSD
  * 
  */
@@ -14,6 +12,8 @@ namespace Aura\View;
  * 
  * Provides a TwoStepView pattern implementation; this allows for an inner 
  * ("core") view and and outer ("layout") view as commonly used by web apps.
+ * 
+ * @package Aura.View
  * 
  */
 class TwoStep
