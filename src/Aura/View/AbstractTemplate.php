@@ -32,10 +32,10 @@ abstract class AbstractTemplate
      * 
      * Data assigned to the template.
      * 
-     * @var array
+     * @var object
      * 
      */
-    private $_data = [];
+    private $_data;
     
     /**
      * 
@@ -61,6 +61,8 @@ abstract class AbstractTemplate
         TemplateFinder $template_finder,
         HelperLocator  $helper_locator
     ) {
+        $this->_data            = (object) [];
+        $this->_escaper         = new Escaper($this->_data);
         $this->_template_finder = $template_finder;
         $this->_helper_locator  = $helper_locator;
     }
@@ -76,7 +78,12 @@ abstract class AbstractTemplate
      */
     public function __get($key)
     {
-        return $this->_data[$key];
+        return $this->_escaper->$key;
+    }
+    
+    public function raw()
+    {
+        return $this->_data;
     }
     
     /**
@@ -92,7 +99,7 @@ abstract class AbstractTemplate
      */
     public function __set($key, $val)
     {
-        $this->_data[$key] = $val;
+        $this->_data->$key = $val;
     }
     
     /**
@@ -166,7 +173,7 @@ abstract class AbstractTemplate
      */
     public function addData(array $data = [])
     {
-        $this->_data = array_merge($this->_data, $data);
+        $this->_data = (object) array_merge((array) $this->_data, $data);
     }
     
     /**
@@ -182,7 +189,7 @@ abstract class AbstractTemplate
      */
     public function setData(array $data = [])
     {
-        $this->_data = $data;
+        $this->_data = (object) $data;
     }
     
     /**
@@ -195,7 +202,7 @@ abstract class AbstractTemplate
      */
     public function getData()
     {
-        return $this->_data;
+        return (array) $this->_data;
     }
     
     /**
