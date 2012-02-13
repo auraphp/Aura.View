@@ -267,12 +267,28 @@ abstract class AbstractTemplate
      * 
      * Fetches the output from a template.
      * 
-     * @param string $name The template name to use.
+     * @param string $__name__ The template name to use.
      * 
      * @param array $vars Variables to extract into the local scope.
      * 
      * @return string
      * 
      */
-    abstract public function fetch($name, array $vars = []);
+    abstract public function fetch($__name__);
+
+    /**
+     * 
+     * Fetches the output from a partial. The partial will be executed in
+     * isolation from the rest of the template, which means `$this` refers
+     * to the *partial* data, not the original template data. However,
+     * helper objects are shared.
+     * 
+     * @param string $name The partial to use.
+     * 
+     * @param array $data Data to use for the partial.
+     * 
+     * @return string
+     * 
+     */
+    abstract public function partial($name, array $data = []);
 }

@@ -24,18 +24,34 @@ class Template extends AbstractTemplate
      * 
      * @param string $__name__ The template name to use.
      * 
-     * @param array $__vars__ Variables to extract into the local scope.
+     * @return string
+     * 
+     */
+    public function fetch($__name__)
+    {
+        ob_start();
+        require $this->find($__name__);
+        return ob_get_clean();
+    }
+    
+    /**
+     * 
+     * Fetches the output from a partial. The partial will be executed in
+     * isolation from the rest of the template, which means `$this` refers
+     * to the *partial* data, not the original template data. However, helper
+     * objects *are* shared between the original template and the partial.
+     * 
+     * @param string $name The partial to use.
+     * 
+     * @param array $data Data to use for the partial.
      * 
      * @return string
      * 
      */
-    public function fetch($__name__, array $__vars__ = [])
+    public function partial($name, array $data = [])
     {
-        if ($__vars__) {
-            extract($__vars__, EXTR_SKIP);
-        }
-        ob_start();
-        require $this->find($__name__);
-        return ob_get_clean();
+        $tpl = clone($this);
+        $tpl->setData($data);
+        return $tpl->fetch($name);
     }
 }
