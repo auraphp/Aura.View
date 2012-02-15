@@ -1,10 +1,14 @@
 <?php
-namespace Aura\View;
+namespace Aura\View\Escaper;
+use Aura\View\EscaperFactory;
 class EscaperTest extends \PHPUnit_Framework_TestCase
 {
+    protected $escaper_factory;
+    
     protected function setUp()
     {
         parent::setUp();
+        $this->escaper_factory = new EscaperFactory;
     }
     
     protected function tearDown()
@@ -15,12 +19,12 @@ class EscaperTest extends \PHPUnit_Framework_TestCase
     public function testIteration()
     {
         $data = ['foo', 'bar', 'baz'];
-        $object = new \ArrayObject($data);
-        $e = new Escaper($object);
+        $i = 0;
+        $e = $this->escaper_factory->newInstance($data);
         foreach ($e as $key => $val) {
-            echo $val . PHP_EOL;
+            $i++;
             $this->assertSame($data[$key], $val);
         }
-        echo "Done.";
+        $this->assertSame($i, count($data));
     }
 }

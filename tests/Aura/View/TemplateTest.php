@@ -18,14 +18,16 @@ class TemplateTest extends \PHPUnit_Framework_TestCase
     
     protected function newTemplate(array $paths = [])
     {
-        $finder = new TemplateFinder();
+        $template_finder = new TemplateFinder();
         
         $helper_locator = new HelperLocator;
         $helper_locator->set('mockHelper', function () {
             return new \Aura\View\Helper\MockHelper;
         });
         
-        $template = new Template($finder, $helper_locator);
+        $escaper_factory = new EscaperFactory;
+        
+        $template = new Template($template_finder, $helper_locator, $escaper_factory);
         $template->setPaths($paths);
         
         return $template;
@@ -189,16 +191,16 @@ class TemplateTest extends \PHPUnit_Framework_TestCase
         rmdir($dir);
     }
     
-    public function testFetchExtract()
+    public function testPartial()
     {
         // the template file
         $file = dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR
               . 'tmp' . DIRECTORY_SEPARATOR
-              . 'fetch' . DIRECTORY_SEPARATOR
-              . 'foo.php';
+              . 'partial' . DIRECTORY_SEPARATOR
+              . '_foo.php';
         
         // the template code
-        $code = '<?php echo $foo; ?>';
+        $code = '<?php echo $this->foo; ?>';
         
         // put it in place
         $dir = dirname($file);
@@ -207,7 +209,7 @@ class TemplateTest extends \PHPUnit_Framework_TestCase
         
         // get a template object
         $template = $this->newTemplate([$dir]);
-        $actual = $template->fetch('foo', ['foo' => 'dib']);
+        $actual = $template->partial('_foo', ['foo' => 'dib']);
         $expect = 'dib';
         $this->assertSame($expect, $actual);
         

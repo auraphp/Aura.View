@@ -47,6 +47,10 @@ abstract class AbstractTemplate
      */
     private $_helper_locator;
     
+    private $_escaper;
+    
+    private $_escaper_factory;
+    
     /**
      * 
      * Constructor.
@@ -59,12 +63,13 @@ abstract class AbstractTemplate
      */
     public function __construct(
         TemplateFinder $template_finder,
-        HelperLocator  $helper_locator
+        HelperLocator  $helper_locator,
+        EscaperFactory $escaper_factory
     ) {
-        $this->_data            = (object) [];
-        $this->_escaper         = new Escaper($this->_data);
+        $this->_escaper_factory = $escaper_factory;
         $this->_template_finder = $template_finder;
         $this->_helper_locator  = $helper_locator;
+        $this->setData();
     }
     
     /**
@@ -79,11 +84,6 @@ abstract class AbstractTemplate
     public function __get($key)
     {
         return $this->_escaper->$key;
-    }
-    
-    public function raw()
-    {
-        return $this->_data;
     }
     
     /**
@@ -113,7 +113,7 @@ abstract class AbstractTemplate
      */
     public function __isset($key)
     {
-        return isset($this->_data[$key]);
+        return isset($this->_data->$key);
     }
     
     /**
@@ -127,7 +127,7 @@ abstract class AbstractTemplate
      */
     public function __unset($key)
     {
-        unset($this->_data[$key]);
+        unset($this->_data->$key);
     }
     
     /**
@@ -174,6 +174,7 @@ abstract class AbstractTemplate
     public function addData(array $data = [])
     {
         $this->_data = (object) array_merge((array) $this->_data, $data);
+        $this->_escaper = $this->_escaper_factory->newInstance($this->_data);
     }
     
     /**
@@ -189,7 +190,8 @@ abstract class AbstractTemplate
      */
     public function setData(array $data = [])
     {
-        $this->_data = (object) $data;
+        $this->_data    = (object) $data;
+        $this->_escaper = $this->_escaper_factory->newInstance($this->_data);
     }
     
     /**
@@ -203,6 +205,11 @@ abstract class AbstractTemplate
     public function getData()
     {
         return (array) $this->_data;
+    }
+    
+    public function __raw()
+    {
+        return $this->_data;
     }
     
     /**

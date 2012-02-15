@@ -45,14 +45,16 @@ class TwoStepTest extends \PHPUnit_Framework_TestCase
         file_put_contents($file, $code);
         
         // set up the TwoStep view
-        $finder = new TemplateFinder();
+        $template_finder = new TemplateFinder();
         
         $helper_locator = new HelperLocator;
         $helper_locator->set('mockHelper', function () {
             return new \Aura\View\Helper\MockHelper;
         });
         
-        $template = new Template($finder, $helper_locator);
+        $escaper_factory = new EscaperFactory;
+        
+        $template = new Template($template_finder, $helper_locator, $escaper_factory);
         
         $format_types = new FormatTypes;
         
