@@ -258,4 +258,11 @@ class TemplateTest extends \PHPUnit_Framework_TestCase
         $actual = $template->getTemplateFinder();
         $this->assertInstanceOf('Aura\View\TemplateFinder', $actual);
     }
+    
+    public function test__raw()
+    {
+        $template = $this->newTemplate();
+        $actual = $template->__raw();
+        $this->assertInstanceOf('StdClass', $actual);
+    }
 }
