@@ -18,6 +18,8 @@ class TemplateTest extends \PHPUnit_Framework_TestCase
     
     protected function newTemplate(array $paths = [])
     {
+        $escaper_factory = new EscaperFactory;
+        
         $template_finder = new TemplateFinder();
         
         $helper_locator = new HelperLocator;
@@ -25,9 +27,7 @@ class TemplateTest extends \PHPUnit_Framework_TestCase
             return new \Aura\View\Helper\MockHelper;
         });
         
-        $escaper_factory = new EscaperFactory;
-        
-        $template = new Template($template_finder, $helper_locator, $escaper_factory);
+        $template = new Template($escaper_factory, $template_finder, $helper_locator);
         $template->setPaths($paths);
         
         return $template;

@@ -62,9 +62,9 @@ abstract class AbstractTemplate
      * 
      */
     public function __construct(
+        EscaperFactory $escaper_factory,
         TemplateFinder $template_finder,
-        HelperLocator  $helper_locator,
-        EscaperFactory $escaper_factory
+        HelperLocator  $helper_locator
     ) {
         $this->_escaper_factory = $escaper_factory;
         $this->_template_finder = $template_finder;

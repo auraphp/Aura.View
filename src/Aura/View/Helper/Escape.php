@@ -37,7 +37,7 @@ class Escape
      */
     public function __construct(EscaperFactory $escaper_factory)
     {
-        $this->escaper_object = $escaper_factory->newInstance(object []);
+        $this->escaper_object = $escaper_factory->newInstance((object) []);
     }
     
     /**

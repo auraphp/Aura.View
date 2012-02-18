@@ -8,7 +8,7 @@ class EscapeTest extends AbstractHelperTest
     {
         $escape = new Escape(new EscaperFactory);
         $actual = $escape("<foo>&bar'baz\"");
-        $expect = "&lt;foo&gt;bar&apos;baz&quot;"
+        $expect = "&lt;foo&gt;&amp;bar&#039;baz&quot;";
         $this->assertSame($expect, $actual);
     }
 }
