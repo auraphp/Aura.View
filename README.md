@@ -1,7 +1,7 @@
 Aura View
 =========
 
-The Aura View package is an implementation of the [TemplateView](http://martinfowler.com/eaaCatalog/templateView.html) pattern, with support for helpers and path stacks.  It adheres to the "use PHP for presentation logic" ideology, and is preceded by systems such as [Savant](http://phpsavant.com), [Zend_View](http://framework.zend.com/manual/en/zend.view.html), and [Solar_View](http://solarphp.com/class/Solar_View).
+The Aura View package is an implementation of the [TemplateView](http://martinfowler.com/eaaCatalog/templateView.html) pattern, with support for automatic escaping, path stacks, and helpers.  It adheres to the "use PHP for presentation logic" ideology, and is preceded by systems such as [Savant](http://phpsavant.com), [Zend_View](http://framework.zend.com/manual/en/zend.view.html), and [Solar_View](http://solarphp.com/class/Solar_View).
 
 
 Basic Usage
@@ -24,9 +24,14 @@ Alternatively, we can add the `Aura.View` package to an autoloader, and instanti
 
     <?php
     use Aura\View\Template;
+    use Aura\View\EscaperFactory;
     use Aura\View\TemplateFinder;
     use Aura\View\HelperLocator;
-    $template = new Template(new TemplateFinder, new HelperLocator);
+    $template = new Template(
+        new EscaperFactory,
+        new TemplateFinder,
+        new HelperLocator
+    );
 
 (Note that if we instantiate manually, we will need to configure the `HelperLocator` manually to add helper services. See the "Helpers" section near the end of this page for more information.)
 
@@ -38,14 +43,13 @@ We can assign variables to the template script by setting properties on the `Tem
 
     <?php
     // business logic
-    $template->var = 'World';
+    $template->var = 'this & that';
 
 We can then reference those properties from within the template script using `$this`:
 
     <?php
     // template script
-    $e = $this->getHelper('escape');
-    echo $e($this->var);
+    echo $this->var;
 
 We can add multiple data properties at once, merging new values with existing ones, by using `addData()`.
 
@@ -74,14 +78,13 @@ Writing Template Scripts
 
 Aura View template scripts are written in plain PHP and do not require a new markup language.  The template scripts are executed inside the `Template` object scope, so use of `$this` refers to the `Template` object.  The following is an example script:
 
-    <?php $e = $this->getHelper('escape'); ?>
     <html>
     <head>
-        <title><?php echo $e($this->title) ?></title>
+        <title><?php echo $this->title ?></title>
     </head>
     <body>
         <p><?php
-            echo "Hello " . $e($this->var) . '!';
+            echo "Hello " . $this->var . '!';
         ?></p>
     </body>
     </html>
@@ -89,14 +92,114 @@ Aura View template scripts are written in plain PHP and do not require a new mar
 We can use any PHP code we would normally use. (This may require discipline on the part of the template script author to restrict himself to presentation-related logic only.)  We may wish to use the alternative PHP syntax for conditionals and loops:
 
     <?php if ($this->message): ?>
-        <p>The message is <?php echo $e($this->message); ?></p>
+        <p>The message is <?php echo $this->message; ?></p>
     <?php endif; ?>
     
     <ul>
     <?php foreach ($this->list as $item): ?>
-        <li><?php echo $e($item); ?></li>
+        <li><?php echo $item; ?></li>
     <?php endforeach; ?>
     </ul>
+
+
+Escaping Output
+---------------
+
+In general, you do not need to manually apply escaping in your template scripts.  Aura View automatically escapes data assigned to the template when you *access* that data.
+
+- Strings assigned to the template are automatically escaped as you access them; integers, floats, booleans, and nulls are not.
+
+- If you assign an array to the template, its keys and values will be escaped as you access them.
+
+- If you assign an object to the template, its properties and method returns will also be escaped as you access them.
+
+Here is an example of the business logic to assign data to the template:
+
+    <?php
+    /**
+     * @var object $obj An object with properties and methods.
+     * @var array $arr An associative array.
+     * @var string $str A string.
+     * @var int|float $num An actual number (not a string representation).
+     * @var bool $bool A boolean.
+     * @var null $null A null value.
+     */
+    $template->setData([
+        'str'  => $str,
+        'num'  => $num,
+        'bool' => $bool,
+        'null' => $null,
+        'arr'  => $arr,
+        'obj'  => $obj,
+    ]);
+
+And here is an example of the automatic escaping in the template:
+
+    <?php
+    // strings are auto-escaped whenever you access them
+    echo $this->str;
+    
+    // integers, floats, booleans, nulls, and resources are not escaped
+    if ($this->null === null || $this->bool === false) {
+        echo $this->num;
+    }
+    
+    // array keys and values are auto-escaped per the string/number/etc
+    // rules listed above
+    foreach ($this->arr as $key => $val) {
+        // the key and value are already escaped for us
+        echo $key . ': ' . $val;
+    }
+    
+    // object properties and method returns are auto-escaped per the 
+    // string/number/etc rules listed above
+    echo $this->obj->property;
+    echo $this->obj->method();
+    
+    // if the object implements Iterator or IteratorAggregate,
+    // the iterator keys and values are auto-escaped as well
+    foreach ($this->obj as $key => $val) {
+        echo $key . ': ' . $val;
+    }
+
+Note that automatic escaping occurs at *access* time, not as *assignment* time, and only occurs when accessing *values assigned to the template*.
+
+If you create a variable of your own inside a template, you will need to escape it yourself using the `escape()` helper:
+
+    <?php
+    $var "this & that";
+    echo $this->escape($var);
+
+If you want to access the assigned data without escaping applied, use the `__raw()` method:
+
+    <?php
+    // get the raw assigned string
+    echo $this->__raw()->str;
+    
+    // get the count of an assigned array or object
+    echo count($this->__raw()->arr);
+    
+    // see if the assigned array is empty
+    if (! $this->__raw()->arr) {
+        echo "Array is empty.";
+    }
+    
+    // get a raw property from an assigned object;
+    // either of the following will work:
+    echo $this->__raw()->obj->property;
+    echo $this->obj->__raw()->property;
+    
+    // get a raw method result from an assigned object;
+    // either of the following will work:
+    echo $this->__raw()->obj->method();
+    echo $this->obj->__raw()->method();
+    
+    // check if an object is an instanceof SomeClass
+    if ($this->__raw()->obj instanceof SomeClass) {
+        // ...
+    }
+    
+Using the raw data is the only way to get a `count()` on an array or a `Countable` object, or to find the class type of the underlying variable. This is because the automatic escaping works by wrapping ("decorating") the underlying variable with an escaper object. The decoration makes it possible to auto-escape array keys and values, and object properties and methods, but unfortunately hides things like `implements` and `instanceof` from PHP.
 
 
 Using Helpers
@@ -108,20 +211,7 @@ Aura View comes with various `Helper` classes to encapsulate common presentation
 
 - Via `getHelper()` to get the helper as an object of its own
 
-The single-most important helper is `$this->escape()`. We should use it every time we need to echo or print assigned variables.  (All of the other helpers apply escaping automatically.)  You can call it like so:
-
-    <?php
-    // template script
-    echo $this->escape($this->var);
-
-Or like so:
-
-    <?php
-    // template script
-    $e = $this->getHelper('escape');
-    echo $e($this->var);
-
-Other helpers that are part of Aura View include:
+We have already discussed the `escape()` helper above. Other helpers that are part of Aura View include:
 
 - `$this->anchor($href, $text)` returns an `<a href="$href">$text</a>` tag
 
@@ -163,9 +253,7 @@ Other helpers that are part of Aura View include:
     
     - `$this->title()->prepend($prefix)` adds on to the beginning of the title value.
     
-    - `$this->title()->get()` returns the title tag with the title itself escaped properly.
-    
-    - `$this->title()->getRaw()` returns the title tag, with the title itself *not* escaped.
+    - `$this->title()->get()` returns the title tag and value.
 
 
 Advanced Usage
@@ -265,11 +353,9 @@ Writing a helper class is straightforoward:  extend `AbstractHelper` with an `__
     {
         public function __invoke($string)
         {
-            return $this->escape(str_rot13($input));
+            return str_rot13($input);
         }
     }
-
-Always escape output coming from a helper.  Err on the side of escaping, rather than not escaping.
 
 Now that we have a helper class, you can add it as a service in the `HelperLocator` like so:
 
