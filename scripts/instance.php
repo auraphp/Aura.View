@@ -1,7 +1,7 @@
 <?php
 namespace Aura\View;
 require_once dirname(__DIR__) . '/src.php';
-return new Template(new TemplateFinder, new HelperLocator([
+return new Template(new EscaperFactory, new TemplateFinder, new HelperLocator([
     'anchor'        =>  function() { return new \Aura\View\Helper\Anchor; },
     'attribs'       =>  function() { return new \Aura\View\Helper\Attribs; },
     'base'          =>  function() { return new \Aura\View\Helper\Base; },
