@@ -10,7 +10,7 @@ namespace Aura\View\Helper;
 
 /**
  * 
- * Helper to escape attributes.
+ * Helper to convert key-value arrays to attribute strings.
  * 
  * @package Aura.View
  * 
@@ -19,15 +19,15 @@ class Attribs extends AbstractHelper
 {
     /**
      * 
-     * Converts an associative array to an escaped attribute string.
+     * Converts an associative array to an attribute string.
      * 
      * @param array $attribs From this array, each key-value pair is 
      * converted to an attribute name and value.
      * 
-     * @return string The escaped attributes string.
+     * @return string The string of attributes.
      * 
      */
-    public function __invoke(array $attribs)
+    public function __invoke($attribs)
     {
         return $this->attribs($attribs);
     }

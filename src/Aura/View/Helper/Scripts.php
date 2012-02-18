@@ -51,9 +51,8 @@ class Scripts extends AbstractHelper
      * @return void
      * 
      */
-    public function add($src, array $attribs = [], $pos = 100)
+    public function add($src, $attribs = [], $pos = 100)
     {
-        $src = $this->escape($src);
         unset($attribs['src']);
         if (empty($attribs['type'])) {
             $attribs['type'] = 'text/javascript';
@@ -80,11 +79,8 @@ class Scripts extends AbstractHelper
      * @return void
      * 
      */
-    public function addCond($exp, $src, array $attribs = [], $pos = 100)
+    public function addCond($exp, $src, $attribs = [], $pos = 100)
     {
-        $src = $this->escape($src);
-        $exp = $this->escape($exp);
-        
         unset($attribs['src']);
         if (empty($attribs['type'])) {
             $attribs['type'] = 'text/javascript';

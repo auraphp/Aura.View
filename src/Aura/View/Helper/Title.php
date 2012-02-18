@@ -82,33 +82,13 @@ class Title extends AbstractHelper
     
     /**
      * 
-     * Returns the current title string (escaped).
+     * Returns the current title string.
      * 
      * @return string The current title string.
      * 
      */
     public function get()
     {
-        return $this->indent
-             . "<title>"
-             . $this->escape($this->title)
-             . "</title>"
-             . PHP_EOL;
+        return "{$this->indent}<title>{$this->title}</title>" . PHP_EOL;
     }
-    
-    /**
-     * 
-     * Returns the current title string **unescaped**.
-     * 
-     * @return void
-     * 
-     */
-    public function getRaw()
-    {
-         return $this->indent
-             . "<title>"
-             . $this->title
-             . "</title>"
-             . PHP_EOL;
-   }   
 }

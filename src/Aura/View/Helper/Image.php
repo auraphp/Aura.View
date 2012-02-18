@@ -22,7 +22,7 @@ class Image extends AbstractHelper
      * Returns an <img ... /> tag.
      * 
      * If an "alt" attribute is not specified, will add it from the
-     * image [[php::basename() | ]].
+     * image basename.
      * 
      * @param string $src The href to the image source.
      * 
@@ -40,7 +40,6 @@ class Image extends AbstractHelper
             $attribs['alt'] = basename($src);
         }
         
-        return '<img src="' . $this->escape($src) . '" '
-             . $this->attribs($attribs) . ' />';
+        return "<img src=\"{$src}\" " . $this->attribs($attribs) . ' />';
     }
 }

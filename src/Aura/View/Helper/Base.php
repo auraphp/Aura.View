@@ -28,7 +28,6 @@ class Base extends AbstractHelper
      */
     public function __invoke($href)
     {
-        $href = $this->escape($href);
         return $this->indent . "<base href=\"$href\" />" . PHP_EOL;
     }
 }

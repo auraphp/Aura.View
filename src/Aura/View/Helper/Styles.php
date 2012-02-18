@@ -49,7 +49,7 @@ class Styles extends AbstractHelper
      * @return void
      * 
      */
-    public function add($href, $pos = 100, array $attribs = [])
+    public function add($href, $pos = 100, $attribs = [])
     {
         if ($pos === null) {
             $pos = 100;

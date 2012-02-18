@@ -63,6 +63,6 @@ class Datetime extends AbstractHelper
             $format = $this->format[$format];
         }
         $time = strtotime($spec);
-        return $this->escape(date($format, $time));
+        return date($format, $time);
     }
 }

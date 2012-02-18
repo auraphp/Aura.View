@@ -47,7 +47,7 @@ class Links extends AbstractHelper
      * @return void
      * 
      */
-    public function add(array $attribs = [])
+    public function add($attribs = [])
     {
         $attr = $this->attribs($attribs);
         $this->links[] = "<link $attr />";

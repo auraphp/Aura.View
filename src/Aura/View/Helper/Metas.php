@@ -49,7 +49,7 @@ class Metas extends AbstractHelper
      * @return void
      * 
      */
-    public function add(array $attribs = [], $pos = 100)
+    public function add($attribs = [], $pos = 100)
     {
         $attr = $this->attribs($attribs);
         $this->metas[(int) $pos][] = "<meta $attr />";

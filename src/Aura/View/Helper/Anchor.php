@@ -19,7 +19,7 @@ class Anchor extends AbstractHelper
 {
     /**
      * 
-     * Returns an anchor tag with the anchor text escaped.
+     * Returns an anchor tag.
      * 
      * @param string $href The anchor href specification.
      * 
@@ -30,32 +30,8 @@ class Anchor extends AbstractHelper
      * @return string
      * 
      */
-    public function __invoke($href, $text, array $attribs = [])
+    public function __invoke($href, $text, $attribs = [])
     {
-        // escape the text
-        $text = $this->escape($text);
-        return $this->raw($href, $text, $attribs);
-    }
-    
-    /**
-     * 
-     * Returns an anchor tag but does not escape the text; suitable for
-     * wrapping an anchor around other HTML, such as an image.
-     * 
-     * @param string $href The anchor href specification.
-     * 
-     * @param string $text The text for the anchor.
-     * 
-     * @param array $attribs Attributes for the anchor.
-     * 
-     * @return string
-     * 
-     */
-    public function raw($href, $text, array $attribs = [])
-    {
-        // escape the href, but *not* the text
-        $href = $this->escape($href);
-        
         // make sure we don't overwrite the href attribute
         unset($attribs['href']);
         
