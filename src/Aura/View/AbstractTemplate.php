@@ -173,7 +173,7 @@ abstract class AbstractTemplate
      */
     public function addData(array $data = [])
     {
-        $this->_data = (object) array_merge((array) $this->_data, $data);
+        $this->_data    = (object) array_merge((array) $this->_data, $data);
         $this->_escaper = $this->_escaper_factory->newInstance($this->_data);
     }
     
