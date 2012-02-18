@@ -5,6 +5,7 @@
 $loader->add('Aura\View\\', dirname(__DIR__) . DIRECTORY_SEPARATOR . 'src');
 
 // params for Template instances
+$di->params['Aura\View\Template']['escaper_factory'] = $di->lazyNew('Aura\View\EscaperFactory');
 $di->params['Aura\View\Template']['helper_locator'] = $di->lazyNew('Aura\View\HelperLocator');
 $di->params['Aura\View\Template']['template_finder'] = $di->lazyNew('Aura\View\TemplateFinder');
 
@@ -18,9 +19,8 @@ $di->params['Aura\View\Helper\Datetime']['format']['time'] = 'H:i:s';
 $di->params['Aura\View\Helper\Datetime']['format']['datetime'] = 'Y-m-d H:i:s';
 $di->params['Aura\View\Helper\Datetime']['format']['default'] = 'Y-m-d H:i:s';
 
-// escaping values
-$di->setter['Aura\View\Helper\AbstractHelper']['setEscapeQuotes']  = ENT_COMPAT;
-$di->setter['Aura\View\Helper\AbstractHelper']['setEscapeCharset'] = 'UTF-8';
+// escaping
+$di->params['Aura\View\Helper\Escape']['escaper_factory'] = $di->lazyNew('Aura\View\EscaperFactory');
 
 // params for HelperLocator instances
 $di->params['Aura\View\HelperLocator']['registry']['anchor'] = function() use ($di) {
