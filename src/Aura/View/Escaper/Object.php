@@ -1,7 +1,7 @@
 <?php
 namespace Aura\View\Escaper;
 use Aura\View\EscaperFactory;
-class Object
+class Object implements \ArrayAccess
 {
     protected $factory;
     
@@ -19,9 +19,9 @@ class Object
         $this->charset = $charset;
     }
     
-    public function __get($key)
+    public function __get($prop)
     {
-        return $this->__escape($this->object->$key);
+        return $this->__escape($this->object->$prop);
     }
     
     public function __call($method, $params)
@@ -32,27 +32,80 @@ class Object
         ));
     }
     
-    protected function __escape($val)
-    {
-        if (is_string($val)) {
-            // escape all actual strings
-            return htmlspecialchars($val, $this->quotes, $this->charset);
-        } elseif (is_array($val) || is_object($val)) {
-            // wrap objects and arrays in escaper
-            return $this->factory->newInstance($val);
-        } else {
-            // don't escape numerics, resources, bools, nulls, resources, etc.
-            return $val;
-        }
-    }
-    
-    protected function __raw()
+    public function __raw()
     {
         return $this->object;
     }
     
-    protected function __getType()
+    public function __escape($spec)
     {
-        return gettype($this->object);
+        if (is_string($spec)) {
+            // escape all actual strings
+            return htmlspecialchars($spec, $this->quotes, $this->charset);
+        } elseif (is_array($spec) || is_object($spec)) {
+            // wrap objects and arrays in escaper
+            return $this->factory->newInstance($spec);
+        } else {
+            // don't escape numerics, resources, bools, nulls, resources, etc.
+            return $spec;
+        }
+    }
+    
+    /**
+     * 
+     * ArrayAccess: does the requested property exist?
+     * 
+     * @param string $prop The requested property.
+     * 
+     * @return bool
+     * 
+     */
+    public function offsetExists($prop)
+    {
+        return isset($this->object->$prop);
+    }
+    
+    /**
+     * 
+     * ArrayAccess: get a property value.
+     * 
+     * @param string $prop The requested property.
+     * 
+     * @return mixed
+     * 
+     */
+    public function offsetGet($prop)
+    {
+        return $this->__escape($this->object->$prop);
+    }
+    
+    /**
+     * 
+     * ArrayAccess: set a property value.
+     * 
+     * @param string $prop The requested property.
+     * 
+     * @param mixed $spec The value to set it to.
+     * 
+     * @return void
+     * 
+     */
+    public function offsetSet($prop, $spec)
+    {
+        $this->object->$prop = $spec;
+    }
+    
+    /**
+     * 
+     * ArrayAccess: unset a property.
+     * 
+     * @param string $prop The requested property.
+     * 
+     * @return void
+     * 
+     */
+    public function offsetUnset($prop)
+    {
+        unset($this->object->$prop);
     }
 }
