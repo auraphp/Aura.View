@@ -18,6 +18,15 @@ class EscaperTest extends \PHPUnit_Framework_TestCase
         parent::tearDown();
     }
     
+    public function testArrayAccess()
+    {
+        $escaper = $this->escaper_factory->newInstance((object) []);
+        $escaper['foo'] = 'bar';
+        $this->assertSame('bar', $escaper['foo']);
+        unset($escaper['foo']);
+        $this->assertFalse(isset($escaper['foo']));
+    }
+    
     public function testIteratorAggregateAndArrayObject()
     {
         $data    = ['foo', 'bar', 'baz', 123, true, false, null];
@@ -41,16 +50,6 @@ class EscaperTest extends \PHPUnit_Framework_TestCase
             $this->assertSame($data[$key], $val);
         }
         $this->assertSame($i, count($data));
-    }
-    
-    public function test__getClass()
-    {
-        $data    = ['foo', 'bar', 'baz', 123, true, false, null];
-        $model   = new MockModelIterator($data);
-        $escaper = $this->escaper_factory->newInstance($model);
-        $actual  = $escaper->__getClass();
-        $expect  = 'Aura\View\MockModelIterator';
-        $this->assertSame($expect, $actual);
     }
     
     public function test__call()

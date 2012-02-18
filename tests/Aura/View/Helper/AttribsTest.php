@@ -1,7 +1,7 @@
 <?php
 namespace Aura\View\Helper;
 
-class AttribsTest extends \PHPUnit_Framework_TestCase
+class AttribsTest extends AbstractHelperTest
 {
     public function test__invoke()
     {
