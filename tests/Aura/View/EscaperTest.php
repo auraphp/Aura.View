@@ -98,4 +98,17 @@ class EscaperTest extends \PHPUnit_Framework_TestCase
         }
         $this->assertSame($i, count($data));
     }
+    
+    public function escapeKeysAndVals()
+    {
+        $data    = ['<foo>', '&bar', '"baz"'];
+        $escaper = $this->escaper_factory->newInstance(array_combine($data, $data));
+        $i       = 0;
+        foreach ($escaper as $key => $val) {
+            $expect = htmlspecialchars($data[$key], ENT_QUOTES, 'UTF-8');
+            $this->assertSame($expect, $key);
+            $this->assertSame($expect, $val);
+        }
+        $this->assertSame($i, count($data));
+    }
 }
