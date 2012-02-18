@@ -7,27 +7,49 @@
  * 
  */
 namespace Aura\View\Helper;
+use Aura\View\EscaperFactory;
 
 /**
  * 
- * Escapes special characters for HTML.
+ * Inline escaper.
  * 
  * @package Aura.View
  * 
  */
-class Escape extends AbstractHelper
+class Escape
 {
     /**
      * 
-     * Escapes a text string.
+     * An escaper object so we have access to its __escape() method.
      * 
-     * @param string $text The text to escape.
-     * 
-     * @return string The escaped string.
+     * @var Aura\View\Escaper\Object
      * 
      */
-    public function __invoke($text)
+    protected $escaper_object;
+    
+    /**
+     * 
+     * Constructor.
+     * 
+     * @param EscaperFactory $escaper_factory A factory to create the 
+     * escaper object.
+     * 
+     */
+    public function __construct(EscaperFactory $escaper_factory)
     {
-        return $this->escape($text);
+        $this->escaper_object = $escaper_factory->newInstance(object []);
+    }
+    
+    /**
+     * 
+     * Escapes strings; wraps objects and arrays in escaper objects; leaves
+     * booleans/numbers/resources/nulls alone.
+     * 
+     * @param mixed $val The value to escape.
+     * 
+     */
+    public function __invoke($val)
+    {
+        return $this->escaper_object->__escape($val);
     }
 }
