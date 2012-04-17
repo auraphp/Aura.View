@@ -32,12 +32,10 @@ class Anchor extends AbstractHelper
      */
     public function __invoke($href, $text, $attribs = [])
     {
-        // make sure we don't overwrite the href attribute
-        unset($attribs['href']);
-        
         // build text and return
         if ($attribs) {
-            $attr = $this->attribs($attribs);
+            $skip = ['href'];
+            $attr = $this->attribs($attribs, $skip);
             return "<a href=\"$href\" $attr>$text</a>";
         } else {
             return "<a href=\"$href\">$text</a>";
