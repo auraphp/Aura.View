@@ -24,11 +24,13 @@ class Attribs extends AbstractHelper
      * @param array $attribs From this array, each key-value pair is 
      * converted to an attribute name and value.
      * 
+     * @param array $skip Skip attributes listed in this array.
+     * 
      * @return string The string of attributes.
      * 
      */
-    public function __invoke($attribs)
+    public function __invoke($attribs, array $skip = [])
     {
-        return $this->attribs($attribs);
+        return $this->attribs($attribs, $skip);
     }
 }

@@ -47,10 +47,12 @@ abstract class AbstractHelper
      * @param array|Traversable $attribs From this array, each key-value pair
      * is converted to an attribute name and value.
      * 
+     * @param array $skip Skip attributes listed in this array.
+     * 
      * @return string The attribute string.
      * 
      */
-    protected function attribs($attribs)
+    protected function attribs($attribs, array $skip = [])
     {
         // pre-empt processing
         if (! $attribs) {
@@ -59,6 +61,11 @@ abstract class AbstractHelper
         
         $html = [];
         foreach ($attribs as $key => $val) {
+            
+            // skip this attribute?
+            if (in_array($key, $skip)) {
+                continue;
+            }
             
             // space-separate multiple values
             if (is_array($val)) {
