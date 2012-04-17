@@ -20,11 +20,9 @@ class EscaperTest extends \PHPUnit_Framework_TestCase
     
     public function testArrayAccess()
     {
-        $escaper = $this->escaper_factory->newInstance((object) []);
-        $escaper['foo'] = 'bar';
+        $escaper = $this->escaper_factory->newInstance((object) ['foo' => 'bar']);
+        $this->assertTrue(isset($escaper['foo']));
         $this->assertSame('bar', $escaper['foo']);
-        unset($escaper['foo']);
-        $this->assertFalse(isset($escaper['foo']));
     }
     
     public function testIteratorAggregateAndArrayObject()
