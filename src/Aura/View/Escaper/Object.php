@@ -2,7 +2,6 @@
 namespace Aura\View\Escaper;
 
 use Aura\View\EscaperFactory;
-use Aura\View\Exception\Immutable as ImmutableException;
 
 class Object implements \ArrayAccess
 {
@@ -29,7 +28,17 @@ class Object implements \ArrayAccess
     
     public function __set($prop, $spec)
     {
-        throw new ImmutableException;
+        $this->object->$prop = $spec;
+    }
+    
+    public function __isset($prop)
+    {
+        return isset($this->object->$prop);
+    }
+    
+    public function __unset($prop)
+    {
+        unset($this->object->$prop);
     }
     
     public function __call($method, $params)
@@ -48,8 +57,8 @@ class Object implements \ArrayAccess
     public function __escape($spec)
     {
         if (is_string($spec)) {
-            // escape all actual strings
-            return htmlspecialchars($spec, $this->quotes, $this->charset);
+            // escape all actual strings, but do not double-escape
+            return htmlspecialchars($spec, $this->quotes, $this->charset, false);
         } elseif (is_array($spec) || is_object($spec)) {
             // wrap objects and arrays in escaper
             return $this->factory->newInstance($spec);
@@ -89,8 +98,7 @@ class Object implements \ArrayAccess
     
     /**
      * 
-     * ArrayAccess: set a property value; throws an exception because Escaper
-     * is immutable.
+     * ArrayAccess: sets a property value.
      * 
      * @param string $prop The requested property.
      * 
@@ -101,7 +109,7 @@ class Object implements \ArrayAccess
      */
     public function offsetSet($prop, $spec)
     {
-        throw new ImmutableException;
+        $this->object->$prop = $spec;
     }
     
     /**
@@ -115,6 +123,6 @@ class Object implements \ArrayAccess
      */
     public function offsetUnset($prop)
     {
-        throw new ImmutableException;
+        unset($this->object->$prop);
     }
 }

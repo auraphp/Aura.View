@@ -25,7 +25,7 @@ class AnchorTest extends AbstractHelperTest
         $escaper = $this->escaper_factory->newInstance((object) [
             'href' => '/path/to/script.php',
             'text' => 'foo',
-            'attribs' => ['bar' => 'baz'],
+            'attribs' => ['bar' => 'baz', 'href' => 'skip-me'],
         ]);
         
         $anchor = new Anchor;
