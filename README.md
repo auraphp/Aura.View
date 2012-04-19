@@ -49,12 +49,17 @@ near the end of this page for more information.)
 Assigning Data
 --------------
 
-We can add data to the template script using the `addData()` method like so:
+We can add data to the template script as properties ...
+
+    <?php
+    // business logic
+    $template->var = 'World';
+
+... or by using the `addData()` method:
 
     <?php
     // business logic
     $template->addData([
-        'var' => 'this & that',
         'foo' => 'value of foo',
         'bar' => 'value of bar',
     ]);
@@ -116,7 +121,7 @@ Escaping Output
 
 In general, you do not need to manually apply escaping in your template
 scripts. Aura View automatically escapes data assigned to the template when
-you *access* that data.
+you access that data.
 
 - Strings assigned to the template are automatically escaped as you access
   them; integers, floats, booleans, and nulls are not.
@@ -142,7 +147,7 @@ Here is an example of the business logic to assign data to the template:
         'str'  => $str,
         'num'  => $num,
         'bool' => $bool,
-        'null' => $null,
+        'null' => null,
         'arr'  => $arr,
         'obj'  => $obj,
     ]);
