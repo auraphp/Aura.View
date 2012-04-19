@@ -5,7 +5,7 @@ The Aura View package is an implementation of the
 [`TemplateView`](http://martinfowler.com/eaaCatalog/templateView.html) pattern,
 with support for automatic escaping, path stacks, and helpers. It adheres to
 the "use PHP for presentation logic" ideology, and is preceded by systems such
-as [Savant](http://phpsavant.com),
+as [`Savant`](http://phpsavant.com),
 [`Zend_View`](http://framework.zend.com/manual/en/zend.view.html), and
 [`Solar_View`](http://solarphp.com/class/Solar_View).
 
