@@ -88,12 +88,10 @@ is an example script:
 
     <html>
     <head>
-        <title><?php echo $this->title ?></title>
+        <title><?= $this->title; ?></title>
     </head>
     <body>
-        <p><?php
-            echo "Hello " . $this->var . '!';
-        ?></p>
+        <p><?= "Hello " . $this->var . '!'; ?></p>
     </body>
     </html>
 
@@ -103,12 +101,12 @@ presentation-related logic only.) We may wish to use the alternative PHP
 syntax for conditionals and loops:
 
     <?php if ($this->model->hasMessage()): ?>
-        <p>The message is <?php echo $this->model->message; ?></p>
+        <p>The message is <?= $this->model->message; ?></p>
     <?php endif; ?>
     
     <ul>
     <?php foreach ($this->list as $item): ?>
-        <li><?php echo $item; ?></li>
+        <li><?= $item; ?></li>
     <?php endforeach; ?>
     </ul>
 
@@ -339,10 +337,6 @@ might have a header section, a navigation section, a sidebar, and so on.
 We can use the `$this->find()` method in a template script to find a template,
 and then `include` it wherever we like. For example:
 
-    <?php
-        // template script
-        $e = $this->getHelper('escape');
-    ?>
     <html>
     <head>
         <?php include $this->find('head'); ?>
@@ -350,8 +344,8 @@ and then `include` it wherever we like. For example:
     <body>
         <?php include $this->find('branding'); ?>
         <?php include $this->find('navigation'); ?>
-        <p>Hello, <?php echo $e($this->var); ?>!</p>
-        <?php include $this->find('footer'); ?>
+        <p>Hello, <?= $this->var; ?>!</p>
+        <?php include $this->find('foot'); ?>
     </body>
     </html>
 
@@ -372,18 +366,17 @@ partial template.
 For example, given the following partial template ...
 
     <?php
-    // partial template named '_partial.php'.
-    // note that we use $name, not $this->name.
-    $e = $this->getHelper('escape');
-    echo "    <li>" . $e($name) . "</li>" . PHP_EOL;
+    // partial template named '_item.php'.
+    // note that we use $item, not $this->item.
+    echo "    <li>{$item}</li>" . PHP_EOL;
 
 ... we can `fetch()` it from within another template:
 
     <?php
-    // main template. assume $this->list is an array of names.
+    // main template. assume $this->list is an array of items.
     foreach ($this->list as $item) {
-        $template_name = '_partial';
-        $template_vars = ['name' => $item];
+        $template_name = '_item';
+        $template_vars = ['item' => $item];
         echo $this->fetch($template_name, $template_vars);
     }
 
@@ -421,8 +414,8 @@ Now that we have a helper class, you can add it as a service in the
 
     <?php
     // business logic
-    $hl = $template->getHelperLocator();
-    $hl->set('obfuscate', function() {
+    $locator = $template->getHelperLocator();
+    $locator->set('obfuscate', function() {
         return new \Vendor\Package\View\Helper\Obfuscate;
     });
     
