@@ -238,7 +238,7 @@ unfortunately hides things like `implements` and `instanceof` from PHP.
 
 There is an escaping "gotcha" to look out for when manipulating values after
 they are assigned to a template. If you use an assigned value and re-assign
-it to the template, the re-assigned will be double-escaped when you access it.
+it to the template, the new value will be double-escaped when you access it.
 
 For example, given this business logic ...
 
