@@ -100,13 +100,14 @@ is an example script:
     </body>
     </html>
 
-We can use any PHP code we would normally use. (This may require discipline on
-the part of the template script author to restrict himself to
-presentation-related logic only.) We may wish to use the alternative PHP
-syntax for conditionals and loops:
+We can use any PHP code we would normally use. (This will require discipline
+on the part of the template script author to restrict himself to
+presentation-related logic only.)
+
+We may wish to use the alternative PHP syntax for conditionals and loops:
 
     <?php if ($this->model->hasMessage()): ?>
-        <p>The message is <?= $this->model->message; ?></p>
+        <p>The message is <?= $this->model->getMessage(); ?></p>
     <?php endif; ?>
     
     <ul>
@@ -119,9 +120,9 @@ syntax for conditionals and loops:
 Escaping Output
 ---------------
 
-In general, you do not need to manually apply escaping in your template
-scripts. Aura View automatically escapes data assigned to the template when
-you access that data.
+***Aura View automatically escapes data assigned to the template when you
+access that data.*** So, in general, you do not need to manually apply escaping
+in your template scripts.
 
 - Strings assigned to the template are automatically escaped as you access
   them; integers, floats, booleans, and nulls are not.
@@ -132,7 +133,7 @@ you access that data.
 - If you assign an object to the template, its properties and method returns
   will also be escaped as you access them.
 
-Here is an example of the business logic to assign data to the template:
+Here is an example of the business logic to assign data to the template ...
 
     <?php
     /**
@@ -152,7 +153,7 @@ Here is an example of the business logic to assign data to the template:
         'obj'  => $obj,
     ]);
 
-And here is an example of the automatic escaping in the template:
+... and here is an example of the automatic escaping in the template:
 
     <?php
     // strings are auto-escaped whenever you access them
@@ -184,12 +185,17 @@ And here is an example of the automatic escaping in the template:
 Note that automatic escaping occurs at *access* time, not at *assignment*
 time, and only occurs when accessing *values assigned to the template*.
 
+### Manual Escaping
+
 If you create a variable of your own inside a template, you will need to
 escape it yourself using the `escape()` helper:
 
     <?php
     $var = "this & that";
     echo $this->escape($var);
+
+
+### Raw Data
 
 If you want to access the assigned data without escaping applied, use the
 `__raw()` method:
@@ -228,6 +234,39 @@ underlying variable with an escaper object. The decoration makes it possible
 to auto-escape array keys and values, and object properties and methods, but
 unfortunately hides things like `implements` and `instanceof` from PHP.
 
+### Double Escaping
+
+There is an escaping "gotcha" to look out for when manipulating values after
+they are assigned to a template. If you use an assigned value and re-assign
+it to the template, the re-assigned will be double-escaped when you access it.
+
+For example, given this business logic ...
+
+    <?php
+    // business logic
+    $template->foo = "this & that";
+    
+... and this template script ...
+
+    <?php
+    // template script
+    $this->bar = $this->foo . " & the other";
+    echo $this->bar;
+
+... the output will be `"this &amp;amp; that &amp; the other"`. The output was
+double-escaped; this is because the template escaped `$this->foo` for us when
+we accessed it and assigned it to `$this->bar`, and then escaped `$this->bar`
+for output as well.
+
+When performing manipulations of this kind, use the `__raw()` values instead:
+
+    <?php
+    // template script
+    $this->bar = $this->__raw()->foo . " & the other";
+    echo $this->bar;
+
+Now the output will be `"this &amp; that &amp; the other"`, correctly escaped
+only once.
 
 Using Helpers
 -------------
