@@ -36,12 +36,12 @@ class TwoStepTest extends \PHPUnit_Framework_TestCase
         
         // put an inner view in 'foo'
         $file = $this->dirs['foo'] . DIRECTORY_SEPARATOR . 'inner_view.php';
-        $code = '<?php echo $this->inner_var; ?>';
+        $code = '<strong><?= $this->inner_var; ?></strong>';
         file_put_contents($file, $code);
         
         // put an outer view in 'baz'
         $file = $this->dirs['baz'] . DIRECTORY_SEPARATOR . 'outer_view.php';
-        $code = '<div><?php echo $this->outer_var . " " . $this->inner_view; ?></div>';
+        $code = '<div><?php echo $this->outer_var . " " . $this->__raw()->inner_view; ?></div>';
         file_put_contents($file, $code);
         
         // set up the TwoStep view
@@ -246,7 +246,7 @@ class TwoStepTest extends \PHPUnit_Framework_TestCase
         $this->twostep->setInnerView('inner_view');
         $this->twostep->setInnerData(['inner_var' => 'World!']);
         $this->twostep->setInnerPaths([$this->dirs['bar'], $this->dirs['foo']]);
-        $expect = 'World!';
+        $expect = '<strong>World!</strong>';
         $actual = $this->twostep->renderInnerView();
         $this->assertSame($expect, $actual);
     }
@@ -320,7 +320,7 @@ class TwoStepTest extends \PHPUnit_Framework_TestCase
         $this->twostep->setOuterData(['outer_var' => 'Hello']);
         $this->twostep->setOuterPaths([$this->dirs['bar'], $this->dirs['baz']]);
         
-        $expect = '<div>Hello World!</div>';
+        $expect = '<div>Hello <strong>World!</strong></div>';
         $actual = $this->twostep->render();
         
         $this->assertSame($expect, $actual);
@@ -334,7 +334,7 @@ class TwoStepTest extends \PHPUnit_Framework_TestCase
         $this->twostep->setOuterView('outer_view');
         $this->twostep->setOuterData(['outer_var' => 'Hello']);
         $this->twostep->setOuterPaths([$this->dirs['bar'], $this->dirs['baz']]);
-        $expect = '<div>Hello World!</div>';
+        $expect = '<div>Hello <strong>World!</strong></div>';
         $actual = $this->twostep->render();
         $this->assertSame($expect, $actual);
     }
