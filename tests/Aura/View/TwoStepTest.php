@@ -79,7 +79,7 @@ class TwoStepTest extends \PHPUnit_Framework_TestCase
         );
         foreach ($iterator as $path) {
             if ($path->isDir()) {
-                rmdir($path->__toString());
+                @rmdir($path->__toString());
             } else {
                 unlink($path->__toString());
             }
