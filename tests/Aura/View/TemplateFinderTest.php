@@ -24,10 +24,10 @@ class TemplateFinderTest extends \PHPUnit_Framework_TestCase
         $this->finder = new TemplateFinder;
         
         // prepare a set of directories for paths
-        $base = dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . 'tmp';
+        $this->tmp = dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . 'tmp';
         $dirs = ['foo', 'bar', 'baz'];
         foreach ($dirs as $dir) {
-            $this->dirs[$dir] = $base . DIRECTORY_SEPARATOR . $dir;
+            $this->dirs[$dir] = $this->tmp . DIRECTORY_SEPARATOR . $dir;
             mkdir($this->dirs[$dir], 0777, true);
         }
     }
@@ -40,9 +40,23 @@ class TemplateFinderTest extends \PHPUnit_Framework_TestCase
     {
         parent::tearDown();
         // remove the directories
-        foreach ($this->dirs as $dir) {
-            rmdir($dir);
+        $this->rmrf($this->tmp);
+    }
+
+    protected function rmrf($dir)
+    {
+        $iterator = new \RecursiveIteratorIterator(
+            new \RecursiveDirectoryIterator($dir),
+            \RecursiveIteratorIterator::CHILD_FIRST
+        );
+        foreach ($iterator as $path) {
+            if ($path->isDir()) {
+                @rmdir($path->__toString());
+            } else {
+                unlink($path->__toString());
+            }
         }
+        rmdir($dir);
     }
     
     /**
