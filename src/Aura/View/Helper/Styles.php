@@ -3,6 +3,8 @@
  * 
  * This file is part of the Aura Project for PHP.
  * 
+ * @package Aura.View
+ * 
  * @license http://opensource.org/licenses/bsd-license.php BSD
  * 
  */
@@ -43,6 +45,8 @@ class Styles extends AbstractHelper
      * Adds a <link rel="stylesheet" ... /> tag to the stack.
      * 
      * @param string $href The source href for the stylesheet.
+     * 
+     * @param int $pos the order where it should be placed
      * 
      * @param array $attribs Additional attributes for the <link> tag.
      * 
