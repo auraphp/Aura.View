@@ -1,18 +1,69 @@
 <?php
+/**
+ * 
+ * This file is part of the Aura Project for PHP.
+ * 
+ * @package Aura.View
+ * 
+ * @license http://opensource.org/licenses/bsd-license.php BSD
+ * 
+ */
 namespace Aura\View\Escaper;
 
 use Aura\View\EscaperFactory;
 
+/**
+ * 
+ * Object
+ * 
+ * @package Aura.View
+ * 
+ */
 class Object implements \ArrayAccess
 {
+    /**
+     * 
+     * A factory to create Escaper
+     *
+     * @var EscaperFactory
+     * 
+     */
     protected $factory;
     
     protected $object;
     
+    /**
+     *
+     * flags in PHP, Default is ENT_QUOTES
+     * 
+     * @var int
+     * 
+     */
     protected $quotes;
     
+    /**
+     *
+     * Character-set, Default to UTF-8
+     * 
+     * @var string
+     * 
+     */
     protected $charset;
     
+    // FIXME constructor
+    /**
+     * 
+     * Constructor
+     *
+     * @param EscaperFactory $factory
+     * 
+     * @param type $object
+     * 
+     * @param type $quotes
+     * 
+     * @param string $charset 
+     * 
+     */
     public function __construct(EscaperFactory $factory, $object, $quotes, $charset)
     {
         $this->factory = $factory;
@@ -21,26 +72,70 @@ class Object implements \ArrayAccess
         $this->charset = $charset;
     }
     
+    /**
+     *
+     * Magic get
+     * 
+     * @param string $prop
+     * 
+     * @return type 
+     * 
+     */
     public function __get($prop)
     {
         return $this->__escape($this->object->$prop);
     }
     
+    /**
+     *
+     * Magic set
+     * 
+     * @param type $prop
+     * 
+     * @param type $spec 
+     * 
+     */
     public function __set($prop, $spec)
     {
         $this->object->$prop = $spec;
     }
     
+    /**
+     *
+     * Magic isset
+     * 
+     * @param type $prop
+     * 
+     * @return type 
+     * 
+     */
     public function __isset($prop)
     {
         return isset($this->object->$prop);
     }
     
+    /**
+     *
+     * Magic unset
+     * 
+     * @param type $prop 
+     * 
+     */
     public function __unset($prop)
     {
         unset($this->object->$prop);
     }
     
+    // FIXME , docblocks
+    /**
+     *
+     * Callback
+     * 
+     * @param type $method
+     * 
+     * @param type $params 
+     * 
+     */
     public function __call($method, $params)
     {
         return $this->__escape(call_user_func_array(
@@ -49,11 +144,29 @@ class Object implements \ArrayAccess
         ));
     }
     
+    // FIXME
+    /**
+     *
+     * Raw data
+     * 
+     * @return type 
+     * 
+     */
     public function __raw()
     {
         return $this->object;
     }
     
+    // FIXME
+    /**
+     * 
+     * Escape
+     *
+     * @param type $spec
+     * 
+     * @return type 
+     * 
+     */
     public function __escape($spec)
     {
         if (is_string($spec)) {

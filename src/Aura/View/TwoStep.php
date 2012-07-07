@@ -3,6 +3,8 @@
  * 
  * This file is part of the Aura Project for PHP.
  * 
+ * @package Aura.View
+ * 
  * @license http://opensource.org/licenses/bsd-license.php BSD
  * 
  */
@@ -29,15 +31,6 @@ class TwoStep
     
     /**
      * 
-     * The shared data for inner and outer views.
-     * 
-     * @var array
-     * 
-     */
-    protected $data = [];
-    
-    /**
-     * 
      * The .format to render.
      * 
      * @var string
@@ -53,6 +46,15 @@ class TwoStep
      * 
      */
     protected $format_types;
+    
+    /**
+     * 
+     * The data for the inner view.
+     * 
+     * @var array
+     * 
+     */
+    protected $inner_data = [];
     
     /**
      * 
@@ -102,6 +104,15 @@ class TwoStep
     
     /**
      * 
+     * The data for the outer view.
+     * 
+     * @var array
+     * 
+     */
+    protected $outer_data = [];
+    
+    /**
+     * 
      * The paths to search when finding the outer view template.
      * 
      * @var array
@@ -133,6 +144,8 @@ class TwoStep
      * 
      * @param Template $template The Template object to be used when rendering
      * the inner view and outer view.
+     * 
+     * @param FormatTypes $format_types format types
      * 
      */
     public function __construct(Template $template, FormatTypes $format_types)
@@ -210,32 +223,6 @@ class TwoStep
     
     /**
      * 
-     * Sets the shared data for inner and outer views.
-     * 
-     * @param array $data The data for the inner and outer views.
-     * 
-     * @return void
-     * 
-     */
-    public function setData($data)
-    {
-        $this->data = $data;
-    }
-    
-    /**
-     * 
-     * Returns the shared data for inner and outer views.
-     * 
-     * @return array
-     * 
-     */
-    public function getData()
-    {
-        return $this->data;
-    }
-    
-    /**
-     * 
      * Sets inner view specification. The specification may be:
      * 
      * - (string) A template file name.
@@ -269,6 +256,32 @@ class TwoStep
     public function getInnerView($format = null)
     {
         return $this->getView($this->inner_view, $format);
+    }
+    
+    /**
+     * 
+     * Sets the data for the inner view.
+     * 
+     * @param array $inner_data The data for the inner view.
+     * 
+     * @return void
+     * 
+     */
+    public function setInnerData($inner_data)
+    {
+        $this->inner_data = $inner_data;
+    }
+    
+    /**
+     * 
+     * Returns the data for the inner view.
+     * 
+     * @return array $inner_data The data for the inner view.
+     * 
+     */
+    public function getInnerData()
+    {
+        return $this->inner_data;
     }
     
     /**
@@ -348,6 +361,32 @@ class TwoStep
     public function getOuterView($format = null)
     {
         return $this->getView($this->outer_view, $format);
+    }
+    
+    /**
+     * 
+     * Sets the data for the outer view.
+     * 
+     * @param array $outer_data The data for the outer view.
+     * 
+     * @return void
+     * 
+     */
+    public function setOuterData($outer_data)
+    {
+        $this->outer_data = $outer_data;
+    }
+    
+    /**
+     * 
+     * Returns the data for the outer view.
+     * 
+     * @return array
+     * 
+     */
+    public function getOuterData()
+    {
+        return $this->outer_data;
     }
     
     /**
@@ -440,65 +479,82 @@ class TwoStep
             );
         }
         
-        // set the shared data
-        $this->template->setData($this->data);
-        
         // render inner view
-        $inner = $this->renderView(
-            $this->getInnerView($this->format),
-            $this->inner_paths
-        );
-        
-        // add the inner view result to the shared data
-        $this->template->addData([$this->inner_view_var => $inner]);
+        $inner = $this->renderInnerView();
         
         // render outer view, and done
-        return $this->renderView(
-            $this->getOuterView($this->format),
-            $this->outer_paths,
-            $inner
-        );
+        return $this->renderOuterView($inner);
     }
     
     /**
      * 
-     * Renders a view (inner or outer).
-     * 
-     * @param mixed $view The view to render.
-     * 
-     * @param array $paths Look through these paths for view templates.
-     * 
-     * @param string $default If $view is null, use this as the default
-     * rendering result.
+     * Renders the inner view.
      * 
      * @return string
      * 
      */
-    protected function renderView($view, $paths, $default = null)
+    public function renderInnerView()
     {
+        $view = $this->getInnerView($this->format);
         switch (true) {
-            case (! $view):
-                // no view
-                $result = $default;
-                break;
-            case (is_callable($view)):
-                // view is a callable
-                $result = $view();
-                break;
-            default:
-                // view is a string path to a template
-                $this->template->setPaths($paths);
-                $result = $this->template->fetch($view);
-                break;
+        case (! $view):
+            // no view
+            $inner = null;
+            break;
+        case (is_callable($view)):
+            // view is a callable
+            $inner = $view();
+            break;
+        default:
+            // view is a string path to a template
+            $this->template->setData($this->inner_data);
+            $this->template->setPaths($this->inner_paths);
+            $inner = $this->template->fetch($view);
+            break;
         }
-        return $result;
+        return $inner;
     }
     
+    /**
+     * 
+     * Renders the outer view.
+     * 
+     * @param string $inner The output from the inner view.
+     * 
+     * @return string
+     * 
+     */
+    public function renderOuterView($inner)
+    {
+        $view = $this->getOuterView($this->format);
+        switch (true) {
+        case (! $view):
+            // no view
+            $outer = $inner;
+            break;
+        case (is_callable($view)):
+            // view is a callable
+            $outer = $view($inner);
+            break;
+        default:
+            // view is a string path to a template
+            $this->outer_data[$this->inner_view_var] = $inner;
+            $this->template->addData($this->outer_data);
+            $this->template->setPaths($this->outer_paths);
+            $outer = $this->template->fetch($view);
+            break;
+        }
+        return $outer;
+    }
+    
+    // FIXME $format
     /**
      * 
      * Gets the view for a particular format.
      * 
      * @param mixed $view The inner or outer view specification.
+     * 
+     * @param string $format
      * 
      * @return mixed The matching view for the format.
      * 
