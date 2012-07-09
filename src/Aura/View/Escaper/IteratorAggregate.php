@@ -31,3 +31,4 @@ class IteratorAggregate extends Object implements \IteratorAggregate
         return $this->__escape($this->object->getIterator());
     }
 }
+ 

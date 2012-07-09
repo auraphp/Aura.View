@@ -10,6 +10,8 @@
  */
 namespace Aura\View\Exception;
 
+use Aura\View\Exception as Exception;
+
 /**
  * 
  * Throw Template Not Found Exception
@@ -17,4 +19,7 @@ namespace Aura\View\Exception;
  * @package Aura.View
  * 
  */
-class TemplateNotFound extends \Aura\View\Exception {}
+class TemplateNotFound extends Exception
+{
+}
+ 
