@@ -33,3 +33,4 @@ class Base extends AbstractHelper
         return $this->indent . "<base href=\"$href\" />" . PHP_EOL;
     }
 }
+ 

@@ -10,6 +10,7 @@
  */
 namespace Aura\View\Exception;
 
+use Aura\View\Exception as Exception;
 /**
  * 
  * Throws Helper Not Mapped Exception
@@ -17,4 +18,7 @@ namespace Aura\View\Exception;
  * @package Aura.View
  * 
  */
-class HelperNotMapped extends \Aura\View\Exception {}
+class HelperNotMapped extends Exception
+{
+}
+ 

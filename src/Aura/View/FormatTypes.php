@@ -111,7 +111,7 @@ class FormatTypes
         '.xwd'      => 'image/x-xwindowdump',
         '.zip'      => 'application/zip',
     ];
-    
+
     /**
      * 
      * Constructor.
@@ -124,7 +124,7 @@ class FormatTypes
     {
         $this->map = array_merge($this->map, $map);
     }
-    
+
     /**
      * 
      * Given an array of acceptable Content-Type values and an array of 
@@ -154,7 +154,7 @@ class FormatTypes
             }
         }
     }
-    
+
     /**
      * 
      * Returns the Content-Type for a particular .format file extension.
@@ -171,3 +171,4 @@ class FormatTypes
         }
     }
 }
+ 

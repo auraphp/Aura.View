@@ -30,7 +30,7 @@ class Iterator extends Object implements \Iterator
     {
         return $this->__escape($this->object->current());
     }
-    
+
     /**
      * 
      * Returns the current key.
@@ -42,7 +42,7 @@ class Iterator extends Object implements \Iterator
     {
         return $this->__escape($this->object->key());
     }
-    
+
     /**
      * 
      * Returns the next item.
@@ -54,7 +54,7 @@ class Iterator extends Object implements \Iterator
     {
         return $this->object->next();
     }
-    
+
     /**
      * 
      * Rewinds the iterator the start.
@@ -66,7 +66,7 @@ class Iterator extends Object implements \Iterator
     {
         return $this->object->rewind();
     }
-    
+
     /**
      * 
      * Is the current position valid?
@@ -79,3 +79,4 @@ class Iterator extends Object implements \Iterator
         return $this->object->valid();
     }
 }
+ 
