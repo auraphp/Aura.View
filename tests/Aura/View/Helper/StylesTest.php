@@ -19,8 +19,8 @@ class StylesTest extends AbstractHelperTest
         $styles = new Styles;
         
         $styles->add('/css/middle.css');
-        $styles->add('/css/last.css', 150);
-        $styles->add('/css/first.css', 50);
+        $styles->add('/css/last.css', null, 150);
+        $styles->add('/css/first.css', null, 50);
         
         $actual = $styles->get();
         $expect = '    <link rel="stylesheet" href="/css/first.css" type="text/css" media="screen" />' . PHP_EOL
@@ -38,9 +38,9 @@ class StylesTest extends AbstractHelperTest
         $styles = new Styles;
         
         $styles->setIndent('  ');
-        $styles->add('/css/middle.css', null, ['media' => 'print']);
-        $styles->add('/css/last.css', 150);
-        $styles->add('/css/first.css', 50);
+        $styles->add('/css/middle.css', ['media' => 'print']);
+        $styles->add('/css/last.css', null, 150);
+        $styles->add('/css/first.css', null, 50);
         
         $actual = $styles->get();
         
