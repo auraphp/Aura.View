@@ -3,6 +3,8 @@
  * 
  * This file is part of the Aura Project for PHP.
  * 
+ * @package Aura.View
+ * 
  * @license http://opensource.org/licenses/bsd-license.php BSD
  * 
  */
@@ -120,7 +122,7 @@ class TemplateFinder
      *      // '/path/1', '/path/2', '/path/3'.
      * }}
      * 
-     * @param array|string $path The directories to add to the paths.
+     * @param array|string $paths The directories to add to the paths.
      * 
      * @return void
      * 

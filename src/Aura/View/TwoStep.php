@@ -3,6 +3,8 @@
  * 
  * This file is part of the Aura Project for PHP.
  * 
+ * @package Aura.View
+ * 
  * @license http://opensource.org/licenses/bsd-license.php BSD
  * 
  */
@@ -133,6 +135,8 @@ class TwoStep
      * 
      * @param Template $template The Template object to be used when rendering
      * the inner view and outer view.
+     * 
+     * @param FormatTypes $format_types An object that maps formats to types.
      * 
      */
     public function __construct(Template $template, FormatTypes $format_types)
@@ -499,6 +503,8 @@ class TwoStep
      * Gets the view for a particular format.
      * 
      * @param mixed $view The inner or outer view specification.
+     * 
+     * @param string $format The format to use.
      * 
      * @return mixed The matching view for the format.
      * 

@@ -3,6 +3,8 @@
  * 
  * This file is part of the Aura Project for PHP.
  * 
+ * @package Aura.View
+ * 
  * @license http://opensource.org/licenses/bsd-license.php BSD
  * 
  */
@@ -47,13 +49,29 @@ abstract class AbstractTemplate
      */
     private $_helper_locator;
     
+    /**
+     * 
+     * A data-escaper object.
+     * 
+     * @var Escaper\Object
+     * 
+     */
     private $_escaper;
     
+    /**
+     * 
+     * A factory to create an escaper.
+     * 
+     * @var EscaperFactory
+     * 
+     */
     private $_escaper_factory;
     
     /**
      * 
      * Constructor.
+     * 
+     * @param EscaperFactory $escaper_factory An escaper factory.
      * 
      * @param TemplateFinder $template_finder A template finder.
      * 
@@ -207,6 +225,13 @@ abstract class AbstractTemplate
         return (array) $this->_data;
     }
     
+    /**
+     * 
+     * Returns the raw data object.
+     * 
+     * @return \StdClass
+     * 
+     */
     public function __raw()
     {
         return $this->_data;
@@ -282,8 +307,6 @@ abstract class AbstractTemplate
      * Fetches the output from a template.
      * 
      * @param string $__name__ The template name to use.
-     * 
-     * @param array $vars Variables to extract into the local scope.
      * 
      * @return string
      * 
