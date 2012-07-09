@@ -27,7 +27,7 @@ class Styles extends AbstractHelper
      * 
      */
     protected $styles = [];
-    
+
     /**
      * 
      * Returns the helper so you can call methods on it.
@@ -39,7 +39,7 @@ class Styles extends AbstractHelper
     {
         return $this;
     }
-    
+
     /**
      * 
      * Adds a <link rel="stylesheet" ... /> tag to the stack.
@@ -60,23 +60,23 @@ class Styles extends AbstractHelper
             'href'  => $href,
             'type'  => 'text/css',
         ];
-        
+
         if (! isset($attribs['media'])) {
             $base['media'] = 'screen';
         } else {
             $base['media'] = $attribs['media'];
         }
-        
+
         unset($attribs['rel']);
         unset($attribs['href']);
         unset($attribs['type']);
         unset($attribs['media']);
-        
+
         $attr = $this->attribs(array_merge($base, (array) $attribs));
         $tag = "<link $attr />";
         $this->styles[$tag] = $pos;
     }
-    
+
     /**
      * 
      * Returns the stack of <link rel="stylesheet" ... /> tags as a single 
@@ -94,3 +94,4 @@ class Styles extends AbstractHelper
              . PHP_EOL;
     }
 }
+ 

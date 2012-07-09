@@ -29,7 +29,7 @@ class Object implements \ArrayAccess
      * 
      */
     protected $factory;
-    
+
     /**
      * 
      * The object being decorated (wrapped) for escaping.
@@ -38,7 +38,7 @@ class Object implements \ArrayAccess
      * 
      */
     protected $object;
-    
+
     /**
      * 
      * The type of quoting to use for htmlspecialchars(), e.g. ENT_QUOTES.
@@ -47,7 +47,7 @@ class Object implements \ArrayAccess
      * 
      */
     protected $quotes;
-    
+
     /**
      * 
      * The character set to use for htmlspecialchars(), e.g. 'UTF-8'.
@@ -56,7 +56,7 @@ class Object implements \ArrayAccess
      * 
      */
     protected $charset;
-    
+
     /**
      * 
      * Constructor.
@@ -77,7 +77,7 @@ class Object implements \ArrayAccess
         $this->quotes  = $quotes;
         $this->charset = $charset;
     }
-    
+
     /**
      * 
      * Returns an escaped property from the underlying object.
@@ -91,7 +91,7 @@ class Object implements \ArrayAccess
     {
         return $this->__escape($this->object->$prop);
     }
-    
+
     /**
      * 
      * Sets a property on the underlying object.
@@ -107,7 +107,7 @@ class Object implements \ArrayAccess
     {
         $this->object->$prop = $spec;
     }
-    
+
     /**
      * 
      * Is the underlying object property set?
@@ -121,7 +121,7 @@ class Object implements \ArrayAccess
     {
         return isset($this->object->$prop);
     }
-    
+
     /**
      * 
      * Unsets the underlying object property.
@@ -135,7 +135,7 @@ class Object implements \ArrayAccess
     {
         unset($this->object->$prop);
     }
-    
+
     /**
      * 
      * Calls an underlying object method and escapes the return value.
@@ -154,7 +154,7 @@ class Object implements \ArrayAccess
             $params
         ));
     }
-    
+
     /**
      * 
      * Returns the underlying object.
@@ -166,7 +166,7 @@ class Object implements \ArrayAccess
     {
         return $this->object;
     }
-    
+
     /**
      * 
      * Returns an escaped value.
@@ -192,7 +192,7 @@ class Object implements \ArrayAccess
             return $spec;
         }
     }
-    
+
     /**
      * 
      * ArrayAccess: does the requested property exist?
@@ -206,7 +206,7 @@ class Object implements \ArrayAccess
     {
         return isset($this->object->$prop);
     }
-    
+
     /**
      * 
      * ArrayAccess: get a property value.
@@ -220,7 +220,7 @@ class Object implements \ArrayAccess
     {
         return $this->__escape($this->object->$prop);
     }
-    
+
     /**
      * 
      * ArrayAccess: sets a property value.
@@ -236,7 +236,7 @@ class Object implements \ArrayAccess
     {
         $this->object->$prop = $spec;
     }
-    
+
     /**
      * 
      * ArrayAccess: unset a property.
@@ -251,3 +251,4 @@ class Object implements \ArrayAccess
         unset($this->object->$prop);
     }
 }
+ 

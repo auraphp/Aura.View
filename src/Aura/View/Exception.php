@@ -17,4 +17,7 @@ namespace Aura\View;
  * @package Aura.View
  * 
  */
-class Exception extends \Exception {}
+class Exception extends \Exception
+{
+}
+ 

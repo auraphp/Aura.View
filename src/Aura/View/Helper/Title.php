@@ -27,7 +27,7 @@ class Title extends AbstractHelper
      * 
      */
     protected $title = null;
-    
+
     /**
      * 
      * Returns the helper so you can call methods on it.
@@ -39,7 +39,7 @@ class Title extends AbstractHelper
     {
         return $this;
     }
-    
+
     /**
      * 
      * Sets the <title> string.
@@ -53,7 +53,7 @@ class Title extends AbstractHelper
     {
         $this->title = $title;
     }
-    
+
     /**
      * 
      * Appends to the end of the current <title> string.
@@ -67,7 +67,7 @@ class Title extends AbstractHelper
     {
         $this->title .= $text;
     }
-    
+
     /**
      * 
      * Prepends to the beginning of the current <title> string.
@@ -81,7 +81,7 @@ class Title extends AbstractHelper
     {
         $this->title = $text . $this->title;
     }
-    
+
     /**
      * 
      * Returns the current title string.
@@ -94,3 +94,4 @@ class Title extends AbstractHelper
         return "{$this->indent}<title>{$this->title}</title>" . PHP_EOL;
     }
 }
+ 
