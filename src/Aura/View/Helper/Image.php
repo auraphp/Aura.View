@@ -41,7 +41,8 @@ class Image extends AbstractHelper
         if (empty($attribs['alt'])) {
             $attribs['alt'] = basename($src);
         }
-        
+
         return "<img src=\"{$src}\" " . $this->attribs($attribs) . ' />';
     }
 }
+ 

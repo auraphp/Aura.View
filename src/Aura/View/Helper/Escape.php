@@ -28,7 +28,7 @@ class Escape
      * 
      */
     protected $escaper_object;
-    
+
     /**
      * 
      * Constructor.
@@ -41,7 +41,7 @@ class Escape
     {
         $this->escaper_object = $escaper_factory->newInstance((object) []);
     }
-    
+
     /**
      * 
      * Escapes strings; wraps objects and arrays in escaper objects; leaves
@@ -55,3 +55,4 @@ class Escape
         return $this->escaper_object->__escape($val);
     }
 }
+ 

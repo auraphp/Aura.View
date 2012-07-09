@@ -27,7 +27,7 @@ class Scripts extends AbstractHelper
      * 
      */
     protected $scripts = [];
-    
+
     /**
      * 
      * Returns the helper so you can call methods on it.
@@ -39,7 +39,7 @@ class Scripts extends AbstractHelper
     {
         return $this;
     }
-    
+
     /**
      * 
      * Adds a <script> tag to the stack.
@@ -59,12 +59,12 @@ class Scripts extends AbstractHelper
         if (empty($attribs['type'])) {
             $attribs['type'] = 'text/javascript';
         }
-        
+
         $attr = $this->attribs($attribs);
         $tag = "<script src=\"$src\" $attr></script>";
         $this->scripts[(int) $pos][] = $tag;
     }
-    
+
     /**
      * 
      * Adds a conditional `<!--[if ...]><script><![endif] -->` tag to the 
@@ -87,12 +87,12 @@ class Scripts extends AbstractHelper
         if (empty($attribs['type'])) {
             $attribs['type'] = 'text/javascript';
         }
-        
+
         $attr = $this->attribs($attribs);
         $tag = "<!--[if $exp]><script src=\"$src\" $attr></script><![endif]-->";
         $this->scripts[(int) $pos][] = $tag;
     }
-    
+
     /**
      * 
      * Returns the stack of <script> tags as a single block.
@@ -112,3 +112,4 @@ class Scripts extends AbstractHelper
         return $html;
     }
 }
+ 

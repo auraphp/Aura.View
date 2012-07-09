@@ -27,7 +27,7 @@ class EscaperFactory
      * 
      */
     protected $quotes = ENT_QUOTES;
-    
+
     /**
      * 
      * The character set to use for htmlspecialchars(), e.g. 'UTF-8'.
@@ -36,7 +36,7 @@ class EscaperFactory
      * 
      */
     protected $charset = 'UTF-8';
-    
+
     /**
      * 
      * Constructor.
@@ -51,7 +51,7 @@ class EscaperFactory
         $this->quotes = $quotes;
         $this->charset = $charset;
     }
-    
+
     /**
      * 
      * Returns a new instance of an escaper object.
@@ -66,15 +66,16 @@ class EscaperFactory
         if (is_array($spec)) {
             $spec = new \ArrayObject($spec);
         }
-        
+
         if ($spec instanceof \IteratorAggregate) {
             return new Escaper\IteratorAggregate($this, $spec, $this->quotes, $this->charset);
         }
-        
+
         if ($spec instanceof \Iterator) {
             return new Escaper\Iterator($this, $spec, $this->quotes, $this->charset);
         }
-        
+
         return new Escaper\Object($this, $spec, $this->quotes, $this->charset);
     }
 }
+ 
