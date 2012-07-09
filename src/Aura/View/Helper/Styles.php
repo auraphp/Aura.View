@@ -46,19 +46,15 @@ class Styles extends AbstractHelper
      * 
      * @param string $href The source href for the stylesheet.
      * 
-     * @param int $pos The stylesheet position in the stack.
-     * 
      * @param array $attribs Additional attributes for the <link> tag.
+     * 
+     * @param int $pos The stylesheet position in the stack.
      * 
      * @return void
      * 
      */
-    public function add($href, $pos = 100, $attribs = [])
+    public function add($href, $attribs = [], $pos = 100)
     {
-        if ($pos === null) {
-            $pos = 100;
-        }
-        
         $base = [
             'rel'   => 'stylesheet',
             'href'  => $href,
@@ -76,7 +72,7 @@ class Styles extends AbstractHelper
         unset($attribs['type']);
         unset($attribs['media']);
         
-        $attr = $this->attribs($base + $attribs);
+        $attr = $this->attribs(array_merge($base, (array) $attribs));
         $tag = "<link $attr />";
         $this->styles[$tag] = $pos;
     }
