@@ -15,3 +15,5 @@
 - [BRK] Helper\Styles::add() method now has $attribs second and $pos last, for
   consistency with all other helpers.
 
+- [CHG] PSR-1/2 compliance
+
