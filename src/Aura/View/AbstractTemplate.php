@@ -3,6 +3,8 @@
  * 
  * This file is part of the Aura Project for PHP.
  * 
+ * @package Aura.View
+ * 
  * @license http://opensource.org/licenses/bsd-license.php BSD
  * 
  */
@@ -27,7 +29,7 @@ abstract class AbstractTemplate
      * 
      */
     private $_template_finder;
-    
+
     /**
      * 
      * Data assigned to the template.
@@ -36,7 +38,7 @@ abstract class AbstractTemplate
      * 
      */
     private $_data;
-    
+
     /**
      * 
      * A ServiceLocator for helper objects, so that repeated calls to the same 
@@ -46,14 +48,30 @@ abstract class AbstractTemplate
      * 
      */
     private $_helper_locator;
-    
+
+    /**
+     * 
+     * A data-escaper object.
+     * 
+     * @var Escaper\Object
+     * 
+     */
     private $_escaper;
-    
+
+    /**
+     * 
+     * A factory to create an escaper.
+     * 
+     * @var EscaperFactory
+     * 
+     */
     private $_escaper_factory;
-    
+
     /**
      * 
      * Constructor.
+     * 
+     * @param EscaperFactory $escaper_factory An escaper factory.
      * 
      * @param TemplateFinder $template_finder A template finder.
      * 
@@ -71,7 +89,7 @@ abstract class AbstractTemplate
         $this->_helper_locator  = $helper_locator;
         $this->setData();
     }
-    
+
     /**
      * 
      * Magic read access to template data.
@@ -85,7 +103,7 @@ abstract class AbstractTemplate
     {
         return $this->_escaper->$key;
     }
-    
+
     /**
      * 
      * Magic write access to template data.
@@ -101,7 +119,7 @@ abstract class AbstractTemplate
     {
         $this->_data->$key = $val;
     }
-    
+
     /**
      * 
      * Magic isset() checks on template data.
@@ -115,7 +133,7 @@ abstract class AbstractTemplate
     {
         return isset($this->_data->$key);
     }
-    
+
     /**
      * 
      * Magic unset() for template data.
@@ -129,7 +147,7 @@ abstract class AbstractTemplate
     {
         unset($this->_data->$key);
     }
-    
+
     /**
      * 
      * Magic call to provide shared helpers as template methods.
@@ -146,7 +164,7 @@ abstract class AbstractTemplate
         $helper = $this->getHelper($name);
         return call_user_func_array($helper, $args);
     }
-    
+
     /**
      * 
      * Sets the search paths for templates; paths are searched in FIFO order.
@@ -160,7 +178,7 @@ abstract class AbstractTemplate
     {
         $this->_template_finder->setPaths($paths);
     }
-    
+
     /**
      * 
      * Merges new data with the existing template data.
@@ -176,7 +194,7 @@ abstract class AbstractTemplate
         $this->_data    = (object) array_merge((array) $this->_data, $data);
         $this->_escaper = $this->_escaper_factory->newInstance($this->_data);
     }
-    
+
     /**
      * 
      * Replaces all template data at once; this will remove all previous
@@ -193,7 +211,7 @@ abstract class AbstractTemplate
         $this->_data    = (object) $data;
         $this->_escaper = $this->_escaper_factory->newInstance($this->_data);
     }
-    
+
     /**
      * 
      * Gets all template variables.
@@ -206,12 +224,19 @@ abstract class AbstractTemplate
     {
         return (array) $this->_data;
     }
-    
+
+    /**
+     * 
+     * Returns the raw data object.
+     * 
+     * @return \StdClass
+     * 
+     */
     public function __raw()
     {
         return $this->_data;
     }
-    
+
     /**
      * 
      * Returns the helper locator object.
@@ -223,7 +248,7 @@ abstract class AbstractTemplate
     {
         return $this->_helper_locator;
     }
-    
+
     /**
      * 
      * Returns the path to the requested template script; searches through
@@ -240,17 +265,17 @@ abstract class AbstractTemplate
         if (substr($name, -4) != '.php') {
             $name .= '.php';
         }
-        
+
         // find the path to the template
         $file = $this->_template_finder->find($name);
         if (! $file) {
             throw new Exception\TemplateNotFound($name);
         }
-        
+
         // done!
         return $file;
     }
-    
+
     /**
      * 
      * Returns the TemplateFinder object.
@@ -262,7 +287,7 @@ abstract class AbstractTemplate
     {
         return $this->_template_finder;
     }
-    
+
     /**
      * 
      * Retrieves a shared helper from the helper container.
@@ -276,14 +301,12 @@ abstract class AbstractTemplate
     {
         return $this->_helper_locator->get($name);
     }
-    
+
     /**
      * 
      * Fetches the output from a template.
      * 
      * @param string $__name__ The template name to use.
-     * 
-     * @param array $vars Variables to extract into the local scope.
      * 
      * @return string
      * 
@@ -306,3 +329,4 @@ abstract class AbstractTemplate
      */
     abstract public function partial($name, array $data = []);
 }
+ 

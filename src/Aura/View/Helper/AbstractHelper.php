@@ -3,6 +3,8 @@
  * 
  * This file is part of the Aura Project for PHP.
  * 
+ * @package Aura.View
+ * 
  * @license http://opensource.org/licenses/bsd-license.php BSD
  * 
  */
@@ -25,7 +27,7 @@ abstract class AbstractHelper
      * 
      */
     protected $indent = '    ';
-    
+
     /**
      * 
      * Sets the string to use for one level of indentation.
@@ -39,7 +41,7 @@ abstract class AbstractHelper
     {
         $this->indent = $indent;
     }
-    
+
     /**
      * 
      * Converts an associative array to an attribute string.
@@ -58,26 +60,26 @@ abstract class AbstractHelper
         if (! $attribs) {
             return '';
         }
-        
+
         $html = [];
         foreach ($attribs as $key => $val) {
-            
+
             // skip this attribute?
             if (in_array($key, $skip)) {
                 continue;
             }
-            
+
             // space-separate multiple values
             if (is_array($val)) {
                 $val = implode(' ', $val);
             }
-            
+
             // skip empty values; use a string cast and strict equality to 
             // make sure that a string zero is not counted as an empty value.
             if ((string) $val === '') {
                 continue;
             }
-            
+
             // add to the attributes
             if ($val === true) {
                 $html[] = $key;
@@ -85,8 +87,9 @@ abstract class AbstractHelper
                 $html[] = "{$key}=\"$val\"";
             }
         }
-        
+
         // done
         return implode(' ', $html);
     }
 }
+ 

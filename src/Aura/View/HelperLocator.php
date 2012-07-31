@@ -3,6 +3,8 @@
  * 
  * This file is part of the Aura Project for PHP.
  * 
+ * @package Aura.View
+ * 
  * @license http://opensource.org/licenses/bsd-license.php BSD
  * 
  */
@@ -25,7 +27,7 @@ class HelperLocator
      * 
      */
     protected $registry;
-    
+
     /**
      * 
      * Constructor.
@@ -43,7 +45,7 @@ class HelperLocator
             $this->set($name, $spec);
         }
     }
-    
+
     /**
      * 
      * Sets a helper into the registry by name.
@@ -61,7 +63,7 @@ class HelperLocator
     {
         $this->registry[$name] = $spec;
     }
-    
+
     /**
      * 
      * Gets a helper from the registry by name.
@@ -76,12 +78,13 @@ class HelperLocator
         if (! isset($this->registry[$name])) {
             throw new Exception\HelperNotMapped($name);
         }
-        
+
         if ($this->registry[$name] instanceof \Closure) {
             $func = $this->registry[$name];
             $this->registry[$name] = $func();
         }
-        
+
         return $this->registry[$name];
     }
 }
+ 

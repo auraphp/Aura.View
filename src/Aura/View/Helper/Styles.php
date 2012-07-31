@@ -3,6 +3,8 @@
  * 
  * This file is part of the Aura Project for PHP.
  * 
+ * @package Aura.View
+ * 
  * @license http://opensource.org/licenses/bsd-license.php BSD
  * 
  */
@@ -25,7 +27,7 @@ class Styles extends AbstractHelper
      * 
      */
     protected $styles = [];
-    
+
     /**
      * 
      * Returns the helper so you can call methods on it.
@@ -37,7 +39,7 @@ class Styles extends AbstractHelper
     {
         return $this;
     }
-    
+
     /**
      * 
      * Adds a <link rel="stylesheet" ... /> tag to the stack.
@@ -46,37 +48,35 @@ class Styles extends AbstractHelper
      * 
      * @param array $attribs Additional attributes for the <link> tag.
      * 
+     * @param int $pos The stylesheet position in the stack.
+     * 
      * @return void
      * 
      */
-    public function add($href, $pos = 100, $attribs = [])
+    public function add($href, $attribs = [], $pos = 100)
     {
-        if ($pos === null) {
-            $pos = 100;
-        }
-        
         $base = [
             'rel'   => 'stylesheet',
             'href'  => $href,
             'type'  => 'text/css',
         ];
-        
+
         if (! isset($attribs['media'])) {
             $base['media'] = 'screen';
         } else {
             $base['media'] = $attribs['media'];
         }
-        
+
         unset($attribs['rel']);
         unset($attribs['href']);
         unset($attribs['type']);
         unset($attribs['media']);
-        
-        $attr = $this->attribs($base + $attribs);
+
+        $attr = $this->attribs(array_merge($base, (array) $attribs));
         $tag = "<link $attr />";
         $this->styles[$tag] = $pos;
     }
-    
+
     /**
      * 
      * Returns the stack of <link rel="stylesheet" ... /> tags as a single 
@@ -94,3 +94,4 @@ class Styles extends AbstractHelper
              . PHP_EOL;
     }
 }
+ 

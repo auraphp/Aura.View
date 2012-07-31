@@ -3,6 +3,8 @@
  * 
  * This file is part of the Aura Project for PHP.
  * 
+ * @package Aura.View
+ * 
  * @license http://opensource.org/licenses/bsd-license.php BSD
  * 
  */
@@ -25,7 +27,7 @@ class Metas extends AbstractHelper
      * 
      */
     protected $metas = [];
-    
+
     /**
      * 
      * Returns the helper so you can call methods on it.
@@ -37,7 +39,7 @@ class Metas extends AbstractHelper
     {
         return $this;
     }
-    
+
     /**
      * 
      * Returns a <meta ... /> tag.
@@ -74,10 +76,10 @@ class Metas extends AbstractHelper
             'http-equiv' => $http_equiv,
             'content'    => $content,
         ];
-        
+
         $this->add($attribs, $pos);
     }
-    
+
     /**
      * 
      * Returns a <meta name="" content="" /> tag.
@@ -97,10 +99,10 @@ class Metas extends AbstractHelper
             'name'    => $name,
             'content' => $content,
         ];
-        
+
         $this->add($attribs, $pos);
     }
-    
+
     /**
      * 
      * Returns the stack of <meta ... /> tags as a single block.
@@ -120,3 +122,4 @@ class Metas extends AbstractHelper
         return $html;
     }
 }
+ 

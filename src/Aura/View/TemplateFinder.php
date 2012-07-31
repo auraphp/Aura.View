@@ -3,6 +3,8 @@
  * 
  * This file is part of the Aura Project for PHP.
  * 
+ * @package Aura.View
+ * 
  * @license http://opensource.org/licenses/bsd-license.php BSD
  * 
  */
@@ -25,7 +27,7 @@ class TemplateFinder
      * 
      */
     protected $paths = [];
-    
+
     /**
      * 
      * A cache of found files, so we do not need to search the path stack
@@ -35,7 +37,7 @@ class TemplateFinder
      * 
      */
     protected $found = [];
-    
+
     /**
      * 
      * Constructor.
@@ -47,7 +49,7 @@ class TemplateFinder
     {
         $this->paths = $paths;
     }
-    
+
     /**
      * 
      * Gets a copy of the current path stack.
@@ -59,7 +61,7 @@ class TemplateFinder
     {
         return $this->paths;
     }
-    
+
     /**
      * 
      * Adds one path to the top of the path stack.
@@ -82,7 +84,7 @@ class TemplateFinder
         array_unshift($this->paths, rtrim($path, DIRECTORY_SEPARATOR));
         $this->found = [];
     }
-    
+
     /**
      * 
      * Adds one path to the end of the path stack.
@@ -105,7 +107,7 @@ class TemplateFinder
         $this->paths[] = rtrim($path, DIRECTORY_SEPARATOR);
         $this->found = [];
     }
-    
+
     /**
      * 
      * Sets the paths directly.
@@ -120,7 +122,7 @@ class TemplateFinder
      *      // '/path/1', '/path/2', '/path/3'.
      * }}
      * 
-     * @param array|string $path The directories to add to the paths.
+     * @param array|string $paths The directories to add to the paths.
      * 
      * @return void
      * 
@@ -130,7 +132,7 @@ class TemplateFinder
         $this->paths = $paths;
         $this->found = [];
     }
-    
+
     /**
      * 
      * Finds a file in the paths.
@@ -158,7 +160,7 @@ class TemplateFinder
         if (isset($this->found[$file])) {
             return $this->found[$file];
         }
-        
+
         // is the file in the assigned paths?
         foreach ($this->paths as $path) {
             $found = $this->fileExists($path . DIRECTORY_SEPARATOR . $file);
@@ -167,18 +169,18 @@ class TemplateFinder
                 return $found;
             }
         }
-        
+
         // can we find it directly?
         $found = $this->fileExists($file);
         if ($found) {
             $this->found[$file] = $found;
             return $found;
         }
-        
+
         // never found it
         return false;
     }
-    
+
     /**
      * 
      * Checks to see if a file exists at a particular location.
@@ -199,3 +201,4 @@ class TemplateFinder
         }
     }
 }
+ 

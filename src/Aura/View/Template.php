@@ -3,6 +3,8 @@
  * 
  * This file is part of the Aura Project for PHP.
  * 
+ * @package Aura.View
+ * 
  * @license http://opensource.org/licenses/bsd-license.php BSD
  * 
  */
@@ -33,7 +35,7 @@ class Template extends AbstractTemplate
         require $this->find($__name__);
         return ob_get_clean();
     }
-    
+
     /**
      * 
      * Fetches the output from a partial. The partial will be executed in
@@ -55,3 +57,4 @@ class Template extends AbstractTemplate
         return $tpl->fetch($name);
     }
 }
+ 

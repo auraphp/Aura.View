@@ -3,6 +3,8 @@
  * 
  * This file is part of the Aura Project for PHP.
  * 
+ * @package Aura.View
+ * 
  * @license http://opensource.org/licenses/bsd-license.php BSD
  * 
  */
@@ -25,7 +27,7 @@ class Links extends AbstractHelper
      * 
      */
     protected $links = [];
-    
+
     /**
      * 
      * Returns the helper so you can call methods on it.
@@ -37,7 +39,7 @@ class Links extends AbstractHelper
     {
         return $this;
     }
-    
+
     /**
      * 
      * Adda a <link ... /> tag to the stack.
@@ -52,7 +54,7 @@ class Links extends AbstractHelper
         $attr = $this->attribs($attribs);
         $this->links[] = "<link $attr />";
     }
-    
+
     /**
      * 
      * Returns the stack of <link ... /> tags as a single block.
@@ -67,3 +69,4 @@ class Links extends AbstractHelper
              . PHP_EOL;
     }
 }
+ 

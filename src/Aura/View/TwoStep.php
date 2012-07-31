@@ -3,6 +3,8 @@
  * 
  * This file is part of the Aura Project for PHP.
  * 
+ * @package Aura.View
+ * 
  * @license http://opensource.org/licenses/bsd-license.php BSD
  * 
  */
@@ -26,7 +28,7 @@ class TwoStep
      * 
      */
     protected $accept;
-    
+
     /**
      * 
      * The shared data for inner and outer views.
@@ -35,7 +37,7 @@ class TwoStep
      * 
      */
     protected $data = [];
-    
+
     /**
      * 
      * The .format to render.
@@ -44,7 +46,7 @@ class TwoStep
      * 
      */
     protected $format;
-    
+
     /**
      * 
      * A FormatTypes object to map .format values to Content-Type values.
@@ -53,7 +55,7 @@ class TwoStep
      * 
      */
     protected $format_types;
-    
+
     /**
      * 
      * The paths to search when finding an inner view template.
@@ -62,7 +64,7 @@ class TwoStep
      * 
      */
     protected $inner_paths = [];
-    
+
     /**
      * 
      * The inner view to use. This may be one of three types:
@@ -79,7 +81,7 @@ class TwoStep
      * 
      */
     protected $inner_view;
-    
+
     /**
      * 
      * The name of the variable in the outer view template that should be
@@ -89,7 +91,7 @@ class TwoStep
      * 
      */
     protected $inner_view_var = 'inner_view';
-    
+
     /**
      * 
      * The Template object to be used when rendering the inner view and outer
@@ -99,7 +101,7 @@ class TwoStep
      * 
      */
     protected $template;
-    
+
     /**
      * 
      * The paths to search when finding the outer view template.
@@ -108,7 +110,7 @@ class TwoStep
      * 
      */
     protected $outer_paths = [];
-    
+
     /**
      * 
      * The inner view to use. This may be one of three types:
@@ -126,7 +128,7 @@ class TwoStep
      * 
      */
     protected $outer_view;
-    
+
     /**
      * 
      * Constructor.
@@ -134,13 +136,15 @@ class TwoStep
      * @param Template $template The Template object to be used when rendering
      * the inner view and outer view.
      * 
+     * @param FormatTypes $format_types An object that maps formats to types.
+     * 
      */
     public function __construct(Template $template, FormatTypes $format_types)
     {
         $this->template = $template;
         $this->format_types = $format_types;
     }
-    
+
     /**
      * 
      * Set the Accept values for negotiating formats.
@@ -155,7 +159,7 @@ class TwoStep
     {
         $this->accept = $accept;
     }
-    
+
     /**
      * 
      * Returns the Accept values for negotiating formats.
@@ -167,7 +171,7 @@ class TwoStep
     {
         return $this->accept;
     }
-    
+
     /**
      * 
      * Sets the .format to pick when the inner/outer views provide multiple
@@ -182,7 +186,7 @@ class TwoStep
     {
         $this->format = $format;
     }
-    
+
     /**
      * 
      * Returns the .format to pick when the inner/outer views provide multiple
@@ -195,7 +199,7 @@ class TwoStep
     {
         return $this->format;
     }
-    
+
     /**
      * 
      * Returns the Content-Type for the current .format, if any.
@@ -207,7 +211,7 @@ class TwoStep
     {
         return $this->format_types->getContentType($this->format);
     }
-    
+
     /**
      * 
      * Sets the shared data for inner and outer views.
@@ -221,7 +225,7 @@ class TwoStep
     {
         $this->data = $data;
     }
-    
+
     /**
      * 
      * Returns the shared data for inner and outer views.
@@ -233,7 +237,7 @@ class TwoStep
     {
         return $this->data;
     }
-    
+
     /**
      * 
      * Sets inner view specification. The specification may be:
@@ -255,7 +259,7 @@ class TwoStep
     {
         $this->inner_view = $inner_view;
     }
-    
+
     /**
      * 
      * Returns the inner view specification.
@@ -270,7 +274,7 @@ class TwoStep
     {
         return $this->getView($this->inner_view, $format);
     }
-    
+
     /**
      * 
      * Sets the paths to search when finding the inner view template.
@@ -285,7 +289,7 @@ class TwoStep
     {
         $this->inner_paths = $inner_paths;
     }
-    
+
     /**
      * 
      * Appends a path to search when finding the inner view template.
@@ -299,7 +303,7 @@ class TwoStep
     {
         $this->inner_paths[] = $path;
     }
-    
+
     /**
      * 
      * Returns the paths to search when finding the inner view template.
@@ -311,7 +315,7 @@ class TwoStep
     {
         return $this->inner_paths;
     }
-    
+
     /**
      * 
      * Sets the outer view specification. The specification may be:
@@ -334,7 +338,7 @@ class TwoStep
     {
         $this->outer_view = $outer_view;
     }
-    
+
     /**
      * 
      * Returns the outer view specification.
@@ -349,7 +353,7 @@ class TwoStep
     {
         return $this->getView($this->outer_view, $format);
     }
-    
+
     /**
      * 
      * Sets the paths to search when finding the outer view template.
@@ -364,7 +368,7 @@ class TwoStep
     {
         $this->outer_paths = $outer_paths;
     }
-    
+
     /**
      * 
      * Appends a path to search when finding the outer view template.
@@ -378,7 +382,7 @@ class TwoStep
     {
         $this->outer_paths[] = $path;
     }
-    
+
     /**
      * 
      * Returns the paths to search when finding the outer view template.
@@ -390,7 +394,7 @@ class TwoStep
     {
         return $this->outer_paths;
     }
-    
+
     /**
      * 
      * Sets the name of the variable in the outer view template that should 
@@ -406,7 +410,7 @@ class TwoStep
     {
         $this->inner_view_var = $inner_view_var;
     }
-    
+
     /**
      * 
      * Returns the name of the variable in the outer view template that should 
@@ -419,7 +423,7 @@ class TwoStep
     {
         return $this->inner_view_var;
     }
-    
+
     /**
      * 
      * Renders the inner view and outer view and returns the resulting output,
@@ -439,19 +443,19 @@ class TwoStep
                 $formats
             );
         }
-        
+
         // set the shared data
         $this->template->setData($this->data);
-        
+
         // render inner view
         $inner = $this->renderView(
             $this->getInnerView($this->format),
             $this->inner_paths
         );
-        
+
         // add the inner view result to the shared data
         $this->template->addData([$this->inner_view_var => $inner]);
-        
+
         // render outer view, and done
         return $this->renderView(
             $this->getOuterView($this->format),
@@ -459,7 +463,7 @@ class TwoStep
             $inner
         );
     }
-    
+
     /**
      * 
      * Renders a view (inner or outer).
@@ -493,12 +497,14 @@ class TwoStep
         }
         return $result;
     }
-    
+
     /**
      * 
      * Gets the view for a particular format.
      * 
      * @param mixed $view The inner or outer view specification.
+     * 
+     * @param string $format The format to use.
      * 
      * @return mixed The matching view for the format.
      * 
@@ -509,24 +515,25 @@ class TwoStep
         if (! $view) {
             return null;
         }
-        
+
         // is a format specified?
         if ($format === null) {
             return $view;
         }
-        
+
         // is the view anything besides an array?
         if (! is_array($view)) {
             // not an array, return as-is
             return $view;
         }
-        
+
         // the view is an array, look for a matching content-type
         if (isset($view[$format])) {
             return $view[$format];
         }
-        
+
         // no match
         return false;
     }
 }
+ 

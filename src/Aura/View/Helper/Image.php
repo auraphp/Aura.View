@@ -3,6 +3,8 @@
  * 
  * This file is part of the Aura Project for PHP.
  * 
+ * @package Aura.View
+ * 
  * @license http://opensource.org/licenses/bsd-license.php BSD
  * 
  */
@@ -39,7 +41,8 @@ class Image extends AbstractHelper
         if (empty($attribs['alt'])) {
             $attribs['alt'] = basename($src);
         }
-        
+
         return "<img src=\"{$src}\" " . $this->attribs($attribs) . ' />';
     }
 }
+ 
