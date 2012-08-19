@@ -14,4 +14,5 @@ return new Template(new EscaperFactory, new TemplateFinder, new HelperLocator([
     'scriptsFoot'   =>  function() { return new \Aura\View\Helper\Scripts; },
     'styles'        =>  function() { return new \Aura\View\Helper\Styles; },
     'title'         =>  function() { return new \Aura\View\Helper\Title; },
+    'formtext'         =>  function() { return new \Aura\View\Helper\Formtext; },
 ]));
