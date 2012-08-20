@@ -56,7 +56,7 @@ class Metas extends AbstractHelper
         $attr = $this->attribs($attribs);
         $this->metas[(int) $pos][] = "<meta $attr />";
     }
-    
+
     /**
      * 
      * Returns a <meta http-equiv="" content="" /> tag.
@@ -122,4 +122,4 @@ class Metas extends AbstractHelper
         return $html;
     }
 }
- 
+
