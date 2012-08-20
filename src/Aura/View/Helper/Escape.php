@@ -9,6 +9,7 @@
  * 
  */
 namespace Aura\View\Helper;
+
 use Aura\View\EscaperFactory;
 
 /**
@@ -55,4 +56,4 @@ class Escape
         return $this->escaper_object->__escape($val);
     }
 }
- 
+

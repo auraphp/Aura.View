@@ -149,10 +149,12 @@ class Object implements \ArrayAccess
      */
     public function __call($method, $params)
     {
-        return $this->__escape(call_user_func_array(
-            [$this->object, $method],
-            $params
-        ));
+        return $this->__escape(
+            call_user_func_array(
+                [$this->object, $method],
+                $params
+            )
+        );
     }
 
     /**

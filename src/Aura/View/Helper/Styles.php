@@ -89,9 +89,9 @@ class Styles extends AbstractHelper
     {
         asort($this->styles);
         $styles = array_keys($this->styles);
-        return $this->indent 
+        return $this->indent
              . implode(PHP_EOL . $this->indent, $styles)
              . PHP_EOL;
     }
 }
- 
+
