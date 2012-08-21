@@ -64,9 +64,9 @@ class Links extends AbstractHelper
      */
     public function get()
     {
-        return $this->indent 
+        return $this->indent
              . implode(PHP_EOL . $this->indent, $this->links)
              . PHP_EOL;
     }
 }
- 
+
