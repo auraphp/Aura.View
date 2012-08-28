@@ -122,4 +122,3 @@ class Metas extends AbstractHelper
         return $html;
     }
 }
-

@@ -56,4 +56,3 @@ class Escape
         return $this->escaper_object->__escape($val);
     }
 }
-

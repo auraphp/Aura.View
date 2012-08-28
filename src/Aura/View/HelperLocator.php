@@ -87,4 +87,3 @@ class HelperLocator
         return $this->registry[$name];
     }
 }
- 

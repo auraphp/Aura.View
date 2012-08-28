@@ -329,4 +329,3 @@ abstract class AbstractTemplate
      */
     abstract public function partial($name, array $data = []);
 }
- 

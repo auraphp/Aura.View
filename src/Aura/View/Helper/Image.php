@@ -45,4 +45,3 @@ class Image extends AbstractHelper
         return "<img src=\"{$src}\" " . $this->attribs($attribs) . ' />';
     }
 }
- 

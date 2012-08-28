@@ -78,4 +78,3 @@ class EscaperFactory
         return new Escaper\Object($this, $spec, $this->quotes, $this->charset);
     }
 }
- 

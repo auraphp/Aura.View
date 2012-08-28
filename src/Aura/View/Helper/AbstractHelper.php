@@ -92,4 +92,3 @@ abstract class AbstractHelper
         return implode(' ', $html);
     }
 }
-

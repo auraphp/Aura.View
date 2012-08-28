@@ -94,4 +94,3 @@ class Title extends AbstractHelper
         return "{$this->indent}<title>{$this->title}</title>" . PHP_EOL;
     }
 }
- 

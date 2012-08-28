@@ -22,4 +22,3 @@ use Aura\View\Exception as Exception;
 class HelperNotMapped extends Exception
 {
 }
-

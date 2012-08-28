@@ -94,4 +94,3 @@ class Styles extends AbstractHelper
              . PHP_EOL;
     }
 }
-

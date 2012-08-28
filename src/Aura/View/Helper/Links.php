@@ -69,4 +69,3 @@ class Links extends AbstractHelper
              . PHP_EOL;
     }
 }
-

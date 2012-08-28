@@ -253,4 +253,3 @@ class Object implements \ArrayAccess
         unset($this->object->$prop);
     }
 }
- 
