@@ -151,12 +151,12 @@ Here is an example of the business logic to assign data to the template ...
      * @var null $null A null value.
      */
     $template->setData([
+        'obj'  => $obj,
+        'arr'  => $arr,
         'str'  => $str,
         'num'  => $num,
         'bool' => $bool,
         'null' => null,
-        'arr'  => $arr,
-        'obj'  => $obj,
     ]);
 
 ... and here is an example of the automatic escaping in the template:
