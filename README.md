@@ -112,14 +112,14 @@ object scope, so use of `$this` refers to the `Template` object. The following
 is an example script:
 
 ```php
-    <html>
-    <head>
-        <title><?= $this->title; ?></title>
-    </head>
-    <body>
-        <p><?= "Hello " . $this->var . '!'; ?></p>
-    </body>
-    </html>
+<html>
+<head>
+    <title><?= $this->title; ?></title>
+</head>
+<body>
+    <p><?= "Hello " . $this->var . '!'; ?></p>
+</body>
+</html>
 ```
 
 We can use any PHP code we would normally use. (This will require discipline
@@ -170,12 +170,12 @@ Here is an example of the business logic to assign data to the template ...
  * @var null $null A null value.
  */
 $template->setData([
+    'obj'  => $obj,
+    'arr'  => $arr,
     'str'  => $str,
     'num'  => $num,
     'bool' => $bool,
     'null' => null,
-    'arr'  => $arr,
-    'obj'  => $obj,
 ]);
 ```
 
@@ -421,17 +421,17 @@ We can use the `$this->find()` method in a template script to find a template,
 and then `include` it wherever we like. For example:
 
 ```php
-    <html>
-    <head>
-        <?php include $this->find('head'); ?>
-    </head>
-    <body>
-        <?php include $this->find('branding'); ?>
-        <?php include $this->find('navigation'); ?>
-        <p>Hello, <?= $this->var; ?>!</p>
-        <?php include $this->find('foot'); ?>
-    </body>
-    </html>
+<html>
+<head>
+    <?php include $this->find('head'); ?>
+</head>
+<body>
+    <?php include $this->find('branding'); ?>
+    <?php include $this->find('navigation'); ?>
+    <p>Hello, <?= $this->var; ?>!</p>
+    <?php include $this->find('foot'); ?>
+</body>
+</html>
 ```
 
 Templates that we `include` in this way will share the scope of the template
