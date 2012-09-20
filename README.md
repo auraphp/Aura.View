@@ -46,6 +46,7 @@ use Aura\View\Template;
 use Aura\View\EscaperFactory;
 use Aura\View\TemplateFinder;
 use Aura\View\HelperLocator;
+
 $template = new Template(
     new EscaperFactory,
     new TemplateFinder,
@@ -129,15 +130,15 @@ presentation-related logic only.)
 We may wish to use the alternative PHP syntax for conditionals and loops:
 
 ```php
-    <?php if ($this->model->hasMessage()): ?>
-        <p>The message is <?= $this->model->getMessage(); ?></p>
-    <?php endif; ?>
-    
-    <ul>
-    <?php foreach ($this->list as $item): ?>
-        <li><?= $item; ?></li>
-    <?php endforeach; ?>
-    </ul>
+<?php if ($this->model->hasMessage()): ?>
+    <p>The message is <?= $this->model->getMessage(); ?></p>
+<?php endif; ?>
+
+<ul>
+<?php foreach ($this->list as $item): ?>
+    <li><?= $item; ?></li>
+<?php endforeach; ?>
+</ul>
 ```
 
 
@@ -489,6 +490,7 @@ string.
 ```php
 <?php
 namespace Vendor\Package\View\Helper;
+
 use Aura\View\Helper\AbstractHelper;
 
 class Obfuscate extends AbstractHelper
