@@ -17,7 +17,7 @@ namespace Aura\View\Helper;
  * @package Aura.View
  * 
  */
-class Formtext extends FormElement
+class FormText extends FormElement
 {
     /**
      * 
