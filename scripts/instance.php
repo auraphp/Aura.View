@@ -6,7 +6,7 @@ return new Template(new EscaperFactory, new TemplateFinder, new HelperLocator([
     'attribs'       =>  function() { return new \Aura\View\Helper\Attribs; },
     'base'          =>  function() { return new \Aura\View\Helper\Base; },
     'datetime'      =>  function() { return new \Aura\View\Helper\Datetime; },
-    'escape'        =>  function() { return new \Aura\View\Helper\Escape; },
+    'escape'        =>  function() { return new \Aura\View\Helper\Escape(new EscaperFactory); },
     'image'         =>  function() { return new \Aura\View\Helper\Image; },
     'links'         =>  function() { return new \Aura\View\Helper\Links; },
     'metas'         =>  function() { return new \Aura\View\Helper\Metas; },
