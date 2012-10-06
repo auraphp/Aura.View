@@ -79,7 +79,7 @@ class HelperLocator
             throw new Exception\HelperNotMapped($name);
         }
 
-        if ($this->registry[$name] instanceof \Closure) {
+        if ($this->registry[$name] instanceof \Closure || $this->registry[$name] instanceof \Aura\Di\Lazy ) {
             $func = $this->registry[$name];
             $this->registry[$name] = $func();
         }
