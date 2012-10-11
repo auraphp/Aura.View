@@ -265,4 +265,38 @@ class TemplateTest extends \PHPUnit_Framework_TestCase
         $actual = $template->__raw();
         $this->assertInstanceOf('StdClass', $actual);
     }
+    
+    public function testGithubIssue15()
+    {
+        $expect = [
+            [
+                'id' => "1",
+                'author_id' => "1",
+                'title' => "Hello World",
+                'body' => "Hello World",
+            ],
+            [
+                'id' => "2",
+                'author_id' => "2",
+                'title' => "Sample title 2",
+                'body' => "Sample body for the title 2",
+            ],
+            [
+                'id' => "3",
+                'author_id' => "3",
+                'title' => "Sample title 3",
+                'body' => "body 3",
+            ]
+        ];
+        
+        $template = $this->newTemplate();
+        $template->posts = $expect;
+        
+        foreach ($template->posts as $key => $actual) {
+            $this->assertSame($expect[$key]['id'], $actual['id']);
+            $this->assertSame($expect[$key]['author_id'], $actual['author_id']);
+            $this->assertSame($expect[$key]['title'], $actual['title']);
+            $this->assertSame($expect[$key]['body'], $actual['body']);
+        }
+    }
 }
