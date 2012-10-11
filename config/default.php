@@ -26,16 +26,53 @@ $di->params['Aura\View\Helper\Datetime']['format']['default'] = 'Y-m-d H:i:s';
 // escaping
 $di->params['Aura\View\Helper\Escape']['escaper_factory'] = $di->lazyNew('Aura\View\EscaperFactory');
 
-// params for HelperLocator instances
-$di->params['Aura\View\HelperLocator']['registry']['anchor'] = $di->lazyNew('Aura\View\Helper\Anchor');
-$di->params['Aura\View\HelperLocator']['registry']['attribs'] = $di->lazyNew('Aura\View\Helper\Attribs');
-$di->params['Aura\View\HelperLocator']['registry']['base'] = $di->lazyNew('Aura\View\Helper\Base');
-$di->params['Aura\View\HelperLocator']['registry']['datetime'] = $di->lazyNew('Aura\View\Helper\Datetime');
-$di->params['Aura\View\HelperLocator']['registry']['escape'] = $di->lazyNew('Aura\View\Helper\Escape');
-$di->params['Aura\View\HelperLocator']['registry']['image'] = $di->lazyNew('Aura\View\Helper\Image');
-$di->params['Aura\View\HelperLocator']['registry']['links'] = $di->lazyNew('Aura\View\Helper\Links');
-$di->params['Aura\View\HelperLocator']['registry']['metas'] = $di->lazyNew('Aura\View\Helper\Metas');
-$di->params['Aura\View\HelperLocator']['registry']['scripts'] = $di->lazyNew('Aura\View\Helper\Scripts');
-$di->params['Aura\View\HelperLocator']['registry']['scriptsFoot'] = $di->lazyNew('Aura\View\Helper\Scripts');
-$di->params['Aura\View\HelperLocator']['registry']['styles'] = $di->lazyNew('Aura\View\Helper\Styles');
-$di->params['Aura\View\HelperLocator']['registry']['title'] = $di->lazyNew('Aura\View\Helper\Title');
+// params for HelperLocator instances. cannot use lazyNew for these as the
+// helper locator won't recognize the Lazy object.
+$di->params['Aura\View\HelperLocator']['registry']['anchor'] = function () use ($di) {
+    return $di->newInstance('Aura\View\Helper\Anchor');
+};
+
+$di->params['Aura\View\HelperLocator']['registry']['attribs'] = function () use ($di) {
+    return $di->newInstance('Aura\View\Helper\Attribs');
+};
+
+$di->params['Aura\View\HelperLocator']['registry']['base'] = function () use ($di) {
+    return $di->newInstance('Aura\View\Helper\Base');
+};
+
+$di->params['Aura\View\HelperLocator']['registry']['datetime'] = function () use ($di) {
+    return $di->newInstance('Aura\View\Helper\Datetime');
+};
+
+$di->params['Aura\View\HelperLocator']['registry']['escape'] = function () use ($di) {
+    return $di->newInstance('Aura\View\Helper\Escape');
+};
+
+$di->params['Aura\View\HelperLocator']['registry']['image'] = function () use ($di) {
+    return $di->newInstance('Aura\View\Helper\Image');
+};
+
+$di->params['Aura\View\HelperLocator']['registry']['links'] = function () use ($di) {
+    return $di->newInstance('Aura\View\Helper\Links');
+};
+
+$di->params['Aura\View\HelperLocator']['registry']['metas'] = function () use ($di) {
+    return $di->newInstance('Aura\View\Helper\Metas');
+};
+
+$di->params['Aura\View\HelperLocator']['registry']['scripts'] = function () use ($di) {
+    return $di->newInstance('Aura\View\Helper\Scripts');
+};
+
+$di->params['Aura\View\HelperLocator']['registry']['scriptsFoot'] = function () use ($di) {
+    return $di->newInstance('Aura\View\Helper\Scripts');
+};
+
+$di->params['Aura\View\HelperLocator']['registry']['styles'] = function () use ($di) {
+    return $di->newInstance('Aura\View\Helper\Styles');
+};
+
+$di->params['Aura\View\HelperLocator']['registry']['title'] = function () use ($di) {
+    return $di->newInstance('Aura\View\Helper\Title');
+};
+
