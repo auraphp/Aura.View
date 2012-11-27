@@ -5,7 +5,7 @@
     "keywords": [ "template", "template view", "two step view", "two-step view", "twostep view", "view" ],
     "homepage": "http://auraphp.github.com/Aura.View",
     "version": "1.0.0-dev",
-    "license": "BSD",
+    "license": "BSD-2-Clause",
     "authors": [
         {
             "name": "Aura Contributors",
