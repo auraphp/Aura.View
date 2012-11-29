@@ -1,19 +1,9 @@
-- [NEW] Automatic HTML escaping of output via an Escaper object (and related
-  classes); use __raw() for raw values.
+- [FIX] In scripts/instance.php, pass an EscaperFactory.
 
-- [CHG] All helper functions now assume inputs are pre-escaped, or wrapped in
-  an Escaper object
+- [FIX] #15: https://github.com/auraphp/Aura.View/issues/15
 
-- [CHG] Helper\AbstractHelper::attribs() and Helper\Attribs::__invoke() now
-  have a $skip param, allowing you to skip over certain attributes when
-  building them.
-
-- [BRK] Remove TwoStep::setInnerData() and setOuterData(), in favor of a
-  single setData() method that sets data once for both inner and outer
-  templates.
-
-- [BRK] Helper\Styles::add() method now has $attribs second and $pos last, for
-  consistency with all other helpers.
-
-- [CHG] PSR-1/2 compliance
-
+- [CHG] TemplateFinder now uses is_readable() instead of SplFileObject, to
+  help with testing using streams.
+  
+- [CHG] Renamed protected method TemplateFinder::fileExists() to exists(),
+  because streams may not be files proper.
