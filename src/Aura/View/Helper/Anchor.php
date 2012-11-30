@@ -44,4 +44,3 @@ class Anchor extends AbstractHelper
         }
     }
 }
- 

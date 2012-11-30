@@ -10,6 +10,8 @@
  */
 namespace Aura\View;
 
+use ArrayObject;
+
 /**
  * 
  * A factory to create escaper objects.
@@ -64,7 +66,8 @@ class EscaperFactory
     public function newInstance($spec)
     {
         if (is_array($spec)) {
-            $spec = new \ArrayObject($spec);
+            $flags = ArrayObject::STD_PROP_LIST | ArrayObject::ARRAY_AS_PROPS;
+            $spec = new ArrayObject($spec, $flags);
         }
 
         if ($spec instanceof \IteratorAggregate) {
@@ -78,4 +81,3 @@ class EscaperFactory
         return new Escaper\Object($this, $spec, $this->quotes, $this->charset);
     }
 }
- 

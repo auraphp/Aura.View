@@ -112,4 +112,3 @@ class Scripts extends AbstractHelper
         return $html;
     }
 }
- 

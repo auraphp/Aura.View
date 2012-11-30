@@ -34,7 +34,7 @@ class Datetime extends AbstractHelper
         'datetime' => 'Y-m-d H:i:s',
         'default'  => 'Y-m-d H:i:s',
     ];
-    
+
     /**
      * 
      * Constructor.
@@ -46,7 +46,7 @@ class Datetime extends AbstractHelper
     {
         $this->format = array_merge($this->format, $format);
     }
-    
+
     /**
      * 
      * Outputs a formatted timestamp using date() format codes.
@@ -68,4 +68,3 @@ class Datetime extends AbstractHelper
         return date($format, $time);
     }
 }
- 

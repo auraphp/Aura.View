@@ -74,7 +74,7 @@ abstract class AbstractHelper
                 $val = implode(' ', $val);
             }
 
-            // skip empty values; use a string cast and strict equality to 
+            // skip empty values; use a string cast and strict equality to
             // make sure that a string zero is not counted as an empty value.
             if ((string) $val === '') {
                 continue;
@@ -92,4 +92,3 @@ abstract class AbstractHelper
         return implode(' ', $html);
     }
 }
- 

@@ -57,4 +57,3 @@ class Template extends AbstractTemplate
         return $tpl->fetch($name);
     }
 }
- 

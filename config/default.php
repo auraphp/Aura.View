@@ -4,6 +4,10 @@
  */
 $loader->add('Aura\View\\', dirname(__DIR__) . DIRECTORY_SEPARATOR . 'src');
 
+/**
+ * Instance params and setter values.
+ */
+
 // params for Template instances
 $di->params['Aura\View\Template']['escaper_factory'] = $di->lazyNew('Aura\View\EscaperFactory');
 $di->params['Aura\View\Template']['helper_locator'] = $di->lazyNew('Aura\View\HelperLocator');
@@ -22,51 +26,53 @@ $di->params['Aura\View\Helper\Datetime']['format']['default'] = 'Y-m-d H:i:s';
 // escaping
 $di->params['Aura\View\Helper\Escape']['escaper_factory'] = $di->lazyNew('Aura\View\EscaperFactory');
 
-// params for HelperLocator instances
-$di->params['Aura\View\HelperLocator']['registry']['anchor'] = function() use ($di) {
+// params for HelperLocator instances. cannot use lazyNew for these as the
+// helper locator won't recognize the Lazy object.
+$di->params['Aura\View\HelperLocator']['registry']['anchor'] = function () use ($di) {
     return $di->newInstance('Aura\View\Helper\Anchor');
 };
 
-$di->params['Aura\View\HelperLocator']['registry']['attribs'] = function() use ($di) {
+$di->params['Aura\View\HelperLocator']['registry']['attribs'] = function () use ($di) {
     return $di->newInstance('Aura\View\Helper\Attribs');
 };
 
-$di->params['Aura\View\HelperLocator']['registry']['base'] = function() use ($di) {
+$di->params['Aura\View\HelperLocator']['registry']['base'] = function () use ($di) {
     return $di->newInstance('Aura\View\Helper\Base');
 };
 
-$di->params['Aura\View\HelperLocator']['registry']['datetime'] = function() use ($di) {
+$di->params['Aura\View\HelperLocator']['registry']['datetime'] = function () use ($di) {
     return $di->newInstance('Aura\View\Helper\Datetime');
 };
 
-$di->params['Aura\View\HelperLocator']['registry']['escape'] = function() use ($di) {
+$di->params['Aura\View\HelperLocator']['registry']['escape'] = function () use ($di) {
     return $di->newInstance('Aura\View\Helper\Escape');
 };
 
-$di->params['Aura\View\HelperLocator']['registry']['image'] = function() use ($di) {
+$di->params['Aura\View\HelperLocator']['registry']['image'] = function () use ($di) {
     return $di->newInstance('Aura\View\Helper\Image');
 };
 
-$di->params['Aura\View\HelperLocator']['registry']['links'] = function() use ($di) {
+$di->params['Aura\View\HelperLocator']['registry']['links'] = function () use ($di) {
     return $di->newInstance('Aura\View\Helper\Links');
 };
 
-$di->params['Aura\View\HelperLocator']['registry']['metas'] = function() use ($di) {
+$di->params['Aura\View\HelperLocator']['registry']['metas'] = function () use ($di) {
     return $di->newInstance('Aura\View\Helper\Metas');
 };
 
-$di->params['Aura\View\HelperLocator']['registry']['scripts'] = function() use ($di) {
+$di->params['Aura\View\HelperLocator']['registry']['scripts'] = function () use ($di) {
     return $di->newInstance('Aura\View\Helper\Scripts');
 };
 
-$di->params['Aura\View\HelperLocator']['registry']['scriptsFoot'] = function() use ($di) {
+$di->params['Aura\View\HelperLocator']['registry']['scriptsFoot'] = function () use ($di) {
     return $di->newInstance('Aura\View\Helper\Scripts');
 };
 
-$di->params['Aura\View\HelperLocator']['registry']['styles'] = function() use ($di) {
+$di->params['Aura\View\HelperLocator']['registry']['styles'] = function () use ($di) {
     return $di->newInstance('Aura\View\Helper\Styles');
 };
 
-$di->params['Aura\View\HelperLocator']['registry']['title'] = function() use ($di) {
+$di->params['Aura\View\HelperLocator']['registry']['title'] = function () use ($di) {
     return $di->newInstance('Aura\View\Helper\Title');
 };
+

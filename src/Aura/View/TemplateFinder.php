@@ -163,7 +163,7 @@ class TemplateFinder
 
         // is the file in the assigned paths?
         foreach ($this->paths as $path) {
-            $found = $this->fileExists($path . DIRECTORY_SEPARATOR . $file);
+            $found = $this->exists($path . DIRECTORY_SEPARATOR . $file);
             if ($found) {
                 $this->found[$file] = $found;
                 return $found;
@@ -171,7 +171,7 @@ class TemplateFinder
         }
 
         // can we find it directly?
-        $found = $this->fileExists($file);
+        $found = $this->exists($file);
         if ($found) {
             $this->found[$file] = $found;
             return $found;
@@ -191,14 +191,12 @@ class TemplateFinder
      * found.
      * 
      */
-    protected function fileExists($file)
+    protected function exists($file)
     {
-        try {
-            $obj = new \SplFileObject($file, 'r', false);
-            return $obj->getRealPath();
-        } catch (\RuntimeException $e) {
+        if (is_readable($file)) {
+            return $file;
+        } else {
             return false;
         }
     }
 }
- 

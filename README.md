@@ -25,27 +25,34 @@ Instantiation
 The easiest way to instantiate a new `Template` with all the associated
 helpers is to include the `instance.php` script.
 
-    <?php
-    $template = require '/path/to/Aura.View/scripts/instance.php';
+```php
+<?php
+$template = require '/path/to/Aura.View/scripts/instance.php';
+```
 
 Then use the `Template` object to `fetch()` the output of a template script.
 
-    <?php
-    echo $template->fetch('/path/to/tpl.php');
+```php
+<?php
+echo $template->fetch('/path/to/tpl.php');
+```
 
 Alternatively, we can add the `Aura.View` package to an autoloader, and
 instantiate manually:
 
-    <?php
-    use Aura\View\Template;
-    use Aura\View\EscaperFactory;
-    use Aura\View\TemplateFinder;
-    use Aura\View\HelperLocator;
-    $template = new Template(
-        new EscaperFactory,
-        new TemplateFinder,
-        new HelperLocator
-    );
+```php
+<?php
+use Aura\View\Template;
+use Aura\View\EscaperFactory;
+use Aura\View\TemplateFinder;
+use Aura\View\HelperLocator;
+
+$template = new Template(
+    new EscaperFactory,
+    new TemplateFinder,
+    new HelperLocator
+);
+```
 
 (Note that if we instantiate manually, we will need to configure the
 `HelperLocator` manually to add helper services. See the "Helpers" section
@@ -57,36 +64,44 @@ Assigning Data
 
 We can add data to the template script as properties ...
 
-    <?php
-    // business logic
-    $template->var = 'World';
+```php
+<?php
+// business logic
+$template->var = 'World';
+```
 
 ... or by using the `addData()` method:
 
-    <?php
-    // business logic
-    $template->addData([
-        'foo' => 'value of foo',
-        'bar' => 'value of bar',
-    ]);
+```php
+<?php
+// business logic
+$template->addData([
+    'foo' => 'value of foo',
+    'bar' => 'value of bar',
+]);
+```
 
 We can then refer to the data as properties from within the template script
 using `$this`:
 
-    <?php
-    // template script
-    echo $this->var;
+```php
+<?php
+// template script
+echo $this->var;
+```
 
 Finally, we can replace all the `Template` data values at once using
 `setData()`.
 
-    <?php
-    // business logic
-    // this will remove $var, $foo, and $bar from the template
-    $template->setData([
-        'baz' => 'Value of baz',
-        'dib' => 'Value of dib',
-    ]);
+```php
+<?php
+// business logic
+// this will remove $var, $foo, and $bar from the template
+$template->setData([
+    'baz' => 'Value of baz',
+    'dib' => 'Value of dib',
+]);
+```
 
 
 Writing Template Scripts
@@ -97,14 +112,16 @@ markup language. The template scripts are executed inside the `Template`
 object scope, so use of `$this` refers to the `Template` object. The following
 is an example script:
 
-    <html>
-    <head>
-        <title><?= $this->title; ?></title>
-    </head>
-    <body>
-        <p><?= "Hello " . $this->var . '!'; ?></p>
-    </body>
-    </html>
+```php
+<html>
+<head>
+    <title><?= $this->title; ?></title>
+</head>
+<body>
+    <p><?= "Hello " . $this->var . '!'; ?></p>
+</body>
+</html>
+```
 
 We can use any PHP code we would normally use. (This will require discipline
 on the part of the template script author to restrict himself to
@@ -112,15 +129,17 @@ presentation-related logic only.)
 
 We may wish to use the alternative PHP syntax for conditionals and loops:
 
-    <?php if ($this->model->hasMessage()): ?>
-        <p>The message is <?= $this->model->getMessage(); ?></p>
-    <?php endif; ?>
-    
-    <ul>
-    <?php foreach ($this->list as $item): ?>
-        <li><?= $item; ?></li>
-    <?php endforeach; ?>
-    </ul>
+```php
+<?php if ($this->model->hasMessage()): ?>
+    <p>The message is <?= $this->model->getMessage(); ?></p>
+<?php endif; ?>
+
+<ul>
+<?php foreach ($this->list as $item): ?>
+    <li><?= $item; ?></li>
+<?php endforeach; ?>
+</ul>
+```
 
 
 Escaping Output
@@ -141,52 +160,56 @@ in your template scripts.
 
 Here is an example of the business logic to assign data to the template ...
 
-    <?php
-    /**
-     * @var object $obj An object with properties and methods.
-     * @var array $arr An associative array.
-     * @var string $str A string.
-     * @var int|float $num An actual number (not a string representation).
-     * @var bool $bool A boolean.
-     * @var null $null A null value.
-     */
-    $template->setData([
-        'str'  => $str,
-        'num'  => $num,
-        'bool' => $bool,
-        'null' => null,
-        'arr'  => $arr,
-        'obj'  => $obj,
-    ]);
+```php
+<?php
+/**
+ * @var object $obj An object with properties and methods.
+ * @var array $arr An associative array.
+ * @var string $str A string.
+ * @var int|float $num An actual number (not a string representation).
+ * @var bool $bool A boolean.
+ * @var null $null A null value.
+ */
+$template->setData([
+    'obj'  => $obj,
+    'arr'  => $arr,
+    'str'  => $str,
+    'num'  => $num,
+    'bool' => $bool,
+    'null' => null,
+]);
+```
 
 ... and here is an example of the automatic escaping in the template:
 
-    <?php
-    // strings are auto-escaped whenever you access them
-    echo $this->str;
-    
-    // integers, floats, booleans, nulls, and resources are not escaped
-    if ($this->null === null || $this->bool === false) {
-        echo $this->num;
-    }
-    
-    // array keys and values are auto-escaped per the string/number/etc
-    // rules listed above
-    foreach ($this->arr as $key => $val) {
-        // the key and value are already escaped for us
-        echo $key . ': ' . $val;
-    }
-    
-    // object properties and method returns are auto-escaped per the 
-    // string/number/etc rules listed above
-    echo $this->obj->property;
-    echo $this->obj->method();
-    
-    // if the object implements Iterator or IteratorAggregate,
-    // the iterator keys and values are auto-escaped as well
-    foreach ($this->obj as $key => $val) {
-        echo $key . ': ' . $val;
-    }
+```php
+<?php
+// strings are auto-escaped whenever you access them
+echo $this->str;
+
+// integers, floats, booleans, nulls, and resources are not escaped
+if ($this->null === null || $this->bool === false) {
+    echo $this->num;
+}
+
+// array keys and values are auto-escaped per the string/number/etc
+// rules listed above
+foreach ($this->arr as $key => $val) {
+    // the key and value are already escaped for us
+    echo $key . ': ' . $val;
+}
+
+// object properties and method returns are auto-escaped per the 
+// string/number/etc rules listed above
+echo $this->obj->property;
+echo $this->obj->method();
+
+// if the object implements Iterator or IteratorAggregate,
+// the iterator keys and values are auto-escaped as well
+foreach ($this->obj as $key => $val) {
+    echo $key . ': ' . $val;
+}
+```
 
 Note that automatic escaping occurs at *access* time, not at *assignment*
 time, and only occurs when accessing *values assigned to the template*.
@@ -196,42 +219,45 @@ time, and only occurs when accessing *values assigned to the template*.
 If you create a variable of your own inside a template, you will need to
 escape it yourself using the `escape()` helper:
 
-    <?php
-    $var = "this & that";
-    echo $this->escape($var);
-
+```php
+<?php
+$var = "this & that";
+echo $this->escape($var);
+```
 
 ### Raw Data
 
 If you want to access the assigned data without escaping applied, use the
 `__raw()` method:
 
-    <?php
-    // get the raw assigned string
-    echo $this->__raw()->str;
-    
-    // get the count of an assigned array or object
-    echo count($this->__raw()->arr);
-    
-    // see if the assigned array is empty
-    if (! $this->__raw()->arr) {
-        echo "Array is empty.";
-    }
-    
-    // get a raw property from an assigned object;
-    // either of the following will work:
-    echo $this->__raw()->obj->property;
-    echo $this->obj->__raw()->property;
-    
-    // get a raw method result from an assigned object;
-    // either of the following will work:
-    echo $this->__raw()->obj->method();
-    echo $this->obj->__raw()->method();
-    
-    // check if an object is an instanceof SomeClass
-    if ($this->__raw()->obj instanceof SomeClass) {
-        // ...
-    }
+```php
+<?php
+// get the raw assigned string
+echo $this->__raw()->str;
+
+// get the count of an assigned array or object
+echo count($this->__raw()->arr);
+
+// see if the assigned array is empty
+if (! $this->__raw()->arr) {
+    echo "Array is empty.";
+}
+
+// get a raw property from an assigned object;
+// either of the following will work:
+echo $this->__raw()->obj->property;
+echo $this->obj->__raw()->property;
+
+// get a raw method result from an assigned object;
+// either of the following will work:
+echo $this->__raw()->obj->method();
+echo $this->obj->__raw()->method();
+
+// check if an object is an instanceof SomeClass
+if ($this->__raw()->obj instanceof SomeClass) {
+    // ...
+}
+```
     
 Using the raw data is the only way to get a `count()` on an array or a
 `Countable` object, or to find the class type of the underlying variable. This
@@ -248,16 +274,20 @@ it to the template, the new value will be double-escaped when you access it.
 
 For example, given this business logic ...
 
-    <?php
-    // business logic
-    $template->foo = "this & that";
+```php
+<?php
+// business logic
+$template->foo = "this & that";
+```
     
 ... and this template script ...
 
-    <?php
-    // template script
-    $this->bar = $this->foo . " & the other";
-    echo $this->bar;
+```php
+<?php
+// template script
+$this->bar = $this->foo . " & the other";
+echo $this->bar;
+```
 
 ... the output will be `"this &amp;amp; that &amp; the other"`. The output was
 double-escaped; this is because the template escaped `$this->foo` for us when
@@ -266,10 +296,12 @@ for output as well.
 
 When performing manipulations of this kind, use the `__raw()` values instead:
 
-    <?php
-    // template script
-    $this->bar = $this->__raw()->foo . " & the other";
-    echo $this->bar;
+```php
+<?php
+// template script
+$this->bar = $this->__raw()->foo . " & the other";
+echo $this->bar;
+```
 
 Now the output will be `"this &amp; that &amp; the other"`, correctly escaped
 only once.
@@ -355,16 +387,18 @@ baseline templates, and override them as needed.
 To tell the `TemplateFinder` where to find template scripts, get it from the
 `Template` and use `setPaths()`.
 
-    <?php
-    // business logic
-    $finder = $template->getTemplateFinder();
-    
-    // set the paths where templates can be found
-    $finder->setPaths([
-        '/path/to/templates/foo',
-        '/path/to/templates/bar',
-        '/path/to/templates/baz',
-    ]);
+```php
+<?php
+// business logic
+$finder = $template->getTemplateFinder();
+
+// set the paths where templates can be found
+$finder->setPaths([
+    '/path/to/templates/foo',
+    '/path/to/templates/bar',
+    '/path/to/templates/baz',
+]);
+```
 
 Now when we call `fetch()`, the `Template` object will use the
 `TemplateFinder` to look through those directories for the template script we
@@ -387,17 +421,19 @@ might have a header section, a navigation section, a sidebar, and so on.
 We can use the `$this->find()` method in a template script to find a template,
 and then `include` it wherever we like. For example:
 
-    <html>
-    <head>
-        <?php include $this->find('head'); ?>
-    </head>
-    <body>
-        <?php include $this->find('branding'); ?>
-        <?php include $this->find('navigation'); ?>
-        <p>Hello, <?= $this->var; ?>!</p>
-        <?php include $this->find('foot'); ?>
-    </body>
-    </html>
+```php
+<html>
+<head>
+    <?php include $this->find('head'); ?>
+</head>
+<body>
+    <?php include $this->find('branding'); ?>
+    <?php include $this->find('navigation'); ?>
+    <p>Hello, <?= $this->var; ?>!</p>
+    <?php include $this->find('foot'); ?>
+</body>
+</html>
+```
 
 Templates that we `include` in this way will share the scope of the template
 they are included from.
@@ -415,20 +451,24 @@ partial template.
 
 For example, given the following partial template ...
 
-    <?php
-    // partial template named '_item.php'.
-    // note that we use $item, not $this->item.
-    echo "    <li>{$item}</li>" . PHP_EOL;
+```php
+<?php
+// partial template named '_item.php'.
+// note that we use $item, not $this->item.
+echo "    <li>{$item}</li>" . PHP_EOL;
+```
 
 ... we can `fetch()` it from within another template:
 
-    <?php
-    // main template. assume $this->list is an array of items.
-    foreach ($this->list as $item) {
-        $template_name = '_item';
-        $template_vars = ['item' => $item];
-        echo $this->fetch($template_name, $template_vars);
-    }
+```php
+<?php
+// main template. assume $this->list is an array of items.
+foreach ($this->list as $item) {
+    $template_name = '_item';
+    $template_vars = ['item' => $item];
+    echo $this->fetch($template_name, $template_vars);
+}
+```
 
 That will run the `$template_name` template script in a separate scope, and
 extract the `$template_vars` array within that separate scope.
@@ -447,34 +487,41 @@ Writing a helper class is straightforward: extend `AbstractHelper` with an
 `__invoke()` method. The following helper, for example, applies ROT-13 to a
 string.
 
-    <?php
-    namespace Vendor\Package\View\Helper;
-    use Aura\View\Helper\AbstractHelper;
-    
-    class Obfuscate extends AbstractHelper
+```php
+<?php
+namespace Vendor\Package\View\Helper;
+
+use Aura\View\Helper\AbstractHelper;
+
+class Obfuscate extends AbstractHelper
+{
+    public function __invoke($string)
     {
-        public function __invoke($string)
-        {
-            return str_rot13($input);
-        }
+        return str_rot13($input);
     }
+}
+```
 
 Now that we have a helper class, you can add it as a service in the
 `HelperLocator` like so:
 
-    <?php
-    // business logic
-    $locator = $template->getHelperLocator();
-    $locator->set('obfuscate', function() {
-        return new \Vendor\Package\View\Helper\Obfuscate;
-    });
+```php
+<?php
+// business logic
+$locator = $template->getHelperLocator();
+$locator->set('obfuscate', function() {
+    return new \Vendor\Package\View\Helper\Obfuscate;
+});
+```
     
 The service name in the `HelperLocator` doubles as a method name on the
 `Template` object. This means we can call the helper via `$this->obfuscate()`:
 
-    <?php
-    // template script
-    echo $this->obfuscate('plain text');
+```php
+<?php
+// template script
+echo $this->obfuscate('plain text');
+```
 
 Note that we can use any method name for the helper, although it is generally
 useful to name the service for the helper class.

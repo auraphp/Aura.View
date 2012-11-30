@@ -28,7 +28,7 @@ abstract class AbstractTemplate
      * @var TemplateFinder
      * 
      */
-    private $_template_finder;
+    private $template_finder;
 
     /**
      * 
@@ -37,7 +37,7 @@ abstract class AbstractTemplate
      * @var object
      * 
      */
-    private $_data;
+    private $data;
 
     /**
      * 
@@ -47,7 +47,7 @@ abstract class AbstractTemplate
      * @var HelperLocator
      * 
      */
-    private $_helper_locator;
+    private $helper_locator;
 
     /**
      * 
@@ -56,7 +56,7 @@ abstract class AbstractTemplate
      * @var Escaper\Object
      * 
      */
-    private $_escaper;
+    private $escaper;
 
     /**
      * 
@@ -65,7 +65,7 @@ abstract class AbstractTemplate
      * @var EscaperFactory
      * 
      */
-    private $_escaper_factory;
+    private $escaper_factory;
 
     /**
      * 
@@ -84,9 +84,9 @@ abstract class AbstractTemplate
         TemplateFinder $template_finder,
         HelperLocator  $helper_locator
     ) {
-        $this->_escaper_factory = $escaper_factory;
-        $this->_template_finder = $template_finder;
-        $this->_helper_locator  = $helper_locator;
+        $this->escaper_factory = $escaper_factory;
+        $this->template_finder = $template_finder;
+        $this->helper_locator  = $helper_locator;
         $this->setData();
     }
 
@@ -101,7 +101,7 @@ abstract class AbstractTemplate
      */
     public function __get($key)
     {
-        return $this->_escaper->$key;
+        return $this->escaper->$key;
     }
 
     /**
@@ -117,7 +117,7 @@ abstract class AbstractTemplate
      */
     public function __set($key, $val)
     {
-        $this->_data->$key = $val;
+        $this->data->$key = $val;
     }
 
     /**
@@ -131,7 +131,7 @@ abstract class AbstractTemplate
      */
     public function __isset($key)
     {
-        return isset($this->_data->$key);
+        return isset($this->data->$key);
     }
 
     /**
@@ -145,7 +145,7 @@ abstract class AbstractTemplate
      */
     public function __unset($key)
     {
-        unset($this->_data->$key);
+        unset($this->data->$key);
     }
 
     /**
@@ -176,7 +176,7 @@ abstract class AbstractTemplate
      */
     public function setPaths(array $paths = [])
     {
-        $this->_template_finder->setPaths($paths);
+        $this->template_finder->setPaths($paths);
     }
 
     /**
@@ -191,8 +191,8 @@ abstract class AbstractTemplate
      */
     public function addData(array $data = [])
     {
-        $this->_data    = (object) array_merge((array) $this->_data, $data);
-        $this->_escaper = $this->_escaper_factory->newInstance($this->_data);
+        $this->data    = (object) array_merge((array) $this->data, $data);
+        $this->escaper = $this->escaper_factory->newInstance($this->data);
     }
 
     /**
@@ -208,8 +208,8 @@ abstract class AbstractTemplate
      */
     public function setData(array $data = [])
     {
-        $this->_data    = (object) $data;
-        $this->_escaper = $this->_escaper_factory->newInstance($this->_data);
+        $this->data    = (object) $data;
+        $this->escaper = $this->escaper_factory->newInstance($this->data);
     }
 
     /**
@@ -222,7 +222,7 @@ abstract class AbstractTemplate
      */
     public function getData()
     {
-        return (array) $this->_data;
+        return (array) $this->data;
     }
 
     /**
@@ -234,7 +234,7 @@ abstract class AbstractTemplate
      */
     public function __raw()
     {
-        return $this->_data;
+        return $this->data;
     }
 
     /**
@@ -246,7 +246,7 @@ abstract class AbstractTemplate
      */
     public function getHelperLocator()
     {
-        return $this->_helper_locator;
+        return $this->helper_locator;
     }
 
     /**
@@ -267,7 +267,7 @@ abstract class AbstractTemplate
         }
 
         // find the path to the template
-        $file = $this->_template_finder->find($name);
+        $file = $this->template_finder->find($name);
         if (! $file) {
             throw new Exception\TemplateNotFound($name);
         }
@@ -285,7 +285,7 @@ abstract class AbstractTemplate
      */
     public function getTemplateFinder()
     {
-        return $this->_template_finder;
+        return $this->template_finder;
     }
 
     /**
@@ -299,19 +299,19 @@ abstract class AbstractTemplate
      */
     public function getHelper($name)
     {
-        return $this->_helper_locator->get($name);
+        return $this->helper_locator->get($name);
     }
 
     /**
      * 
      * Fetches the output from a template.
      * 
-     * @param string $__name__ The template name to use.
+     * @param string $name__ The template name to use.
      * 
      * @return string
      * 
      */
-    abstract public function fetch($__name__);
+    abstract public function fetch($name__);
 
     /**
      * 
@@ -329,4 +329,3 @@ abstract class AbstractTemplate
      */
     abstract public function partial($name, array $data = []);
 }
- 

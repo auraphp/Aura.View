@@ -79,4 +79,3 @@ class Iterator extends Object implements \Iterator
         return $this->object->valid();
     }
 }
- 
