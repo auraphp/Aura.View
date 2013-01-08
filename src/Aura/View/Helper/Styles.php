@@ -113,7 +113,7 @@ class Styles extends AbstractHelper
         unset($attribs['media']);
 
         $attr = $this->attribs(array_merge($base, (array) $attribs));
-        $tag = "<!--[if $exp]><link $attr />![endif]-->";
+        $tag = "<!--[if $exp]><link $attr /><![endif]-->";
         $this->styles[$tag] = $pos;
     }
 
