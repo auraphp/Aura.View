@@ -21,10 +21,12 @@ class StylesTest extends AbstractHelperTest
         $styles->add('/css/middle.css');
         $styles->add('/css/last.css', null, 150);
         $styles->add('/css/first.css', null, 50);
+        $styles->addCond('ie6', '/css/ie6.css');
         
         $actual = $styles->get();
         $expect = '    <link rel="stylesheet" href="/css/first.css" type="text/css" media="screen" />' . PHP_EOL
                 . '    <link rel="stylesheet" href="/css/middle.css" type="text/css" media="screen" />' . PHP_EOL
+                . '    <!--[if ie6]><link rel="stylesheet" href="/css/ie6.css" type="text/css" media="screen" /><![endif]-->' . PHP_EOL
                 . '    <link rel="stylesheet" href="/css/last.css" type="text/css" media="screen" />' . PHP_EOL;
         
         $this->assertSame($expect, $actual);
