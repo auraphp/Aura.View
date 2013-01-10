@@ -80,7 +80,7 @@ class EscaperTest extends \PHPUnit_Framework_TestCase
         $i       = 0;
         foreach ($escaper as $key => $val) {
             $i++;
-            $expect = htmlspecialchars($data[$key], ENT_QUOTES, 'UTF-8');
+            $expect = htmlentities($data[$key], ENT_QUOTES, 'UTF-8');
             $this->assertSame($expect, $val);
         }
         $this->assertSame($i, count($data));
@@ -116,7 +116,7 @@ class EscaperTest extends \PHPUnit_Framework_TestCase
         $escaper = $this->escaper_factory->newInstance(array_combine($data, $data));
         $i       = 0;
         foreach ($escaper as $key => $val) {
-            $expect = htmlspecialchars($data[$key], ENT_QUOTES, 'UTF-8');
+            $expect = htmlentities($data[$key], ENT_QUOTES, 'UTF-8');
             $this->assertSame($expect, $key);
             $this->assertSame($expect, $val);
         }
