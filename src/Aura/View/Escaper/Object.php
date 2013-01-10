@@ -41,7 +41,7 @@ class Object implements \ArrayAccess
 
     /**
      * 
-     * The type of quoting to use for htmlentities(), e.g. ENT_QUOTES.
+     * The type of quoting to use for htmlspecialchars(), e.g. ENT_QUOTES.
      * 
      * @var int
      * 
@@ -50,7 +50,7 @@ class Object implements \ArrayAccess
 
     /**
      * 
-     * The character set to use for htmlentities(), e.g. 'UTF-8'.
+     * The character set to use for htmlspecialchars(), e.g. 'UTF-8'.
      * 
      * @var string
      * 
@@ -65,9 +65,9 @@ class Object implements \ArrayAccess
      * 
      * @param object $object The object to be decorated for escaping.
      * 
-     * @param string $quotes The type of quotes for htmlentities().
+     * @param string $quotes The type of quotes for htmlspecialchars().
      * 
-     * @param string $charset The character set to use for htmlentities().
+     * @param string $charset The character set to use for htmlspecialchars().
      * 
      */
     public function __construct(EscaperFactory $factory, $object, $quotes, $charset)
@@ -174,7 +174,7 @@ class Object implements \ArrayAccess
      * Returns an escaped value.
      * 
      * @param mixed $spec The value to escape. If a string, uses
-     * htmlentities(); if an array or object, wraps it in an escaper;
+     * htmlspecialchars(); if an array or object, wraps it in an escaper;
      * otherwise, does not escape (e.g. numerics, resources, bools, nulls,
      * etc.).
      * 
@@ -185,7 +185,7 @@ class Object implements \ArrayAccess
     {
         if (is_string($spec)) {
             // escape all actual strings, but do not double-escape
-            return htmlentities($spec, $this->quotes, $this->charset, false);
+            return htmlspecialchars($spec, $this->quotes, $this->charset, false);
         } elseif (is_array($spec) || is_object($spec)) {
             // wrap objects and arrays in escaper
             return $this->factory->newInstance($spec);

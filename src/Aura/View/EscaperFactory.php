@@ -23,7 +23,7 @@ class EscaperFactory
 {
     /**
      * 
-     * The type of quoting to use for htmlentities(), e.g. ENT_QUOTES.
+     * The type of quoting to use for htmlspecialchars(), e.g. ENT_QUOTES.
      * 
      * @var int
      * 
@@ -32,7 +32,7 @@ class EscaperFactory
 
     /**
      * 
-     * The character set to use for htmlentities(), e.g. 'UTF-8'.
+     * The character set to use for htmlspecialchars(), e.g. 'UTF-8'.
      * 
      * @var string
      * 
@@ -43,9 +43,9 @@ class EscaperFactory
      * 
      * Constructor.
      * 
-     * @param string $quotes The type of quotes for htmlentities().
+     * @param string $quotes The type of quotes for htmlspecialchars().
      * 
-     * @param string $charset The character set to use for htmlentities().
+     * @param string $charset The character set to use for htmlspecialchars().
      * 
      */
     public function __construct($quotes = ENT_QUOTES, $charset = 'UTF-8')
