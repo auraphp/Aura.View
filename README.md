@@ -509,7 +509,7 @@ Now that we have a helper class, you can add it as a service in the
 <?php
 // business logic
 $locator = $template->getHelperLocator();
-$locator->set('obfuscate', function() {
+$locator->set('obfuscate', function () {
     return new \Vendor\Package\View\Helper\Obfuscate;
 });
 ```
