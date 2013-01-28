@@ -30,13 +30,20 @@ class HelperLocator
 
     /**
      * 
+     * Tracks whether or not a registry entry has been converted from a 
+     * callable to a helper object.
+     * 
+     * @var array
+     * 
+     */
+    protected $converted = [];
+    
+    /**
+     * 
      * Constructor.
      * 
      * @param array $registry An array of key-value pairs where the key is the
-     * helper name (doubles as a method name) and the value is the helper
-     * object. The value may also be a closure that returns a helper object.
-     * Note that is has to be a closure, not just any callable, because the
-     * helper object itself might be callable.
+     * helper name and the value is a callable that returns a helper object.
      * 
      */
     public function __construct(array $registry = [])
@@ -50,18 +57,17 @@ class HelperLocator
      * 
      * Sets a helper into the registry by name.
      * 
-     * @param string $name The helper name; this doubles as a method name
-     * when called from a template.
+     * @param string $name The helper name.
      * 
-     * @param string $spec The helper specification, typically a closure that
-     * builds and returns a helper object.
+     * @param callable $spec A callable that returns a helper object.
      * 
      * @return void
      * 
      */
-    public function set($name, $spec)
+    public function set($name, callable $spec)
     {
         $this->registry[$name] = $spec;
+        $this->converted[$name] = false;
     }
 
     /**
@@ -70,7 +76,7 @@ class HelperLocator
      * 
      * @param string $name The helper to retrieve.
      * 
-     * @return AbstractHelper A helper object.
+     * @return AbstractHelper
      * 
      */
     public function get($name)
@@ -79,9 +85,10 @@ class HelperLocator
             throw new Exception\HelperNotMapped($name);
         }
 
-        if ($this->registry[$name] instanceof \Closure) {
+        if (! $this->converted[$name]) {
             $func = $this->registry[$name];
             $this->registry[$name] = $func();
+            $this->converted[$name] = true;
         }
 
         return $this->registry[$name];
