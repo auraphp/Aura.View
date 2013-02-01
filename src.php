@@ -25,4 +25,5 @@ require_once __DIR__ . '/src/Aura/View/Helper/Metas.php';
 require_once __DIR__ . '/src/Aura/View/Helper/Scripts.php';
 require_once __DIR__ . '/src/Aura/View/Helper/Select.php';
 require_once __DIR__ . '/src/Aura/View/Helper/Styles.php';
+require_once __DIR__ . '/src/Aura/View/Helper/Textarea.php';
 require_once __DIR__ . '/src/Aura/View/Helper/Title.php';

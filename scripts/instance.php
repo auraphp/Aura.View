@@ -16,4 +16,5 @@ return new Template(new EscaperFactory, new TemplateFinder, new HelperLocator([
     'select'        =>  function() { return new \Aura\View\Helper\Select; },
     'styles'        =>  function() { return new \Aura\View\Helper\Styles; },
     'title'         =>  function() { return new \Aura\View\Helper\Title; },
+    'textarea'      =>  function() { return new \Aura\View\Helper\Textarea; },
 ]));
