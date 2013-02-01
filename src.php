@@ -20,7 +20,6 @@ require_once __DIR__ . '/src/Aura/View/Helper/Datetime.php';
 require_once __DIR__ . '/src/Aura/View/Helper/Escape.php';
 require_once __DIR__ . '/src/Aura/View/Helper/Image.php';
 require_once __DIR__ . '/src/Aura/View/Helper/Input.php';
-require_once __DIR__ . '/src/Aura/View/Helper/Label.php';
 require_once __DIR__ . '/src/Aura/View/Helper/Links.php';
 require_once __DIR__ . '/src/Aura/View/Helper/Metas.php';
 require_once __DIR__ . '/src/Aura/View/Helper/Radios.php';
