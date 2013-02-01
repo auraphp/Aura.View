@@ -8,6 +8,7 @@ return new Template(new EscaperFactory, new TemplateFinder, new HelperLocator([
     'datetime'      =>  function() { return new \Aura\View\Helper\Datetime; },
     'escape'        =>  function() { return new \Aura\View\Helper\Escape(new EscaperFactory); },
     'image'         =>  function() { return new \Aura\View\Helper\Image; },
+    'input'         =>  function() { return new \Aura\View\Helper\Input; },
     'links'         =>  function() { return new \Aura\View\Helper\Links; },
     'metas'         =>  function() { return new \Aura\View\Helper\Metas; },
     'scripts'       =>  function() { return new \Aura\View\Helper\Scripts; },
