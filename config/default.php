@@ -36,6 +36,7 @@ $di->params['Aura\View\HelperLocator']['registry'] = [
     'metas'       => $di->lazyNew('Aura\View\Helper\Metas'),
     'scripts'     => $di->lazyNew('Aura\View\Helper\Scripts'),
     'scriptsFoot' => $di->lazyNew('Aura\View\Helper\Scripts'),
+    'select'      => $di->lazyNew('Aura\View\Helper\Select'),
     'styles'      => $di->lazyNew('Aura\View\Helper\Styles'),
     'title'       => $di->lazyNew('Aura\View\Helper\Title'),
 ];

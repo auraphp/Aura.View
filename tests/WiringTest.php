@@ -38,6 +38,7 @@ class WiringTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Aura\View\Helper\Metas',    $helper->get('metas'));
         $this->assertInstanceOf('Aura\View\Helper\Scripts',  $helper->get('scripts'));
         $this->assertInstanceOf('Aura\View\Helper\Scripts',  $helper->get('scriptsFoot'));
+        $this->assertInstanceOf('Aura\View\Helper\Select',   $helper->get('select'));
         $this->assertInstanceOf('Aura\View\Helper\Styles',   $helper->get('styles'));
         $this->assertInstanceOf('Aura\View\Helper\Title',    $helper->get('title'));
     }

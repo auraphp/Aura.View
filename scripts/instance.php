@@ -13,6 +13,7 @@ return new Template(new EscaperFactory, new TemplateFinder, new HelperLocator([
     'metas'         =>  function() { return new \Aura\View\Helper\Metas; },
     'scripts'       =>  function() { return new \Aura\View\Helper\Scripts; },
     'scriptsFoot'   =>  function() { return new \Aura\View\Helper\Scripts; },
+    'select'        =>  function() { return new \Aura\View\Helper\Select; },
     'styles'        =>  function() { return new \Aura\View\Helper\Styles; },
     'title'         =>  function() { return new \Aura\View\Helper\Title; },
 ]));
