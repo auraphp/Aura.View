@@ -334,7 +334,9 @@ part of Aura View include:
 - `$this->input($attribs, $value, $label, $label_attribs)` 
 returns an `<input>` tag, optionally wrapped in a `<label>` tag
     
-    In general `$this->input(['type' => $type], $value, $label, $label_attribs)`
+    In general `$this->input(['type' => $type], $value, $label, $label_attribs)` 
+    
+    `$value`, `$label` and `$label_attribs` are optional.
     
     Supported types:
     
@@ -371,6 +373,7 @@ returns an `<input>` tag, optionally wrapped in a `<label>` tag
     
     - `$this->input(['type' => 'checkbox', 'value' => 'yes'], 'yes')`
 
+
 - `$this->metas()` provides an object with methods that add to, and then
   retrieve, a series of `<meta ... />` tags.
 
@@ -382,6 +385,7 @@ returns an `<input>` tag, optionally wrapped in a `<label>` tag
     
     - `$this-metas()->get()` returns all the added tags from the helper.
 
+
 - `$this->scripts()` provides an object with methods that add to, and then
   retrieve, a series of `<script ... ></script>` tags.
 
@@ -391,6 +395,7 @@ returns an `<input>` tag, optionally wrapped in a `<label>` tag
       conditional expression to the helper.
     
     - `$this->scripts()->get()` returns all the added tags from the helper.
+    
 
 - `$this->styles()` provides an object with methods that add to, and then
   retrieve, a series of `<link rel="stylesheet" ... />` tags.
@@ -398,6 +403,9 @@ returns an `<input>` tag, optionally wrapped in a `<label>` tag
     - `$this->styles()->add($href)` adds a style tag to the helper.
     
     - `$this->styles()->get()` returns all the added tags from the helper.
+
+
+- `$this->textarea($attribs, $html)` Returns a `<textarea>`. `$html` is optional.
 
 - `$this->title()` provides an object with methods that manipulate the
   `<title>...</title>` tag.
