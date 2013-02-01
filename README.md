@@ -384,7 +384,21 @@ returns an `<input>` tag, optionally wrapped in a `<label>` tag
       helper.
     
     - `$this-metas()->get()` returns all the added tags from the helper.
+    
+- `$this->radios($attribs, $options, $checked = null, $separator = PHP_EOL)` 
+return `<input type="radio">` group.
 
+```php
+<?php
+$this->radios(
+    ['type' => '', 'name' => 'field', 'value' => ''],
+    [
+        'foo' => 'bar',
+        'baz' => 'dib',
+        'zim' => 'gir',
+    ]
+);
+```
 
 - `$this->scripts()` provides an object with methods that add to, and then
   retrieve, a series of `<script ... ></script>` tags.
@@ -396,6 +410,55 @@ returns an `<input>` tag, optionally wrapped in a `<label>` tag
     
     - `$this->scripts()->get()` returns all the added tags from the helper.
     
+- `$this->select($attribs, $options = [], $selected = null)` returns a `<select>` tag
+or an object which you can build complex selectbox.
+
+Examples are
+
+```php
+<?php
+$this->select(
+    [
+        'name' => 'foo[bar]',
+        'multiple' => 'multiple' // if you need multiple select
+    ],
+    [
+        'value1' => 'First Label',
+        'value2' => 'Second Label',
+        'value5' => 'Fifth Label',
+        'value3' => 'Third Label',
+    ],
+    'value5'
+);
+```
+
+Building select box groups
+
+```php
+<?php
+$this->select(['name' => 'foo[bar]', 'multiple' => 'multiple'])
+    ->optgroup('Group A')
+    ->options(
+        [
+            'value1' => 'First Label',
+            'value2' => 'Second Label',
+        ]
+    )
+    ->optgroup('Group B')
+    ->options(
+        [
+            'value5' => 'Fifth Label',
+            'value3' => 'Third Label',
+        ]
+    )
+    ->option(
+        'counting',
+        'Three sir!',
+        ['disabled' => 'disabled']
+    )
+    ->selected(['value2', 'value3'])
+    ->fetch();
+```
 
 - `$this->styles()` provides an object with methods that add to, and then
   retrieve, a series of `<link rel="stylesheet" ... />` tags.

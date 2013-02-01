@@ -29,6 +29,58 @@ class Select extends AbstractHelper
     
     protected $html = '';
     
+    /**
+     * 
+     * Building simple <select> tag to complex ones
+     * 
+     * $this->select(
+     *      [
+     *          'name' => 'foo[bar]',
+     *          'multiple' => 'multiple'
+     *      ],
+     *      [
+     *          'value1' => 'First Label',
+     *          'value2' => 'Second Label',
+     *          'value5' => 'Fifth Label',
+     *          'value3' => 'Third Label',
+     *      ],
+     *      'value5'
+     *  );
+     * 
+     * 
+     * 
+     * $this->select(['name' => 'foo[bar]', 'multiple' => 'multiple'])
+     *     ->optgroup('Group A')
+     *     ->options(
+     *         [
+     *             'value1' => 'First Label',
+     *             'value2' => 'Second Label',
+     *         ]
+     *     )
+     *     ->optgroup('Group B')
+     *     ->options(
+     *         [
+     *             'value5' => 'Fifth Label',
+     *             'value3' => 'Third Label',
+     *          ]
+     *      )
+     *      ->option(
+     *          'counting',
+     *          'Three sir!',
+     *          ['disabled' => 'disabled']
+     *      )
+     *      ->selected(['value2', 'value3'])
+     *      ->fetch();
+     * 
+     * @param array $attribs
+     * 
+     * @param array $options
+     * 
+     * @param array $selected
+     * 
+     * @return Aura\View\Helper\Select|string
+     * 
+     */
     public function __invoke($attribs, $options = [], $selected = null)
     {
         $this->stack    = [];
