@@ -72,8 +72,8 @@ class Styles extends AbstractHelper
         unset($attribs['type']);
         unset($attribs['media']);
 
-        $attr = $this->attribs(array_merge($base, (array) $attribs));
-        $tag = "<link $attr />";
+        $attribs = array_merge($base, (array) $attribs);
+        $tag = $this->void('link', $attribs);
         $this->styles[$tag] = $pos;
     }
 
@@ -112,8 +112,10 @@ class Styles extends AbstractHelper
         unset($attribs['type']);
         unset($attribs['media']);
 
-        $attr = $this->attribs(array_merge($base, (array) $attribs));
-        $tag = "<!--[if $exp]><link $attr /><![endif]-->";
+        $attribs = array_merge($base, (array) $attribs);
+        $tag = "<!--[if $exp]>"
+             . $this->void('link', $attribs)
+             . "<![endif]-->";
         $this->styles[$tag] = $pos;
     }
 

@@ -28,6 +28,8 @@ abstract class AbstractHelper
      */
     protected $indent = '    ';
 
+    protected $indent_level = 0;
+    
     /**
      * 
      * Sets the string to use for one level of indentation.
@@ -40,6 +42,12 @@ abstract class AbstractHelper
     public function setIndent($indent)
     {
         $this->indent = $indent;
+    }
+    
+    public function setIndentLevel($indent_level)
+    {
+        $this->indent_level = (int) $indent_level;
+        return $this;
     }
 
     /**
@@ -90,5 +98,18 @@ abstract class AbstractHelper
 
         // done
         return implode(' ', $html);
+    }
+    
+    protected function void($tag, $attribs)
+    {
+        $attr = $this->attribs($attribs);
+        $html = "<{$tag} {$attr} />";
+        return $html;
+    }
+    
+    protected function indent($level, $text)
+    {
+        $level += $this->indent_level;
+        return str_repeat($this->indent, $level) . $text . PHP_EOL;
     }
 }

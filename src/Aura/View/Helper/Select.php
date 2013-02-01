@@ -12,7 +12,7 @@ namespace Aura\View\Helper;
 
 /**
  * 
- * Helper for `<select>` tag.
+ * Helper for `<select>` tag with `<option>` and `<optgroup>` tags.
  * 
  * @package Aura.View
  * 
@@ -79,7 +79,7 @@ class Select extends AbstractHelper
     public function fetch()
     {
         $attr = $this->attribs($this->attribs);
-        $this->html = "<select {$attr}>" . PHP_EOL;
+        $this->html = $this->indent(0, "<select {$attr}>");
         
         foreach ($this->stack as $info) {
             $method = array_shift($info);
@@ -90,7 +90,7 @@ class Select extends AbstractHelper
             $this->endOptgroup();
         }
         
-        $this->html .= '</select>';
+        $this->html .= $this->indent(0, '</select>');
         return $this->html;
     }
     
@@ -109,7 +109,8 @@ class Select extends AbstractHelper
         
         // build attributes and return option tag with label text
         $attr = $this->attribs($attribs);
-        $this->html .= "    <option {$attr}>$label</option>" . PHP_EOL;
+        $level = ($this->optgroup) ? 2 : 1;
+        $this->html .= $this->indent($level, "<option {$attr}>$label</option>");
     }
     
     protected function beginOptgroup($info)
@@ -117,11 +118,11 @@ class Select extends AbstractHelper
         list($label, $attribs) = $info;
         $attribs['label'] = $label;
         $attr = $this->attribs($attribs);
-        $this->html .= "  <optgroup {$attr}>" . PHP_EOL;
+        $this->html .= $this->indent(1, "<optgroup {$attr}>");
     }
     
     protected function endOptgroup()
     {
-        $this->html .= "  </optgroup>" . PHP_EOL;
+        $this->html .= $this->indent(1, "</optgroup>");
     }
 }

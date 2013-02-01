@@ -128,9 +128,9 @@ class Input extends AbstractHelper
     {
         // determine a modifier method based on the input type
         $method = strtolower($this->attribs['type']);
-        if ($method == 'datetime-local') {
-            $method = 'datetimelocal';
-        }
+        
+        // remove dashes
+        $method = str_replace('-', '', $method);
         
         // modify attributes according to input type
         if (method_exists($this, $method)) {
@@ -138,8 +138,7 @@ class Input extends AbstractHelper
         }
         
         // get attributes and build the input tag html
-        $attr = $this->attribs($this->attribs);
-        $this->html = "<input {$attr} />";
+        $this->html = $this->void('input', $this->attribs);
     }
     
     protected function buildLabel()

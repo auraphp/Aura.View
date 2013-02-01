@@ -25,7 +25,7 @@ class SelectTest extends AbstractHelperTest
                 . '    <option value="value2">Second Label</option>' . PHP_EOL
                 . '    <option value="value5" selected="selected">Fifth Label</option>' . PHP_EOL
                 . '    <option value="value3">Third Label</option>' . PHP_EOL
-                . '</select>';
+                . '</select>' . PHP_EOL;
         
         $this->assertSame($expect, $actual);
     }
@@ -57,16 +57,16 @@ class SelectTest extends AbstractHelperTest
             ->fetch();
         
         $expect = '<select name="foo[bar]" multiple="multiple">' . PHP_EOL
-                . '  <optgroup label="Group A">' . PHP_EOL
-                . '    <option value="value1">First Label</option>' . PHP_EOL
-                . '    <option value="value2" selected="selected">Second Label</option>' . PHP_EOL
-                . '  </optgroup>' . PHP_EOL
-                . '  <optgroup label="Group B">' . PHP_EOL
-                . '    <option value="value5">Fifth Label</option>' . PHP_EOL
-                . '    <option value="value3" selected="selected">Third Label</option>' . PHP_EOL
-                . '    <option disabled="disabled" value="counting">Three sir!</option>' . PHP_EOL
-                . '  </optgroup>' . PHP_EOL
-                . '</select>';
+                . '    <optgroup label="Group A">' . PHP_EOL
+                . '        <option value="value1">First Label</option>' . PHP_EOL
+                . '        <option value="value2" selected="selected">Second Label</option>' . PHP_EOL
+                . '    </optgroup>' . PHP_EOL
+                . '    <optgroup label="Group B">' . PHP_EOL
+                . '        <option value="value5">Fifth Label</option>' . PHP_EOL
+                . '        <option value="value3" selected="selected">Third Label</option>' . PHP_EOL
+                . '        <option disabled="disabled" value="counting">Three sir!</option>' . PHP_EOL
+                . '    </optgroup>' . PHP_EOL
+                . '</select>' . PHP_EOL;
         
         $this->assertSame($expect, $actual);
     }
