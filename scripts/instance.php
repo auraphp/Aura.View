@@ -17,6 +17,7 @@ return new Template(new EscaperFactory, new TemplateFinder, new HelperLocator([
     'scriptsFoot'   =>  function () { return new Helper\Scripts; },
     'select'        =>  function () { return new Helper\Select; },
     'styles'        =>  function () { return new Helper\Styles; },
+    'tag'           =>  function () { return new Helper\Tag; },
     'title'         =>  function () { return new Helper\Title; },
     'textarea'      =>  function () { return new Helper\Textarea; },
     'ul'            =>  function () { return new Helper\Ul; },

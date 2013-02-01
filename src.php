@@ -26,6 +26,7 @@ require_once __DIR__ . '/src/Aura/View/Helper/Radios.php';
 require_once __DIR__ . '/src/Aura/View/Helper/Scripts.php';
 require_once __DIR__ . '/src/Aura/View/Helper/Select.php';
 require_once __DIR__ . '/src/Aura/View/Helper/Styles.php';
+require_once __DIR__ . '/src/Aura/View/Helper/Tag.php';
 require_once __DIR__ . '/src/Aura/View/Helper/Textarea.php';
 require_once __DIR__ . '/src/Aura/View/Helper/Title.php';
 require_once __DIR__ . '/src/Aura/View/Helper/Ul.php';
