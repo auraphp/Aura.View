@@ -11,6 +11,7 @@ return new Template(new EscaperFactory, new TemplateFinder, new HelperLocator([
     'input'         =>  function () { return new Helper\Input; },
     'links'         =>  function () { return new Helper\Links; },
     'metas'         =>  function () { return new Helper\Metas; },
+    'ol'            =>  function () { return new Helper\Ol; },
     'radios'        =>  function () { return new Helper\Radios(new Helper\Input); },
     'scripts'       =>  function () { return new Helper\Scripts; },
     'scriptsFoot'   =>  function () { return new Helper\Scripts; },
@@ -18,4 +19,5 @@ return new Template(new EscaperFactory, new TemplateFinder, new HelperLocator([
     'styles'        =>  function () { return new Helper\Styles; },
     'title'         =>  function () { return new Helper\Title; },
     'textarea'      =>  function () { return new Helper\Textarea; },
+    'ul'            =>  function () { return new Helper\Ul; },
 ]));

@@ -32,6 +32,7 @@ class WiringTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Aura\View\Helper\Input',    $helper->get('input'));
         $this->assertInstanceOf('Aura\View\Helper\Links',    $helper->get('links'));
         $this->assertInstanceOf('Aura\View\Helper\Metas',    $helper->get('metas'));
+        $this->assertInstanceOf('Aura\View\Helper\Ol',       $helper->get('ol'));
         $this->assertInstanceOf('Aura\View\Helper\Radios',   $helper->get('radios'));
         $this->assertInstanceOf('Aura\View\Helper\Scripts',  $helper->get('scripts'));
         $this->assertInstanceOf('Aura\View\Helper\Scripts',  $helper->get('scriptsFoot'));
@@ -39,5 +40,6 @@ class WiringTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Aura\View\Helper\Styles',   $helper->get('styles'));
         $this->assertInstanceOf('Aura\View\Helper\Title',    $helper->get('title'));
         $this->assertInstanceOf('Aura\View\Helper\Textarea', $helper->get('textarea'));
+        $this->assertInstanceOf('Aura\View\Helper\Ul',       $helper->get('ul'));
     }
 }

@@ -41,6 +41,7 @@ $di->params['Aura\View\HelperLocator']['registry'] = [
     'input'       => $di->lazyNew('Aura\View\Helper\Input'),
     'links'       => $di->lazyNew('Aura\View\Helper\Links'),
     'metas'       => $di->lazyNew('Aura\View\Helper\Metas'),
+    'ol'          => $di->lazyNew('Aura\View\Helper\Ol'),
     'radios'      => $di->lazyNew('Aura\View\Helper\Radios'),
     'scripts'     => $di->lazyNew('Aura\View\Helper\Scripts'),
     'scriptsFoot' => $di->lazyNew('Aura\View\Helper\Scripts'),
@@ -48,6 +49,7 @@ $di->params['Aura\View\HelperLocator']['registry'] = [
     'styles'      => $di->lazyNew('Aura\View\Helper\Styles'),
     'title'       => $di->lazyNew('Aura\View\Helper\Title'),
     'textarea'    => $di->lazyNew('Aura\View\Helper\Textarea'),
+    'ul'          => $di->lazyNew('Aura\View\Helper\Ul'),
 ];
 
 /**
