@@ -28,5 +28,9 @@ class OlTest extends AbstractHelperTest
                 . '    <li>baz</li>' . PHP_EOL
                 . '</ol>' . PHP_EOL;
         $this->assertSame($expect, $actual);
+        
+        $actual = $ol()->fetch();
+        $expect = null;
+        $this->assertSame($expect, $actual);
     }
 }

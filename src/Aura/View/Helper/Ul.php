@@ -54,6 +54,12 @@ class Ul extends AbstractHelper
     
     public function fetch()
     {
+        // if there is no stack of items, **do not** return an empty
+        // <ul></ul> tag set.
+        if (! $this->stack) {
+            return;
+        }
+        
         $tag = $this->getTag();
         $attr = $this->attribs($this->attribs);
         if ($attr) {

@@ -28,5 +28,9 @@ class UlTest extends AbstractHelperTest
                 . '    <li>baz</li>' . PHP_EOL
                 . '</ul>' . PHP_EOL;
         $this->assertSame($expect, $actual);
+        
+        $actual = $ul()->fetch();
+        $expect = null;
+        $this->assertSame($expect, $actual);
     }
 }
