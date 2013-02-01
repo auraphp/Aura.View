@@ -87,7 +87,30 @@ class InputTest extends AbstractHelperTest
         $this->assertSame($expect, $actual);
     }
     
-    public function testLabel()
+    public function testLabelWithAttribs()
+    {
+        $input = new Input;
+        
+        $actual = $input(
+            [
+                'type' => 'radio',
+                'value' => 'yes',
+                'id' => 'radio-yes'
+            ],
+            'no',
+            'Radio Label',
+            [
+                'class' => 'test',
+            ]
+        );
+        
+        $expect = '<label class="test" for="radio-yes">'
+                . '<input type="radio" value="yes" id="radio-yes" /> Radio Label</label>';
+        
+        $this->assertSame($expect, $actual);
+    }
+
+    public function testLabelWithoutAttribs()
     {
         $input = new Input;
         
@@ -97,18 +120,14 @@ class InputTest extends AbstractHelperTest
                 'value' => 'yes',
             ],
             'no',
-            'Radio Label',
-            [
-                'class' => 'test',
-            ]
+            'Radio Label'
         );
         
-        $expect = '<label class="test">'
-                . '<input type="radio" value="yes" /> Radio Label</label>';
+        $expect = '<label><input type="radio" value="yes" /> Radio Label</label>';
         
-        $this->assertSame($actual, $expect);
+        $this->assertSame($expect, $actual);
     }
-
+    
     public function provideValueTypes()
     {
         return [

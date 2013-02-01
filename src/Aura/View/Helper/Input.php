@@ -128,9 +128,6 @@ class Input extends AbstractHelper
     {
         // determine a modifier method based on the input type
         $method = strtolower($this->attribs['type']);
-        if (! $method) {
-            $method = 'text';
-        }
         if ($method == 'datetime-local') {
             $method = 'datetimelocal';
         }
