@@ -11,7 +11,7 @@ return new Template(new EscaperFactory, new TemplateFinder, new HelperLocator([
     'input'         =>  function () { return new Helper\Input; },
     'links'         =>  function () { return new Helper\Links; },
     'metas'         =>  function () { return new Helper\Metas; },
-    'radios'        =>  function () { return new Helper\Escape(new Helper\Input); },
+    'radios'        =>  function () { return new Helper\Radios(new Helper\Input); },
     'scripts'       =>  function () { return new Helper\Scripts; },
     'scriptsFoot'   =>  function () { return new Helper\Scripts; },
     'select'        =>  function () { return new Helper\Select; },
