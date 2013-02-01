@@ -331,6 +331,46 @@ part of Aura View include:
 
 - `$this->image($src)` returns an `<img src="$src" />` tag.
 
+- `$this->input($attribs, $value, $label, $label_attribs)` 
+returns an `<input>` tag, optionally wrapped in a `<label>` tag
+    
+    In general `$this->input(['type' => $type], $value, $label, $label_attribs)`
+    
+    Supported types:
+    
+    - `button` : clickable button
+    - `checkbox` : checkbox
+    - `color` : color picker
+    - `date` : date control (year, month and day)
+    - `datetime` : date and time control (year, month, day, hour, 
+    minute, second, and fraction of a second, UTC time zone)
+    - `datetime-local` : date and time control (year, month, day, 
+    hour, minute, second, and fraction of a second, no time zone)
+    - `email` : e-mail address
+    - `file` : file-select field and a "Browse..." button for file uploads
+    - `hidden` : hidden input field
+    - `image` : image as the submit button
+    - `month` : month and year control (no time zone)
+    - `number` : field for entering a number
+    - `password` : password field
+    - `radio` : radio button
+    - `range` : control for entering a number whose exact value is not 
+    important (like a slider control)
+    - `reset` : reset button (resets all form values to default values)
+    - `search` : text field for entering a search string
+    - `submit` : submit button
+    - `tel` : telephone number
+    - `text` : (default) single-line text field
+    - `time` : time control (no time zone)
+    - `url` : URL field
+    - `week` : week and year control (no time zone)
+    
+    Examples are 
+    
+    - `$this->input(['type' => 'text', ... ], 'field value')`
+    
+    - `$this->input(['type' => 'checkbox', 'value' => 'yes'], 'yes')`
+
 - `$this->metas()` provides an object with methods that add to, and then
   retrieve, a series of `<meta ... />` tags.
 
