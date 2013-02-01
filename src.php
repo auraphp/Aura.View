@@ -22,6 +22,7 @@ require_once __DIR__ . '/src/Aura/View/Helper/Image.php';
 require_once __DIR__ . '/src/Aura/View/Helper/Input.php';
 require_once __DIR__ . '/src/Aura/View/Helper/Links.php';
 require_once __DIR__ . '/src/Aura/View/Helper/Metas.php';
+require_once __DIR__ . '/src/Aura/View/Helper/Radios.php';
 require_once __DIR__ . '/src/Aura/View/Helper/Scripts.php';
 require_once __DIR__ . '/src/Aura/View/Helper/Select.php';
 require_once __DIR__ . '/src/Aura/View/Helper/Styles.php';

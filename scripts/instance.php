@@ -11,6 +11,7 @@ return new Template(new EscaperFactory, new TemplateFinder, new HelperLocator([
     'input'         =>  function() { return new \Aura\View\Helper\Input; },
     'links'         =>  function() { return new \Aura\View\Helper\Links; },
     'metas'         =>  function() { return new \Aura\View\Helper\Metas; },
+    'radios'        =>  function() { return new \Aura\View\Helper\Escape(new Input); },
     'scripts'       =>  function() { return new \Aura\View\Helper\Scripts; },
     'scriptsFoot'   =>  function() { return new \Aura\View\Helper\Scripts; },
     'select'        =>  function() { return new \Aura\View\Helper\Select; },

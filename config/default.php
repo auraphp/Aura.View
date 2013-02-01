@@ -22,6 +22,13 @@ $di->params['Aura\View\Helper\Escape'] = [
 ];
 
 /**
+ * Aura\View\Helper\Radios
+ */
+$di->params['Aura\View\Helper\Radios'] = [
+    'input' => $di->lazyNew('Aura\View\Helper\Input'),
+];
+
+/**
  * Aura\View\HelperLocator
  */
 $di->params['Aura\View\HelperLocator']['registry'] = [
@@ -34,6 +41,7 @@ $di->params['Aura\View\HelperLocator']['registry'] = [
     'input'       => $di->lazyNew('Aura\View\Helper\Input'),
     'links'       => $di->lazyNew('Aura\View\Helper\Links'),
     'metas'       => $di->lazyNew('Aura\View\Helper\Metas'),
+    'radios'      => $di->lazyNew('Aura\View\Helper\Radios'),
     'scripts'     => $di->lazyNew('Aura\View\Helper\Scripts'),
     'scriptsFoot' => $di->lazyNew('Aura\View\Helper\Scripts'),
     'select'      => $di->lazyNew('Aura\View\Helper\Select'),

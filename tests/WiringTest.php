@@ -36,6 +36,7 @@ class WiringTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Aura\View\Helper\Input',    $helper->get('input'));
         $this->assertInstanceOf('Aura\View\Helper\Links',    $helper->get('links'));
         $this->assertInstanceOf('Aura\View\Helper\Metas',    $helper->get('metas'));
+        $this->assertInstanceOf('Aura\View\Helper\Radios',   $helper->get('radios'));
         $this->assertInstanceOf('Aura\View\Helper\Scripts',  $helper->get('scripts'));
         $this->assertInstanceOf('Aura\View\Helper\Scripts',  $helper->get('scriptsFoot'));
         $this->assertInstanceOf('Aura\View\Helper\Select',   $helper->get('select'));
