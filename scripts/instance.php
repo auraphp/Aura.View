@@ -9,6 +9,7 @@ return new Template(new EscaperFactory, new TemplateFinder, new HelperLocator([
     'escape'        =>  function () { return new Helper\Escape(new EscaperFactory); },
     'image'         =>  function () { return new Helper\Image; },
     'input'         =>  function () { return new Helper\Input; },
+    'label'         =>  function () { return new Helper\Label; },
     'links'         =>  function () { return new Helper\Links; },
     'metas'         =>  function () { return new Helper\Metas; },
     'radios'        =>  function () { return new Helper\Radios(new Helper\Input); },

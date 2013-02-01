@@ -39,6 +39,7 @@ $di->params['Aura\View\HelperLocator']['registry'] = [
     'escape'      => $di->lazyNew('Aura\View\Helper\Escape'),
     'image'       => $di->lazyNew('Aura\View\Helper\Image'),
     'input'       => $di->lazyNew('Aura\View\Helper\Input'),
+    'label'       => $di->lazyNew('Aura\View\Helper\Label'),
     'links'       => $di->lazyNew('Aura\View\Helper\Links'),
     'metas'       => $di->lazyNew('Aura\View\Helper\Metas'),
     'radios'      => $di->lazyNew('Aura\View\Helper\Radios'),

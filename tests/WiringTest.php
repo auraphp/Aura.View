@@ -12,10 +12,6 @@ class WiringTest extends \PHPUnit_Framework_TestCase
         $this->loadDi();
     }
 
-    public function testServices()
-    {
-    }
-
     public function testInstances()
     {
         $this->assertNewInstance('Aura\View\Helper\Datetime');
@@ -34,6 +30,7 @@ class WiringTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Aura\View\Helper\Escape',   $helper->get('escape'));
         $this->assertInstanceOf('Aura\View\Helper\Image',    $helper->get('image'));
         $this->assertInstanceOf('Aura\View\Helper\Input',    $helper->get('input'));
+        $this->assertInstanceOf('Aura\View\Helper\Label',    $helper->get('label'));
         $this->assertInstanceOf('Aura\View\Helper\Links',    $helper->get('links'));
         $this->assertInstanceOf('Aura\View\Helper\Metas',    $helper->get('metas'));
         $this->assertInstanceOf('Aura\View\Helper\Radios',   $helper->get('radios'));
