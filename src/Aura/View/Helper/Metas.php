@@ -44,16 +44,16 @@ class Metas extends AbstractHelper
      * 
      * Returns a `<meta ...>` tag.
      * 
-     * @param array $attribs Attributes for the <link> tag.
+     * @param array $attr Attributes for the <link> tag.
      * 
      * @param int $pos The meta position.
      * 
      * @return void
      * 
      */
-    public function add($attribs = [], $pos = 100)
+    public function add($attr = [], $pos = 100)
     {
-        $this->metas[(int) $pos][] = $this->void('meta', $attribs);
+        $this->metas[(int) $pos][] = $this->void('meta', $attr);
     }
 
     /**
@@ -71,12 +71,12 @@ class Metas extends AbstractHelper
      */
     public function addHttp($http_equiv, $content, $pos = 100)
     {
-        $attribs = [
+        $attr = [
             'http-equiv' => $http_equiv,
             'content'    => $content,
         ];
 
-        $this->add($attribs, $pos);
+        $this->add($attr, $pos);
     }
 
     /**
@@ -94,12 +94,12 @@ class Metas extends AbstractHelper
      */
     public function addName($name, $content, $pos = 100)
     {
-        $attribs = [
+        $attr = [
             'name'    => $name,
             'content' => $content,
         ];
 
-        $this->add($attribs, $pos);
+        $this->add($attr, $pos);
     }
 
     /**

@@ -15,13 +15,6 @@ $di->params['Aura\View\Helper\Datetime']['format'] = [
 ];
 
 /**
- * Aura\View\Helper\Escape
- */
-$di->params['Aura\View\Helper\Escape'] = [
-    'escaper_factory' => $di->lazyNew('Aura\View\EscaperFactory'),
-];
-
-/**
  * Aura\View\Helper\Radios
  */
 $di->params['Aura\View\Helper\Radios'] = [
@@ -33,7 +26,7 @@ $di->params['Aura\View\Helper\Radios'] = [
  */
 $di->params['Aura\View\HelperLocator']['registry'] = [
     'anchor'      => $di->lazyNew('Aura\View\Helper\Anchor'),
-    'attribs'     => $di->lazyNew('Aura\View\Helper\Attribs'),
+    'attr'     => $di->lazyNew('Aura\View\Helper\Attr'),
     'base'        => $di->lazyNew('Aura\View\Helper\Base'),
     'datetime'    => $di->lazyNew('Aura\View\Helper\Datetime'),
     'escape'      => $di->lazyNew('Aura\View\Helper\Escape'),
@@ -57,7 +50,6 @@ $di->params['Aura\View\HelperLocator']['registry'] = [
  * Aura\View\Template
  */
 $di->params['Aura\View\Template'] = [
-    'escaper_factory' => $di->lazyNew('Aura\View\EscaperFactory'),
     'helper_locator'  => $di->lazyNew('Aura\View\HelperLocator'),
     'template_finder' => $di->lazyNew('Aura\View\TemplateFinder'),
 ];

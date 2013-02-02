@@ -46,21 +46,21 @@ class Scripts extends AbstractHelper
      * 
      * @param string $src The source href for the script.
      * 
-     * @param array $attribs Additional attributes for the <script> tag.
+     * @param array $attr Additional attributes for the <script> tag.
      * 
      * @param int $pos The script position in the stack.
      * 
      * @return void
      * 
      */
-    public function add($src, $attribs = [], $pos = 100)
+    public function add($src, $attr = [], $pos = 100)
     {
-        unset($attribs['src']);
-        if (empty($attribs['type'])) {
-            $attribs['type'] = 'text/javascript';
+        unset($attr['src']);
+        if (empty($attr['type'])) {
+            $attr['type'] = 'text/javascript';
         }
 
-        $attr = $this->attribs($attribs);
+        $attr = $this->attr($attr);
         $tag = "<script src=\"$src\" $attr></script>";
         $this->scripts[(int) $pos][] = $tag;
     }
@@ -74,21 +74,21 @@ class Scripts extends AbstractHelper
      * 
      * @param string $src The source href for the script.
      * 
-     * @param array $attribs Additional attributes for the <script> tag.
+     * @param array $attr Additional attributes for the <script> tag.
      * 
      * @param string $pos The script position in the stack.
      * 
      * @return void
      * 
      */
-    public function addCond($exp, $src, $attribs = [], $pos = 100)
+    public function addCond($exp, $src, $attr = [], $pos = 100)
     {
-        unset($attribs['src']);
-        if (empty($attribs['type'])) {
-            $attribs['type'] = 'text/javascript';
+        unset($attr['src']);
+        if (empty($attr['type'])) {
+            $attr['type'] = 'text/javascript';
         }
 
-        $attr = $this->attribs($attribs);
+        $attr = $this->attr($attr);
         $tag = "<!--[if $exp]><script src=\"$src\" $attr></script><![endif]-->";
         $this->scripts[(int) $pos][] = $tag;
     }

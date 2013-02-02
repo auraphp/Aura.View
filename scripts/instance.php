@@ -1,12 +1,12 @@
 <?php
 namespace Aura\View;
 require_once dirname(__DIR__) . '/src.php';
-return new Template(new EscaperFactory, new TemplateFinder, new HelperLocator([
+return new Template(new TemplateFinder, new HelperLocator([
     'anchor'        =>  function () { return new Helper\Anchor; },
-    'attribs'       =>  function () { return new Helper\Attribs; },
+    'attr'          =>  function () { return new Helper\Attr; },
     'base'          =>  function () { return new Helper\Base; },
     'datetime'      =>  function () { return new Helper\Datetime; },
-    'escape'        =>  function () { return new Helper\Escape(new EscaperFactory); },
+    'escape'        =>  function () { return new Helper\Escape; },
     'image'         =>  function () { return new Helper\Image; },
     'input'         =>  function () { return new Helper\Input; },
     'links'         =>  function () { return new Helper\Links; },

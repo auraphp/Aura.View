@@ -21,7 +21,7 @@ class Select extends AbstractHelper
 {
     protected $stack = [];
     
-    protected $attribs = [];
+    protected $attr = [];
     
     protected $optgroup = false;
     
@@ -29,13 +29,13 @@ class Select extends AbstractHelper
     
     protected $html = '';
     
-    public function __invoke($attribs, $options = [], $selected = null)
+    public function __invoke($attr, $options = [], $selected = null)
     {
         $this->stack    = [];
         $this->optgroup = false;
         $this->selected = [];
         $this->html     = '';
-        $this->attribs  = $attribs;
+        $this->attr  = $attr;
         
         if ($options) {
             $this->options($options);
@@ -46,26 +46,26 @@ class Select extends AbstractHelper
         }
     }
     
-    public function option($value, $label, array $attribs = [])
+    public function option($value, $label, array $attr = [])
     {
-        $this->stack[] = ['buildOption', $value, $label, $attribs];
+        $this->stack[] = ['buildOption', $value, $label, $attr];
         return $this;
     }
     
-    public function options(array $options, array $attribs = [])
+    public function options(array $options, array $attr = [])
     {
         foreach ($options as $value => $label) {
-            $this->option($value, $label, $attribs);
+            $this->option($value, $label, $attr);
         }
         return $this;
     }
     
-    public function optgroup($label, array $attribs = [])
+    public function optgroup($label, array $attr = [])
     {
         if ($this->optgroup) {
             $this->stack[] = ['endOptgroup'];
         }
-        $this->stack[] = ['beginOptgroup', $label, $attribs];
+        $this->stack[] = ['beginOptgroup', $label, $attr];
         $this->optgroup = true;
         return $this;
     }
@@ -78,7 +78,7 @@ class Select extends AbstractHelper
     
     public function fetch()
     {
-        $attr = $this->attribs($this->attribs);
+        $attr = $this->attr($this->attr);
         $this->html = $this->indent(0, "<select {$attr}>");
         
         foreach ($this->stack as $info) {
@@ -96,28 +96,28 @@ class Select extends AbstractHelper
     
     protected function buildOption($info)
     {
-        list($value, $label, $attribs) = $info;
+        list($value, $label, $attr) = $info;
         
-        // set the option value into the attribs
-        $attribs['value'] = $value;
+        // set the option value into the attr
+        $attr['value'] = $value;
         
         // is the value selected?
-        unset($attribs['selected']);
+        unset($attr['selected']);
         if (in_array($value, $this->selected)) {
-            $attribs['selected'] = 'selected';
+            $attr['selected'] = 'selected';
         }
         
         // build attributes and return option tag with label text
-        $attr = $this->attribs($attribs);
+        $attr = $this->attr($attr);
         $level = ($this->optgroup) ? 2 : 1;
         $this->html .= $this->indent($level, "<option {$attr}>$label</option>");
     }
     
     protected function beginOptgroup($info)
     {
-        list($label, $attribs) = $info;
-        $attribs['label'] = $label;
-        $attr = $this->attribs($attribs);
+        list($label, $attr) = $info;
+        $attr['label'] = $label;
+        $attr = $this->attr($attr);
         $this->html .= $this->indent(1, "<optgroup {$attr}>");
     }
     

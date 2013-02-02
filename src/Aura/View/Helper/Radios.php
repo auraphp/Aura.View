@@ -25,17 +25,17 @@ class Radios extends AbstractHelper
     }
     
     public function __invoke(
-        array $attribs,
+        array $attr,
         array $options,
         $checked = null,
         $separator = PHP_EOL
     ) {
         $input = $this->input;
-        $attribs['type'] = 'radio';
+        $attr['type'] = 'radio';
         $html = '';
         foreach ($options as $value => $label) {
-            $attribs['value'] = $value;
-            $html .= $input($attribs, $checked, $label) . $separator;
+            $attr['value'] = $value;
+            $html .= $input($attr, $checked, $label) . $separator;
         }
         return $html;
     }

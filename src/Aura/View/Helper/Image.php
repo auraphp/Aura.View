@@ -28,20 +28,20 @@ class Image extends AbstractHelper
      * 
      * @param string $src The href to the image source.
      * 
-     * @param array $attribs Additional attributes for the tag.
+     * @param array $attr Additional attributes for the tag.
      * 
      * @return string An <img ... /> tag.
      * 
      * @todo Add automated height/width calculation?
      * 
      */
-    public function __invoke($src, $attribs = [])
+    public function __invoke($src, $attr = [])
     {
-        $attribs['src'] = $src;
-        if (empty($attribs['alt'])) {
-            $attribs['alt'] = basename($src);
+        $attr['src'] = $src;
+        if (empty($attr['alt'])) {
+            $attr['alt'] = basename($src);
         }
 
-        return $this->void('img', $attribs);
+        return $this->void('img', $attr);
     }
 }

@@ -43,12 +43,10 @@ instantiate manually:
 ```php
 <?php
 use Aura\View\Template;
-use Aura\View\EscaperFactory;
 use Aura\View\TemplateFinder;
 use Aura\View\HelperLocator;
 
 $template = new Template(
-    new EscaperFactory,
     new TemplateFinder,
     new HelperLocator
 );
@@ -145,166 +143,15 @@ We may wish to use the alternative PHP syntax for conditionals and loops:
 Escaping Output
 ---------------
 
-***Aura View automatically escapes data assigned to the template when you
-access that data.*** So, in general, you do not need to manually apply escaping
-in your template scripts.
-
-- Strings assigned to the template are automatically escaped as you access
-  them; integers, floats, booleans, and nulls are not.
-
-- If you assign an array to the template, its keys and values will be escaped
-  as you access them.
-
-- If you assign an object to the template, its properties and method returns
-  will also be escaped as you access them.
-
-Here is an example of the business logic to assign data to the template ...
-
-```php
-<?php
-/**
- * @var object $obj An object with properties and methods.
- * @var array $arr An associative array.
- * @var string $str A string.
- * @var int|float $num An actual number (not a string representation).
- * @var bool $bool A boolean.
- * @var null $null A null value.
- */
-$template->setData([
-    'obj'  => $obj,
-    'arr'  => $arr,
-    'str'  => $str,
-    'num'  => $num,
-    'bool' => $bool,
-    'null' => null,
-]);
-```
-
-... and here is an example of the automatic escaping in the template:
-
-```php
-<?php
-// strings are auto-escaped whenever you access them
-echo $this->str;
-
-// integers, floats, booleans, nulls, and resources are not escaped
-if ($this->null === null || $this->bool === false) {
-    echo $this->num;
-}
-
-// array keys and values are auto-escaped per the string/number/etc
-// rules listed above
-foreach ($this->arr as $key => $val) {
-    // the key and value are already escaped for us
-    echo $key . ': ' . $val;
-}
-
-// object properties and method returns are auto-escaped per the 
-// string/number/etc rules listed above
-echo $this->obj->property;
-echo $this->obj->method();
-
-// if the object implements Iterator or IteratorAggregate,
-// the iterator keys and values are auto-escaped as well
-foreach ($this->obj as $key => $val) {
-    echo $key . ': ' . $val;
-}
-```
-
-Note that automatic escaping occurs at *access* time, not at *assignment*
-time, and only occurs when accessing *values assigned to the template*.
-
-### Manual Escaping
-
-If you create a variable of your own inside a template, you will need to
-escape it yourself using the `escape()` helper:
+***Aura View templates and helpers do not automatically escape data for you.***
+You will need to manually apply appropriate escaping when generating
+output and when sending data to helpers.
 
 ```php
 <?php
 $var = "this & that";
 echo $this->escape($var);
 ```
-
-### Raw Data
-
-If you want to access the assigned data without escaping applied, use the
-`__raw()` method:
-
-```php
-<?php
-// get the raw assigned string
-echo $this->__raw()->str;
-
-// get the count of an assigned array or object
-echo count($this->__raw()->arr);
-
-// see if the assigned array is empty
-if (! $this->__raw()->arr) {
-    echo "Array is empty.";
-}
-
-// get a raw property from an assigned object;
-// either of the following will work:
-echo $this->__raw()->obj->property;
-echo $this->obj->__raw()->property;
-
-// get a raw method result from an assigned object;
-// either of the following will work:
-echo $this->__raw()->obj->method();
-echo $this->obj->__raw()->method();
-
-// check if an object is an instanceof SomeClass
-if ($this->__raw()->obj instanceof SomeClass) {
-    // ...
-}
-```
-    
-Using the raw data is the only way to get a `count()` on an array or a
-`Countable` object, or to find the class type of the underlying variable. This
-is because the automatic escaping works by wrapping ("decorating") the
-underlying variable with an escaper object. The decoration makes it possible
-to auto-escape array keys and values, and object properties and methods, but
-unfortunately hides things like `implements` and `instanceof` from PHP.
-
-### Double Escaping
-
-There is an escaping "gotcha" to look out for when manipulating values after
-they are assigned to a template. If you use an assigned value and re-assign
-it to the template, the new value will be double-escaped when you access it.
-
-For example, given this business logic ...
-
-```php
-<?php
-// business logic
-$template->foo = "this & that";
-```
-    
-... and this template script ...
-
-```php
-<?php
-// template script
-$this->bar = $this->foo . " & the other";
-echo $this->bar;
-```
-
-... the output will be `"this &amp;amp; that &amp; the other"`. The output was
-double-escaped; this is because the template escaped `$this->foo` for us when
-we accessed it and assigned it to `$this->bar`, and then escaped `$this->bar`
-for output as well.
-
-When performing manipulations of this kind, use the `__raw()` values instead:
-
-```php
-<?php
-// template script
-$this->bar = $this->__raw()->foo . " & the other";
-echo $this->bar;
-```
-
-Now the output will be `"this &amp; that &amp; the other"`, correctly escaped
-only once.
 
 Using Helpers
 -------------
@@ -322,7 +169,7 @@ part of Aura View include:
 
 - `$this->anchor($href, $text)` returns an `<a href="$href">$text</a>` tag
 
-- `$this->attribs($list)` returns a space-separated attribute list from a
+- `$this->attr($list)` returns a space-separated attribute list from a
   `$list` key-value pair
 
 - `$this->base($href)` returns a `<base href="$href" />` tag
@@ -331,12 +178,12 @@ part of Aura View include:
 
 - `$this->image($src)` returns an `<img src="$src" />` tag.
 
-- `$this->input($attribs, $value, $label, $label_attribs)` 
+- `$this->input($attr, $value, $label, $label_attr)` 
 returns an `<input>` tag, optionally wrapped in a `<label>` tag
     
-    In general `$this->input(['type' => $type], $value, $label, $label_attribs)` 
+    In general `$this->input(['type' => $type], $value, $label, $label_attr)` 
     
-    `$value`, `$label` and `$label_attribs` are optional.
+    `$value`, `$label` and `$label_attr` are optional.
     
     Supported types:
     
@@ -405,7 +252,7 @@ returns an `<input>` tag, optionally wrapped in a `<label>` tag
     - `$this->styles()->get()` returns all the added tags from the helper.
 
 
-- `$this->textarea($attribs, $html)` Returns a `<textarea>`. `$html` is optional.
+- `$this->textarea($attr, $html)` Returns a `<textarea>`. `$html` is optional.
 
 - `$this->title()` provides an object with methods that manipulate the
   `<title>...</title>` tag.

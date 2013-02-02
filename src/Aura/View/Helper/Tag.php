@@ -25,14 +25,14 @@ class Tag extends AbstractHelper
      * 
      * @param string $tag The tag to generate.
      * 
-     * @param array $attribs Attributes for the tag.
+     * @param array $attr Attributes for the tag.
      * 
      * @return string
      * 
      */
-    public function __invoke($tag, $attribs = [])
+    public function __invoke($tag, $attr = [])
     {
-        $attr = $this->attribs($attribs);
+        $attr = $this->attr($attr);
         if ($attr) {
             return "<{$tag} $attr>";
         }

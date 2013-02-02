@@ -51,27 +51,7 @@ abstract class AbstractTemplate
 
     /**
      * 
-     * A data-escaper object.
-     * 
-     * @var Escaper\Object
-     * 
-     */
-    private $escaper;
-
-    /**
-     * 
-     * A factory to create an escaper.
-     * 
-     * @var EscaperFactory
-     * 
-     */
-    private $escaper_factory;
-
-    /**
-     * 
      * Constructor.
-     * 
-     * @param EscaperFactory $escaper_factory An escaper factory.
      * 
      * @param TemplateFinder $template_finder A template finder.
      * 
@@ -80,11 +60,9 @@ abstract class AbstractTemplate
      * 
      */
     public function __construct(
-        EscaperFactory $escaper_factory,
         TemplateFinder $template_finder,
         HelperLocator  $helper_locator
     ) {
-        $this->escaper_factory = $escaper_factory;
         $this->template_finder = $template_finder;
         $this->helper_locator  = $helper_locator;
         $this->setData();
@@ -101,7 +79,7 @@ abstract class AbstractTemplate
      */
     public function __get($key)
     {
-        return $this->escaper->$key;
+        return $this->data[$key];
     }
 
     /**
@@ -117,7 +95,7 @@ abstract class AbstractTemplate
      */
     public function __set($key, $val)
     {
-        $this->data->$key = $val;
+        $this->data[$key] = $val;
     }
 
     /**
@@ -131,7 +109,7 @@ abstract class AbstractTemplate
      */
     public function __isset($key)
     {
-        return isset($this->data->$key);
+        return isset($this->data[$key]);
     }
 
     /**
@@ -145,7 +123,7 @@ abstract class AbstractTemplate
      */
     public function __unset($key)
     {
-        unset($this->data->$key);
+        unset($this->data[$key]);
     }
 
     /**
@@ -191,8 +169,7 @@ abstract class AbstractTemplate
      */
     public function addData(array $data = [])
     {
-        $this->data    = (object) array_merge((array) $this->data, $data);
-        $this->escaper = $this->escaper_factory->newInstance($this->data);
+        $this->data = array_merge($this->data, $data);
     }
 
     /**
@@ -208,31 +185,17 @@ abstract class AbstractTemplate
      */
     public function setData(array $data = [])
     {
-        $this->data    = (object) $data;
-        $this->escaper = $this->escaper_factory->newInstance($this->data);
+        $this->data = $data;
     }
 
     /**
      * 
      * Gets all template variables.
      * 
-     * @return array An array of key-value pairs where the keys are 
-     * template variable names, and the values are the variable values.
+     * @return object The data object containing all template variables.
      * 
      */
     public function getData()
-    {
-        return (array) $this->data;
-    }
-
-    /**
-     * 
-     * Returns the raw data object.
-     * 
-     * @return \StdClass
-     * 
-     */
-    public function __raw()
     {
         return $this->data;
     }

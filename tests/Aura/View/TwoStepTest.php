@@ -40,12 +40,10 @@ class TwoStepTest extends \PHPUnit_Framework_TestCase
         
         // put an outer view in 'baz'
         $file = $this->dirs['baz'] . DIRECTORY_SEPARATOR . 'outer_view.php';
-        $code = '<div><?php echo $this->outer_var . " " . $this->__raw()->inner_view; ?></div>';
+        $code = '<div><?php echo $this->outer_var . " " . $this->inner_view; ?></div>';
         file_put_contents($file, $code);
         
         // set up the TwoStep view
-        $escaper_factory = new EscaperFactory;
-        
         $template_finder = new TemplateFinder();
         
         $helper_locator = new HelperLocator;
@@ -53,7 +51,7 @@ class TwoStepTest extends \PHPUnit_Framework_TestCase
             return new \Aura\View\Helper\MockHelper;
         });
         
-        $template = new Template($escaper_factory, $template_finder, $helper_locator);
+        $template = new Template($template_finder, $helper_locator);
         
         $format_types = new FormatTypes;
         

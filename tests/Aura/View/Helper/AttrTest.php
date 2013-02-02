@@ -1,11 +1,11 @@
 <?php
 namespace Aura\View\Helper;
 
-class AttribsTest extends AbstractHelperTest
+class AttrTest extends AbstractHelperTest
 {
     public function test__invoke()
     {
-        $attribs = new Attribs;
+        $attr = new Attr;
         
         $values = [
             'foo' => 'bar',
@@ -16,16 +16,16 @@ class AttribsTest extends AbstractHelperTest
         ];
         
         $expect = 'foo="bar" baz="dib zim gir" required';
-        $actual = $attribs($values);
+        $actual = $attr($values);
         $this->assertSame($expect, $actual);
     }
     
-    public function test__invokeNoAttribs()
+    public function test__invokeNoAttr()
     {
-        $attribs = new Attribs;
+        $attr = new Attr;
         $values = [];
         $expect = '';
-        $actual = $attribs($values);
+        $actual = $attr($values);
         $this->assertSame($expect, $actual);
     }
 }

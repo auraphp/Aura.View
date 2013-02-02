@@ -23,7 +23,7 @@ class Textarea extends AbstractHelper
      * 
      * Returns a `<textarea>`.
      * 
-     * @param array $attribs Attributes for the textarea tag.
+     * @param array $attr Attributes for the textarea tag.
      * 
      * @param mixed $html The contents of the textarea tag.
      * 
@@ -31,10 +31,10 @@ class Textarea extends AbstractHelper
      * 
      */
     public function __invoke(
-        array $attribs,
+        array $attr,
         $html = null
     ) {
-        $attr = $this->attribs($attribs);
+        $attr = $this->attr($attr);
         return "<textarea {$attr}>$html</textarea>";
     }
 }

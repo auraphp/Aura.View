@@ -21,8 +21,6 @@ class TemplateTest extends \PHPUnit_Framework_TestCase
     
     protected function newTemplate(array $paths = [])
     {
-        $escaper_factory = new EscaperFactory;
-        
         $template_finder = new TemplateFinder();
         
         $helper_locator = new HelperLocator;
@@ -30,7 +28,7 @@ class TemplateTest extends \PHPUnit_Framework_TestCase
             return new \Aura\View\Helper\MockHelper;
         });
         
-        $template = new Template($escaper_factory, $template_finder, $helper_locator);
+        $template = new Template($template_finder, $helper_locator);
         $template->setPaths($paths);
         
         return $template;
@@ -241,13 +239,6 @@ class TemplateTest extends \PHPUnit_Framework_TestCase
         $template = $this->newTemplate();
         $actual = $template->getTemplateFinder();
         $this->assertInstanceOf('Aura\View\TemplateFinder', $actual);
-    }
-    
-    public function test__raw()
-    {
-        $template = $this->newTemplate();
-        $actual = $template->__raw();
-        $this->assertInstanceOf('StdClass', $actual);
     }
     
     public function testGithubIssue15()

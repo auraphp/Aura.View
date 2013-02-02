@@ -18,23 +18,22 @@ class LinksTest extends AbstractHelperTest
     {
         $links = new Links;
         
-        $escaper = $this->escaper_factory->newInstance((object) [
-            'prev' => [
-                'rel' => 'prev',
-                'href' => '/path/to/prev?this&that',
-            ],
-            'next' => [
-                'rel' => 'next',
-                'href' => '/path/to/next?this&that',
-            ]
-        ]);
+        $prev = [
+            'rel' => 'prev',
+            'href' => '/path/to/prev?this&that',
+        ];
         
-        $links->add($escaper->prev);
-        $links->add($escaper->next);
+        $next = [
+            'rel' => 'next',
+            'href' => '/path/to/next?this&that',
+        ];
+        
+        $links->add($prev);
+        $links->add($next);
         
         $actual = $links->get();
-        $expect = '    <link rel="prev" href="/path/to/prev?this&amp;that" />' . PHP_EOL
-                . '    <link rel="next" href="/path/to/next?this&amp;that" />' . PHP_EOL;
+        $expect = '    <link rel="prev" href="/path/to/prev?this&that" />' . PHP_EOL
+                . '    <link rel="next" href="/path/to/next?this&that" />' . PHP_EOL;
        
         $this->assertSame($expect, $actual);
     }
@@ -47,23 +46,22 @@ class LinksTest extends AbstractHelperTest
         $links = new Links;
         $links->setIndent('  ');
         
-        $escaper = $this->escaper_factory->newInstance((object) [
-            'prev' => [
-                'rel' => 'prev',
-                'href' => '/path/to/prev?this&that',
-            ],
-            'next' => [
-                'rel' => 'next',
-                'href' => '/path/to/next?this&that',
-            ]
-        ]);
+        $prev = [
+            'rel' => 'prev',
+            'href' => '/path/to/prev?this&that',
+        ];
         
-        $links->add($escaper->prev);
-        $links->add($escaper->next);
+        $next = [
+            'rel' => 'next',
+            'href' => '/path/to/next?this&that',
+        ];
+        
+        $links->add($prev);
+        $links->add($next);
         
         $actual = $links->get();
-        $expect = '  <link rel="prev" href="/path/to/prev?this&amp;that" />' . PHP_EOL
-                . '  <link rel="next" href="/path/to/next?this&amp;that" />' . PHP_EOL;
+        $expect = '  <link rel="prev" href="/path/to/prev?this&that" />' . PHP_EOL
+                . '  <link rel="next" href="/path/to/next?this&that" />' . PHP_EOL;
        
         $this->assertSame($expect, $actual);
     }

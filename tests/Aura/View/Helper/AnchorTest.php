@@ -9,27 +9,16 @@ class AnchorTest extends AbstractHelperTest
 {
     public function test__invoke()
     {
-        $escaper = $this->escaper_factory->newInstance((object) [
-            'href' => '/path/to/script.php?foo=bar&zim=gir',
-            'text' => '<this>',
-        ]);
-        
         $anchor = new Anchor;
-        $actual = $anchor($escaper->href, $escaper->text);
-        $expect = '<a href="/path/to/script.php?foo=bar&amp;zim=gir">&lt;this&gt;</a>';
+        $actual = $anchor('/path/to/script.php?foo=bar&zim=gir', '<this>');
+        $expect = '<a href="/path/to/script.php?foo=bar&zim=gir"><this></a>';
         $this->assertSame($expect, $actual);
     }
     
-    public function testWithAttribs()
+    public function testWithAttr()
     {
-        $escaper = $this->escaper_factory->newInstance((object) [
-            'href' => '/path/to/script.php',
-            'text' => 'foo',
-            'attribs' => ['bar' => 'baz', 'href' => 'skip-me'],
-        ]);
-        
         $anchor = new Anchor;
-        $actual = $anchor($escaper->href, $escaper->text, $escaper->attribs);
+        $actual = $anchor('/path/to/script.php', 'foo', ['bar' => 'baz', 'href' => 'skip-me']);
         $expect = '<a href="/path/to/script.php" bar="baz">foo</a>';
         $this->assertSame($expect, $actual);
     }

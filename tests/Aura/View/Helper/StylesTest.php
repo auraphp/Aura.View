@@ -35,7 +35,7 @@ class StylesTest extends AbstractHelperTest
     /**
      * @todo Implement testSetIndent().
      */
-    public function testSetIndentAndAttribs()
+    public function testSetIndentAndAttr()
     {
         $styles = new Styles;
         

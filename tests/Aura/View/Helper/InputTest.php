@@ -87,7 +87,7 @@ class InputTest extends AbstractHelperTest
         $this->assertSame($expect, $actual);
     }
     
-    public function testLabelWithAttribs()
+    public function testLabelWithAttr()
     {
         $input = new Input;
         
@@ -110,7 +110,7 @@ class InputTest extends AbstractHelperTest
         $this->assertSame($expect, $actual);
     }
 
-    public function testLabelWithoutAttribs()
+    public function testLabelWithoutAttr()
     {
         $input = new Input;
         

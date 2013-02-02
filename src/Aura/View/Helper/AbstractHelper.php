@@ -54,7 +54,7 @@ abstract class AbstractHelper
      * 
      * Converts an associative array to an attribute string.
      * 
-     * @param array|Traversable $attribs From this array, each key-value pair
+     * @param array|Traversable $attr From this array, each key-value pair
      * is converted to an attribute name and value.
      * 
      * @param array $skip Skip attributes listed in this array.
@@ -62,15 +62,15 @@ abstract class AbstractHelper
      * @return string The attribute string.
      * 
      */
-    protected function attribs($attribs, array $skip = [])
+    protected function attr($attr, array $skip = [])
     {
         // pre-empt processing
-        if (! $attribs) {
+        if (! $attr) {
             return '';
         }
 
         $html = [];
-        foreach ($attribs as $key => $val) {
+        foreach ($attr as $key => $val) {
 
             // skip this attribute?
             if (in_array($key, $skip)) {
@@ -100,9 +100,9 @@ abstract class AbstractHelper
         return implode(' ', $html);
     }
     
-    protected function void($tag, $attribs)
+    protected function void($tag, $attr)
     {
-        $attr = $this->attribs($attribs);
+        $attr = $this->attr($attr);
         $html = "<{$tag} {$attr} />";
         return $html;
     }
