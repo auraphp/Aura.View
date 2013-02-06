@@ -22,7 +22,7 @@ class TitleTest extends AbstractHelperTest
         $title = new Title;
         $this->assertInstanceOf('Aura\View\Helper\Title', $title);
         
-        $escaper = $this->escaper_factory->newInstance((object) [
+        $escaper = $this->escape((object) [
             'main' => 'This & That',
             'suf1' => ' Suf1',
             'suf2' => ' Suf2',
@@ -50,7 +50,7 @@ class TitleTest extends AbstractHelperTest
     {
         $title = new Title;
         $title->setIndent('  ');
-        $escaper = $this->escaper_factory->newInstance((object) [
+        $escaper = $this->escape((object) [
             'main' => 'This & That',
         ]);
         $title->set($escaper->main);

@@ -90,7 +90,13 @@ class Field extends AbstractHelper
      */
     public function __invoke($spec)
     {
-        extract($spec); // type, name, attribs, options, value, label
+        $type    = $spec['type'];
+        $name    = $spec['name'];
+        $value   = $spec['value'];
+        $label   = $spec['label'];
+        $attribs = $spec['attribs'];
+        $options = $spec['options'];
+
         switch (strtolower($type)) {
             case 'radios':
                 return $this->radios($name, $attribs, $options, $value);
@@ -123,9 +129,8 @@ class Field extends AbstractHelper
      */
     protected function input($type, $name, $attribs, $value, $label)
     {
-        unset($attribs['type']);
-        unset($attribs['name']);
-        $attribs = array_merge(['type' => $type, 'name' => $name], $attribs);
+        $attribs['type'] = $type;
+        $attribs['name'] = $name;
         $input = $this->input;
         return $input($attribs, $value, $label);
     }
@@ -147,9 +152,8 @@ class Field extends AbstractHelper
      */
     protected function radios($name, $attribs, $options, $checked)
     {
-        unset($attribs['type']);
-        unset($attribs['name']);
-        $attribs = array_merge(['type' => 'radio', 'name' => $name], $attribs);
+        $attribs['type'] = 'radio';
+        $attribs['name'] = $name;
         $radios = $this->radios;
         return $radios($attribs, $options, $checked);
     }
@@ -171,16 +175,19 @@ class Field extends AbstractHelper
      */
     protected function select($name, $attribs, $options, $selected)
     {
-        unset($attribs['name']);
-        $attribs = array_merge(['name' => $name], $attribs);
-        
         // set the overall attributes
+        $attribs['name'] = $name;
         $select = $this->select;
         $select($attribs);
         
         // set the options and optgroups
         foreach ($options as $key => $val) {
-            if (is_array($val)) {
+            
+            $iter = is_array($val)
+                 || $val instanceof \Iterator
+                 || $val instanceof \IteratorAggregate;
+            
+            if ($iter) {
                 // the key is an optgroup label
                 $select->optgroup($key);
                 // the values are an array of values and labels
@@ -215,9 +222,7 @@ class Field extends AbstractHelper
      */ 
     protected function textarea($name, $attribs, $value)
     {
-        unset($attribs['name']);
-        $attribs = array_merge(['name' => $name], $attribs);
-        
+        $attribs['name'] = $name;
         $textarea = $this->textarea;
         return $textarea($attribs, $value);
     }

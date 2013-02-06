@@ -49,13 +49,13 @@ class Select extends AbstractHelper
         }
     }
     
-    public function option($value, $label, array $attribs = [])
+    public function option($value, $label, $attribs = [])
     {
         $this->stack[] = ['buildOption', $value, $label, $attribs];
         return $this;
     }
     
-    public function options(array $options, array $attribs = [])
+    public function options($options, $attribs = [])
     {
         foreach ($options as $value => $label) {
             $this->option($value, $label, $attribs);
@@ -63,7 +63,7 @@ class Select extends AbstractHelper
         return $this;
     }
     
-    public function optgroup($label, array $attribs = [])
+    public function optgroup($label, $attribs = [])
     {
         if ($this->optgroup) {
             $this->stack[] = ['endOptgroup'];
@@ -75,7 +75,19 @@ class Select extends AbstractHelper
     
     public function selected($selected)
     {
-        $this->selected = (array) $selected;
+        $iter = is_array($selected)
+             || $selected instanceof \Iterator
+             || $selected instanceof \IteratorAggregate;
+        
+        if ($iter) {
+            $this->selected = [];
+            foreach ($selected as $key => $val) {
+                $this->selected[$key] = $val;
+            }
+        } else {
+            $this->selected = (array) $selected;
+        }
+
         return $this;
     }
     
@@ -115,14 +127,19 @@ class Select extends AbstractHelper
         $attribs['value'] = $value;
         
         // is the value selected?
-        unset($attribs['selected']);
         if (in_array($value, $this->selected)) {
             $attribs['selected'] = 'selected';
+        } else {
+            $attribs['selected'] = null;
         }
         
         // build attributes and return option tag with label text
         $attr = $this->attribs($attribs);
-        $level = $this->optlevel;
+        
+        if ($label instanceof \IteratorAggregate) {
+            throw new \Exception;
+        }
+        
         $this->html .= $this->indent($this->optlevel, "<option {$attr}>$label</option>");
     }
     

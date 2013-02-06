@@ -106,10 +106,10 @@ class Input extends AbstractHelper
      * 
      */
     public function __invoke(
-        array $attribs,
+        $attribs,
         $value = null,
         $label = null,
-        array $label_attribs = []
+        $label_attribs = []
     ) {
         // set properties
         $this->html          = '';
@@ -164,7 +164,7 @@ class Input extends AbstractHelper
         if ($this->value == $this->attribs['value']) {
             $this->attribs['checked'] = 'checked';
         } else {
-            unset($this->attribs['checked']);
+            $this->attribs['checked'] = null;
         }
     }
     

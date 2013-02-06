@@ -40,8 +40,8 @@ class Radios extends AbstractHelper
      * 
      */
     public function __invoke(
-        array $attribs,
-        array $options,
+        $attribs,
+        $options,
         $checked = null,
         $separator = PHP_EOL
     ) {

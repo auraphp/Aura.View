@@ -15,14 +15,19 @@ class FieldTest extends AbstractHelperTest
     
     public function testInput()
     {
-        $spec = [
+        $spec = $this->escape([
             'type' => 'checkbox',
             'name' => 'field_name',
             'label' => 'DOOM',
-            'attribs' => ['value' => 'foo'],
+            'attribs' => [
+                'id' => null,
+                'type' => null,
+                'name' => null,
+                'value' => 'foo'
+            ],
             'options' => ['baz' => 'dib'],
             'value' => 'foo',
-        ];
+        ]);
         
         $field = $this->newField();
         $actual = $field($spec);
@@ -32,13 +37,19 @@ class FieldTest extends AbstractHelperTest
     
     public function testRadios()
     {
-        $spec = [
+        $spec = $this->escape([
             'type' => 'radios',
             'name' => 'field_name',
-            'attribs' => ['foo' => 'bar'],
+            'label' => null,
+            'attribs' => [
+                'id' => null,
+                'type' => null,
+                'name' => null,
+                'foo' => 'bar',
+            ],
             'options' => ['opt1' => 'Label 1', 'opt2' => 'Label 2', 'opt3' => 'Label 3'],
             'value' => 'opt2',
-        ];
+        ]);
         
         $field = $this->newField();
         $actual = $field($spec);
@@ -50,10 +61,16 @@ class FieldTest extends AbstractHelperTest
     
     public function testSelect()
     {
-        $spec = [
+        $spec = $this->escape([
             'type' => 'select',
             'name' => 'field_name',
-            'attribs' => ['foo' => 'bar'],
+            'label' => null,
+            'attribs' => [
+                'id' => null,
+                'type' => null,
+                'name' => null,
+                'foo' => 'bar',
+            ],
             'options' => [
                 'opt1' => 'Label 1',
                 'opt2' => 'Label 2',
@@ -70,11 +87,11 @@ class FieldTest extends AbstractHelperTest
                 ],
             ],
             'value' => 'opt5',
-        ];
+        ]);
         
         $field = $this->newField();
         $actual = $field($spec);
-         
+        
         $expect = '<select name="field_name" foo="bar">' . PHP_EOL
                 . '    <option value="opt1">Label 1</option>' . PHP_EOL
                 . '    <option value="opt2">Label 2</option>' . PHP_EOL
@@ -96,13 +113,19 @@ class FieldTest extends AbstractHelperTest
     
     public function testTextarea()
     {
-        $spec = [
+        $spec = $this->escape([
             'type' => 'textarea',
             'name' => 'field_name',
-            'attribs' => ['foo' => 'bar'],
+            'label' => null,
+            'attribs' => [
+                'id' => null,
+                'type' => null,
+                'name' => null,
+                'foo' => 'bar',
+            ],
             'options' => ['baz' => 'dib'],
             'value' => 'Text in the textarea.',
-        ];
+        ]);
         
         $field = $this->newField();
         $actual = $field($spec);

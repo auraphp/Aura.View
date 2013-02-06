@@ -31,7 +31,7 @@ class Textarea extends AbstractHelper
      * 
      */
     public function __invoke(
-        array $attribs,
+        $attribs,
         $html = null
     ) {
         $attr = $this->attribs($attribs);

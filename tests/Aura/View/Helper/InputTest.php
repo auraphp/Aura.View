@@ -12,11 +12,11 @@ class InputTest extends AbstractHelperTest
         
         // given value should override the attribute
         $actual = $input(
-            [
+            $this->escape([
                 'type' => $type,
                 'value' => 'should not be here',
-            ],
-            'field value'
+            ]),
+            $this->escape('field value')
         );
         
         $expect = "<input type=\"$type\" value=\"field value\" />";
@@ -24,10 +24,10 @@ class InputTest extends AbstractHelperTest
         
         // no value given so attribute should still be there
         $actual = $input(
-            [
+            $this->escape([
                 'type' => $type,
                 'value' => 'field value',
-            ]
+            ])
         );
         
         $expect = "<input type=\"$type\" value=\"field value\" />";
@@ -43,11 +43,11 @@ class InputTest extends AbstractHelperTest
         
         // value should be checked
         $actual = $input(
-            [
+            $this->escape([
                 'type' => $type,
                 'value' => 'yes',
-            ],
-            'yes'
+            ]),
+            $this->escape('yes')
         );
         
         $expect = "<input type=\"$type\" value=\"yes\" checked=\"checked\" />";
@@ -56,11 +56,11 @@ class InputTest extends AbstractHelperTest
 
         // value should not be checked
         $actual = $input(
-            [
+            $this->escape([
                 'type' => $type,
                 'value' => 'yes',
-            ],
-            'no'
+            ]),
+            $this->escape('no')
         );
         
         $expect = "<input type=\"$type\" value=\"yes\" />";
@@ -75,11 +75,11 @@ class InputTest extends AbstractHelperTest
         
         // given value should not override the attribute
         $actual = $input(
-            [
+            $this->escape([
                 'type' => $type,
                 'value' => 'button value',
-            ],
-            'should not be here'
+            ]),
+            $this->escape('should not be here')
         );
         
         $expect = "<input type=\"$type\" value=\"button value\" />";
@@ -92,16 +92,16 @@ class InputTest extends AbstractHelperTest
         $input = new Input;
         
         $actual = $input(
-            [
+            $this->escape([
                 'type' => 'radio',
                 'value' => 'yes',
                 'id' => 'radio-yes'
-            ],
-            'no',
-            'Radio Label',
-            [
+            ]),
+            $this->escape('no'),
+            $this->escape('Radio Label'),
+            $this->escape([
                 'class' => 'test',
-            ]
+            ])
         );
         
         $expect = '<label class="test" for="radio-yes">'
@@ -115,12 +115,12 @@ class InputTest extends AbstractHelperTest
         $input = new Input;
         
         $actual = $input(
-            [
+            $this->escape([
                 'type' => 'radio',
                 'value' => 'yes',
-            ],
-            'no',
-            'Radio Label'
+            ]),
+            $this->escape('no'),
+            $this->escape('Radio Label')
         );
         
         $expect = '<label><input type="radio" value="yes" /> Radio Label</label>';
