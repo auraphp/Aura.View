@@ -19,14 +19,47 @@ namespace Aura\View\Helper;
  */
 class Field extends AbstractHelper
 {
+    /**
+     * 
+     * @var Input $input Input Helper object for creating `<input>` tag
+     * 
+     */
     protected $input;
     
+    /**
+     * 
+     * @var Radios $radios Radios Helper object
+     * 
+     */
     protected $radios;
     
+    /**
+     * 
+     * @var Select $select Select Helper object
+     * 
+     */
     protected $select;
     
+    /**
+     * 
+     * @var Textarea $textarea Textarea Helper object
+     * 
+     */
     protected $textarea;
     
+    /**
+     * 
+     * Constructor
+     * 
+     * @param Input $input   Input Helper object
+     * 
+     * @param Radios $radios Radios Helper object
+     * 
+     * @param Select $select Select Helper object
+     * 
+     * @param Textarea $textarea Textarea Helper object
+     * 
+     */
     public function __construct(
         Input    $input,
         Radios   $radios,
@@ -52,7 +85,7 @@ class Field extends AbstractHelper
      * 'options' (array): An array of options (typically for radios and
      * select).
      * 
-     * 'value' (array): The current value for the field.
+     * 'value' (mixed): The current value for the field.
      * 
      */
     public function __invoke($spec)
@@ -73,6 +106,21 @@ class Field extends AbstractHelper
         }
     }
     
+    /**
+     * 
+     * Create an input field via Input object
+     * 
+     * @param string $type 
+     * 
+     * @param string $name
+     * 
+     * @param array $attribs
+     * 
+     * @param string $value
+     * 
+     * @return string
+     * 
+     */
     protected function input($type, $name, $attribs, $value, $label)
     {
         unset($attribs['type']);
@@ -82,6 +130,21 @@ class Field extends AbstractHelper
         return $input($attribs, $value, $label);
     }
     
+    /**
+     * 
+     * Create radio field
+     * 
+     * @param string $name
+     * 
+     * @param array $attribs
+     * 
+     * @param array $options
+     * 
+     * @param bool $checked
+     * 
+     * @return string
+     * 
+     */
     protected function radios($name, $attribs, $options, $checked)
     {
         unset($attribs['type']);
@@ -91,6 +154,21 @@ class Field extends AbstractHelper
         return $radios($attribs, $options, $checked);
     }
     
+    /**
+     * 
+     * Create select field
+     * 
+     * @param string $name
+     * 
+     * @param array $attribs
+     * 
+     * @param array $options
+     * 
+     * @param bool $selected
+     * 
+     * @return string
+     * 
+     */
     protected function select($name, $attribs, $options, $selected)
     {
         unset($attribs['name']);
@@ -122,6 +200,19 @@ class Field extends AbstractHelper
         return $select->fetch();
     }
     
+    /**
+     * 
+     * Create textarea field
+     * 
+     * @param string $name
+     * 
+     * @param array $attribs
+     * 
+     * @param string $value
+     * 
+     * @return string
+     * 
+     */ 
     protected function textarea($name, $attribs, $value)
     {
         unset($attribs['name']);
