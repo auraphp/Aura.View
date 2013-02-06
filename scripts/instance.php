@@ -7,6 +7,14 @@ return new Template(new EscaperFactory, new TemplateFinder, new HelperLocator([
     'base'          =>  function () { return new Helper\Base; },
     'datetime'      =>  function () { return new Helper\Datetime; },
     'escape'        =>  function () { return new Helper\Escape(new EscaperFactory); },
+    'field'         =>  function () {
+        return new Helper\Field(
+            new Helper\Input,
+            new Helper\Radios(new Helper\Input),
+            new Helper\Select,
+            new Helper\Textarea
+        );
+    },
     'image'         =>  function () { return new Helper\Image; },
     'input'         =>  function () { return new Helper\Input; },
     'links'         =>  function () { return new Helper\Links; },

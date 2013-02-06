@@ -18,6 +18,7 @@ require_once __DIR__ . '/src/Aura/View/Helper/Attribs.php';
 require_once __DIR__ . '/src/Aura/View/Helper/Base.php';
 require_once __DIR__ . '/src/Aura/View/Helper/Datetime.php';
 require_once __DIR__ . '/src/Aura/View/Helper/Escape.php';
+require_once __DIR__ . '/src/Aura/View/Helper/Field.php';
 require_once __DIR__ . '/src/Aura/View/Helper/Image.php';
 require_once __DIR__ . '/src/Aura/View/Helper/Input.php';
 require_once __DIR__ . '/src/Aura/View/Helper/Links.php';
