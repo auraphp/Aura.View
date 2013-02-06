@@ -16,16 +16,17 @@ class FieldTest extends AbstractHelperTest
     public function testInput()
     {
         $spec = [
-            'type' => 'text',
+            'type' => 'checkbox',
             'name' => 'field_name',
-            'attribs' => ['foo' => 'bar'],
+            'label' => 'DOOM',
+            'attribs' => ['value' => 'foo'],
             'options' => ['baz' => 'dib'],
-            'value' => 'Text in the field.',
+            'value' => 'foo',
         ];
         
         $field = $this->newField();
         $actual = $field($spec);
-        $expect = '<input type="text" name="field_name" foo="bar" value="Text in the field." />';
+        $expect = '<label><input type="checkbox" name="field_name" value="foo" checked="checked" /> DOOM</label>';
         $this->assertSame($expect, $actual);
     }
     

@@ -57,7 +57,7 @@ class Field extends AbstractHelper
      */
     public function __invoke($spec)
     {
-        extract($spec); // type, name, attribs, options, value
+        extract($spec); // type, name, attribs, options, value, label
         switch (strtolower($type)) {
             case 'radios':
                 return $this->radios($name, $attribs, $options, $value);
@@ -68,18 +68,18 @@ class Field extends AbstractHelper
             case 'textarea':
                 return $this->textarea($name, $attribs, $value);
             default:
-                return $this->input($type, $name, $attribs, $value);
+                return $this->input($type, $name, $attribs, $value, $label);
                 break;
         }
     }
     
-    protected function input($type, $name, $attribs, $value)
+    protected function input($type, $name, $attribs, $value, $label)
     {
         unset($attribs['type']);
         unset($attribs['name']);
         $attribs = array_merge(['type' => $type, 'name' => $name], $attribs);
         $input = $this->input;
-        return $input($attribs, $value);
+        return $input($attribs, $value, $label);
     }
     
     protected function radios($name, $attribs, $options, $checked)
