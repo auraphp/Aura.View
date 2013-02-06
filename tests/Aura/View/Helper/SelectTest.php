@@ -56,7 +56,7 @@ class SelectTest extends AbstractHelperTest
             ->selected(['value2', 'value3'])
             ->fetch();
         
-        $expect = '<select name="foo[bar]" multiple="multiple">' . PHP_EOL
+        $expect = '<select name="foo[bar][]" multiple="multiple">' . PHP_EOL
                 . '    <optgroup label="Group A">' . PHP_EOL
                 . '        <option value="value1">First Label</option>' . PHP_EOL
                 . '        <option value="value2" selected="selected">Second Label</option>' . PHP_EOL
