@@ -75,11 +75,8 @@ class Select extends AbstractHelper
     
     public function selected($selected)
     {
-        $iter = is_array($selected)
-             || $selected instanceof \Iterator
-             || $selected instanceof \IteratorAggregate;
-        
-        if ($iter) {
+        $trav = is_array($selected) || $selected instanceof \Traversable;
+        if ($trav) {
             $this->selected = [];
             foreach ($selected as $key => $val) {
                 $this->selected[$key] = $val;
@@ -135,11 +132,6 @@ class Select extends AbstractHelper
         
         // build attributes and return option tag with label text
         $attr = $this->attribs($attribs);
-        
-        if ($label instanceof \IteratorAggregate) {
-            throw new \Exception;
-        }
-        
         $this->html .= $this->indent($this->optlevel, "<option {$attr}>$label</option>");
     }
     

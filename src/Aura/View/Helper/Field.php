@@ -183,11 +183,8 @@ class Field extends AbstractHelper
         // set the options and optgroups
         foreach ($options as $key => $val) {
             
-            $iter = is_array($val)
-                 || $val instanceof \Iterator
-                 || $val instanceof \IteratorAggregate;
-            
-            if ($iter) {
+            $trav = is_array($val) || $val instanceof \Traversable;
+            if ($trav) {
                 // the key is an optgroup label
                 $select->optgroup($key);
                 // the values are an array of values and labels
