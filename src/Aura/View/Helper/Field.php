@@ -90,6 +90,17 @@ class Field extends AbstractHelper
      */
     public function __invoke($spec)
     {
+        $spec    = array_merge(
+            [
+                'type' => '',
+                'name' => '',
+                'value' => '',
+                'label' => '',
+                'attribs' => '',
+                'options' => ''
+            ],
+            $spec
+        );
         $type    = $spec['type'];
         $name    = $spec['name'];
         $value   = $spec['value'];
@@ -216,7 +227,7 @@ class Field extends AbstractHelper
      * 
      * @return string
      * 
-     */ 
+     */
     protected function textarea($name, $attribs, $value)
     {
         $attribs['name'] = $name;

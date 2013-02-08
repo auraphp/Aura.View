@@ -161,7 +161,7 @@ class Input extends AbstractHelper
     
     protected function setCheckedAttrib()
     {
-        if ($this->value == $this->attribs['value']) {
+        if (isset($this->attribs['value']) && $this->value == $this->attribs['value']) {
             $this->attribs['checked'] = 'checked';
         } else {
             $this->attribs['checked'] = null;
