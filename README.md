@@ -491,7 +491,7 @@ Template Partials
 -----------------
 
 Template partials are a scope-separated way of splitting up templates. We can
-`fetch()` other templates from within a template; template scripts that are
+`fetch` other templates from within a template; template scripts that are
 fetched in this way will *not* share the scope of the template they are called
 from (although `$this` will still be available). In addition, we can pass an
 array of variables to be [`extract`](http://php.net/extract)ed into the
@@ -514,7 +514,7 @@ echo "    <li>{$item}</li>" . PHP_EOL;
 foreach ($this->list as $item) {
     $template_name = '_item';
     $template_vars = ['item' => $item];
-    echo $this->fetch($template_name, $template_vars);
+    echo $this->partial($template_name, $template_vars);
 }
 ```
 
