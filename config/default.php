@@ -15,6 +15,16 @@ $di->params['Aura\View\Helper\Datetime']['format'] = [
 ];
 
 /**
+ * Aura\View\Helper\Field
+ */
+$di->params['Aura\View\Helper\Field'] = [
+    'input'    => $di->lazyNew('Aura\View\Helper\Input'),
+    'radios'   => $di->lazyNew('Aura\View\Helper\Radios'),
+    'select'   => $di->lazyNew('Aura\View\Helper\Select'),
+    'textarea' => $di->lazyNew('Aura\View\Helper\Textarea'),
+];
+
+/**
  * Aura\View\Helper\Radios
  */
 $di->params['Aura\View\Helper\Radios'] = [
@@ -30,6 +40,7 @@ $di->params['Aura\View\HelperLocator']['registry'] = [
     'base'        => $di->lazyNew('Aura\View\Helper\Base'),
     'datetime'    => $di->lazyNew('Aura\View\Helper\Datetime'),
     'escape'      => $di->lazyNew('Aura\View\Helper\Escape'),
+    'field'       => $di->lazyNew('Aura\View\Helper\Field'),
     'image'       => $di->lazyNew('Aura\View\Helper\Image'),
     'input'       => $di->lazyNew('Aura\View\Helper\Input'),
     'links'       => $di->lazyNew('Aura\View\Helper\Links'),
