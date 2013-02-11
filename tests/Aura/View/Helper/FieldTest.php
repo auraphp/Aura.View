@@ -13,25 +13,45 @@ class FieldTest extends AbstractHelperTest
         );
     }
     
-    public function testInput()
+    public function testCheckbox()
     {
         $spec = $this->escape([
             'type' => 'checkbox',
             'name' => 'field_name',
-            'label' => 'DOOM',
             'attribs' => [
                 'id' => null,
                 'type' => null,
                 'name' => null,
-                'value' => 'foo'
             ],
-            'options' => ['baz' => 'dib'],
+            'options' => [
+                'foo' => 'DOOM'
+            ],
             'value' => 'foo',
         ]);
         
         $field = $this->newField();
         $actual = $field($spec);
         $expect = '<label><input type="checkbox" name="field_name" value="foo" checked="checked" /> DOOM</label>';
+        $this->assertSame($expect, $actual);
+    }
+    
+    public function testInput()
+    {
+        $spec = $this->escape([
+            'type' => 'text',
+            'name' => 'field_name',
+            'attribs' => [
+                'id' => null,
+                'type' => null,
+                'name' => null,
+            ],
+            'options' => [],
+            'value' => 'foo',
+        ]);
+        
+        $field = $this->newField();
+        $actual = $field($spec);
+        $expect = '<input type="text" name="field_name" value="foo" />';
         $this->assertSame($expect, $actual);
     }
     

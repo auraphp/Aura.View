@@ -51,7 +51,7 @@ class Field extends AbstractHelper
      * 
      * Constructor
      * 
-     * @param Input $input   Input Helper object
+     * @param Input $input Input Helper object
      * 
      * @param Radios $radios Radios Helper object
      * 
@@ -93,11 +93,13 @@ class Field extends AbstractHelper
         $type    = $spec['type'];
         $name    = $spec['name'];
         $value   = $spec['value'];
-        $label   = $spec['label'];
         $attribs = $spec['attribs'];
         $options = $spec['options'];
 
         switch (strtolower($type)) {
+            case 'checkbox':
+                return $this->checkbox($name, $attribs, $options, $value);
+                break;
             case 'radios':
                 return $this->radios($name, $attribs, $options, $value);
                 break;
@@ -107,9 +109,21 @@ class Field extends AbstractHelper
             case 'textarea':
                 return $this->textarea($name, $attribs, $value);
             default:
-                return $this->input($type, $name, $attribs, $value, $label);
+                return $this->input($type, $name, $attribs, $value);
                 break;
         }
+    }
+    
+    protected function checkbox($name, $attribs, $options, $value)
+    {
+        foreach ($options as $checked_value => $label) {
+            break;
+        }
+        $attribs['type'] = 'checkbox';
+        $attribs['name'] = $name;
+        $attribs['value'] = $checked_value;
+        $input = $this->input;
+        return $input($attribs, $value, $label);
     }
     
     /**
@@ -127,12 +141,12 @@ class Field extends AbstractHelper
      * @return string
      * 
      */
-    protected function input($type, $name, $attribs, $value, $label)
+    protected function input($type, $name, $attribs, $value)
     {
         $attribs['type'] = $type;
         $attribs['name'] = $name;
         $input = $this->input;
-        return $input($attribs, $value, $label);
+        return $input($attribs, $value);
     }
     
     /**
