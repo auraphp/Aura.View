@@ -32,7 +32,7 @@ class Anchor extends AbstractHelper
      * @return string
      * 
      */
-    public function __invoke($href, $text, $attr = [])
+    public function __invoke($href, $text, array $attr = [])
     {
         // build text and return
         if ($attr) {
