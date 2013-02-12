@@ -15,64 +15,64 @@ class FieldTest extends AbstractHelperTest
     
     public function testCheckbox()
     {
-        $spec = $this->escape([
+        $spec = [
             'type' => 'checkbox',
             'name' => 'field_name',
-            'attribs' => [
+            'attr' => [
                 'id' => null,
                 'type' => null,
                 'name' => null,
             ],
-            'options' => [
+            'opts' => [
                 'foo' => 'DOOM'
             ],
             'value' => 'foo',
-        ]);
+        ];
         
         $field = $this->newField();
-        $actual = $field($spec);
+        $actual = $field($this->escape($spec));
         $expect = '<label><input type="checkbox" name="field_name" value="foo" checked="checked" /> DOOM</label>';
         $this->assertSame($expect, $actual);
     }
     
     public function testInput()
     {
-        $spec = $this->escape([
+        $spec = [
             'type' => 'text',
             'name' => 'field_name',
-            'attribs' => [
+            'attr' => [
                 'id' => null,
                 'type' => null,
                 'name' => null,
             ],
-            'options' => [],
+            'opts' => [],
             'value' => 'foo',
-        ]);
+        ];
         
         $field = $this->newField();
-        $actual = $field($spec);
+        $actual = $field($this->escape($spec));
         $expect = '<input type="text" name="field_name" value="foo" />';
         $this->assertSame($expect, $actual);
     }
     
     public function testRadios()
     {
-        $spec = $this->escape([
+        $spec = [
             'type' => 'radios',
             'name' => 'field_name',
             'label' => null,
-            'attribs' => [
+            'attr' => [
                 'id' => null,
                 'type' => null,
                 'name' => null,
                 'foo' => 'bar',
             ],
-            'options' => ['opt1' => 'Label 1', 'opt2' => 'Label 2', 'opt3' => 'Label 3'],
+            'opts' => ['opt1' => 'Label 1', 'opt2' => 'Label 2', 'opt3' => 'Label 3'],
             'value' => 'opt2',
-        ]);
+        ];
         
         $field = $this->newField();
-        $actual = $field($spec);
+        $actual = $field($this->escape($spec));
         $expect = '<label><input type="radio" name="field_name" foo="bar" value="opt1" /> Label 1</label>' . PHP_EOL
                 . '<label><input type="radio" name="field_name" foo="bar" value="opt2" checked="checked" /> Label 2</label>' . PHP_EOL
                 . '<label><input type="radio" name="field_name" foo="bar" value="opt3" /> Label 3</label>' . PHP_EOL;
@@ -81,17 +81,17 @@ class FieldTest extends AbstractHelperTest
     
     public function testSelect()
     {
-        $spec = $this->escape([
+        $spec = [
             'type' => 'select',
             'name' => 'field_name',
             'label' => null,
-            'attribs' => [
+            'attr' => [
                 'id' => null,
                 'type' => null,
                 'name' => null,
                 'foo' => 'bar',
             ],
-            'options' => [
+            'opts' => [
                 'opt1' => 'Label 1',
                 'opt2' => 'Label 2',
                 'opt3' => 'Label 3',
@@ -107,10 +107,10 @@ class FieldTest extends AbstractHelperTest
                 ],
             ],
             'value' => 'opt5',
-        ]);
+        ];
         
         $field = $this->newField();
-        $actual = $field($spec);
+        $actual = $field($this->escape($spec));
         
         $expect = '<select name="field_name" foo="bar">' . PHP_EOL
                 . '    <option value="opt1">Label 1</option>' . PHP_EOL
@@ -133,22 +133,22 @@ class FieldTest extends AbstractHelperTest
     
     public function testTextarea()
     {
-        $spec = $this->escape([
+        $spec = [
             'type' => 'textarea',
             'name' => 'field_name',
             'label' => null,
-            'attribs' => [
+            'attr' => [
                 'id' => null,
                 'type' => null,
                 'name' => null,
                 'foo' => 'bar',
             ],
-            'options' => ['baz' => 'dib'],
+            'opts' => ['baz' => 'dib'],
             'value' => 'Text in the textarea.',
-        ]);
+        ];
         
         $field = $this->newField();
-        $actual = $field($spec);
+        $actual = $field($this->escape($spec));
         $expect = '<textarea name="field_name" foo="bar">Text in the textarea.</textarea>';
         $this->assertSame($expect, $actual);
     }

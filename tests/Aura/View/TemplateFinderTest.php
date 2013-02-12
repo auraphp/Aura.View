@@ -38,9 +38,6 @@ class TemplateFinderTest extends \PHPUnit_Framework_TestCase
         }
     }
     
-    /**
-     * @todo Implement testGetPaths().
-     */
     public function testSetAndGetPaths()
     {
         // should be no paths yet
@@ -77,9 +74,6 @@ class TemplateFinderTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($expect, $actual);
     }
 
-    /**
-     * @todo Implement testFind().
-     */
     public function testFind()
     {
         // set the paths to the dirs

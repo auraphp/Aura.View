@@ -291,9 +291,6 @@ class TwoStepTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($expect, $actual);
     }
     
-    /**
-     * @todo Implement testGetContentType().
-     */
     public function testGetContentType()
     {
         $this->twostep->setFormat('.html');

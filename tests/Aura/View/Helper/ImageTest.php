@@ -11,7 +11,7 @@ class ImageTest extends AbstractHelperTest
     {
         $image = new Image;
         $src = '/images/example.gif';
-        $actual = $image($src);
+        $actual = $image($this->escape($src));
         $expect = '<img src="/images/example.gif" alt="example.gif" />';
         $this->assertSame($actual, $expect);
     }

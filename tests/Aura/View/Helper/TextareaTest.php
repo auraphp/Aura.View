@@ -8,9 +8,7 @@ class TextareaTest extends AbstractHelperTest
         $textarea = new Textarea;
         
         $actual = $textarea(
-            [
-                'name' => 'field',
-            ],
+            $this->escape(['name' => 'field']),
             "the quick brown fox"
         );
         

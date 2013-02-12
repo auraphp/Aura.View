@@ -14,32 +14,42 @@ class MetasTest extends AbstractHelperTest
         $this->assertInstanceOf('Aura\View\Helper\Metas', $actual);
     }
     
-    /**
-     * @todo Implement test__invoke().
-     */
     public function testAddAndGet_noPosition()
     {
         $metas = new Metas;
         
-        $metas->addHttp('Location', '/redirect/to/here');
-        $metas->addName('foo', 'bar');
+        $metas->addHttp(
+            $this->escape('Location'),
+            $this->escape('/redirect/to/here')
+        );
+        
+        $metas->addName(
+            $this->escape('foo'),
+            $this->escape('bar')
+        );
         
         $actual = $metas->get();
-        $expect = '    <meta http-equiv="Location" content="/redirect/to/here" />' . PHP_EOL
-                . '    <meta name="foo" content="bar" />' . PHP_EOL;
+        $expect = '<meta http-equiv="Location" content="/redirect/to/here" />' . PHP_EOL
+                . '<meta name="foo" content="bar" />' . PHP_EOL;
         
         $this->assertSame($expect, $actual);
     }
 
-    /**
-     * @todo Implement testSetIndent().
-     */
     public function testSetIndent()
     {
         $metas = new Metas;
         $metas->setIndent('  ');
-        $metas->addHttp('Location', '/redirect/to/here');
-        $metas->addName('foo', 'bar');
+        $metas->setIndentLevel(1);
+        
+        $metas->addHttp(
+            $this->escape('Location'),
+            $this->escape('/redirect/to/here')
+        );
+        
+        $metas->addName(
+            $this->escape('foo'),
+            $this->escape('bar')
+        );
         
         $actual = $metas->get();
         $expect = '  <meta http-equiv="Location" content="/redirect/to/here" />' . PHP_EOL

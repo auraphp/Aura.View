@@ -6,7 +6,7 @@ class RadiosTest extends AbstractHelperTest
     public function test__invoke()
     {
         $attr = ['type' => '', 'name' => 'field', 'value' => ''];
-        $options = [
+        $opts = [
             'foo' => 'bar',
             'baz' => 'dib',
             'zim' => 'gir',
@@ -14,7 +14,12 @@ class RadiosTest extends AbstractHelperTest
         
         $radios = new Radios(new Input);
         
-        $actual = $radios($attr, $options, 'baz');
+        $actual = $radios(
+            $this->escape($attr),
+            $this->escape($opts),
+            $this->escape('baz')
+        );
+        
         $expect = '<label><input type="radio" name="field" value="foo" /> bar</label>' . PHP_EOL
                 . '<label><input type="radio" name="field" value="baz" checked="checked" /> dib</label>' . PHP_EOL
                 . '<label><input type="radio" name="field" value="zim" /> gir</label>' . PHP_EOL;

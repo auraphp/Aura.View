@@ -14,16 +14,15 @@ class ScriptsTest extends AbstractHelperTest
         $this->assertInstanceOf('Aura\View\Helper\Scripts', $actual);
     }
     
-    /**
-     * @todo Implement testSetIndent().
-     */
     public function testSetIndent()
     {
         $scripts = new Scripts;
         $scripts->setIndent('  ');
-        $scripts->add('/js/first.js');
-        $scripts->add('/js/middle.js');
-        $scripts->add('/js/last.js');
+        $scripts->setIndentLevel(1);
+        
+        $scripts->add($this->escape('/js/first.js'));
+        $scripts->add($this->escape('/js/middle.js'));
+        $scripts->add($this->escape('/js/last.js'));
         
         $actual = $scripts->get();
         
@@ -34,23 +33,20 @@ class ScriptsTest extends AbstractHelperTest
         $this->assertSame($expect, $actual);
     }
 
-    /**
-     * @todo Implement testAddHead().
-     */
     public function testAddAndGet()
     {
         $scripts = new Scripts;
-        $scripts->add('/js/last.js', [], 150);
-        $scripts->add('/js/first.js', [], 50);
-        $scripts->add('/js/middle.js');
-        $scripts->addCond('ie6', '/js/ie6.js');
+        $scripts->add($this->escape('/js/last.js'), [], 150);
+        $scripts->add($this->escape('/js/first.js'), [], 50);
+        $scripts->add($this->escape('/js/middle.js'));
+        $scripts->addCond($this->escape('ie6'), $this->escape('/js/ie6.js'));
         
         $actual = $scripts->get();
         
-        $expect = '    <script src="/js/first.js" type="text/javascript"></script>' . PHP_EOL
-                . '    <script src="/js/middle.js" type="text/javascript"></script>' . PHP_EOL
-                . '    <!--[if ie6]><script src="/js/ie6.js" type="text/javascript"></script><![endif]-->' . PHP_EOL
-                . '    <script src="/js/last.js" type="text/javascript"></script>' . PHP_EOL;
+        $expect = '<script src="/js/first.js" type="text/javascript"></script>' . PHP_EOL
+                . '<script src="/js/middle.js" type="text/javascript"></script>' . PHP_EOL
+                . '<!--[if ie6]><script src="/js/ie6.js" type="text/javascript"></script><![endif]-->' . PHP_EOL
+                . '<script src="/js/last.js" type="text/javascript"></script>' . PHP_EOL;
         
         $this->assertSame($expect, $actual);
     }

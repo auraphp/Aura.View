@@ -14,20 +14,21 @@ class DatetimeTest extends AbstractHelperTest
         
         // default format
         $expect = '2004-03-21 23:45:00';
-        $actual = $datetime($spec);
+        $actual = $datetime($this->escape($spec));
         $this->assertSame($expect, $actual);
         
         // preset format
         $expect = '23:45:00';
-        $actual = $datetime($spec, 'time');
+        $actual = $datetime($this->escape($spec), 'time');
         $this->assertSame($expect, $actual);
         
         // constructor-provided format
         $expect = '20040321';
-        $actual = $datetime($spec, 'special');
+        $actual = $datetime($this->escape($spec), 'special');
         $this->assertSame($expect, $actual);
         
-        $actual = $datetime($spec, 'd');
+        // custom format
+        $actual = $datetime($this->escape($spec), 'd');
         $expect = '21';
         $this->assertSame($expect, $actual);
     }

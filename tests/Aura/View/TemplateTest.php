@@ -43,9 +43,6 @@ class TemplateTest extends \PHPUnit_Framework_TestCase
         parent::tearDown();
     }
 
-    /**
-     * @todo Implement test__get().
-     */
     public function test__setGetIssetUnset()
     {
         $template = $this->newTemplate();
@@ -64,9 +61,6 @@ class TemplateTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('Hello Helper', $actual);
     }
     
-    /**
-     * @todo Implement testSetData().
-     */
     public function testAddSetAndGetData()
     {
         $template = $this->newTemplate();
@@ -95,9 +89,6 @@ class TemplateTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($data, $actual);
     }
     
-    /**
-     * @todo Implement testFind().
-     */
     public function testFind()
     {
         // prepare a set of directories and files

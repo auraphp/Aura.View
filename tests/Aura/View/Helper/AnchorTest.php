@@ -10,15 +10,24 @@ class AnchorTest extends AbstractHelperTest
     public function test__invoke()
     {
         $anchor = new Anchor;
-        $actual = $anchor('/path/to/script.php?foo=bar&zim=gir', '<this>');
-        $expect = '<a href="/path/to/script.php?foo=bar&zim=gir"><this></a>';
+        $actual = $anchor(
+            $this->escape('/path/to/script.php?foo=bar&zim=gir'),
+            $this->escape('<this>')
+        );
+        $expect = '<a href="/path/to/script.php?foo=bar&amp;zim=gir">&lt;this&gt;</a>';
         $this->assertSame($expect, $actual);
     }
     
     public function testWithAttr()
     {
         $anchor = new Anchor;
-        $actual = $anchor('/path/to/script.php', 'foo', ['bar' => 'baz', 'href' => 'skip-me']);
+        
+        $actual = $anchor(
+            $this->escape('/path/to/script.php'),
+            $this->escape('foo'),
+            $this->escape(['bar' => 'baz', 'href' => 'skip-me'])
+        );
+        
         $expect = '<a href="/path/to/script.php" bar="baz">foo</a>';
         $this->assertSame($expect, $actual);
     }

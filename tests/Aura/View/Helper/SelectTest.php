@@ -7,8 +7,7 @@ class SelectTest extends AbstractHelperTest
     {
         $select = new Select;
         
-        $actual = $select(
-            $this->escape([
+        $actual = $select($this->escape([
                 'name' => 'foo[bar]',
             ]),
             $this->escape([
@@ -54,7 +53,7 @@ class SelectTest extends AbstractHelperTest
                $this->escape(['disabled' => 'disabled'])
             )
             ->selected($this->escape(['value2', 'value3']))
-            ->fetch();
+            ->get();
         
         $expect = '<select name="foo[bar][]" multiple="multiple">' . PHP_EOL
                 . '    <optgroup label="Group A">' . PHP_EOL

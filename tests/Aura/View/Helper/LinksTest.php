@@ -28,23 +28,21 @@ class LinksTest extends AbstractHelperTest
             'href' => '/path/to/next?this&that',
         ];
         
-        $links->add($prev);
-        $links->add($next);
+        $links->add($this->escape($prev));
+        $links->add($this->escape($next));
         
         $actual = $links->get();
-        $expect = '    <link rel="prev" href="/path/to/prev?this&that" />' . PHP_EOL
-                . '    <link rel="next" href="/path/to/next?this&that" />' . PHP_EOL;
+        $expect = '<link rel="prev" href="/path/to/prev?this&amp;that" />' . PHP_EOL
+                . '<link rel="next" href="/path/to/next?this&amp;that" />' . PHP_EOL;
        
         $this->assertSame($expect, $actual);
     }
 
-    /**
-     * @todo Implement testSetIndent().
-     */
     public function testSetIndent()
     {
         $links = new Links;
         $links->setIndent('  ');
+        $links->setIndentLevel(1);
         
         $prev = [
             'rel' => 'prev',
@@ -56,12 +54,12 @@ class LinksTest extends AbstractHelperTest
             'href' => '/path/to/next?this&that',
         ];
         
-        $links->add($prev);
-        $links->add($next);
+        $links->add($this->escape($prev));
+        $links->add($this->escape($next));
         
         $actual = $links->get();
-        $expect = '  <link rel="prev" href="/path/to/prev?this&that" />' . PHP_EOL
-                . '  <link rel="next" href="/path/to/next?this&that" />' . PHP_EOL;
+        $expect = '  <link rel="prev" href="/path/to/prev?this&amp;that" />' . PHP_EOL
+                . '  <link rel="next" href="/path/to/next?this&amp;that" />' . PHP_EOL;
        
         $this->assertSame($expect, $actual);
     }

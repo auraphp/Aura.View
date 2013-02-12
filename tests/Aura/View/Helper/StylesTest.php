@@ -18,32 +18,31 @@ class StylesTest extends AbstractHelperTest
     {
         $styles = new Styles;
         
-        $styles->add('/css/middle.css');
-        $styles->add('/css/last.css', null, 150);
-        $styles->add('/css/first.css', null, 50);
-        $styles->addCond('ie6', '/css/ie6.css');
+        $styles->add($this->escape('/css/middle.css'));
+        $styles->add($this->escape('/css/last.css'), [], 150);
+        $styles->add($this->escape('/css/first.css'), [], 50);
+        $styles->addCond($this->escape('ie6'), $this->escape('/css/ie6.css'));
         
         $actual = $styles->get();
-        $expect = '    <link rel="stylesheet" href="/css/first.css" type="text/css" media="screen" />' . PHP_EOL
-                . '    <link rel="stylesheet" href="/css/middle.css" type="text/css" media="screen" />' . PHP_EOL
-                . '    <!--[if ie6]><link rel="stylesheet" href="/css/ie6.css" type="text/css" media="screen" /><![endif]-->' . PHP_EOL
-                . '    <link rel="stylesheet" href="/css/last.css" type="text/css" media="screen" />' . PHP_EOL;
+        $expect = '<link rel="stylesheet" href="/css/first.css" type="text/css" media="screen" />' . PHP_EOL
+                . '<link rel="stylesheet" href="/css/middle.css" type="text/css" media="screen" />' . PHP_EOL
+                . '<!--[if ie6]><link rel="stylesheet" href="/css/ie6.css" type="text/css" media="screen" /><![endif]-->' . PHP_EOL
+                . '<link rel="stylesheet" href="/css/last.css" type="text/css" media="screen" />' . PHP_EOL;
         
         $this->assertSame($expect, $actual);
     }
     
-    /**
-     * @todo Implement testSetIndent().
-     */
     public function testSetIndentAndAttr()
     {
         $styles = new Styles;
         
         $styles->setIndent('  ');
-        $styles->add('/css/middle.css', ['media' => 'print']);
-        $styles->add('/css/last.css', null, 150);
-        $styles->add('/css/first.css', null, 50);
-        $styles->addCond('ie6', '/css/ie6.css', ['media' => 'print']);
+        $styles->setIndentLevel(1);
+        
+        $styles->add($this->escape('/css/middle.css'), $this->escape(['media' => 'print']));
+        $styles->add($this->escape('/css/last.css'), [], 150);
+        $styles->add($this->escape('/css/first.css'), [], 50);
+        $styles->addCond($this->escape('ie6'), $this->escape('/css/ie6.css'), $this->escape(['media' => 'print']));
         $actual = $styles->get();
         
         $expect = '  <link rel="stylesheet" href="/css/first.css" type="text/css" media="screen" />' . PHP_EOL
