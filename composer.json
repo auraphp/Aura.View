@@ -15,10 +15,13 @@
         "php": ">=5.4.0",
         "aura/installer-default": "1.0.0"
     },
+    "suggest": {
+        "ext-iconv": "Install 'iconv' or 'mbstring' to help escape certain characters.",
+        "ext-mbstring":  "Install 'iconv' or 'mbstring' to help escape certain characters.",
+    },
     "autoload": {
         "psr-0": {
             "Aura\\View": "src/"
         }
     }
 }
-
