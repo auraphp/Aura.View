@@ -53,19 +53,14 @@ class Styles extends AbstractHelper
      * @return void
      * 
      */
-    public function add($href, $attr = [], $pos = 100)
+    public function add($href, array $attr = [], $pos = 100)
     {
         $base = [
             'rel'   => 'stylesheet',
             'href'  => $href,
             'type'  => 'text/css',
+            'media' => (isset($attr['media']) ? $attr['media'] : 'screen'),
         ];
-
-        if (! isset($attr['media'])) {
-            $base['media'] = 'screen';
-        } else {
-            $base['media'] = $attr['media'];
-        }
 
         unset($attr['rel']);
         unset($attr['href']);
@@ -93,19 +88,14 @@ class Styles extends AbstractHelper
      * @return void
      * 
      */
-    public function addCond($exp, $href, $attr = [], $pos = 100)
+    public function addCond($exp, $href, array $attr = [], $pos = 100)
     {
         $base = [
             'rel'   => 'stylesheet',
             'href'  => $href,
             'type'  => 'text/css',
+            'media' => (isset($attr['media']) ? $attr['media'] : 'screen'),
         ];
-
-        if (! isset($attr['media'])) {
-            $base['media'] = 'screen';
-        } else {
-            $base['media'] = $attr['media'];
-        }
 
         unset($attr['rel']);
         unset($attr['href']);
@@ -130,9 +120,10 @@ class Styles extends AbstractHelper
     public function get()
     {
         asort($this->styles);
-        $styles = array_keys($this->styles);
-        return $this->indent
-             . implode(PHP_EOL . $this->indent, $styles)
-             . PHP_EOL;
+        $html = '';
+        foreach (array_keys($this->styles) as $style) {
+            $html .= $this->indent(0, $style);
+        }
+        return $html;
     }
 }
