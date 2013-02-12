@@ -165,7 +165,7 @@ class Input extends AbstractHelper
             $this->attr['checked'] = 'checked';
         } else {
             unset($this->attr['checked']);
-            $this->attribs['checked'] = null;
+            $this->attr['checked'] = null;
         }
     }
     
