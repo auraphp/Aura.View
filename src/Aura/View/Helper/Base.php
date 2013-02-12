@@ -30,6 +30,6 @@ class Base extends AbstractHelper
      */
     public function __invoke($href)
     {
-        return $this->indent(1, $this->void('base', ['href' => $href]));
+        return $this->indent(0, $this->void('base', ['href' => $href]));
     }
 }
