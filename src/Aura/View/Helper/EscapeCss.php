@@ -3,31 +3,40 @@ namespace Aura\View\Helper;
 
 class EscapeCss extends Escape
 {
-    protected function escape($text)
+    /**
+     * 
+     * A regular expression character class considered "safe" by the escaper.
+     * 
+     * @var string
+     * 
+     */
+    protected $safe = 'a-z0-9';
+    
+    /**
+     * 
+     * Callback method to replace an unsafe character with an escaped one.
+     * 
+     * @param array $matches Matches from preg_replace_callback().
+     * 
+     * @return string An escaped character.
+     * 
+     */
+    protected function replace(array $matches)
     {
-        // is $text composed only of allowed characters?
-        $allowed = preg_match('/^[a-z0-9]*$/iDSu', $text);
-        if ($allowed) {
-            return $text;
-        }
-
-        // replace disallowed characters
-        return preg_replace_callback(
-            '/[^a-z0-9]/iDSu',
-            [$this, 'replace'],
-            $text
-        );
-    }
-
-    protected function replace($matches)
-    {
+        // get the character
         $chr = $matches[0];
+        
+        // is it UTF-8?
         if (strlen($chr) == 1) {
+            // yes
             $ord = ord($chr);
         } else {
-            // convert UTF-8 to UTF-16BE
-            $ord = hexdec(bin2hex($this->convert($chr)));
+            // no
+            $chr = $this->convert($chr);
+            $ord = hexdec(bin2hex($chr));
         }
+        
+        // done
         return sprintf('\\%X ', $ord);
     }
 }

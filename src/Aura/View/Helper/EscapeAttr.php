@@ -3,37 +3,48 @@ namespace Aura\View\Helper;
 
 class EscapeAttr extends Escape
 {
-    protected $entity_map = array(
+    /**
+     * 
+     * A regular expression character class considered "safe" by the escaper.
+     * 
+     * @var string
+     * 
+     */
+    protected $safe = 'a-z0-9,._-';
+    
+    /**
+     * 
+     * HTML entities mapped from ord() values.
+     * 
+     * @var array
+     * 
+     */
+    protected $entity = array(
         34 => '&quot;',
         38 => '&amp;',
         60 => '&lt;',
         62 => '&gt;',
     );
 
-    protected function escape($text)
+    /**
+     * 
+     * Callback method to replace an unsafe character with an escaped one.
+     * 
+     * @param array $matches Matches from preg_replace_callback().
+     * 
+     * @return string An escaped character.
+     * 
+     */
+    protected function replace(array $matches)
     {
-        // is $text composed only of allowed characters?
-        $allowed = preg_match('/^[a-z0-9\,\.\_\-]*$/iDSu', $text);
-        if ($allowed) {
-            return $text;
-        }
-        
-        // replace disallowed characters
-        return preg_replace_callback(
-            '/[^a-z0-9\,\.\_\-]/iDSu',
-            [$this, 'replace'],
-            $text
-        );
-    }
-
-    protected function replace($matches)
-    {
+        // get the character and its ord() value
         $chr = $matches[0];
         $ord = ord($chr);
 
         // handle chars undefined in HTML
         $undefined = ($ord <= 0x1f && $chr != "\t" && $chr != "\n" && $chr != "\r")
                   || ($ord >= 0x7f && $ord <= 0x9f);
+        
         if ($undefined) {
             // use the Unicode replacement char
             return '&#xFFFD;';
@@ -47,12 +58,12 @@ class EscapeAttr extends Escape
         // retain the ord value
         $ord = hexdec(bin2hex($chr));
 
-        // handle mapped entities
-        if (isset($this->entity_map[$ord])) {
-            return $this->entity_map[$ord];
+        // is this a mapped entity?
+        if (isset($this->entity[$ord])) {
+            return $this->entity[$ord];
         }
 
-        // handle upper hex entities for chars with no named entity
+        // is this an upper-range hex entity?
         if ($ord > 255) {
             return sprintf('&#x%04X;', $ord);
         }
