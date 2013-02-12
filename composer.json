@@ -17,7 +17,7 @@
     },
     "suggest": {
         "ext-iconv": "Install 'iconv' or 'mbstring' to help escape certain characters.",
-        "ext-mbstring":  "Install 'iconv' or 'mbstring' to help escape certain characters.",
+        "ext-mbstring":  "Install 'iconv' or 'mbstring' to help escape certain characters."
     },
     "autoload": {
         "psr-0": {
