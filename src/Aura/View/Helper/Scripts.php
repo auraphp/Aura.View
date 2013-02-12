@@ -106,7 +106,7 @@ class Scripts extends AbstractHelper
         ksort($this->scripts);
         foreach ($this->scripts as $list) {
             foreach ($list as $script) {
-                $html .= $this->indent . $script . PHP_EOL;
+                $html .= $this->indent(0, $script);
             }
         }
         return $html;
