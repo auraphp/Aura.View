@@ -1,9 +1,9 @@
 <?php
 namespace Aura\View\Helper;
 
-class EscapeAttrTest extends EscapeTest
+class EscapeAttribsTest extends EscapeTest
 {
-    protected $class = 'Aura\View\Helper\EscapeAttr';
+    protected $class = 'Aura\View\Helper\EscapeAttribs';
     
     protected $immune = [',', '.', '-', '_'];
 

@@ -46,29 +46,29 @@ class Styles extends AbstractHelper
      * 
      * @param string $href The source href for the stylesheet.
      * 
-     * @param array $attr Additional attributes for the <link> tag.
+     * @param array $attribs Additional attributes for the <link> tag.
      * 
      * @param int $pos The stylesheet position in the stack.
      * 
      * @return void
      * 
      */
-    public function add($href, array $attr = [], $pos = 100)
+    public function add($href, array $attribs = [], $pos = 100)
     {
         $base = [
             'rel'   => 'stylesheet',
             'href'  => $href,
             'type'  => 'text/css',
-            'media' => (isset($attr['media']) ? $attr['media'] : 'screen'),
+            'media' => (isset($attribs['media']) ? $attribs['media'] : 'screen'),
         ];
 
-        unset($attr['rel']);
-        unset($attr['href']);
-        unset($attr['type']);
-        unset($attr['media']);
+        unset($attribs['rel']);
+        unset($attribs['href']);
+        unset($attribs['type']);
+        unset($attribs['media']);
 
-        $attr = array_merge($base, (array) $attr);
-        $tag = $this->void('link', $attr);
+        $attribs = array_merge($base, (array) $attribs);
+        $tag = $this->void('link', $attribs);
         $this->styles[$tag] = $pos;
     }
 
@@ -81,30 +81,30 @@ class Styles extends AbstractHelper
      * 
      * @param string $href The source href for the stylesheet.
      * 
-     * @param array $attr Additional attributes for the <link> tag.
+     * @param array $attribs Additional attributes for the <link> tag.
      * 
      * @param string $pos The stylesheet position in the stack.
      * 
      * @return void
      * 
      */
-    public function addCond($exp, $href, array $attr = [], $pos = 100)
+    public function addCond($exp, $href, array $attribs = [], $pos = 100)
     {
         $base = [
             'rel'   => 'stylesheet',
             'href'  => $href,
             'type'  => 'text/css',
-            'media' => (isset($attr['media']) ? $attr['media'] : 'screen'),
+            'media' => (isset($attribs['media']) ? $attribs['media'] : 'screen'),
         ];
 
-        unset($attr['rel']);
-        unset($attr['href']);
-        unset($attr['type']);
-        unset($attr['media']);
+        unset($attribs['rel']);
+        unset($attribs['href']);
+        unset($attribs['type']);
+        unset($attribs['media']);
 
-        $attr = array_merge($base, (array) $attr);
+        $attribs = array_merge($base, (array) $attribs);
         $tag = "<!--[if $exp]>"
-             . $this->void('link', $attr)
+             . $this->void('link', $attribs)
              . "<![endif]-->";
         $this->styles[$tag] = $pos;
     }

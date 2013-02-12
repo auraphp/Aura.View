@@ -36,7 +36,7 @@ $di->params['Aura\View\Helper\Radios'] = [
  */
 $di->params['Aura\View\HelperLocator']['registry'] = [
     'anchor'      => $di->lazyNew('Aura\View\Helper\Anchor'),
-    'attr'     => $di->lazyNew('Aura\View\Helper\Attr'),
+    'attribs'     => $di->lazyNew('Aura\View\Helper\Attribs'),
     'base'        => $di->lazyNew('Aura\View\Helper\Base'),
     'datetime'    => $di->lazyNew('Aura\View\Helper\Datetime'),
     'escape'      => $di->lazyNew('Aura\View\Helper\Escape'),

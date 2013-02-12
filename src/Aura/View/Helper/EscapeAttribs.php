@@ -1,7 +1,7 @@
 <?php
 namespace Aura\View\Helper;
 
-class EscapeAttr extends Escape
+class EscapeAttribs extends Escape
 {
     /**
      * 

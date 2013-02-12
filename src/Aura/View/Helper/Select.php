@@ -35,7 +35,7 @@ class Select extends AbstractHelper
      * @param array
      * 
      */
-    protected $attr = [];
+    protected $attribs = [];
     
     /**
      * 
@@ -77,19 +77,19 @@ class Select extends AbstractHelper
      * 
      * Returns this object, or a fully-built <select> tag with options.
      * 
-     * @param array $attr Attributes for the select tag.
+     * @param array $attribs Attributes for the select tag.
      * 
-     * @param array $opts Options for the select tag.
+     * @param array $options Options for the select tag.
      * 
      * @param mixed $selected The value of the currently selected option(s).
      * 
-     * @return string|self The select tag HTML if $opts are passed, or this
+     * @return string|self The select tag HTML if $options are passed, or this
      * object if not.
      * 
      */
     public function __invoke(
-        array $attr,
-        array $opts = null,
+        array $attribs,
+        array $options = null,
         $selected = null)
     {
         // reset the object
@@ -97,13 +97,13 @@ class Select extends AbstractHelper
         $this->optgroup = false;
         $this->selected = [];
         $this->html     = '';
-        $this->attr     = $attr;
+        $this->attribs     = $attribs;
         $this->optlevel = 1;
         
         // do we have options?
-        if ($opts !== null) {
+        if ($options !== null) {
             // yes, generate and return the HTML
-            $this->options($opts);
+            $this->options($options);
             $this->selected($selected);
             return $this->get();
         } else {
@@ -120,14 +120,14 @@ class Select extends AbstractHelper
      * 
      * @param string $label The option label.
      * 
-     * @param array $attr Attributes for the option.
+     * @param array $attribs Attributes for the option.
      * 
      * @return self
      * 
      */
-    public function option($value, $label, array $attr = [])
+    public function option($value, $label, array $attribs = [])
     {
-        $this->stack[] = ['buildOption', $value, $label, $attr];
+        $this->stack[] = ['buildOption', $value, $label, $attribs];
         return $this;
     }
     
@@ -135,18 +135,18 @@ class Select extends AbstractHelper
      * 
      * Adds multiple option values and labels to the stack.
      * 
-     * @param array $opts An array where the keys are the option values and
+     * @param array $options An array where the keys are the option values and
      * the values are the option labels.
      * 
-     * @param array $attr Attributes to be applied to every option.
+     * @param array $attribs Attributes to be applied to every option.
      * 
      * @return self
      * 
      */
-    public function options(array $opts, array $attr = [])
+    public function options(array $options, array $attribs = [])
     {
-        foreach ($opts as $value => $label) {
-            $this->option($value, $label, $attr);
+        foreach ($options as $value => $label) {
+            $this->option($value, $label, $attribs);
         }
         return $this;
     }
@@ -157,17 +157,17 @@ class Select extends AbstractHelper
      * 
      * @param string $label The optgroup label.
      * 
-     * @param array $attr Attributes for the optgroup.
+     * @param array $attribs Attributes for the optgroup.
      * 
      * @return self
      * 
      */
-    public function optgroup($label, array $attr = [])
+    public function optgroup($label, array $attribs = [])
     {
         if ($this->optgroup) {
             $this->stack[] = ['endOptgroup'];
         }
-        $this->stack[] = ['beginOptgroup', $label, $attr];
+        $this->stack[] = ['beginOptgroup', $label, $attribs];
         $this->optgroup = true;
         return $this;
     }
@@ -197,17 +197,17 @@ class Select extends AbstractHelper
     public function get()
     {
         // if this is a multiple select, the name needs to end in "[]"
-        $append_brackets = isset($this->attr['multiple'])
-                        && $this->attr['multiple']
-                        && isset($this->attr['name'])
-                        && substr($this->attr['name'], -2) != '[]';
+        $append_brackets = isset($this->attribs['multiple'])
+                        && $this->attribs['multiple']
+                        && isset($this->attribs['name'])
+                        && substr($this->attribs['name'], -2) != '[]';
         if ($append_brackets) {
-            $this->attr['name'] .= '[]';
+            $this->attribs['name'] .= '[]';
         }
         
         // build basic html with attributes
-        $attr = $this->attr($this->attr);
-        $this->html = $this->indent(0, "<select {$attr}>");
+        $attribs = $this->attribs($this->attribs);
+        $this->html = $this->indent(0, "<select {$attribs}>");
         
         // process the option stack
         foreach ($this->stack as $info) {
@@ -236,20 +236,20 @@ class Select extends AbstractHelper
      */
     protected function buildOption(array $info)
     {
-        list($value, $label, $attr) = $info;
+        list($value, $label, $attribs) = $info;
         
-        // set the option value into the attr
-        $attr['value'] = $value;
+        // set the option value into the attribs
+        $attribs['value'] = $value;
         
         // is the value selected?
-        unset($attr['selected']);
+        unset($attribs['selected']);
         if (in_array($value, $this->selected)) {
-            $attr['selected'] = 'selected';
+            $attribs['selected'] = 'selected';
         }
         
         // build attributes and return option tag with label text
-        $attr = $this->attr($attr);
-        $this->html .= $this->indent($this->optlevel, "<option {$attr}>$label</option>");
+        $attribs = $this->attribs($attribs);
+        $this->html .= $this->indent($this->optlevel, "<option {$attribs}>$label</option>");
     }
     
     /**
@@ -263,10 +263,10 @@ class Select extends AbstractHelper
      */
     protected function beginOptgroup($info)
     {
-        list($label, $attr) = $info;
-        $attr['label'] = $label;
-        $attr = $this->attr($attr);
-        $this->html .= $this->indent(1, "<optgroup {$attr}>");
+        list($label, $attribs) = $info;
+        $attribs['label'] = $label;
+        $attribs = $this->attribs($attribs);
+        $this->html .= $this->indent(1, "<optgroup {$attribs}>");
         $this->optlevel += 1;
     }
     

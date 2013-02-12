@@ -169,7 +169,7 @@ part of Aura View include:
 
 - `$this->anchor($href, $text)` returns an `<a href="$href">$text</a>` tag
 
-- `$this->attr($list)` returns a space-separated attribute list from a
+- `$this->attribs($list)` returns a space-separated attribute list from a
   `$list` key-value pair
 
 - `$this->base($href)` returns a `<base href="$href" />` tag
@@ -178,12 +178,12 @@ part of Aura View include:
 
 - `$this->image($src)` returns an `<img src="$src" />` tag.
 
-- `$this->input($attr, $value, $label, $label_attr)` 
+- `$this->input($attribs, $value, $label, $label_attribs)` 
 returns an `<input>` tag, optionally wrapped in a `<label>` tag
     
-    In general `$this->input(['type' => $type], $value, $label, $label_attr)` 
+    In general `$this->input(['type' => $type], $value, $label, $label_attribs)` 
     
-    `$value`, `$label` and `$label_attr` are optional.
+    `$value`, `$label` and `$label_attribs` are optional.
     
     Supported types:
     
@@ -252,7 +252,7 @@ returns an `<input>` tag, optionally wrapped in a `<label>` tag
     - `$this->styles()->get()` returns all the added tags from the helper.
 
 
-- `$this->textarea($attr, $html)` Returns a `<textarea>`. `$html` is optional.
+- `$this->textarea($attribs, $html)` Returns a `<textarea>`. `$html` is optional.
 
 - `$this->title()` provides an object with methods that manipulate the
   `<title>...</title>` tag.

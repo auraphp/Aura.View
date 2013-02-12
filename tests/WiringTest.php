@@ -24,7 +24,7 @@ class WiringTest extends \PHPUnit_Framework_TestCase
     {
         $helper = $this->assertNewInstance('Aura\View\HelperLocator');
         $this->assertInstanceOf('Aura\View\Helper\Anchor',   $helper->get('anchor'));
-        $this->assertInstanceOf('Aura\View\Helper\Attr',  $helper->get('attr'));
+        $this->assertInstanceOf('Aura\View\Helper\Attribs',  $helper->get('attribs'));
         $this->assertInstanceOf('Aura\View\Helper\Base',     $helper->get('base'));
         $this->assertInstanceOf('Aura\View\Helper\Datetime', $helper->get('datetime'));
         $this->assertInstanceOf('Aura\View\Helper\Escape',   $helper->get('escape'));

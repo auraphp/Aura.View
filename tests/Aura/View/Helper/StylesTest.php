@@ -32,7 +32,7 @@ class StylesTest extends AbstractHelperTest
         $this->assertSame($expect, $actual);
     }
     
-    public function testSetIndentAndAttr()
+    public function testSetIndentAndAttribs()
     {
         $styles = new Styles;
         

@@ -17,13 +17,13 @@ namespace Aura\View\Helper;
  * @package Aura.View
  * 
  */
-class Attr extends AbstractHelper
+class Attribs extends AbstractHelper
 {
     /**
      * 
      * Converts an associative array to an attribute string.
      * 
-     * @param array $attr From this array, each key-value pair is 
+     * @param array $attribs From this array, each key-value pair is 
      * converted to an attribute name and value.
      * 
      * @param array $skip Skip attributes listed in this array.
@@ -31,8 +31,8 @@ class Attr extends AbstractHelper
      * @return string The string of attributes.
      * 
      */
-    public function __invoke(array $attr, array $skip = [])
+    public function __invoke(array $attribs, array $skip = [])
     {
-        return $this->attr($attr, $skip);
+        return $this->attribs($attribs, $skip);
     }
 }

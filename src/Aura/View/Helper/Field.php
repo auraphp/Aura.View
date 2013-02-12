@@ -80,9 +80,9 @@ class Field extends AbstractHelper
      * 
      * 'name' (string): The field name.
      * 
-     * 'attr' (array): An array of attributes.
+     * 'attribs' (array): An array of attributes.
      * 
-     * 'opts' (array): An array of opts (typically for radios and
+     * 'options' (array): An array of options (typically for radios and
      * select).
      * 
      * 'value' (mixed): The current value for the field.
@@ -92,24 +92,24 @@ class Field extends AbstractHelper
     {
         $type  = isset($spec['type'])  ? $spec['type']            : null;
         $name  = isset($spec['name'])  ? $spec['name']            : null;
-        $attr  = isset($spec['attr'])  ? (array) $spec['attr'] : [];
-        $opts  = isset($spec['opts'])  ? (array) $spec['opts'] : [];
+        $attribs  = isset($spec['attribs'])  ? (array) $spec['attribs'] : [];
+        $options  = isset($spec['options'])  ? (array) $spec['options'] : [];
         $value = isset($spec['value']) ? $spec['value']           : null;
         
         switch (strtolower($type)) {
             case 'checkbox':
-                return $this->checkbox($name, $attr, $opts, $value);
+                return $this->checkbox($name, $attribs, $options, $value);
                 break;
             case 'radios':
-                return $this->radios($name, $attr, $opts, $value);
+                return $this->radios($name, $attribs, $options, $value);
                 break;
             case 'select':
-                return $this->select($name, $attr, $opts, $value);
+                return $this->select($name, $attribs, $options, $value);
                 break;
             case 'textarea':
-                return $this->textarea($name, $attr, $value);
+                return $this->textarea($name, $attribs, $value);
             default:
-                return $this->input($type, $name, $attr, $value);
+                return $this->input($type, $name, $attribs, $value);
                 break;
         }
     }
@@ -120,30 +120,30 @@ class Field extends AbstractHelper
      * 
      * @param string $name
      * 
-     * @param array $attr
+     * @param array $attribs
      * 
-     * @param array $opts
+     * @param array $options
      * 
      * @param string $value
      * 
      * @return string
      * 
      */
-    protected function checkbox($name, array $attr, array $opts, $value)
+    protected function checkbox($name, array $attribs, array $options, $value)
     {
         // get the value and label for the checkbox from the first option
-        reset($opts);
-        $checked_value = key($opts);
-        $checked_label = current($opts);
+        reset($options);
+        $checked_value = key($options);
+        $checked_label = current($options);
         
         // set attributes
-        $attr['type'] = 'checkbox';
-        $attr['name'] = $name;
-        $attr['value'] = $checked_value;
+        $attribs['type'] = 'checkbox';
+        $attribs['name'] = $name;
+        $attribs['value'] = $checked_value;
         
         // return html
         $input = $this->input;
-        return $input($attr, $value, $checked_label);
+        return $input($attribs, $value, $checked_label);
     }
     
     /**
@@ -154,19 +154,19 @@ class Field extends AbstractHelper
      * 
      * @param string $name
      * 
-     * @param array $attr
+     * @param array $attribs
      * 
      * @param string $value
      * 
      * @return string
      * 
      */
-    protected function input($type, $name, array $attr, $value)
+    protected function input($type, $name, array $attribs, $value)
     {
-        $attr['type'] = $type;
-        $attr['name'] = $name;
+        $attribs['type'] = $type;
+        $attribs['name'] = $name;
         $input = $this->input;
-        return $input($attr, $value);
+        return $input($attribs, $value);
     }
     
     /**
@@ -175,21 +175,21 @@ class Field extends AbstractHelper
      * 
      * @param string $name
      * 
-     * @param array $attr
+     * @param array $attribs
      * 
-     * @param array $opts
+     * @param array $options
      * 
      * @param bool $checked
      * 
      * @return string
      * 
      */
-    protected function radios($name, array $attr, array $opts, $checked)
+    protected function radios($name, array $attribs, array $options, $checked)
     {
-        $attr['type'] = 'radio';
-        $attr['name'] = $name;
+        $attribs['type'] = 'radio';
+        $attribs['name'] = $name;
         $radios = $this->radios;
-        return $radios($attr, $opts, $checked);
+        return $radios($attribs, $options, $checked);
     }
     
     /**
@@ -198,24 +198,24 @@ class Field extends AbstractHelper
      * 
      * @param string $name
      * 
-     * @param array $attr
+     * @param array $attribs
      * 
-     * @param array $opts
+     * @param array $options
      * 
      * @param bool $selected
      * 
      * @return string
      * 
      */
-    protected function select($name, array $attr, array $opts, $selected)
+    protected function select($name, array $attribs, array $options, $selected)
     {
         // set the overall attributes
-        $attr['name'] = $name;
+        $attribs['name'] = $name;
         $select = $this->select;
-        $select($attr);
+        $select($attribs);
         
         // set the options and optgroups
-        foreach ($opts as $key => $val) {
+        foreach ($options as $key => $val) {
             
             if (is_array($val)) {
                 // the key is an optgroup label
@@ -243,17 +243,17 @@ class Field extends AbstractHelper
      * 
      * @param string $name
      * 
-     * @param array $attr
+     * @param array $attribs
      * 
      * @param string $value
      * 
      * @return string
      * 
      */ 
-    protected function textarea($name, array $attr, $value)
+    protected function textarea($name, array $attribs, $value)
     {
-        $attr['name'] = $name;
+        $attribs['name'] = $name;
         $textarea = $this->textarea;
-        return $textarea($attr, $value);
+        return $textarea($attribs, $value);
     }
 }

@@ -5,8 +5,8 @@ class RadiosTest extends AbstractHelperTest
 {
     public function test__invoke()
     {
-        $attr = ['type' => '', 'name' => 'field', 'value' => ''];
-        $opts = [
+        $attribs = ['type' => '', 'name' => 'field', 'value' => ''];
+        $options = [
             'foo' => 'bar',
             'baz' => 'dib',
             'zim' => 'gir',
@@ -15,8 +15,8 @@ class RadiosTest extends AbstractHelperTest
         $radios = new Radios(new Input);
         
         $actual = $radios(
-            $this->escape($attr),
-            $this->escape($opts),
+            $this->escape($attribs),
+            $this->escape($options),
             $this->escape('baz')
         );
         

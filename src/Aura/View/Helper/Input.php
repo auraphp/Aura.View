@@ -52,7 +52,7 @@ class Input extends AbstractHelper
      * @var array
      * 
      */
-    protected $attr = [];
+    protected $attribs = [];
     
     /**
      * 
@@ -81,7 +81,7 @@ class Input extends AbstractHelper
      * @var array
      * 
      */
-    protected $label_attr = [];
+    protected $label_attribs = [];
     
     /**
      * 
@@ -96,7 +96,7 @@ class Input extends AbstractHelper
      * 
      * Returns an `<input>` tag, optionally wrapped in a `<label>` tag.
      * 
-     * @param array $attr Attributes for the input tag.
+     * @param array $attribs Attributes for the input tag.
      * 
      * @param mixed $value The field value for the input element. This may 
      * overwrite the 'value' attribute, or may be used to see if the 'checked'
@@ -106,17 +106,17 @@ class Input extends AbstractHelper
      * 
      */
     public function __invoke(
-        array $attr,
+        array $attribs,
         $value = null,
         $label = null,
-        array $label_attr = []
+        array $label_attribs = []
     ) {
         // set properties
         $this->html          = '';
-        $this->attr          = $attr;
+        $this->attribs          = $attribs;
         $this->value         = $value;
         $this->label         = $label;
-        $this->label_attr    = $label_attr;
+        $this->label_attribs    = $label_attribs;
         
         // build the html and return it
         $this->buildInput();
@@ -127,7 +127,7 @@ class Input extends AbstractHelper
     protected function buildInput()
     {
         // determine a modifier method based on the input type
-        $method = strtolower($this->attr['type']);
+        $method = strtolower($this->attribs['type']);
         
         // remove dashes
         $method = str_replace('-', '', $method);
@@ -138,7 +138,7 @@ class Input extends AbstractHelper
         }
         
         // get attributes and build the input tag html
-        $this->html = $this->void('input', $this->attr);
+        $this->html = $this->void('input', $this->attribs);
     }
     
     protected function buildLabel()
@@ -147,13 +147,13 @@ class Input extends AbstractHelper
             return;
         }
         
-        if (isset($this->attr['id'])) {
-            $this->label_attr['for'] = $this->attr['id'];
+        if (isset($this->attribs['id'])) {
+            $this->label_attribs['for'] = $this->attribs['id'];
         }
         
-        $attr = $this->attr($this->label_attr);
-        if ($attr) {
-            $this->html = "<label {$attr}>{$this->html} {$this->label}</label>";
+        $attribs = $this->attribs($this->label_attribs);
+        if ($attribs) {
+            $this->html = "<label {$attribs}>{$this->html} {$this->label}</label>";
         } else {
             $this->html = "<label>{$this->html} {$this->label}</label>";
         }
@@ -161,11 +161,11 @@ class Input extends AbstractHelper
     
     protected function setCheckedAttrib()
     {
-        if ($this->value == $this->attr['value']) {
-            $this->attr['checked'] = 'checked';
+        if ($this->value == $this->attribs['value']) {
+            $this->attribs['checked'] = 'checked';
         } else {
-            unset($this->attr['checked']);
-            $this->attr['checked'] = null;
+            unset($this->attribs['checked']);
+            $this->attribs['checked'] = null;
         }
     }
     
@@ -173,7 +173,7 @@ class Input extends AbstractHelper
     {
         // only overwrite if not null
         if ($this->value !== null) {
-            $this->attr['value'] = (string) $this->value;
+            $this->attribs['value'] = (string) $this->value;
         }
     }
 

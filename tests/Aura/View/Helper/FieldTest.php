@@ -18,12 +18,12 @@ class FieldTest extends AbstractHelperTest
         $spec = [
             'type' => 'checkbox',
             'name' => 'field_name',
-            'attr' => [
+            'attribs' => [
                 'id' => null,
                 'type' => null,
                 'name' => null,
             ],
-            'opts' => [
+            'options' => [
                 'foo' => 'DOOM'
             ],
             'value' => 'foo',
@@ -40,12 +40,12 @@ class FieldTest extends AbstractHelperTest
         $spec = [
             'type' => 'text',
             'name' => 'field_name',
-            'attr' => [
+            'attribs' => [
                 'id' => null,
                 'type' => null,
                 'name' => null,
             ],
-            'opts' => [],
+            'options' => [],
             'value' => 'foo',
         ];
         
@@ -61,13 +61,13 @@ class FieldTest extends AbstractHelperTest
             'type' => 'radios',
             'name' => 'field_name',
             'label' => null,
-            'attr' => [
+            'attribs' => [
                 'id' => null,
                 'type' => null,
                 'name' => null,
                 'foo' => 'bar',
             ],
-            'opts' => ['opt1' => 'Label 1', 'opt2' => 'Label 2', 'opt3' => 'Label 3'],
+            'options' => ['opt1' => 'Label 1', 'opt2' => 'Label 2', 'opt3' => 'Label 3'],
             'value' => 'opt2',
         ];
         
@@ -85,13 +85,13 @@ class FieldTest extends AbstractHelperTest
             'type' => 'select',
             'name' => 'field_name',
             'label' => null,
-            'attr' => [
+            'attribs' => [
                 'id' => null,
                 'type' => null,
                 'name' => null,
                 'foo' => 'bar',
             ],
-            'opts' => [
+            'options' => [
                 'opt1' => 'Label 1',
                 'opt2' => 'Label 2',
                 'opt3' => 'Label 3',
@@ -137,13 +137,13 @@ class FieldTest extends AbstractHelperTest
             'type' => 'textarea',
             'name' => 'field_name',
             'label' => null,
-            'attr' => [
+            'attribs' => [
                 'id' => null,
                 'type' => null,
                 'name' => null,
                 'foo' => 'bar',
             ],
-            'opts' => ['baz' => 'dib'],
+            'options' => ['baz' => 'dib'],
             'value' => 'Text in the textarea.',
         ];
         

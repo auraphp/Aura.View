@@ -18,7 +18,7 @@ class AnchorTest extends AbstractHelperTest
         $this->assertSame($expect, $actual);
     }
     
-    public function testWithAttr()
+    public function testWithAttribs()
     {
         $anchor = new Anchor;
         

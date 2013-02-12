@@ -19,15 +19,15 @@ namespace Aura\View\Helper;
  */
 class Ul extends AbstractHelper
 {
-    protected $attr = [];
+    protected $attribs = [];
     
     protected $stack = [];
     
     protected $html = '';
     
-    public function __invoke(array $attr = [])
+    public function __invoke(array $attribs = [])
     {
-        $this->attr = $attr;
+        $this->attribs = $attribs;
         $this->stack   = [];
         $this->html    = '';
         return $this;
@@ -38,16 +38,16 @@ class Ul extends AbstractHelper
         return 'ul';
     }
     
-    public function item($html, array $attr = [])
+    public function item($html, array $attribs = [])
     {
-        $this->stack[] = [$html, $attr];
+        $this->stack[] = [$html, $attribs];
         return $this;
     }
     
-    public function items(array $items, array $attr = [])
+    public function items(array $items, array $attribs = [])
     {
         foreach ($items as $html) {
-            $this->item($html, $attr);
+            $this->item($html, $attribs);
         }
         return $this;
     }
@@ -61,9 +61,9 @@ class Ul extends AbstractHelper
         }
         
         $tag = $this->getTag();
-        $attr = $this->attr($this->attr);
-        if ($attr) {
-            $this->html = $this->indent(0, "<{$tag} {$attr}>");
+        $attribs = $this->attribs($this->attribs);
+        if ($attribs) {
+            $this->html = $this->indent(0, "<{$tag} {$attribs}>");
         } else {
             $this->html = $this->indent(0, "<{$tag}>");
         }
@@ -78,10 +78,10 @@ class Ul extends AbstractHelper
     
     protected function buildItem($item)
     {
-        list($html, $attr) = $item;
-        $attr = $this->attr($attr);
-        if ($attr) {
-            $this->html .= $this->indent(1, "<li {$attr}>$html</li>");
+        list($html, $attribs) = $item;
+        $attribs = $this->attribs($attribs);
+        if ($attribs) {
+            $this->html .= $this->indent(1, "<li {$attribs}>$html</li>");
         } else {
             $this->html .= $this->indent(1, "<li>$html</li>");
         }
