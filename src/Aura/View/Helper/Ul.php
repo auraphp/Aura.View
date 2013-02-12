@@ -52,7 +52,7 @@ class Ul extends AbstractHelper
         return $this;
     }
     
-    public function fetch()
+    public function get()
     {
         // if there is no stack of items, **do not** return an empty
         // <ul></ul> tag set.
