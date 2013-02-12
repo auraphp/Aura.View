@@ -91,6 +91,6 @@ class Title extends AbstractHelper
      */
     public function get()
     {
-        return $this->indent(1, "<title>{$this->title}</title>");
+        return $this->indent(0, "<title>{$this->title}</title>");
     }
 }
