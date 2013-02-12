@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/src/Aura/View/AbstractTemplate.php';
 require_once __DIR__ . '/src/Aura/View/Exception.php';
+require_once __DIR__ . '/src/Aura/View/Exception/ExtensionNotLoaded.php';
 require_once __DIR__ . '/src/Aura/View/Exception/TemplateNotFound.php';
 require_once __DIR__ . '/src/Aura/View/Exception/HelperNotMapped.php';
 require_once __DIR__ . '/src/Aura/View/FormatTypes.php';
