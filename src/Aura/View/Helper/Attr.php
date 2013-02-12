@@ -31,7 +31,7 @@ class Attr extends AbstractHelper
      * @return string The string of attributes.
      * 
      */
-    public function __invoke($attr, array $skip = [])
+    public function __invoke(array $attr, array $skip = [])
     {
         return $this->attr($attr, $skip);
     }
