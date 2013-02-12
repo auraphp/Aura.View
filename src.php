@@ -17,6 +17,7 @@ require_once __DIR__ . '/src/Aura/View/Helper/Escape.php';
 require_once __DIR__ . '/src/Aura/View/Helper/EscapeAttr.php';
 require_once __DIR__ . '/src/Aura/View/Helper/EscapeCss.php';
 require_once __DIR__ . '/src/Aura/View/Helper/EscapeJs.php';
+require_once __DIR__ . '/src/Aura/View/Helper/Field.php';
 require_once __DIR__ . '/src/Aura/View/Helper/Image.php';
 require_once __DIR__ . '/src/Aura/View/Helper/Input.php';
 require_once __DIR__ . '/src/Aura/View/Helper/Links.php';

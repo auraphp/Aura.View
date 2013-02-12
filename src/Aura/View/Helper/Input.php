@@ -113,10 +113,10 @@ class Input extends AbstractHelper
     ) {
         // set properties
         $this->html          = '';
-        $this->attr       = $attr;
+        $this->attr          = $attr;
         $this->value         = $value;
         $this->label         = $label;
-        $this->label_attr = $label_attr;
+        $this->label_attr    = $label_attr;
         
         // build the html and return it
         $this->buildInput();
@@ -165,6 +165,7 @@ class Input extends AbstractHelper
             $this->attr['checked'] = 'checked';
         } else {
             unset($this->attr['checked']);
+            $this->attribs['checked'] = null;
         }
     }
     

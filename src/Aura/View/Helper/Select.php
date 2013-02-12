@@ -29,13 +29,17 @@ class Select extends AbstractHelper
     
     protected $html = '';
     
+    protected $optlevel = 1;
+    
     public function __invoke($attr, $options = [], $selected = null)
+    
     {
         $this->stack    = [];
         $this->optgroup = false;
         $this->selected = [];
         $this->html     = '';
-        $this->attr  = $attr;
+        $this->attr     = $attr;
+        $this->optlevel = 1;
         
         if ($options) {
             $this->options($options);
@@ -72,13 +76,33 @@ class Select extends AbstractHelper
     
     public function selected($selected)
     {
-        $this->selected = (array) $selected;
+        $trav = is_array($selected) || $selected instanceof \Traversable;
+        if ($trav) {
+            $this->selected = [];
+            foreach ($selected as $key => $val) {
+                $this->selected[$key] = $val;
+            }
+        } else {
+            $this->selected = (array) $selected;
+        }
+
         return $this;
     }
     
     public function fetch()
     {
+        $append_brackets = isset($this->attr['multiple'])
+                        && $this->attr['multiple']
+                        && isset($this->attr['name'])
+                        && substr($this->attr['name'], -2) != '[]';
+        
+        // if this is a multiple select, the name needs to end in "[]"
+        if ($append_brackets) {
+            $this->attr['name'] .= '[]';
+        }
+        
         $attr = $this->attr($this->attr);
+
         $this->html = $this->indent(0, "<select {$attr}>");
         
         foreach ($this->stack as $info) {
@@ -109,8 +133,7 @@ class Select extends AbstractHelper
         
         // build attributes and return option tag with label text
         $attr = $this->attr($attr);
-        $level = ($this->optgroup) ? 2 : 1;
-        $this->html .= $this->indent($level, "<option {$attr}>$label</option>");
+        $this->html .= $this->indent($this->optlevel, "<option {$attr}>$label</option>");
     }
     
     protected function beginOptgroup($info)
@@ -119,10 +142,12 @@ class Select extends AbstractHelper
         $attr['label'] = $label;
         $attr = $this->attr($attr);
         $this->html .= $this->indent(1, "<optgroup {$attr}>");
+        $this->optlevel += 1;
     }
     
     protected function endOptgroup()
     {
         $this->html .= $this->indent(1, "</optgroup>");
+        $this->optlevel -= 1;
     }
 }

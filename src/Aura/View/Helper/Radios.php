@@ -24,6 +24,21 @@ class Radios extends AbstractHelper
         $this->input = $input;
     }
     
+    /**
+     * 
+     * Return radio fields `<input type="radio" />`
+     * 
+     * @param array $attribs
+     * 
+     * @param array $options
+     * 
+     * @param bool $checked Default to null,
+     * 
+     * @param string $separator Defaults to PHP_EOL
+     * 
+     * @return string
+     * 
+     */
     public function __invoke(
         array $attr,
         array $options,

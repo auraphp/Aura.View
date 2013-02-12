@@ -42,7 +42,9 @@ class TitleTest extends AbstractHelperTest
     {
         $title = new Title;
         $title->setIndent('  ');
+
         $title->set('This & That');
+
         $actual = $title->get();
         $expect = '  <title>This & That</title>' . PHP_EOL;
         $this->assertSame($expect, $actual);

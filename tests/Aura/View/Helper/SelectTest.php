@@ -8,16 +8,16 @@ class SelectTest extends AbstractHelperTest
         $select = new Select;
         
         $actual = $select(
-            [
+            $this->escape([
                 'name' => 'foo[bar]',
-            ],
-            [
+            ]),
+            $this->escape([
                 'value1' => 'First Label',
                 'value2' => 'Second Label',
                 'value5' => 'Fifth Label',
                 'value3' => 'Third Label',
-            ],
-            'value5'
+            ]),
+            $this->escape('value5')
         );
         
         $expect = '<select name="foo[bar]">' . PHP_EOL
@@ -34,29 +34,29 @@ class SelectTest extends AbstractHelperTest
     {
         $select = new Select;
         
-        $actual = $select([
+        $actual = $select($this->escape([
                 'name' => 'foo[bar]',
                 'multiple' => 'multiple',
-            ])
-            ->optgroup('Group A')
-            ->options([
+            ]))
+            ->optgroup($this->escape('Group A'))
+            ->options($this->escape([
                'value1' => 'First Label',
                'value2' => 'Second Label',
-            ])
-            ->optgroup('Group B')
-            ->options([
+            ]))
+            ->optgroup($this->escape('Group B'))
+            ->options($this->escape([
                'value5' => 'Fifth Label',
                'value3' => 'Third Label',
-            ])
+            ]))
             ->option(
-               'counting',
-               'Three sir!',
-               ['disabled' => 'disabled']
+               $this->escape('counting'),
+               $this->escape('Three sir!'),
+               $this->escape(['disabled' => 'disabled'])
             )
-            ->selected(['value2', 'value3'])
+            ->selected($this->escape(['value2', 'value3']))
             ->fetch();
         
-        $expect = '<select name="foo[bar]" multiple="multiple">' . PHP_EOL
+        $expect = '<select name="foo[bar][]" multiple="multiple">' . PHP_EOL
                 . '    <optgroup label="Group A">' . PHP_EOL
                 . '        <option value="value1">First Label</option>' . PHP_EOL
                 . '        <option value="value2" selected="selected">Second Label</option>' . PHP_EOL
