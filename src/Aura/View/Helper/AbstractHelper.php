@@ -28,6 +28,13 @@ abstract class AbstractHelper
      */
     protected $indent = '    ';
 
+    /**
+     * 
+     * The base indent level.
+     * 
+     * @var int
+     * 
+     */
     protected $indent_level = 0;
     
     /**
@@ -36,14 +43,24 @@ abstract class AbstractHelper
      * 
      * @param string $indent The indent string.
      * 
-     * @return void
+     * @return self
      * 
      */
     public function setIndent($indent)
     {
         $this->indent = $indent;
+        return $this;
     }
     
+    /**
+     * 
+     * Sets the base indent level.
+     * 
+     * @param int $indent_level The base indent level.
+     * 
+     * @return self
+     * 
+     */
     public function setIndentLevel($indent_level)
     {
         $this->indent_level = (int) $indent_level;
@@ -54,7 +71,7 @@ abstract class AbstractHelper
      * 
      * Converts an associative array to an attribute string.
      * 
-     * @param array|Traversable $attr From this array, each key-value pair
+     * @param array $attr From this array, each key-value pair
      * is converted to an attribute name and value.
      * 
      * @param array $skip Skip attributes listed in this array.
@@ -62,7 +79,7 @@ abstract class AbstractHelper
      * @return string The attribute string.
      * 
      */
-    protected function attr($attr, array $skip = [])
+    protected function attr(array $attr, array $skip = [])
     {
         // pre-empt processing
         if (! $attr) {
@@ -100,13 +117,36 @@ abstract class AbstractHelper
         return implode(' ', $html);
     }
     
-    protected function void($tag, $attr)
+    /**
+     * 
+     * Returns a "void" tag; that is, a <tag /> with no content.
+     * 
+     * @param string $tag The tag name.
+     * 
+     * @param array $attr Attributes for the tag.
+     * 
+     * @return string
+     * 
+     */
+    protected function void($tag, array $attr = [])
     {
         $attr = $this->attr($attr);
         $html = "<{$tag} {$attr} />";
         return $html;
     }
     
+    /**
+     * 
+     * Returns whitespace-indented text.
+     * 
+     * @param int $level The indent level; this is added to the base indent
+     * level.
+     * 
+     * @param string $text The text to indent.
+     * 
+     * @return string
+     * 
+     */
     protected function indent($level, $text)
     {
         $level += $this->indent_level;
