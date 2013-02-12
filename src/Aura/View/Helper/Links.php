@@ -49,7 +49,7 @@ class Links extends AbstractHelper
      * @return void
      * 
      */
-    public function add($attr = [])
+    public function add(array $attr = [])
     {
         $this->links[] = $this->void('link', $attr);
     }
@@ -63,6 +63,10 @@ class Links extends AbstractHelper
      */
     public function get()
     {
-        return $this->indent(1, implode(PHP_EOL . $this->indent, $this->links));
+        $html = '';
+        foreach ($this->links as $link) {
+            $html .= $this->indent(0, $link);
+        }
+        return $html;
     }
 }
