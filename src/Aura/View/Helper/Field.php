@@ -80,50 +80,70 @@ class Field extends AbstractHelper
      * 
      * 'name' (string): The field name.
      * 
-     * 'attribs' (array): An array of attributes.
+     * 'attr' (array): An array of attributes.
      * 
-     * 'options' (array): An array of options (typically for radios and
+     * 'opts' (array): An array of opts (typically for radios and
      * select).
      * 
      * 'value' (mixed): The current value for the field.
      * 
      */
-    public function __invoke($spec)
+    public function __invoke(array $spec)
     {
-        $type    = $spec['type'];
-        $name    = $spec['name'];
-        $value   = $spec['value'];
-        $attribs = $spec['attribs'];
-        $options = $spec['options'];
-
+        $type  = isset($spec['type'])  ? $spec['type']            : null;
+        $name  = isset($spec['name'])  ? $spec['name']            : null;
+        $attr  = isset($spec['attr'])  ? (array) $spec['attr'] : [];
+        $opts  = isset($spec['opts'])  ? (array) $spec['opts'] : [];
+        $value = isset($spec['value']) ? $spec['value']           : null;
+        
         switch (strtolower($type)) {
             case 'checkbox':
-                return $this->checkbox($name, $attribs, $options, $value);
+                return $this->checkbox($name, $attr, $opts, $value);
                 break;
             case 'radios':
-                return $this->radios($name, $attribs, $options, $value);
+                return $this->radios($name, $attr, $opts, $value);
                 break;
             case 'select':
-                return $this->select($name, $attribs, $options, $value);
+                return $this->select($name, $attr, $opts, $value);
                 break;
             case 'textarea':
-                return $this->textarea($name, $attribs, $value);
+                return $this->textarea($name, $attr, $value);
             default:
-                return $this->input($type, $name, $attribs, $value);
+                return $this->input($type, $name, $attr, $value);
                 break;
         }
     }
     
-    protected function checkbox($name, $attribs, $options, $value)
+    /**
+     * 
+     * Create a checkbox field via Input object.
+     * 
+     * @param string $name
+     * 
+     * @param array $attr
+     * 
+     * @param array $opts
+     * 
+     * @param string $value
+     * 
+     * @return string
+     * 
+     */
+    protected function checkbox($name, array $attr, array $opts, $value)
     {
-        foreach ($options as $checked_value => $label) {
-            break;
-        }
-        $attribs['type'] = 'checkbox';
-        $attribs['name'] = $name;
-        $attribs['value'] = $checked_value;
+        // get the value and label for the checkbox from the first option
+        reset($opts);
+        $checked_value = key($opts);
+        $checked_label = current($opts);
+        
+        // set attributes
+        $attr['type'] = 'checkbox';
+        $attr['name'] = $name;
+        $attr['value'] = $checked_value;
+        
+        // return html
         $input = $this->input;
-        return $input($attribs, $value, $label);
+        return $input($attr, $value, $checked_label);
     }
     
     /**
@@ -134,42 +154,42 @@ class Field extends AbstractHelper
      * 
      * @param string $name
      * 
-     * @param array $attribs
+     * @param array $attr
      * 
      * @param string $value
      * 
      * @return string
      * 
      */
-    protected function input($type, $name, $attribs, $value)
+    protected function input($type, $name, array $attr, $value)
     {
-        $attribs['type'] = $type;
-        $attribs['name'] = $name;
+        $attr['type'] = $type;
+        $attr['name'] = $name;
         $input = $this->input;
-        return $input($attribs, $value);
+        return $input($attr, $value);
     }
     
     /**
      * 
-     * Create radio field
+     * Create a series of radio buttons.
      * 
      * @param string $name
      * 
-     * @param array $attribs
+     * @param array $attr
      * 
-     * @param array $options
+     * @param array $opts
      * 
      * @param bool $checked
      * 
      * @return string
      * 
      */
-    protected function radios($name, $attribs, $options, $checked)
+    protected function radios($name, array $attr, array $opts, $checked)
     {
-        $attribs['type'] = 'radio';
-        $attribs['name'] = $name;
+        $attr['type'] = 'radio';
+        $attr['name'] = $name;
         $radios = $this->radios;
-        return $radios($attribs, $options, $checked);
+        return $radios($attr, $opts, $checked);
     }
     
     /**
@@ -178,27 +198,26 @@ class Field extends AbstractHelper
      * 
      * @param string $name
      * 
-     * @param array $attribs
+     * @param array $attr
      * 
-     * @param array $options
+     * @param array $opts
      * 
      * @param bool $selected
      * 
      * @return string
      * 
      */
-    protected function select($name, $attribs, $options, $selected)
+    protected function select($name, array $attr, array $opts, $selected)
     {
         // set the overall attributes
-        $attribs['name'] = $name;
+        $attr['name'] = $name;
         $select = $this->select;
-        $select($attribs);
+        $select($attr);
         
         // set the options and optgroups
-        foreach ($options as $key => $val) {
+        foreach ($opts as $key => $val) {
             
-            $trav = is_array($val) || $val instanceof \Traversable;
-            if ($trav) {
+            if (is_array($val)) {
                 // the key is an optgroup label
                 $select->optgroup($key);
                 // the values are an array of values and labels
@@ -215,7 +234,7 @@ class Field extends AbstractHelper
         $select->selected($selected);
         
         // return the html
-        return $select->fetch();
+        return $select->get();
     }
     
     /**
@@ -224,17 +243,17 @@ class Field extends AbstractHelper
      * 
      * @param string $name
      * 
-     * @param array $attribs
+     * @param array $attr
      * 
      * @param string $value
      * 
      * @return string
      * 
      */ 
-    protected function textarea($name, $attribs, $value)
+    protected function textarea($name, array $attr, $value)
     {
-        $attribs['name'] = $name;
+        $attr['name'] = $name;
         $textarea = $this->textarea;
-        return $textarea($attribs, $value);
+        return $textarea($attr, $value);
     }
 }
