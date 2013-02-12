@@ -28,9 +28,9 @@ class Radios extends AbstractHelper
      * 
      * Return radio fields `<input type="radio" />`
      * 
-     * @param array $attribs
+     * @param array $attr
      * 
-     * @param array $options
+     * @param array $opts
      * 
      * @param bool $checked Default to null,
      * 
@@ -41,14 +41,14 @@ class Radios extends AbstractHelper
      */
     public function __invoke(
         array $attr,
-        array $options,
+        array $opts,
         $checked = null,
         $separator = PHP_EOL
     ) {
         $input = $this->input;
         $attr['type'] = 'radio';
         $html = '';
-        foreach ($options as $value => $label) {
+        foreach ($opts as $value => $label) {
             $attr['value'] = $value;
             $html .= $input($attr, $checked, $label) . $separator;
         }
