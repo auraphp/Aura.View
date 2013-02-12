@@ -115,7 +115,7 @@ class Metas extends AbstractHelper
         ksort($this->metas);
         foreach ($this->metas as $list) {
             foreach ($list as $meta) {
-                $html .= $this->indent(1, $meta);
+                $html .= $this->indent(0, $meta);
             }
         }
         return $html;
