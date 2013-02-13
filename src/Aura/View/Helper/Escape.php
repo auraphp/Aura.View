@@ -80,11 +80,12 @@ class Escape extends AbstractHelper
     {
         // if there are safe characters ...
         if ($this->safe) {
+            // ... is the raw value composed only of safe characters?
             if (preg_match("/^[{$this->safe}]*$/iDSu", $raw)) {
-                // ... allow only safe chars in raw values
+                // yes, no need to escape further
                 return $raw;
             } else {
-                // ... replace unsafe chars in raw vals
+                // no, replace unsafe chars in the raw value
                 return preg_replace_callback(
                     "/[^{$this->safe}]/iDSu",
                     [$this, 'replace'],
