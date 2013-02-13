@@ -123,8 +123,9 @@ class Select extends AbstractHelper
         // set the option value into the attribs
         $attribs['value'] = $value;
         
-        // is the value selected?
-        if (in_array($value, $this->selected)) {
+        // is the value selected? use strict checking to avoid confusion
+        // between 0/'0'/false/null/''.
+        if (in_array($value, $this->selected, true)) {
             $attribs['selected'] = 'selected';
         } else {
             $attribs['selected'] = null;
