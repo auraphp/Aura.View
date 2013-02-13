@@ -77,15 +77,14 @@ abstract class AbstractHelper
                 continue;
             }
 
+            // skip null and false values
+            if ($val === null || $val === false) {
+                continue;
+            }
+
             // space-separate multiple values
             if (is_array($val)) {
                 $val = implode(' ', $val);
-            }
-
-            // skip empty values; use a string cast and strict equality to
-            // make sure that a string zero is not counted as an empty value.
-            if ((string) $val === '') {
-                continue;
             }
 
             // add to the attributes

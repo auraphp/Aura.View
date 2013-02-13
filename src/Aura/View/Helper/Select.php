@@ -40,6 +40,14 @@ class Select extends AbstractHelper
         $this->attribs  = $attribs;
         $this->optlevel = 1;
         
+        if (isset($this->attribs['placeholder'])) {
+            $this->option(
+                '',
+                $this->attribs['placeholder']
+            );
+            unset($this->attribs['placeholder']);
+        }
+        
         if ($options) {
             $this->options($options);
             $this->selected($selected);
