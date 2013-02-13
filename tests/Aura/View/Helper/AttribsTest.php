@@ -9,7 +9,7 @@ class AttribsTest extends AbstractHelperTest
         
         $values = $this->escape([
             'foo' => 'bar',
-            'nim' => '',
+            'nim' => null,
             'baz' => ['dib', 'zim', 'gir'],
             'required' => true,
             'optional' => false,

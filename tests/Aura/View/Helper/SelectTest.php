@@ -9,6 +9,7 @@ class SelectTest extends AbstractHelperTest
         
         $actual = $select($this->escape([
                 'name' => 'foo[bar]',
+                'placeholder' => 'Please pick one',
             ]),
             $this->escape([
                 'value1' => 'First Label',
@@ -20,6 +21,7 @@ class SelectTest extends AbstractHelperTest
         );
         
         $expect = '<select name="foo[bar]">' . PHP_EOL
+                . '    <option value="">Please pick one</option>' . PHP_EOL
                 . '    <option value="value1">First Label</option>' . PHP_EOL
                 . '    <option value="value2">Second Label</option>' . PHP_EOL
                 . '    <option value="value5" selected="selected">Fifth Label</option>' . PHP_EOL

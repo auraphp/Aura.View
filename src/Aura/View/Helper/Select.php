@@ -100,6 +100,12 @@ class Select extends AbstractHelper
         $this->attribs     = $attribs;
         $this->optlevel = 1;
         
+        // emulate a placeholder
+        if (isset($this->attribs['placeholder'])) {
+            $this->option('', $this->attribs['placeholder']);
+            unset($this->attribs['placeholder']);
+        }
+        
         // do we have options?
         if ($options !== null) {
             // yes, generate and return the HTML
