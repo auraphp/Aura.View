@@ -6,8 +6,34 @@ class FieldTest extends AbstractHelperTest
     protected function newField()
     {
         return new Field(
-            new Input,
-            new Radios(new Input),
+            new Input(
+                new Input\Locator([
+                    'button'         => function () { return new Input\Button; },
+                    'checkbox'       => function () { return new Input\Checked; },
+                    'color'          => function () { return new Input\Value; },
+                    'date'           => function () { return new Input\Value; },
+                    'datetime'       => function () { return new Input\Value; },
+                    'datetime-local' => function () { return new Input\Value; },
+                    'email'          => function () { return new Input\Value; },
+                    'file'           => function () { return new Input\Button; },
+                    'hidden'         => function () { return new Input\Value; },
+                    'image'          => function () { return new Input\Button; },
+                    'month'          => function () { return new Input\Value; },
+                    'number'         => function () { return new Input\Value; },
+                    'password'       => function () { return new Input\Value; },
+                    'radio'          => function () { return new Input\Checked; },
+                    'range'          => function () { return new Input\Value; },
+                    'reset'          => function () { return new Input\Button; },
+                    'search'         => function () { return new Input\Value; },
+                    'submit'         => function () { return new Input\Button; },
+                    'tel'            => function () { return new Input\Value; },
+                    'text'           => function () { return new Input\Value; },
+                    'time'           => function () { return new Input\Value; },
+                    'url'            => function () { return new Input\Value; },
+                    'week'           => function () { return new Input\Value; },
+                ])
+            ),
+            new Radios(new Input\Checked),
             new Select,
             new Textarea
         );

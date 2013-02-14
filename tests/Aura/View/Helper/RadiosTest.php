@@ -12,7 +12,7 @@ class RadiosTest extends AbstractHelperTest
             'zim' => 'gir',
         ];
         
-        $radios = new Radios(new Input);
+        $radios = new Radios(new Input\Checked);
         
         $actual = $radios($attribs, $options, 'baz');
         $expect = '<label><input type="radio" name="field" value="foo" /> bar</label>' . PHP_EOL
