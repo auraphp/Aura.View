@@ -32,10 +32,44 @@ $di->params['Aura\View\Helper\Field'] = [
 ];
 
 /**
+ * Aura\View\Helper\Input
+ */
+$di->params['Aura\View\Helper\Input']['input_locator'] = $di->lazyNew('Aura\View\Helper\Input\Locator');
+
+/**
+ * Aura\View\Helper\Input\Locator
+ */
+$di->params['Aura\View\Helper\Input\Locator']['registry'] = [
+    'button'         => $di->lazyNew('Aura\View\Helper\Input\Button'),
+    'checkbox'       => $di->lazyNew('Aura\View\Helper\Input\Checked'),
+    'color'          => $di->lazyNew('Aura\View\Helper\Input\Value'),
+    'date'           => $di->lazyNew('Aura\View\Helper\Input\Value'),
+    'datetime'       => $di->lazyNew('Aura\View\Helper\Input\Value'),
+    'datetime-local' => $di->lazyNew('Aura\View\Helper\Input\Value'),
+    'email'          => $di->lazyNew('Aura\View\Helper\Input\Value'),
+    'file'           => $di->lazyNew('Aura\View\Helper\Input\Button'),
+    'hidden'         => $di->lazyNew('Aura\View\Helper\Input\Value'),
+    'image'          => $di->lazyNew('Aura\View\Helper\Input\Button'),
+    'month'          => $di->lazyNew('Aura\View\Helper\Input\Value'),
+    'number'         => $di->lazyNew('Aura\View\Helper\Input\Value'),
+    'password'       => $di->lazyNew('Aura\View\Helper\Input\Value'),
+    'radio'          => $di->lazyNew('Aura\View\Helper\Input\Checked'),
+    'range'          => $di->lazyNew('Aura\View\Helper\Input\Value'),
+    'reset'          => $di->lazyNew('Aura\View\Helper\Input\Button'),
+    'search'         => $di->lazyNew('Aura\View\Helper\Input\Value'),
+    'submit'         => $di->lazyNew('Aura\View\Helper\Input\Button'),
+    'tel'            => $di->lazyNew('Aura\View\Helper\Input\Value'),
+    'text'           => $di->lazyNew('Aura\View\Helper\Input\Value'),
+    'time'           => $di->lazyNew('Aura\View\Helper\Input\Value'),
+    'url'            => $di->lazyNew('Aura\View\Helper\Input\Value'),
+    'week'           => $di->lazyNew('Aura\View\Helper\Input\Value'),
+];
+
+/**
  * Aura\View\Helper\Radios
  */
 $di->params['Aura\View\Helper\Radios'] = [
-    'input' => $di->lazyNew('Aura\View\Helper\Input'),
+    'input' => $di->lazyNew('Aura\View\Helper\Input\Checked'),
 ];
 
 /**

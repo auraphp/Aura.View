@@ -3,12 +3,42 @@ namespace Aura\View\Helper;
 
 class InputTest extends AbstractHelperTest
 {
+    
+    protected function newInput()
+    {
+        return new Input(new Input\Locator([
+            'button'         => function () { return new Input\Button; },
+            'checkbox'       => function () { return new Input\Checked; },
+            'color'          => function () { return new Input\Value; },
+            'date'           => function () { return new Input\Value; },
+            'datetime'       => function () { return new Input\Value; },
+            'datetime-local' => function () { return new Input\Value; },
+            'email'          => function () { return new Input\Value; },
+            'file'           => function () { return new Input\Button; },
+            'hidden'         => function () { return new Input\Value; },
+            'image'          => function () { return new Input\Button; },
+            'month'          => function () { return new Input\Value; },
+            'number'         => function () { return new Input\Value; },
+            'password'       => function () { return new Input\Value; },
+            'radio'          => function () { return new Input\Checked; },
+            'range'          => function () { return new Input\Value; },
+            'reset'          => function () { return new Input\Button; },
+            'search'         => function () { return new Input\Value; },
+            'submit'         => function () { return new Input\Button; },
+            'tel'            => function () { return new Input\Value; },
+            'text'           => function () { return new Input\Value; },
+            'time'           => function () { return new Input\Value; },
+            'url'            => function () { return new Input\Value; },
+            'week'           => function () { return new Input\Value; },
+        ]));
+    }
+    
     /**
      * @dataProvider provideValueTypes
      */
     public function testValueTypes($type)
     {
-        $input = new Input;
+        $input = $this->newInput();
         
         // given value should override the attribute
         $actual = $input(
@@ -39,7 +69,7 @@ class InputTest extends AbstractHelperTest
      */
     public function testCheckedTypes($type)
     {
-        $input = new Input;
+        $input = $this->newInput();
         
         // value should be checked
         $actual = $input(
@@ -71,7 +101,7 @@ class InputTest extends AbstractHelperTest
      */
     public function testButtonTypes($type)
     {
-        $input = new Input;
+        $input = $this->newInput();
         
         // given value should not override the attribute
         $actual = $input(
@@ -89,7 +119,7 @@ class InputTest extends AbstractHelperTest
     
     public function testLabelWithAttribs()
     {
-        $input = new Input;
+        $input = $this->newInput();
         
         $actual = $input(
             $this->escape([
@@ -112,7 +142,7 @@ class InputTest extends AbstractHelperTest
 
     public function testLabelWithoutAttribs()
     {
-        $input = new Input;
+        $input = $this->newInput();
         
         $actual = $input(
             $this->escape([

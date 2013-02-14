@@ -10,6 +10,8 @@
  */
 namespace Aura\View\Helper;
 
+use Aura\View\Helper\Input\Checked as InputChecked;
+
 /**
  * 
  * Helper for series of `<input type="radio">` tags.
@@ -19,7 +21,7 @@ namespace Aura\View\Helper;
  */
 class Radios extends AbstractHelper
 {
-    public function __construct(Input $input)
+    public function __construct(InputChecked $input)
     {
         $this->input = $input;
     }
