@@ -8,7 +8,9 @@
  * @license http://opensource.org/licenses/bsd-license.php BSD
  * 
  */
-namespace Aura\View\Helper;
+namespace Aura\View\Helper\Form;
+
+use Aura\View\Helper\AbstractHelper;
 
 /**
  * 
@@ -31,7 +33,7 @@ class Select extends AbstractHelper
     
     protected $optlevel = 1;
     
-    public function __invoke($attribs, $options = [], $selected = null)
+    public function __invoke($attribs, $options = [], $value = null)
     {
         $this->stack    = [];
         $this->optgroup = false;
@@ -50,11 +52,32 @@ class Select extends AbstractHelper
         
         if ($options) {
             $this->options($options);
-            $this->selected($selected);
+            $this->selected($value);
             return $this->fetch();
         } else {
             return $this;
         }
+    }
+    
+    public function getField($spec)
+    {
+        $attribs = isset($spec['attribs'])
+                 ? $spec['attribs']
+                 : [];
+        
+        $options = isset($spec['options'])
+                 ? $spec['options']
+                 : [];
+        
+        $value = isset($spec['value'])
+               ? $spec['value']
+               : null;
+               
+        if (isset($spec['name'])) {
+            $attribs['name'] = $spec['name'];
+        }
+        
+        return $this->__invoke($attribs, $options, $value);
     }
     
     public function option($value, $label, $attribs = [])
@@ -65,9 +88,20 @@ class Select extends AbstractHelper
     
     public function options($options, $attribs = [])
     {
-        foreach ($options as $value => $label) {
-            $this->option($value, $label, $attribs);
+        // set the options and optgroups
+        foreach ($options as $key => $val) {
+            $trav = is_array($val) || $val instanceof \Traversable;
+            if ($trav) {
+                // the key is an optgroup label
+                $this->optgroup($key);
+                // recursively descend into the array
+                $this->options($val, $attribs);
+            } else {
+                // the key is an option value and the val is an option label
+                $this->option($key, $val, $attribs);
+            }
         }
+        
         return $this;
     }
     

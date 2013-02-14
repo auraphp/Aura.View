@@ -1,36 +1,74 @@
 <?php
-namespace Aura\View\Helper;
+namespace Aura\View\Helper\Form;
+
+use Aura\View\Helper\AbstractHelperTest;
 
 class InputTest extends AbstractHelperTest
 {
     
     protected function newInput()
     {
-        return new Input(new Input\Locator([
-            'button'         => function () { return new Input\Button; },
+        return new Input([
+            'button'         => function () { return new Input\Generic; },
             'checkbox'       => function () { return new Input\Checked; },
             'color'          => function () { return new Input\Value; },
             'date'           => function () { return new Input\Value; },
             'datetime'       => function () { return new Input\Value; },
             'datetime-local' => function () { return new Input\Value; },
             'email'          => function () { return new Input\Value; },
-            'file'           => function () { return new Input\Button; },
+            'file'           => function () { return new Input\Generic; },
             'hidden'         => function () { return new Input\Value; },
-            'image'          => function () { return new Input\Button; },
+            'image'          => function () { return new Input\Generic; },
             'month'          => function () { return new Input\Value; },
             'number'         => function () { return new Input\Value; },
             'password'       => function () { return new Input\Value; },
             'radio'          => function () { return new Input\Checked; },
             'range'          => function () { return new Input\Value; },
-            'reset'          => function () { return new Input\Button; },
+            'reset'          => function () { return new Input\Generic; },
             'search'         => function () { return new Input\Value; },
-            'submit'         => function () { return new Input\Button; },
+            'submit'         => function () { return new Input\Generic; },
             'tel'            => function () { return new Input\Value; },
             'text'           => function () { return new Input\Value; },
             'time'           => function () { return new Input\Value; },
             'url'            => function () { return new Input\Value; },
             'week'           => function () { return new Input\Value; },
-        ]));
+        ]);
+    }
+    
+    public function testNoType()
+    {
+        $input = $this->newInput();
+        
+        // given value should override the attribute
+        $actual = $input(
+            $this->escape([
+                'type' => null,
+                'value' => 'should not be here',
+            ]),
+            $this->escape('field value')
+        );
+        
+        $expect = "<input type=\"text\" value=\"field value\" />";
+        $this->assertSame($expect, $actual);
+        
+        // no value given so attribute should still be there
+        $actual = $input(
+            $this->escape([
+                'type' => null,
+                'value' => 'field value',
+            ])
+        );
+        
+        $expect = "<input type=\"text\" value=\"field value\" />";
+        $this->assertSame($expect, $actual);
+    }
+    
+    public function testInputValueGetFieldNoType()
+    {
+        $input = new Input\Value;
+        $actual = $input->getField([]);
+        $expect = '<input type="text" />';
+        $this->assertSame($expect, $actual);
     }
     
     /**
@@ -76,11 +114,12 @@ class InputTest extends AbstractHelperTest
             $this->escape([
                 'type' => $type,
                 'value' => 'yes',
+                'label' => 'This is yes'
             ]),
             $this->escape('yes')
         );
         
-        $expect = "<input type=\"$type\" value=\"yes\" checked=\"checked\" />";
+        $expect = "<label><input type=\"$type\" value=\"yes\" checked=\"checked\" /> This is yes</label>";
         
         $this->assertSame($expect, $actual);
 
@@ -89,17 +128,42 @@ class InputTest extends AbstractHelperTest
             $this->escape([
                 'type' => $type,
                 'value' => 'yes',
+                'label' => 'This is yes'
             ]),
             $this->escape('no')
         );
+        $expect = "<label><input type=\"$type\" value=\"yes\" /> This is yes</label>";
+        $this->assertSame($expect, $actual);
         
+        // no label
+        $actual = $input(
+            $this->escape([
+                'type' => $type,
+                'value' => 'yes',
+            ]),
+            $this->escape('no')
+        );
         $expect = "<input type=\"$type\" value=\"yes\" />";
+        $this->assertSame($expect, $actual);
+        
+        // label with "for"
+        $actual = $input(
+            $this->escape([
+                'id' => 'input-yes',
+                'type' => $type,
+                'value' => 'yes',
+                'label' => 'This is yes'
+            ]),
+            $this->escape('no')
+        );
+        $expect = "<label for=\"input-yes\"><input id=\"input-yes\" type=\"$type\" value=\"yes\" /> This is yes</label>";
+        $this->assertSame($expect, $actual);
     }
     
     /**
-     * @dataProvider provideButtonTypes
+     * @dataProvider provideGenericTypes
      */
-    public function testButtonTypes($type)
+    public function testGenericTypes($type)
     {
         $input = $this->newInput();
         
@@ -113,47 +177,6 @@ class InputTest extends AbstractHelperTest
         );
         
         $expect = "<input type=\"$type\" value=\"button value\" />";
-        
-        $this->assertSame($expect, $actual);
-    }
-    
-    public function testLabelWithAttribs()
-    {
-        $input = $this->newInput();
-        
-        $actual = $input(
-            $this->escape([
-                'type' => 'radio',
-                'value' => 'yes',
-                'id' => 'radio-yes'
-            ]),
-            $this->escape('no'),
-            $this->escape('Radio Label'),
-            $this->escape([
-                'class' => 'test',
-            ])
-        );
-        
-        $expect = '<label class="test" for="radio-yes">'
-                . '<input type="radio" value="yes" id="radio-yes" /> Radio Label</label>';
-        
-        $this->assertSame($expect, $actual);
-    }
-
-    public function testLabelWithoutAttribs()
-    {
-        $input = $this->newInput();
-        
-        $actual = $input(
-            $this->escape([
-                'type' => 'radio',
-                'value' => 'yes',
-            ]),
-            $this->escape('no'),
-            $this->escape('Radio Label')
-        );
-        
-        $expect = '<label><input type="radio" value="yes" /> Radio Label</label>';
         
         $this->assertSame($expect, $actual);
     }
@@ -188,7 +211,7 @@ class InputTest extends AbstractHelperTest
         ];
     }
 
-    public function provideButtonTypes()
+    public function provideGenericTypes()
     {
         return [
             ['button'],
