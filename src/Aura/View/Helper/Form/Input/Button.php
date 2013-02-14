@@ -1,5 +1,5 @@
 <?php
-namespace Aura\View\Helper\Input;
+namespace Aura\View\Helper\Form\Input;
 
 class Button extends Value
 {

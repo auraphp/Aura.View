@@ -1,12 +1,14 @@
 <?php
-namespace Aura\View\Helper;
+namespace Aura\View\Helper\Form;
+
+use Aura\View\Helper\AbstractHelperTest;
 
 class InputTest extends AbstractHelperTest
 {
     
     protected function newInput()
     {
-        return new Input(new Input\Locator([
+        return new Input([
             'button'         => function () { return new Input\Button; },
             'checkbox'       => function () { return new Input\Checked; },
             'color'          => function () { return new Input\Value; },
@@ -30,7 +32,7 @@ class InputTest extends AbstractHelperTest
             'time'           => function () { return new Input\Value; },
             'url'            => function () { return new Input\Value; },
             'week'           => function () { return new Input\Value; },
-        ]));
+        ]);
     }
     
     /**

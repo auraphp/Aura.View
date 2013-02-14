@@ -8,7 +8,7 @@
  * @license http://opensource.org/licenses/bsd-license.php BSD
  * 
  */
-namespace Aura\View\Helper\Input;
+namespace Aura\View\Helper\Form\Input;
 
 use Aura\View\Helper\AbstractHelper;
 
@@ -96,6 +96,37 @@ class Value extends AbstractHelper
         
         // done! return the html
         return $this->html;
+    }
+    
+    public function getField($spec)
+    {
+        $attribs = isset($spec['attribs'])
+                 ? $spec['attribs']
+                 : [];
+        
+        $value = isset($spec['value'])
+               ? $spec['value']
+               : null;
+               
+        $label = isset($spec['label'])
+               ? $spec['label']
+               : null;
+        
+        $label_attribs = isset($spec['label_attribs'])
+                       ? $spec['label_attribs']
+                       : null;
+        
+        if (isset($spec['type'])) {
+            $attribs['type'] = $spec['type'];
+        } else {
+            $attribs['type'] = 'text';
+        }
+        
+        if (isset($spec['name'])) {
+            $attribs['name'] = $spec['name'];
+        }
+        
+        return $this->__invoke($attribs, $value, $label, $label_attribs);
     }
     
     protected function prep()

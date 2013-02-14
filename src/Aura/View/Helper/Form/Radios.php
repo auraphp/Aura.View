@@ -8,9 +8,10 @@
  * @license http://opensource.org/licenses/bsd-license.php BSD
  * 
  */
-namespace Aura\View\Helper;
+namespace Aura\View\Helper\Form;
 
-use Aura\View\Helper\Input\Checked as InputChecked;
+use Aura\View\Helper\AbstractHelper;
+use Aura\View\Helper\Form\Input\Checked;
 
 /**
  * 
@@ -21,14 +22,14 @@ use Aura\View\Helper\Input\Checked as InputChecked;
  */
 class Radios extends AbstractHelper
 {
-    public function __construct(InputChecked $input)
+    public function __construct(Checked $input)
     {
         $this->input = $input;
     }
     
     /**
      * 
-     * Return radio fields `<input type="radio" />`
+     * Return mulitple radio fields `<input type="radio" />`
      * 
      * @param array $attribs
      * 
@@ -55,5 +56,26 @@ class Radios extends AbstractHelper
             $html .= $input($attribs, $checked, $label) . $separator;
         }
         return $html;
+    }
+    
+    public function getField($spec)
+    {
+        $attribs = isset($spec['attribs'])
+                 ? $spec['attribs']
+                 : [];
+        
+        $options = isset($spec['options'])
+                 ? $spec['options']
+                 : [];
+        
+        $value = isset($spec['value'])
+               ? $spec['value']
+               : null;
+               
+        if (isset($spec['name'])) {
+            $attribs['name'] = $spec['name'];
+        }
+        
+        return $this->__invoke($attribs, $options, $value);
     }
 }
