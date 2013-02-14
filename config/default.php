@@ -25,24 +25,24 @@ $di->params['Aura\View\Helper\Escape'] = [
  * Aura\View\Helper\Form\Field
  */
 $di->params['Aura\View\Helper\Form\Field']['registry'] = [
-    'button'         => $di->lazyNew('Aura\View\Helper\Form\Input\Button'),
+    'button'         => $di->lazyNew('Aura\View\Helper\Form\Input\Generic'),
     'checkbox'       => $di->lazyNew('Aura\View\Helper\Form\Input\Checked'),
     'color'          => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
     'date'           => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
     'datetime'       => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
     'datetime-local' => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
     'email'          => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
-    'file'           => $di->lazyNew('Aura\View\Helper\Form\Input\Button'),
+    'file'           => $di->lazyNew('Aura\View\Helper\Form\Input\Generic'),
     'hidden'         => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
-    'image'          => $di->lazyNew('Aura\View\Helper\Form\Input\Button'),
+    'image'          => $di->lazyNew('Aura\View\Helper\Form\Input\Generic'),
     'month'          => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
     'number'         => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
     'password'       => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
     'radio'          => $di->lazyNew('Aura\View\Helper\Form\Input\Checked'),
     'range'          => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
-    'reset'          => $di->lazyNew('Aura\View\Helper\Form\Input\Button'),
+    'reset'          => $di->lazyNew('Aura\View\Helper\Form\Input\Generic'),
     'search'         => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
-    'submit'         => $di->lazyNew('Aura\View\Helper\Form\Input\Button'),
+    'submit'         => $di->lazyNew('Aura\View\Helper\Form\Input\Generic'),
     'tel'            => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
     'text'           => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
     'time'           => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
@@ -53,29 +53,28 @@ $di->params['Aura\View\Helper\Form\Field']['registry'] = [
     'textarea'       => $di->lazyNew('Aura\View\Helper\Form\Textarea'),
 ];
 
-
 /**
  * Aura\View\Helper\Form\Input
  */
 $di->params['Aura\View\Helper\Form\Input']['registry'] = [
-    'button'         => $di->lazyNew('Aura\View\Helper\Form\Input\Button'),
+    'button'         => $di->lazyNew('Aura\View\Helper\Form\Input\Generic'),
     'checkbox'       => $di->lazyNew('Aura\View\Helper\Form\Input\Checked'),
     'color'          => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
     'date'           => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
     'datetime'       => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
     'datetime-local' => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
     'email'          => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
-    'file'           => $di->lazyNew('Aura\View\Helper\Form\Input\Button'),
+    'file'           => $di->lazyNew('Aura\View\Helper\Form\Input\Generic'),
     'hidden'         => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
-    'image'          => $di->lazyNew('Aura\View\Helper\Form\Input\Button'),
+    'image'          => $di->lazyNew('Aura\View\Helper\Form\Input\Generic'),
     'month'          => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
     'number'         => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
     'password'       => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
     'radio'          => $di->lazyNew('Aura\View\Helper\Form\Input\Checked'),
     'range'          => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
-    'reset'          => $di->lazyNew('Aura\View\Helper\Form\Input\Button'),
+    'reset'          => $di->lazyNew('Aura\View\Helper\Form\Input\Generic'),
     'search'         => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
-    'submit'         => $di->lazyNew('Aura\View\Helper\Form\Input\Button'),
+    'submit'         => $di->lazyNew('Aura\View\Helper\Form\Input\Generic'),
     'tel'            => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
     'text'           => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
     'time'           => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
@@ -86,8 +85,8 @@ $di->params['Aura\View\Helper\Form\Input']['registry'] = [
 /**
  * Aura\View\Helper\Radios
  */
-$di->params['Aura\View\Helper\Radios'] = [
-    'input' => $di->lazyNew('Aura\View\Helper\Input\Checked'),
+$di->params['Aura\View\Helper\Form\Radios'] = [
+    'input' => $di->lazyNew('Aura\View\Helper\Form\Input\Checked'),
 ];
 
 /**

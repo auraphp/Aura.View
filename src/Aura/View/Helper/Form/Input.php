@@ -14,16 +14,12 @@ use Aura\View\HelperLocator;
 
 class Input extends HelperLocator
 {
-    public function __invoke(
-        $attribs,
-        $value = null,
-        $label = null,
-        $label_attribs = []
-    ) {
-        if (! isset($attribs['type'])) {
+    public function __invoke($attribs, $value = null)
+    {
+        if (! isset($attribs['type']) || ! $attribs['type']) {
             $attribs['type'] = 'text';
         }
         $helper = $this->get($attribs['type']);
-        return $helper($attribs, $value, $label, $label_attribs);
+        return $helper($attribs, $value);
     }
 }

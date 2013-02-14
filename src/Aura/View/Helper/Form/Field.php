@@ -23,7 +23,7 @@ class Field extends HelperLocator
 {
     public function __invoke($spec)
     {
-        if (! isset($spec['type'])) {
+        if (! isset($spec['type']) || ! $spec['type']) {
             $spec['type'] = 'text';
         }
         $helper = $this->get($spec['type']);

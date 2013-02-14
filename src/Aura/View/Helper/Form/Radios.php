@@ -53,7 +53,8 @@ class Radios extends AbstractHelper
         $html = '';
         foreach ($options as $value => $label) {
             $attribs['value'] = $value;
-            $html .= $input($attribs, $checked, $label) . $separator;
+            $attribs['label'] = $label;
+            $html .= $input($attribs, $checked) . $separator;
         }
         return $html;
     }
