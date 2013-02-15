@@ -1,5 +1,7 @@
 <?php
-namespace Aura\View\Helper;
+namespace Aura\View\Helper\Form;
+
+use Aura\View\Helper\AbstractHelperTest;
 
 class TextareaTest extends AbstractHelperTest
 {

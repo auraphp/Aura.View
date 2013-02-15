@@ -15,20 +15,71 @@ $di->params['Aura\View\Helper\Datetime']['format'] = [
 ];
 
 /**
- * Aura\View\Helper\Field
+ * Aura\View\Helper\Form\Field
  */
-$di->params['Aura\View\Helper\Field'] = [
-    'input'    => $di->lazyNew('Aura\View\Helper\Input'),
-    'radios'   => $di->lazyNew('Aura\View\Helper\Radios'),
-    'select'   => $di->lazyNew('Aura\View\Helper\Select'),
-    'textarea' => $di->lazyNew('Aura\View\Helper\Textarea'),
+$di->params['Aura\View\Helper\Form\Field']['registry'] = [
+    'button'         => $di->lazyNew('Aura\View\Helper\Form\Input\Generic'),
+    'checkbox'       => $di->lazyNew('Aura\View\Helper\Form\Input\Checked'),
+    'color'          => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'date'           => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'datetime'       => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'datetime-local' => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'email'          => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'file'           => $di->lazyNew('Aura\View\Helper\Form\Input\Generic'),
+    'hidden'         => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'image'          => $di->lazyNew('Aura\View\Helper\Form\Input\Generic'),
+    'month'          => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'number'         => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'password'       => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'radio'          => $di->lazyNew('Aura\View\Helper\Form\Input\Checked'),
+    'range'          => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'reset'          => $di->lazyNew('Aura\View\Helper\Form\Input\Generic'),
+    'search'         => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'submit'         => $di->lazyNew('Aura\View\Helper\Form\Input\Generic'),
+    'tel'            => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'text'           => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'time'           => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'url'            => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'week'           => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'radios'         => $di->lazyNew('Aura\View\Helper\Form\Radios'),
+    'select'         => $di->lazyNew('Aura\View\Helper\Form\Select'),
+    'textarea'       => $di->lazyNew('Aura\View\Helper\Form\Textarea'),
+];
+
+/**
+ * Aura\View\Helper\Form\Input
+ */
+$di->params['Aura\View\Helper\Form\Input']['registry'] = [
+    'button'         => $di->lazyNew('Aura\View\Helper\Form\Input\Generic'),
+    'checkbox'       => $di->lazyNew('Aura\View\Helper\Form\Input\Checked'),
+    'color'          => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'date'           => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'datetime'       => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'datetime-local' => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'email'          => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'file'           => $di->lazyNew('Aura\View\Helper\Form\Input\Generic'),
+    'hidden'         => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'image'          => $di->lazyNew('Aura\View\Helper\Form\Input\Generic'),
+    'month'          => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'number'         => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'password'       => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'radio'          => $di->lazyNew('Aura\View\Helper\Form\Input\Checked'),
+    'range'          => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'reset'          => $di->lazyNew('Aura\View\Helper\Form\Input\Generic'),
+    'search'         => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'submit'         => $di->lazyNew('Aura\View\Helper\Form\Input\Generic'),
+    'tel'            => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'text'           => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'time'           => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'url'            => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'week'           => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
 ];
 
 /**
  * Aura\View\Helper\Radios
  */
-$di->params['Aura\View\Helper\Radios'] = [
-    'input' => $di->lazyNew('Aura\View\Helper\Input'),
+$di->params['Aura\View\Helper\Form\Radios'] = [
+    'input' => $di->lazyNew('Aura\View\Helper\Form\Input\Checked'),
 ];
 
 /**
@@ -40,20 +91,20 @@ $di->params['Aura\View\HelperLocator']['registry'] = [
     'base'        => $di->lazyNew('Aura\View\Helper\Base'),
     'datetime'    => $di->lazyNew('Aura\View\Helper\Datetime'),
     'escape'      => $di->lazyNew('Aura\View\Helper\Escape'),
-    'field'       => $di->lazyNew('Aura\View\Helper\Field'),
+    'field'       => $di->lazyNew('Aura\View\Helper\Form\Field'),
     'image'       => $di->lazyNew('Aura\View\Helper\Image'),
-    'input'       => $di->lazyNew('Aura\View\Helper\Input'),
+    'input'       => $di->lazyNew('Aura\View\Helper\Form\Input'),
     'links'       => $di->lazyNew('Aura\View\Helper\Links'),
     'metas'       => $di->lazyNew('Aura\View\Helper\Metas'),
     'ol'          => $di->lazyNew('Aura\View\Helper\Ol'),
-    'radios'      => $di->lazyNew('Aura\View\Helper\Radios'),
+    'radios'      => $di->lazyNew('Aura\View\Helper\Form\Radios'),
     'scripts'     => $di->lazyNew('Aura\View\Helper\Scripts'),
     'scriptsFoot' => $di->lazyNew('Aura\View\Helper\Scripts'),
-    'select'      => $di->lazyNew('Aura\View\Helper\Select'),
+    'select'      => $di->lazyNew('Aura\View\Helper\Form\Select'),
     'styles'      => $di->lazyNew('Aura\View\Helper\Styles'),
     'tag'         => $di->lazyNew('Aura\View\Helper\Tag'),
     'title'       => $di->lazyNew('Aura\View\Helper\Title'),
-    'textarea'    => $di->lazyNew('Aura\View\Helper\Textarea'),
+    'textarea'    => $di->lazyNew('Aura\View\Helper\Form\Textarea'),
     'ul'          => $di->lazyNew('Aura\View\Helper\Ul'),
 ];
 

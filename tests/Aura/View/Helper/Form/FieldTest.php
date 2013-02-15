@@ -1,16 +1,40 @@
 <?php
-namespace Aura\View\Helper;
+namespace Aura\View\Helper\Form;
+
+use Aura\View\Helper\AbstractHelperTest;
 
 class FieldTest extends AbstractHelperTest
 {
     protected function newField()
     {
-        return new Field(
-            new Input,
-            new Radios(new Input),
-            new Select,
-            new Textarea
-        );
+        return new Field([
+            'button'         => function () { return new Input\Generic; },
+            'checkbox'       => function () { return new Input\Checked; },
+            'color'          => function () { return new Input\Value; },
+            'date'           => function () { return new Input\Value; },
+            'datetime'       => function () { return new Input\Value; },
+            'datetime-local' => function () { return new Input\Value; },
+            'email'          => function () { return new Input\Value; },
+            'file'           => function () { return new Input\Generic; },
+            'hidden'         => function () { return new Input\Value; },
+            'image'          => function () { return new Input\Generic; },
+            'month'          => function () { return new Input\Value; },
+            'number'         => function () { return new Input\Value; },
+            'password'       => function () { return new Input\Value; },
+            'radio'          => function () { return new Input\Checked; },
+            'range'          => function () { return new Input\Value; },
+            'reset'          => function () { return new Input\Generic; },
+            'search'         => function () { return new Input\Value; },
+            'submit'         => function () { return new Input\Generic; },
+            'tel'            => function () { return new Input\Value; },
+            'text'           => function () { return new Input\Value; },
+            'time'           => function () { return new Input\Value; },
+            'url'            => function () { return new Input\Value; },
+            'week'           => function () { return new Input\Value; },
+            'radios'         => function () { return new Radios(new Input\Checked); },
+            'select'         => function () { return new Select; },
+            'textarea'       => function () { return new Textarea; },
+        ]);
     }
     
     public function testCheckbox()
@@ -22,9 +46,8 @@ class FieldTest extends AbstractHelperTest
                 'id' => null,
                 'type' => null,
                 'name' => null,
-            ],
-            'options' => [
-                'foo' => 'DOOM'
+                'value' => 'foo',
+                'label' => 'DOOM',
             ],
             'value' => 'foo',
         ];
@@ -51,6 +74,25 @@ class FieldTest extends AbstractHelperTest
         
         $field = $this->newField();
         $actual = $field($this->escape($spec));
+        $expect = '<input type="text" name="field_name" value="foo" />';
+        $this->assertSame($expect, $actual);
+    }
+    
+    public function testNoType()
+    {
+        $spec = $this->escape([
+            'name' => 'field_name',
+            'attribs' => [
+                'id' => null,
+                'type' => null,
+                'name' => null,
+            ],
+            'options' => [],
+            'value' => 'foo',
+        ]);
+        
+        $field = $this->newField();
+        $actual = $field($spec);
         $expect = '<input type="text" name="field_name" value="foo" />';
         $this->assertSame($expect, $actual);
     }
