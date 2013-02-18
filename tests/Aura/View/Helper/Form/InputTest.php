@@ -48,7 +48,7 @@ class InputTest extends AbstractHelperTest
             $this->escape('field value')
         );
         
-        $expect = "<input type=\"text\" value=\"field value\" />";
+        $expect = "<input type=\"text\" value=\"field value\" />" . PHP_EOL;
         $this->assertSame($expect, $actual);
         
         // no value given so attribute should still be there
@@ -59,7 +59,7 @@ class InputTest extends AbstractHelperTest
             ])
         );
         
-        $expect = "<input type=\"text\" value=\"field value\" />";
+        $expect = "<input type=\"text\" value=\"field value\" />" . PHP_EOL;
         $this->assertSame($expect, $actual);
     }
     
@@ -67,7 +67,7 @@ class InputTest extends AbstractHelperTest
     {
         $input = new Input\Value;
         $actual = $input->getField([]);
-        $expect = '<input type="text" />';
+        $expect = '<input type="text" />' . PHP_EOL;
         $this->assertSame($expect, $actual);
     }
     
@@ -87,7 +87,7 @@ class InputTest extends AbstractHelperTest
             $this->escape('field value')
         );
         
-        $expect = "<input type=\"$type\" value=\"field value\" />";
+        $expect = "<input type=\"$type\" value=\"field value\" />" . PHP_EOL;
         $this->assertSame($expect, $actual);
         
         // no value given so attribute should still be there
@@ -98,7 +98,7 @@ class InputTest extends AbstractHelperTest
             ])
         );
         
-        $expect = "<input type=\"$type\" value=\"field value\" />";
+        $expect = "<input type=\"$type\" value=\"field value\" />" . PHP_EOL;
         $this->assertSame($expect, $actual);
     }
     
@@ -119,7 +119,7 @@ class InputTest extends AbstractHelperTest
             $this->escape('yes')
         );
         
-        $expect = "<label><input type=\"$type\" value=\"yes\" checked=\"checked\" /> This is yes</label>";
+        $expect = "<label><input type=\"$type\" value=\"yes\" checked=\"checked\" /> This is yes</label>" . PHP_EOL;
         
         $this->assertSame($expect, $actual);
 
@@ -132,7 +132,7 @@ class InputTest extends AbstractHelperTest
             ]),
             $this->escape('no')
         );
-        $expect = "<label><input type=\"$type\" value=\"yes\" /> This is yes</label>";
+        $expect = "<label><input type=\"$type\" value=\"yes\" /> This is yes</label>" . PHP_EOL;
         $this->assertSame($expect, $actual);
         
         // no label
@@ -143,7 +143,7 @@ class InputTest extends AbstractHelperTest
             ]),
             $this->escape('no')
         );
-        $expect = "<input type=\"$type\" value=\"yes\" />";
+        $expect = "<input type=\"$type\" value=\"yes\" />" . PHP_EOL;
         $this->assertSame($expect, $actual);
         
         // label with "for"
@@ -156,7 +156,7 @@ class InputTest extends AbstractHelperTest
             ]),
             $this->escape('no')
         );
-        $expect = "<label for=\"input-yes\"><input id=\"input-yes\" type=\"$type\" value=\"yes\" /> This is yes</label>";
+        $expect = "<label for=\"input-yes\"><input id=\"input-yes\" type=\"$type\" value=\"yes\" /> This is yes</label>" . PHP_EOL;
         $this->assertSame($expect, $actual);
     }
     
@@ -176,7 +176,7 @@ class InputTest extends AbstractHelperTest
             $this->escape('should not be here')
         );
         
-        $expect = "<input type=\"$type\" value=\"button value\" />";
+        $expect = "<input type=\"$type\" value=\"button value\" />" . PHP_EOL;
         
         $this->assertSame($expect, $actual);
     }

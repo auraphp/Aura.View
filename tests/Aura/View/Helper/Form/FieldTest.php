@@ -54,7 +54,7 @@ class FieldTest extends AbstractHelperTest
         
         $field = $this->newField();
         $actual = $field($spec);
-        $expect = '<label><input type="checkbox" name="field_name" value="foo" checked="checked" /> DOOM</label>';
+        $expect = '<label><input type="checkbox" name="field_name" value="foo" checked="checked" /> DOOM</label>' . PHP_EOL;
         $this->assertSame($expect, $actual);
     }
     
@@ -74,7 +74,7 @@ class FieldTest extends AbstractHelperTest
         
         $field = $this->newField();
         $actual = $field($spec);
-        $expect = '<input type="text" name="field_name" value="foo" />';
+        $expect = '<input type="text" name="field_name" value="foo" />' . PHP_EOL;
         $this->assertSame($expect, $actual);
     }
     
@@ -93,7 +93,7 @@ class FieldTest extends AbstractHelperTest
         
         $field = $this->newField();
         $actual = $field($spec);
-        $expect = '<input type="text" name="field_name" value="foo" />';
+        $expect = '<input type="text" name="field_name" value="foo" />' . PHP_EOL;
         $this->assertSame($expect, $actual);
     }
     

@@ -49,7 +49,7 @@ class Generic extends AbstractHelper
     
     protected function exec()
     {
-        return $this->void('input', $this->attribs);
+        return $this->indent(0, $this->void('input', $this->attribs));
     }
     
     public function getField($spec)

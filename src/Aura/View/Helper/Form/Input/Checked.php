@@ -22,26 +22,25 @@ class Checked extends Generic
         }
         
         // get the HTML for the input
-        $html = parent::exec();
+        $html = $this->void('input', $this->attribs);
+
         
-        // if no label, we're done
-        if (! $label) {
-            return $html;
+        // label?
+        if ($label) {
+            $attribs = [];
+            if (isset($this->attribs['id'])) {
+                $attribs['for'] = $this->attribs['id'];
+            }
+        
+            if ($attribs) {
+                $attribs = $this->attribs($attribs);
+                $html = "<label {$attribs}>{$html} {$label}</label>";
+            } else {
+                $html = "<label>{$html} {$label}</label>";
+            }
         }
         
-        $attribs = [];
-        if (isset($this->attribs['id'])) {
-            $attribs['for'] = $this->attribs['id'];
-        }
-        
-        if ($attribs) {
-            $attribs = $this->attribs($attribs);
-            $html = "<label {$attribs}>{$html} {$label}</label>";
-        } else {
-            $html = "<label>{$html} {$label}</label>";
-        }
-        
-        // return input wrapped by label
-        return $html;
+        // return with indent
+        return $this->indent(0, $html);
     }
 }

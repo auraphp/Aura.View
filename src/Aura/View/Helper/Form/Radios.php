@@ -46,7 +46,7 @@ class Radios extends AbstractHelper
         $attribs,
         $options,
         $checked = null,
-        $separator = PHP_EOL
+        $separator = null
     ) {
         $input = $this->input;
         $attribs['type'] = 'radio';
