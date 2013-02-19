@@ -423,3 +423,288 @@ useful to name the service for the helper class.
 
 Please examine the classes in `Aura\View\Helper` for more complex and powerful
 examples.
+
+TwoStep View
+============
+
+Aura.View is a two step view. To make it possible you need to use the 
+`Aura\View\TwoStep`
+
+Instantiation
+=============
+
+```php
+use Aura\View\Template;
+use Aura\View\TemplateFinder;
+use Aura\View\HelperLocator;
+use Aura\View\TwoStep;
+use Aura\View\FormatTypes;
+
+$template = new Template(
+    new TemplateFinder,
+    new HelperLocator
+);
+$twostep = new TwoStep($template, new FormatTypes());
+```
+
+Setting and Getting Data
+========================
+Both the inner view and outer view share the same data.
+To set data we can use the `setData()` method and to get the data
+set to the view by `getData()`.
+
+```php
+$data = array(
+    'hello' => 'Hello World!',
+    'var'   => 'Another variable'
+);
+$twostep->setData($data);
+```
+
+Setting InnerView
+=================
+Sets inner view specification. 
+
+The specification may be:
+
+    - (string) A template file name.
+    
+    - (callable) A closure to execute; it should take no parameters.
+    - (array) An array where each element key is a .format name, and the 
+corresponding element value is a string or a callable. This type is
+most useful when allowing for multiple views using the same data.
+
+```php
+$twostep->setInnerView('inner.php');
+
+// or can be
+$view = $twostep;
+$twostep->setInnerView(
+    [
+        '.xml'  => 'hello.xml.php',
+        '.html' => 'hello.html.php',
+        '.json' => function () {
+            function() use ($view) {
+                return json_encode($view->getData());
+            }
+        },
+    ]
+);
+
+// or can be 
+
+$func = function() { return 'World!'; };
+$twostep->setInnerView($func);
+
+```
+
+Setting and Getting Inner View Path
+===================================
+
+We can set the template path of inner view via `setInnerPaths`
+or `addInnerPath`.
+
+The `setInnerPaths` method resets all the previous paths where as 
+`addInnerPath` add the path to the already existing inner paths.
+
+By using `getInnerPaths()` we get all the paths.
+
+```php
+$twostep->setInnerPaths(
+    [
+        'first', 
+        'second'
+    ]
+);
+
+$twostep->getInnerPaths();
+// This will return first, second and third.
+
+$twostep->addInnerPath('third');
+
+$twostep->getInnerPaths();
+// This will return first, second and third.
+
+$twostep->setInnerPaths('fourth');
+
+$twostep->getInnerPaths();
+// This will return fourth only replacing all the previous paths
+```
+
+Setting Outer View Template
+===========================
+
+Sets inner view specification. 
+
+The specification may be:
+
+    - (string) A template file name.
+    
+    - (callable) A closure to execute; it should take no parameters.
+    - (array) An array where each element key is a .format name, and the 
+corresponding element value is a string or a callable. This type is
+most useful when allowing for multiple views using the same data.
+
+```php
+$twostep->setInnerView('inner.php');
+
+// or can be
+$view = $twostep;
+$twostep->setInnerView(
+    [
+        '.xml'  => 'hello.xml.php',
+        '.html' => 'hello.html.php',
+        '.json' => function () {
+            function() use ($view) {
+                return json_encode($view->getData());
+            }
+        },
+    ]
+);
+
+// or can be 
+
+$func = function() { return 'World!'; };
+$twostep->setInnerView($func);
+
+```
+
+Setting and Getting Inner View Path
+===================================
+
+Like the same, the template path of outer view can be set 
+via `setOuterPaths` or `addOuterPath`.
+
+The `setOuterPaths` method accepts an array of path replacing 
+all the previous paths where as `addOuterPath` accepts a string and 
+add the path to the already existing outer paths.
+
+By using `getOuterPaths()` we get all the outer paths.
+
+```php
+$twostep->setOuterPaths(
+    [
+        'outer1', 
+        'outer2'
+    ]
+);
+
+$twostep->getOuterPaths();
+// This will return outer1 and outer2
+
+$twostep->addInnerPath('outer3');
+
+$twostep->getInnerPaths();
+// This will return outer1, outer2, outer3
+
+$twostep->setOuterPaths('outer4');
+
+$twostep->getInnerPaths();
+// This will return outer4 only replacing all the previous paths
+```
+
+Basic Usage
+===========
+
+Let us assume you have `default.html.php` in `outerview` directory.
+
+```php
+<html>
+<head>
+<?php
+    $this->title()->set($this->title);
+    echo $this->title()->get();
+?>
+</head>
+<body>
+    <div>Two step view example</div>
+    <?php echo $this->inner_view; ?>
+</body>
+</html>
+```
+
+Let us assume you have `hello.html.php` with the contents as below 
+in `innerview` directory.
+
+```php
+<div>Hello <?php echo $this->name; ?>, I am from Inner view :-)</div>
+```
+
+```php
+<?php
+require dirname(__DIR__) . '/aurasystem/package/Aura.View/src.php';
+
+use Aura\View\Template;
+use Aura\View\TemplateFinder;
+use Aura\View\HelperLocator;
+use Aura\View\TwoStep;
+use Aura\View\FormatTypes;
+use Aura\View\Helper\Title;
+
+$template = new Template(
+    new TemplateFinder,
+    new HelperLocator([
+        'title' => function () { return new Title; },
+    ])
+);
+$twostep = new TwoStep($template, new FormatTypes());
+
+$twostep->setInnerView([
+    '.html' => 'hello.html.php',
+    '.json' => function() use ($twostep) {
+        return json_encode($twostep->getData());
+    },
+]);
+
+$twostep->setOuterView([
+    '.html' => 'default.html.php',
+    '.json' => null
+]);
+
+$twostep->setInnerPaths([
+    __DIR__ . '/innerview'
+]);
+
+$twostep->addOuterPath(
+    __DIR__ . '/outerview'
+);
+
+$twostep->setData([
+    'title' => 'Hello my awesome title',
+    'name' => 'Hari KT',
+]);
+
+$twostep->setFormat('.html');
+
+$twostep->setAccept([
+    'text/html' => 1.0,
+    'application/json' => 0.9,
+]);
+
+$contents = $twostep->render();
+
+echo $contents;
+```
+Now when you execute the above code, you will see the two step view 
+rendered.
+
+```php
+<html>
+<head>
+<title>Hello my awesome title</title>
+</head>
+<body>
+    <div>Two step view example</div>
+    <div>Hello and welcome to Aura.View Hari KT, I am from Inner view :-)</div>
+</body>
+</html>
+```
+
+Now change the `setFormat` method to `.json` and see the rendered output.
+
+```php
+{"title":"Hello my awesome title","name":"Hari KT"}
+```
+
+You can always change the variable used in `outerview` via the 
+`setInnerViewVar` . By default it is `inner_view` that why we used it.
