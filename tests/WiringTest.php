@@ -91,8 +91,37 @@ class WiringTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Aura\View\Helper\Form\Input\Value',    $field->get('time'));
         $this->assertInstanceOf('Aura\View\Helper\Form\Input\Value',    $field->get('url'));
         $this->assertInstanceOf('Aura\View\Helper\Form\Input\Value',    $field->get('week'));
+        $this->assertInstanceOf('Aura\View\Helper\Form\Repeat',         $field->get('repeat'));
         $this->assertInstanceOf('Aura\View\Helper\Form\Radios',         $field->get('radios'));
         $this->assertInstanceOf('Aura\View\Helper\Form\Select',         $field->get('select'));
         $this->assertInstanceOf('Aura\View\Helper\Form\Textarea',       $field->get('textarea'));
+        
+        $repeat = $this->assertNewInstance('Aura\View\Helper\Form\Repeat');
+        $this->assertInstanceOf('Aura\View\Helper\Form\Input\Generic',  $repeat->get('button'));
+        $this->assertInstanceOf('Aura\View\Helper\Form\Input\Checked',  $repeat->get('checkbox'));
+        $this->assertInstanceOf('Aura\View\Helper\Form\Input\Value',    $repeat->get('color'));
+        $this->assertInstanceOf('Aura\View\Helper\Form\Input\Value',    $repeat->get('date'));
+        $this->assertInstanceOf('Aura\View\Helper\Form\Input\Value',    $repeat->get('datetime'));
+        $this->assertInstanceOf('Aura\View\Helper\Form\Input\Value',    $repeat->get('datetime-local'));
+        $this->assertInstanceOf('Aura\View\Helper\Form\Input\Value',    $repeat->get('email'));
+        $this->assertInstanceOf('Aura\View\Helper\Form\Input\Generic',  $repeat->get('file'));
+        $this->assertInstanceOf('Aura\View\Helper\Form\Input\Value',    $repeat->get('hidden'));
+        $this->assertInstanceOf('Aura\View\Helper\Form\Input\Generic',  $repeat->get('image'));
+        $this->assertInstanceOf('Aura\View\Helper\Form\Input\Value',    $repeat->get('month'));
+        $this->assertInstanceOf('Aura\View\Helper\Form\Input\Value',    $repeat->get('number'));
+        $this->assertInstanceOf('Aura\View\Helper\Form\Input\Value',    $repeat->get('password'));
+        $this->assertInstanceOf('Aura\View\Helper\Form\Input\Checked',  $repeat->get('radio'));
+        $this->assertInstanceOf('Aura\View\Helper\Form\Input\Value',    $repeat->get('range'));
+        $this->assertInstanceOf('Aura\View\Helper\Form\Input\Generic',  $repeat->get('reset'));
+        $this->assertInstanceOf('Aura\View\Helper\Form\Input\Value',    $repeat->get('search'));
+        $this->assertInstanceOf('Aura\View\Helper\Form\Input\Generic',  $repeat->get('submit'));
+        $this->assertInstanceOf('Aura\View\Helper\Form\Input\Value',    $repeat->get('tel'));
+        $this->assertInstanceOf('Aura\View\Helper\Form\Input\Value',    $repeat->get('text'));
+        $this->assertInstanceOf('Aura\View\Helper\Form\Input\Value',    $repeat->get('time'));
+        $this->assertInstanceOf('Aura\View\Helper\Form\Input\Value',    $repeat->get('url'));
+        $this->assertInstanceOf('Aura\View\Helper\Form\Input\Value',    $repeat->get('week'));
+        $this->assertInstanceOf('Aura\View\Helper\Form\Radios',         $repeat->get('radios'));
+        $this->assertInstanceOf('Aura\View\Helper\Form\Select',         $repeat->get('select'));
+        $this->assertInstanceOf('Aura\View\Helper\Form\Textarea',       $repeat->get('textarea'));
     }
 }
