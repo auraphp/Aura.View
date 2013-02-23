@@ -25,7 +25,7 @@ class Ul extends AbstractHelper
     
     protected $html = '';
     
-    public function __invoke(array $attribs = [])
+    public function __invoke($attribs = [])
     {
         $this->attribs = $attribs;
         $this->stack   = [];
@@ -38,13 +38,13 @@ class Ul extends AbstractHelper
         return 'ul';
     }
     
-    public function item($html, array $attribs = [])
+    public function item($html, $attribs = [])
     {
         $this->stack[] = [$html, $attribs];
         return $this;
     }
     
-    public function items(array $items, array $attribs = [])
+    public function items($items, array $attribs = [])
     {
         foreach ($items as $html) {
             $this->item($html, $attribs);
