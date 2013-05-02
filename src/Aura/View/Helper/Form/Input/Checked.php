@@ -5,13 +5,31 @@ class Checked extends Generic
 {
     protected function exec()
     {
-        // if there's no value to compare to, skip "checked"
-        if (isset($this->attribs['value']) && $this->value === $this->attribs['value']) {
-            // use strict equality so that there is no confusion between
-            // 0/'0'/false/null/''.
+        // the HTML to be returned
+        $html = '';
+        
+        // by default, the input is unchecked
+        $this->attribs['checked'] = null;
+        
+        // examine the 'value_unchecked' pseudo-attribute to see if there is
+        // there a value when unchecked
+        if (isset($this->attribs['value_unchecked'])) {
+            $attribs = [
+                'type' => 'hidden',
+                'value' => $this->attribs['value_unchecked'],
+            ];
+            $html .= $this->void('input', $attribs);
+            // remove the pseudo-attribute
+            $this->attribs['value_unchecked'] = null;
+        }
+        
+        // is the input checked? make sure there's a value to compare to, and
+        // use strict equality so that there is no confusion between
+        // 0/'0'/false/null/''.
+        $checked = isset($this->attribs['value'])
+                && $this->value === $this->attribs['value'];
+        if ($checked) {
             $this->attribs['checked'] = 'checked';
-        } else {
-            $this->attribs['checked'] = null;
         }
         
         // extract and retain the 'label' pseudo-attribute
@@ -21,11 +39,10 @@ class Checked extends Generic
             $this->attribs['label'] = null;
         }
         
-        // get the HTML for the input
-        $html = $this->void('input', $this->attribs);
-
+        // add the HTML for the input
+        $html .= $this->void('input', $this->attribs);
         
-        // label?
+        // is there a label?
         if ($label) {
             $attribs = [];
             if (isset($this->attribs['id'])) {
