@@ -118,9 +118,7 @@ class InputTest extends AbstractHelperTest
             ]),
             $this->escape('yes')
         );
-        
         $expect = "<label><input type=\"$type\" value=\"yes\" checked=\"checked\" /> This is yes</label>" . PHP_EOL;
-        
         $this->assertSame($expect, $actual);
 
         // value should not be checked
@@ -133,6 +131,32 @@ class InputTest extends AbstractHelperTest
             $this->escape('no')
         );
         $expect = "<label><input type=\"$type\" value=\"yes\" /> This is yes</label>" . PHP_EOL;
+        $this->assertSame($expect, $actual);
+        
+        // value should be checked, with unchecked value available
+        $actual = $input(
+            $this->escape([
+                'type' => $type,
+                'value' => 'yes',
+                'value_unchecked' => 'no',
+                'label' => 'This is yes'
+            ]),
+            $this->escape('yes')
+        );
+        $expect = "<label><input type=\"hidden\" value=\"no\" /><input type=\"$type\" value=\"yes\" checked=\"checked\" /> This is yes</label>" . PHP_EOL;
+        $this->assertSame($expect, $actual);
+
+        // value should not be checked, with unchecked value available
+        $actual = $input(
+            $this->escape([
+                'type' => $type,
+                'value' => 'yes',
+                'value_unchecked' => 'no',
+                'label' => 'This is yes'
+            ]),
+            $this->escape('no')
+        );
+        $expect = "<label><input type=\"hidden\" value=\"no\" /><input type=\"$type\" value=\"yes\" /> This is yes</label>" . PHP_EOL;
         $this->assertSame($expect, $actual);
         
         // no label
@@ -158,6 +182,9 @@ class InputTest extends AbstractHelperTest
         );
         $expect = "<label for=\"input-yes\"><input id=\"input-yes\" type=\"$type\" value=\"yes\" /> This is yes</label>" . PHP_EOL;
         $this->assertSame($expect, $actual);
+        
+        // unchecked
+        
     }
     
     /**
