@@ -40,6 +40,15 @@ class Textarea extends AbstractHelper
         return "<textarea {$attribs}>$value</textarea>";
     }
     
+    /**
+     * 
+     * Given a field specification, returns a textarea tag.
+     * 
+     * @param array $spec The field specification.
+     * 
+     * @return string
+     * 
+     */
     public function getField($spec)
     {
         $attribs = isset($spec['attribs'])

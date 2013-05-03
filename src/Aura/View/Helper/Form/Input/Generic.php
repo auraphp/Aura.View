@@ -1,8 +1,24 @@
 <?php
+/**
+ * 
+ * This file is part of the Aura Project for PHP.
+ * 
+ * @package Aura.View
+ * 
+ * @license http://opensource.org/licenses/bsd-license.php BSD
+ * 
+ */
 namespace Aura\View\Helper\Form\Input;
 
 use Aura\View\Helper\AbstractHelper;
 
+/**
+ * 
+ * Helper to generate a generic input field.
+ * 
+ * @package Aura.View
+ * 
+ */
 class Generic extends AbstractHelper
 {
     /**
@@ -47,11 +63,15 @@ class Generic extends AbstractHelper
         return $this->exec();
     }
     
-    protected function exec()
-    {
-        return $this->indent(0, $this->void('input', $this->attribs));
-    }
-    
+    /**
+     * 
+     * Returns the input field HTML based on a field specification.
+     * 
+     * @param array $spec A field specification.
+     * 
+     * @return string
+     * 
+     */
     public function getField($spec)
     {
         $attribs = isset($spec['attribs'])
@@ -76,5 +96,17 @@ class Generic extends AbstractHelper
         
         // build the html
         return $this->__invoke($attribs, $value);
+    }
+    
+    /**
+     * 
+     * Returns the input field HTML.
+     * 
+     * @return string
+     * 
+     */
+    protected function exec()
+    {
+        return $this->indent(0, $this->void('input', $this->attribs));
     }
 }

@@ -22,6 +22,13 @@ use Aura\View\Helper\Form\Input\Checked;
  */
 class Radios extends AbstractHelper
 {
+    /**
+     * 
+     * Constructor.
+     * 
+     * @param Checked $input A checked-input helper for generating buttons.
+     * 
+     */
     public function __construct(Checked $input)
     {
         $this->input = $input;
@@ -29,15 +36,16 @@ class Radios extends AbstractHelper
     
     /**
      * 
-     * Return mulitple radio fields `<input type="radio" />`
+     * Returns mulitple radio input fields.
      * 
-     * @param array $attribs
+     * @param array $attribs The base attributes for the radios.
      * 
-     * @param array $options
+     * @param array $options The radio values and labels.
      * 
-     * @param bool $checked Default to null,
+     * @param bool $checked Which radio value should be checked.
      * 
-     * @param string $separator Defaults to PHP_EOL
+     * @param string $separator The separator string to use between each
+     * radio.
      * 
      * @return string
      * 
@@ -59,6 +67,15 @@ class Radios extends AbstractHelper
         return $html;
     }
     
+    /**
+     * 
+     * Returns the input field HTML based on a field specification.
+     * 
+     * @param array $spec A field specification.
+     * 
+     * @return string
+     * 
+     */
     public function getField($spec)
     {
         $attribs = isset($spec['attribs'])

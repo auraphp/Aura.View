@@ -19,9 +19,15 @@ namespace Aura\View\Helper;
  */
 class Ol extends Ul
 {
+    /**
+     * 
+     * Returns the tag name.
+     * 
+     * @return string
+     * 
+     */
     public function getTag()
     {
         return 'ol';
     }
-    
 }
