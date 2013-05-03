@@ -42,7 +42,7 @@ class Links extends AbstractHelper
 
     /**
      * 
-     * Adda a <link ... /> tag to the stack.
+     * Adda a <link ... > tag to the stack.
      * 
      * @param array $attribs Attributes for the <link> tag.
      * 
@@ -51,8 +51,7 @@ class Links extends AbstractHelper
      */
     public function add($attribs = [])
     {
-        $attr = $this->attribs($attribs);
-        $this->links[] = "<link $attr />";
+        $this->links[] = $this->void('link', $attribs);
     }
 
     /**
@@ -64,8 +63,6 @@ class Links extends AbstractHelper
      */
     public function get()
     {
-        return $this->indent
-             . implode(PHP_EOL . $this->indent, $this->links)
-             . PHP_EOL;
+        return $this->indent(1, implode(PHP_EOL . $this->indent, $this->links));
     }
 }

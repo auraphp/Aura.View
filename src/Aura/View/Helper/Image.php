@@ -37,11 +37,11 @@ class Image extends AbstractHelper
      */
     public function __invoke($src, $attribs = [])
     {
-        unset($attribs['src']);
+        $attribs['src'] = $src;
         if (empty($attribs['alt'])) {
             $attribs['alt'] = basename($src);
         }
 
-        return "<img src=\"{$src}\" " . $this->attribs($attribs) . ' />';
+        return $this->void('img', $attribs);
     }
 }

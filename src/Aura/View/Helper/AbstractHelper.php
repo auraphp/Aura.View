@@ -30,6 +30,15 @@ abstract class AbstractHelper
 
     /**
      * 
+     * The current indent level.
+     * 
+     * @var int
+     * 
+     */
+    protected $indent_level = 0;
+    
+    /**
+     * 
      * Sets the string to use for one level of indentation.
      * 
      * @param string $indent The indent string.
@@ -40,6 +49,21 @@ abstract class AbstractHelper
     public function setIndent($indent)
     {
         $this->indent = $indent;
+    }
+    
+    /**
+     * 
+     * Sets the indent level.
+     * 
+     * @param int $indent_level The indent level.
+     * 
+     * @return self
+     * 
+     */
+    public function setIndentLevel($indent_level)
+    {
+        $this->indent_level = (int) $indent_level;
+        return $this;
     }
 
     /**
@@ -69,15 +93,14 @@ abstract class AbstractHelper
                 continue;
             }
 
+            // skip null and false values
+            if ($val === null || $val === false) {
+                continue;
+            }
+
             // space-separate multiple values
             if (is_array($val)) {
                 $val = implode(' ', $val);
-            }
-
-            // skip empty values; use a string cast and strict equality to
-            // make sure that a string zero is not counted as an empty value.
-            if ((string) $val === '') {
-                continue;
             }
 
             // add to the attributes
@@ -90,5 +113,40 @@ abstract class AbstractHelper
 
         // done
         return implode(' ', $html);
+    }
+    
+    /**
+     * 
+     * Returns a "void" tag (i.e., one with no body and no closing tag).
+     * 
+     * @param string $tag The tag name.
+     * 
+     * @param array $attribs The attributes for the tag.
+     * 
+     * @return string
+     * 
+     */
+    protected function void($tag, $attribs)
+    {
+        $attr = $this->attribs($attribs);
+        $html = "<{$tag} {$attr} />";
+        return $html;
+    }
+    
+    /**
+     * 
+     * Returns an indented string.
+     * 
+     * @param int $level Indent to this level past the current level.
+     * 
+     * @param string $text The string to indent.
+     * 
+     * @return string The indented string.
+     * 
+     */
+    protected function indent($level, $text)
+    {
+        $level += $this->indent_level;
+        return str_repeat($this->indent, $level) . $text . PHP_EOL;
     }
 }

@@ -18,7 +18,7 @@ class LinksTest extends AbstractHelperTest
     {
         $links = new Links;
         
-        $escaper = $this->escaper_factory->newInstance((object) [
+        $escaper = $this->escape((object) [
             'prev' => [
                 'rel' => 'prev',
                 'href' => '/path/to/prev?this&that',
@@ -47,7 +47,7 @@ class LinksTest extends AbstractHelperTest
         $links = new Links;
         $links->setIndent('  ');
         
-        $escaper = $this->escaper_factory->newInstance((object) [
+        $escaper = $this->escape((object) [
             'prev' => [
                 'rel' => 'prev',
                 'href' => '/path/to/prev?this&that',

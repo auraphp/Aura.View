@@ -41,21 +41,6 @@ class EscaperFactory
 
     /**
      * 
-     * Constructor.
-     * 
-     * @param string $quotes The type of quotes for htmlspecialchars().
-     * 
-     * @param string $charset The character set to use for htmlspecialchars().
-     * 
-     */
-    public function __construct($quotes = ENT_QUOTES, $charset = 'UTF-8')
-    {
-        $this->quotes = $quotes;
-        $this->charset = $charset;
-    }
-
-    /**
-     * 
      * Returns a new instance of an escaper object.
      * 
      * @param mixed $spec The object to escape.

@@ -9,7 +9,7 @@ class AnchorTest extends AbstractHelperTest
 {
     public function test__invoke()
     {
-        $escaper = $this->escaper_factory->newInstance((object) [
+        $escaper = $this->escape((object) [
             'href' => '/path/to/script.php?foo=bar&zim=gir',
             'text' => '<this>',
         ]);
@@ -22,7 +22,7 @@ class AnchorTest extends AbstractHelperTest
     
     public function testWithAttribs()
     {
-        $escaper = $this->escaper_factory->newInstance((object) [
+        $escaper = $this->escape((object) [
             'href' => '/path/to/script.php',
             'text' => 'foo',
             'attribs' => ['bar' => 'baz', 'href' => 'skip-me'],

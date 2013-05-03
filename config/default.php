@@ -1,78 +1,167 @@
 <?php
 /**
- * Package prefix for autoloader.
+ * Loader
  */
 $loader->add('Aura\View\\', dirname(__DIR__) . DIRECTORY_SEPARATOR . 'src');
 
 /**
- * Instance params and setter values.
+ * Aura\View\Helper\DateTime
  */
+$di->params['Aura\View\Helper\Datetime']['format'] = [
+    'date' => 'Y-m-d H:i:s',
+    'time' => 'H:i:s',
+    'datetime' => 'Y-m-d H:i:s',
+    'default' => 'Y-m-d H:i:s',
+];
 
-// params for Template instances
-$di->params['Aura\View\Template']['escaper_factory'] = $di->lazyNew('Aura\View\EscaperFactory');
-$di->params['Aura\View\Template']['helper_locator'] = $di->lazyNew('Aura\View\HelperLocator');
-$di->params['Aura\View\Template']['template_finder'] = $di->lazyNew('Aura\View\TemplateFinder');
+/**
+ * Aura\View\Helper\Escape
+ */
+$di->params['Aura\View\Helper\Escape'] = [
+    'escaper_factory' => $di->lazyNew('Aura\View\EscaperFactory'),
+];
 
-// params for TwoStep instances
-$di->params['Aura\View\TwoStep']['template'] = $di->lazyNew('Aura\View\Template');
-$di->params['Aura\View\TwoStep']['format_types'] = $di->lazyNew('Aura\View\FormatTypes');
+/**
+ * Aura\View\Helper\Form\Field
+ */
+$di->params['Aura\View\Helper\Form\Field']['registry'] = [
+    'button'         => $di->lazyNew('Aura\View\Helper\Form\Input\Generic'),
+    'checkbox'       => $di->lazyNew('Aura\View\Helper\Form\Input\Checked'),
+    'color'          => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'date'           => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'datetime'       => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'datetime-local' => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'email'          => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'file'           => $di->lazyNew('Aura\View\Helper\Form\Input\Generic'),
+    'hidden'         => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'image'          => $di->lazyNew('Aura\View\Helper\Form\Input\Generic'),
+    'month'          => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'number'         => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'password'       => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'radio'          => $di->lazyNew('Aura\View\Helper\Form\Input\Checked'),
+    'range'          => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'reset'          => $di->lazyNew('Aura\View\Helper\Form\Input\Generic'),
+    'search'         => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'submit'         => $di->lazyNew('Aura\View\Helper\Form\Input\Generic'),
+    'tel'            => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'text'           => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'time'           => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'url'            => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'week'           => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'radios'         => $di->lazyNew('Aura\View\Helper\Form\Radios'),
+    'select'         => $di->lazyNew('Aura\View\Helper\Form\Select'),
+    'textarea'       => $di->lazyNew('Aura\View\Helper\Form\Textarea'),
+    'repeat'         => $di->lazyNew('Aura\View\Helper\Form\Repeat'),
+];
 
-// date-time formats
-$di->params['Aura\View\Helper\Datetime']['format']['date'] = 'Y-m-d H:i:s';
-$di->params['Aura\View\Helper\Datetime']['format']['time'] = 'H:i:s';
-$di->params['Aura\View\Helper\Datetime']['format']['datetime'] = 'Y-m-d H:i:s';
-$di->params['Aura\View\Helper\Datetime']['format']['default'] = 'Y-m-d H:i:s';
+/**
+ * Aura\View\Helper\Form\Input
+ */
+$di->params['Aura\View\Helper\Form\Input']['registry'] = [
+    'button'         => $di->lazyNew('Aura\View\Helper\Form\Input\Generic'),
+    'checkbox'       => $di->lazyNew('Aura\View\Helper\Form\Input\Checked'),
+    'color'          => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'date'           => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'datetime'       => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'datetime-local' => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'email'          => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'file'           => $di->lazyNew('Aura\View\Helper\Form\Input\Generic'),
+    'hidden'         => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'image'          => $di->lazyNew('Aura\View\Helper\Form\Input\Generic'),
+    'month'          => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'number'         => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'password'       => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'radio'          => $di->lazyNew('Aura\View\Helper\Form\Input\Checked'),
+    'range'          => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'reset'          => $di->lazyNew('Aura\View\Helper\Form\Input\Generic'),
+    'search'         => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'submit'         => $di->lazyNew('Aura\View\Helper\Form\Input\Generic'),
+    'tel'            => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'text'           => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'time'           => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'url'            => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'week'           => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
+];
 
-// escaping
-$di->params['Aura\View\Helper\Escape']['escaper_factory'] = $di->lazyNew('Aura\View\EscaperFactory');
+/**
+ * Aura\View\Helper\Repeat
+ */
+$di->params['Aura\View\Helper\Form\Repeat']['registry'] = [
+    'button'         => $di->lazyNew('Aura\View\Helper\Form\Input\Generic'),
+    'checkbox'       => $di->lazyNew('Aura\View\Helper\Form\Input\Checked'),
+    'color'          => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'date'           => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'datetime'       => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'datetime-local' => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'email'          => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'file'           => $di->lazyNew('Aura\View\Helper\Form\Input\Generic'),
+    'hidden'         => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'image'          => $di->lazyNew('Aura\View\Helper\Form\Input\Generic'),
+    'month'          => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'number'         => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'password'       => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'radio'          => $di->lazyNew('Aura\View\Helper\Form\Input\Checked'),
+    'range'          => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'reset'          => $di->lazyNew('Aura\View\Helper\Form\Input\Generic'),
+    'search'         => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'submit'         => $di->lazyNew('Aura\View\Helper\Form\Input\Generic'),
+    'tel'            => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'text'           => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'time'           => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'url'            => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'week'           => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'radios'         => $di->lazyNew('Aura\View\Helper\Form\Radios'),
+    'select'         => $di->lazyNew('Aura\View\Helper\Form\Select'),
+    'textarea'       => $di->lazyNew('Aura\View\Helper\Form\Textarea'),
+];
 
-// params for HelperLocator instances. cannot use lazyNew for these as the
-// helper locator won't recognize the Lazy object.
-$di->params['Aura\View\HelperLocator']['registry']['anchor'] = function () use ($di) {
-    return $di->newInstance('Aura\View\Helper\Anchor');
-};
+/**
+ * Aura\View\Helper\Radios
+ */
+$di->params['Aura\View\Helper\Form\Radios'] = [
+    'input' => $di->lazyNew('Aura\View\Helper\Form\Input\Checked'),
+];
 
-$di->params['Aura\View\HelperLocator']['registry']['attribs'] = function () use ($di) {
-    return $di->newInstance('Aura\View\Helper\Attribs');
-};
+/**
+ * Aura\View\HelperLocator
+ */
+$di->params['Aura\View\HelperLocator']['registry'] = [
+    'anchor'      => $di->lazyNew('Aura\View\Helper\Anchor'),
+    'attribs'     => $di->lazyNew('Aura\View\Helper\Attribs'),
+    'base'        => $di->lazyNew('Aura\View\Helper\Base'),
+    'datetime'    => $di->lazyNew('Aura\View\Helper\Datetime'),
+    'escape'      => $di->lazyNew('Aura\View\Helper\Escape'),
+    'field'       => $di->lazyNew('Aura\View\Helper\Form\Field'),
+    'image'       => $di->lazyNew('Aura\View\Helper\Image'),
+    'input'       => $di->lazyNew('Aura\View\Helper\Form\Input'),
+    'links'       => $di->lazyNew('Aura\View\Helper\Links'),
+    'metas'       => $di->lazyNew('Aura\View\Helper\Metas'),
+    'ol'          => $di->lazyNew('Aura\View\Helper\Ol'),
+    'radios'      => $di->lazyNew('Aura\View\Helper\Form\Radios'),
+    'repeat'      => $di->lazyNew('Aura\View\Helper\Form\Repeat'),
+    'scripts'     => $di->lazyNew('Aura\View\Helper\Scripts'),
+    'scriptsFoot' => $di->lazyNew('Aura\View\Helper\Scripts'),
+    'select'      => $di->lazyNew('Aura\View\Helper\Form\Select'),
+    'styles'      => $di->lazyNew('Aura\View\Helper\Styles'),
+    'tag'         => $di->lazyNew('Aura\View\Helper\Tag'),
+    'title'       => $di->lazyNew('Aura\View\Helper\Title'),
+    'textarea'    => $di->lazyNew('Aura\View\Helper\Form\Textarea'),
+    'ul'          => $di->lazyNew('Aura\View\Helper\Ul'),
+];
 
-$di->params['Aura\View\HelperLocator']['registry']['base'] = function () use ($di) {
-    return $di->newInstance('Aura\View\Helper\Base');
-};
+/**
+ * Aura\View\Template
+ */
+$di->params['Aura\View\Template'] = [
+    'escaper_factory' => $di->lazyNew('Aura\View\EscaperFactory'),
+    'helper_locator'  => $di->lazyNew('Aura\View\HelperLocator'),
+    'template_finder' => $di->lazyNew('Aura\View\TemplateFinder'),
+];
 
-$di->params['Aura\View\HelperLocator']['registry']['datetime'] = function () use ($di) {
-    return $di->newInstance('Aura\View\Helper\Datetime');
-};
-
-$di->params['Aura\View\HelperLocator']['registry']['escape'] = function () use ($di) {
-    return $di->newInstance('Aura\View\Helper\Escape');
-};
-
-$di->params['Aura\View\HelperLocator']['registry']['image'] = function () use ($di) {
-    return $di->newInstance('Aura\View\Helper\Image');
-};
-
-$di->params['Aura\View\HelperLocator']['registry']['links'] = function () use ($di) {
-    return $di->newInstance('Aura\View\Helper\Links');
-};
-
-$di->params['Aura\View\HelperLocator']['registry']['metas'] = function () use ($di) {
-    return $di->newInstance('Aura\View\Helper\Metas');
-};
-
-$di->params['Aura\View\HelperLocator']['registry']['scripts'] = function () use ($di) {
-    return $di->newInstance('Aura\View\Helper\Scripts');
-};
-
-$di->params['Aura\View\HelperLocator']['registry']['scriptsFoot'] = function () use ($di) {
-    return $di->newInstance('Aura\View\Helper\Scripts');
-};
-
-$di->params['Aura\View\HelperLocator']['registry']['styles'] = function () use ($di) {
-    return $di->newInstance('Aura\View\Helper\Styles');
-};
-
-$di->params['Aura\View\HelperLocator']['registry']['title'] = function () use ($di) {
-    return $di->newInstance('Aura\View\Helper\Title');
-};
-
+/**
+ * Aura\View\TwoStep
+ */
+$di->params['Aura\View\TwoStep'] = [
+    'template'     => $di->lazyNew('Aura\View\Template'),
+    'format_types' => $di->lazyNew('Aura\View\FormatTypes'),
+];

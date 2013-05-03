@@ -72,8 +72,50 @@ class Styles extends AbstractHelper
         unset($attribs['type']);
         unset($attribs['media']);
 
-        $attr = $this->attribs(array_merge($base, (array) $attribs));
-        $tag = "<link $attr />";
+        $attribs = array_merge($base, (array) $attribs);
+        $tag = $this->void('link', $attribs);
+        $this->styles[$tag] = $pos;
+    }
+
+    /**
+     * 
+     * Adds a conditional `<!--[if ...]><link rel="stylesheet" ... /><![endif] -->` 
+     * tag to the stack.
+     * 
+     * @param string $exp The conditional expression for the stylesheet.
+     * 
+     * @param string $href The source href for the stylesheet.
+     * 
+     * @param array $attribs Additional attributes for the <link> tag.
+     * 
+     * @param string $pos The stylesheet position in the stack.
+     * 
+     * @return void
+     * 
+     */
+    public function addCond($exp, $href, $attribs = [], $pos = 100)
+    {
+        $base = [
+            'rel'   => 'stylesheet',
+            'href'  => $href,
+            'type'  => 'text/css',
+        ];
+
+        if (! isset($attribs['media'])) {
+            $base['media'] = 'screen';
+        } else {
+            $base['media'] = $attribs['media'];
+        }
+
+        unset($attribs['rel']);
+        unset($attribs['href']);
+        unset($attribs['type']);
+        unset($attribs['media']);
+
+        $attribs = array_merge($base, (array) $attribs);
+        $tag = "<!--[if $exp]>"
+             . $this->void('link', $attribs)
+             . "<![endif]-->";
         $this->styles[$tag] = $pos;
     }
 

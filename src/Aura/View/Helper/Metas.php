@@ -42,7 +42,7 @@ class Metas extends AbstractHelper
 
     /**
      * 
-     * Returns a <meta ... /> tag.
+     * Returns a `<meta ...>` tag.
      * 
      * @param array $attribs Attributes for the <link> tag.
      * 
@@ -53,13 +53,12 @@ class Metas extends AbstractHelper
      */
     public function add($attribs = [], $pos = 100)
     {
-        $attr = $this->attribs($attribs);
-        $this->metas[(int) $pos][] = "<meta $attr />";
+        $this->metas[(int) $pos][] = $this->void('meta', $attribs);
     }
 
     /**
      * 
-     * Returns a <meta http-equiv="" content="" /> tag.
+     * Returns a `<meta http-equiv="" content="">` tag.
      * 
      * @param string $http_equiv The http-equiv type.
      * 
@@ -82,7 +81,7 @@ class Metas extends AbstractHelper
 
     /**
      * 
-     * Returns a <meta name="" content="" /> tag.
+     * Returns a `<meta name="" content="">` tag.
      * 
      * @param string $name The name value.
      * 
@@ -105,9 +104,9 @@ class Metas extends AbstractHelper
 
     /**
      * 
-     * Returns the stack of <meta ... /> tags as a single block.
+     * Returns the stack of `<meta ...>` tags as a single block.
      * 
-     * @return string The <meta ... /> tags.
+     * @return string The `<meta ...>` tags.
      * 
      */
     public function get()
@@ -116,7 +115,7 @@ class Metas extends AbstractHelper
         ksort($this->metas);
         foreach ($this->metas as $list) {
             foreach ($list as $meta) {
-                $html .= $this->indent . $meta . PHP_EOL;
+                $html .= $this->indent(1, $meta);
             }
         }
         return $html;
