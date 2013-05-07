@@ -306,12 +306,12 @@ abstract class AbstractTemplate
      * 
      * Fetches the output from a template.
      * 
-     * @param string $name__ The template name to use.
+     * @param string $__name__ The template name to use.
      * 
      * @return string
      * 
      */
-    abstract public function fetch($name__);
+    abstract public function fetch($__name__);
 
     /**
      * 
