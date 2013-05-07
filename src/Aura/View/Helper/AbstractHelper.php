@@ -28,6 +28,13 @@ abstract class AbstractHelper
      */
     protected $indent = '    ';
 
+    /**
+     * 
+     * The current indent level.
+     * 
+     * @var int
+     * 
+     */
     protected $indent_level = 0;
     
     /**
@@ -44,6 +51,15 @@ abstract class AbstractHelper
         $this->indent = $indent;
     }
     
+    /**
+     * 
+     * Sets the indent level.
+     * 
+     * @param int $indent_level The indent level.
+     * 
+     * @return self
+     * 
+     */
     public function setIndentLevel($indent_level)
     {
         $this->indent_level = (int) $indent_level;
@@ -99,6 +115,17 @@ abstract class AbstractHelper
         return implode(' ', $html);
     }
     
+    /**
+     * 
+     * Returns a "void" tag (i.e., one with no body and no closing tag).
+     * 
+     * @param string $tag The tag name.
+     * 
+     * @param array $attribs The attributes for the tag.
+     * 
+     * @return string
+     * 
+     */
     protected function void($tag, $attribs)
     {
         $attr = $this->attribs($attribs);
@@ -106,6 +133,17 @@ abstract class AbstractHelper
         return $html;
     }
     
+    /**
+     * 
+     * Returns an indented string.
+     * 
+     * @param int $level Indent to this level past the current level.
+     * 
+     * @param string $text The string to indent.
+     * 
+     * @return string The indented string.
+     * 
+     */
     protected function indent($level, $text)
     {
         $level += $this->indent_level;

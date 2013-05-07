@@ -1,9 +1,14 @@
-- [FIX] In scripts/instance.php, pass an EscaperFactory.
+- [NEW] Form helpers: field, input, radios, repeat, select, and textarea.
 
-- [FIX] #15: https://github.com/auraphp/Aura.View/issues/15
+- [NEW] List helpers: ul and ol.
 
-- [CHG] TemplateFinder now uses is_readable() instead of SplFileObject, to
-  help with testing using streams.
-  
-- [CHG] Renamed protected method TemplateFinder::fileExists() to exists(),
-  because streams may not be files proper.
+- [NEW] Generic tag helper.
+
+- [ADD] AbstractHelper methods indent(), setIndentLevel(), and void().
+
+- [ADD] Method addCond() to the styles helper, to add a conditional style.
+
+- [CHG] Disallow easy changing of quotes and charset via constructor; always
+  go with ENT_QUOTES and UTF-8
+
+- [CHG] Registry entries *must* be wrapped in a callable from now on

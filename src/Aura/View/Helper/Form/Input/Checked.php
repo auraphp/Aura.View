@@ -1,8 +1,32 @@
 <?php
+/**
+ * 
+ * This file is part of the Aura Project for PHP.
+ * 
+ * @package Aura.View
+ * 
+ * @license http://opensource.org/licenses/bsd-license.php BSD
+ * 
+ */
 namespace Aura\View\Helper\Form\Input;
 
+/**
+ * 
+ * Helper to generate an input field that uses a "checked" attribute (e.g.,
+ * radio buttons or checkboxes).
+ * 
+ * @package Aura.View
+ * 
+ */
 class Checked extends Generic
 {
+    /**
+     * 
+     * Returns HTML for an input field that uses a "checked" attribute.
+     * 
+     * @return string
+     * 
+     */
     protected function exec()
     {
         // the HTML to be returned

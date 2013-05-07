@@ -14,13 +14,22 @@ use Aura\View\HelperLocator;
 
 /**
  * 
- * Helper to generate repeated form field elements.
+ * A locator to generate a repeated form field element.
  * 
  * @package Aura.View
  * 
  */
 class Repeat extends HelperLocator
 {
+    /**
+     * 
+     * Given a field specification, returns a repeated field input.
+     * 
+     * @param array $spec The field specification.
+     * 
+     * @return string
+     * 
+     */
     public function __invoke($spec)
     {
         $trav = $spec instanceof \Traversable;

@@ -14,13 +14,22 @@ use Aura\View\HelperLocator;
 
 /**
  * 
- * Helper to generate form field elements.
+ * A locator to generate form field elements.
  * 
  * @package Aura.View
  * 
  */
 class Field extends HelperLocator
 {
+    /**
+     * 
+     * Given a field specification, returns an object of the specified type.
+     * 
+     * @param array $spec The field specification.
+     * 
+     * @return object
+     * 
+     */
     public function __invoke($spec)
     {
         if (! isset($spec['type']) || ! $spec['type']) {
