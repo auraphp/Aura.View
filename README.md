@@ -581,7 +581,7 @@ examples.
 Two Step View
 =============
 
-Aura.View suppoers the two step view pattern via the `TwoStep` class.
+Aura.View supports the two step view pattern via the `TwoStep` class.
 
 Instantiation
 -------------
