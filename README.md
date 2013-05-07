@@ -490,23 +490,18 @@ they are included from.
 Template Partials
 -----------------
 
-Template partials are a scope-separated way of splitting up templates. We can
-`fetch()` other templates from within a template; template scripts that are
-fetched in this way will *not* share the scope of the template they are called
-from (although `$this` will still be available). In addition, we can pass an
-array of variables to be [`extract`](http://php.net/extract)ed into the
-partial template.
-
-For example, given the following partial template ...
+Template partials are a scope-separated way of splitting up templates. In
+doing so, we can pass an array of variables to be used in the partial
+template; they will be available under `$this` **in place of** the parent
+template variables. For example, given the following partial template ...
 
 ```php
 <?php
 // partial template named '_item.php'.
-// note that we use $item, not $this->item.
-echo "    <li>{$item}</li>" . PHP_EOL;
+echo "    <li>{$this->item}</li>" . PHP_EOL;
 ```
 
-... we can `fetch()` it from within another template:
+... we can use it from within another template as a partial:
 
 ```php
 <?php
@@ -514,12 +509,18 @@ echo "    <li>{$item}</li>" . PHP_EOL;
 foreach ($this->list as $item) {
     $template_name = '_item';
     $template_vars = ['item' => $item];
-    echo $this->fetch($template_name, $template_vars);
+    echo $this->partial($template_name, $template_vars);
 }
 ```
 
 That will run the `$template_name` template script in a separate scope, and
-extract the `$template_vars` array within that separate scope.
+the `$template_vars` array will be available as `$this` properties within that
+separate scope.
+
+> N.b.: We can also `fetch()` other templates from within a template;
+> template scripts that are fetched in this way will *not* share the scope
+> of the template they are called from (although `$this` will still be
+> available).
 
 
 Writing Helpers
