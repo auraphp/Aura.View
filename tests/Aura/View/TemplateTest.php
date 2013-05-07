@@ -206,6 +206,87 @@ class TemplateTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($expect, $actual);
     }
     
+    public function testPartialObject()
+    {
+        // the template file
+        $templateFile = 'root' . DIRECTORY_SEPARATOR
+              . 'templates' . DIRECTORY_SEPARATOR
+              . 'template.php';
+        $templateFile = Vfs::url($templateFile);
+
+        $partialFile  = 'root' . DIRECTORY_SEPARATOR
+              . 'templates' . DIRECTORY_SEPARATOR
+              . '_many.php';
+        $partialFile  = Vfs::url($partialFile);
+
+        // the template code
+        $code = '<?php
+$form = $this->__raw()->form;
+$data = [
+    \'form\' => $form,
+    \'name\' => \'Hari\'
+];
+echo $this->partial(\'_many\', $data);
+?>';
+
+        // put it in place
+        $templateDir = dirname($templateFile);
+        mkdir($templateDir, 0777, true);
+        file_put_contents($templateFile, $code);
+        // the partial code
+        $code = '<?php
+echo \'name : \' . $name . PHP_EOL;
+$field = $this->form->getField(\'name\');
+echo \'field : \'. $field;
+?>';
+
+        file_put_contents($partialFile, $code);
+$code = '<?php
+class Form
+{
+    public function __construct()
+    {
+        $this->field = new Field();
+    }
+
+    public function getField($name)
+    {
+        return $this->field->toArray($name);
+    }
+}
+
+class Field
+{
+    public function toArray($name)
+    {
+        return $name;
+    }
+}
+';
+        $formFile = 'root' . DIRECTORY_SEPARATOR
+              . 'classes' . DIRECTORY_SEPARATOR
+              . 'Form.php';
+        $formFile  = Vfs::url($formFile);            
+        
+        $dir = dirname($formFile);
+        mkdir($dir, 0777, true);
+        file_put_contents($formFile, $code);
+        require $formFile;
+        
+        // get a template object
+        $template = $this->newTemplate([$templateDir]);
+        $form = new \Form();
+
+        $template->addData([
+            'form' => $form,
+            'title' => 'Demonstration'
+        ]);
+        $actual = $template->fetch('template');
+        $expected = 'name : Hari
+field : name';
+        $this->assertSame($expected, $actual);
+    }
+    
     public function testFindTemplateNotFound()
     {
         $template = $this->newTemplate();
