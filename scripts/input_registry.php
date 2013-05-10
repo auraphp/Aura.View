@@ -1,4 +1,6 @@
 <?php
+use Aura\View\Helper;
+
 return [
     'button'         => function () { return new Helper\Form\Input\Generic; },
     'checkbox'       => function () { return new Helper\Form\Input\Checked; },

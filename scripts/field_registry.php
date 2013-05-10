@@ -1,4 +1,6 @@
 <?php
+use Aura\View\Helper;
+
 return array_merge(
     require __DIR__ . '/input_registry.php',
     [
