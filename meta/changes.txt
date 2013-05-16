@@ -1,14 +1,2 @@
-- [NEW] Form helpers: field, input, radios, repeat, select, and textarea.
-
-- [NEW] List helpers: ul and ol.
-
-- [NEW] Generic tag helper.
-
-- [ADD] AbstractHelper methods indent(), setIndentLevel(), and void().
-
-- [ADD] Method addCond() to the styles helper, to add a conditional style.
-
-- [CHG] Disallow easy changing of quotes and charset via constructor; always
-  go with ENT_QUOTES and UTF-8
-
-- [CHG] Registry entries *must* be wrapped in a callable from now on
+- [FIX] Correct the instance.php script and its associated scripts, and add
+  an InstanceTest for it. Thanks, HariKT, for reporting this.
