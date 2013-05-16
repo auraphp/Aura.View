@@ -490,23 +490,18 @@ they are included from.
 Template Partials
 -----------------
 
-Template partials are a scope-separated way of splitting up templates. We can
-`fetch()` other templates from within a template; template scripts that are
-fetched in this way will *not* share the scope of the template they are called
-from (although `$this` will still be available). In addition, we can pass an
-array of variables to be [`extract`](http://php.net/extract)ed into the
-partial template.
-
-For example, given the following partial template ...
+Template partials are a scope-separated way of splitting up templates. In
+doing so, we can pass an array of variables to be used in the partial
+template; they will be available under `$this` **in place of** the parent
+template variables. For example, given the following partial template ...
 
 ```php
 <?php
 // partial template named '_item.php'.
-// note that we use $item, not $this->item.
-echo "    <li>{$item}</li>" . PHP_EOL;
+echo "    <li>{$this->item}</li>" . PHP_EOL;
 ```
 
-... we can `fetch()` it from within another template:
+... we can use it from within another template as a partial:
 
 ```php
 <?php
@@ -514,12 +509,18 @@ echo "    <li>{$item}</li>" . PHP_EOL;
 foreach ($this->list as $item) {
     $template_name = '_item';
     $template_vars = ['item' => $item];
-    echo $this->fetch($template_name, $template_vars);
+    echo $this->partial($template_name, $template_vars);
 }
 ```
 
 That will run the `$template_name` template script in a separate scope, and
-extract the `$template_vars` array within that separate scope.
+the `$template_vars` array will be available as `$this` properties within that
+separate scope.
+
+> N.b.: We can also `fetch()` other templates from within a template;
+> template scripts that are fetched in this way will *not* share the scope
+> of the template they are called from (although `$this` will still be
+> available).
 
 
 Writing Helpers
@@ -576,3 +577,232 @@ useful to name the service for the helper class.
 
 Please examine the classes in `Aura\View\Helper` for more complex and powerful
 examples.
+
+Two Step View
+=============
+
+Aura.View supports the two step view pattern via the `TwoStep` class.
+
+Instantiation
+-------------
+
+To instantiate the two-step view template, do the following:
+
+```php
+use Aura\View\Template;
+use Aura\View\TemplateFinder;
+use Aura\View\HelperLocator;
+use Aura\View\TwoStep;
+use Aura\View\FormatTypes;
+
+$template = new Template(
+    new TemplateFinder,
+    new HelperLocator
+);
+$twostep = new TwoStep($template, new FormatTypes());
+```
+
+Setting and Getting Data
+------------------------
+
+Both the inner view and outer view share the same data. To set data we can use
+the `setData()` method, and to get the data in the view we use `getData()`.
+
+```php
+$data = array(
+    'hello' => 'Hello World!',
+    'var'   => 'Another variable'
+);
+$twostep->setData($data);
+```
+
+Setting The Inner View
+----------------------
+
+The "inner view" specification is the first step in the two-step view; it
+represents the core of the view (as opposed to the "outer" or "layout" view
+wrapped around the core). The specification may be:
+
+- (string) A template file name.
+
+- (callable) A closure to execute; it should take no parameters.
+
+- (array) An array where each element key is a `.format` name, and the
+  corresponding element value is a string or a callable. This type is most
+  useful when allowing for multiple views using the same data.
+
+```php
+// a string
+$twostep->setInnerView('inner.php');
+
+// a callable
+$func = function() { return 'World!'; };
+$twostep->setInnerView($func);
+
+// an array of .format names
+$twostep->setInnerView(
+    [
+        '.xml'  => 'hello.xml.php',
+        '.html' => 'hello.html.php',
+        '.json' => function () {
+            function() use ($twostep) {
+                return json_encode($twostep->getData());
+            }
+        },
+    ]
+);
+
+```
+
+Setting and Getting Inner View Path
+-----------------------------------
+
+We can set the template path of inner view via `setInnerPaths()`
+or `addInnerPath()`.
+
+The `setInnerPaths()` method resets all the previous paths where as 
+`addInnerPath()` add the path to the already existing inner paths.
+
+By using `getInnerPaths()` we get all the paths.
+
+```php
+$twostep->setInnerPaths([
+    'first', 
+    'second'
+]);
+$twostep->getInnerPaths(); // ['first', 'second']
+
+$twostep->addInnerPath('third');
+$twostep->getInnerPaths(); // ['first', 'second', 'third']
+
+$twostep->setInnerPaths('fourth');
+$twostep->getInnerPaths(); // ['fourth']
+```
+
+Setting The Outer View
+----------------------
+
+The "outer view" specification is the portion of the view that wraps around
+the "inner view". It is typically called a "layout" or "site" template. As
+with an inner view, the specification may be:
+
+- (string) A template file name.
+
+- (callable) A closure to execute; it should take no parameters.
+
+- (array) An array where each element key is a .format name, and the
+  corresponding element value is a string or a callable. This type is most
+  useful when allowing for multiple views using the same data.
+
+Setting and Getting Outer View Path
+-----------------------------------
+
+This is identical to the inner view path; substitute the word "Outer" for "Inner"
+in the related methods.
+
+
+Basic Usage
+-----------
+
+Let us assume you have `default.html.php` in `outerview` directory.
+
+```php
+<html>
+<head>
+<?php
+    $this->title()->set($this->title);
+    echo $this->title()->get();
+?>
+</head>
+<body>
+    <div>Two step view example</div>
+    <?php echo $this->__raw()->inner_view; ?>
+</body>
+</html>
+```
+
+Let us assume you have `hello.html.php` with the contents as below 
+in `innerview` directory.
+
+```php
+<div>Hello <?php echo $this->name; ?>, I am from Inner view :-)</div>
+```
+
+```php
+<?php
+require dirname(__DIR__) . '/aurasystem/package/Aura.View/src.php';
+
+use Aura\View\Template;
+use Aura\View\TemplateFinder;
+use Aura\View\HelperLocator;
+use Aura\View\TwoStep;
+use Aura\View\FormatTypes;
+use Aura\View\Helper\Title;
+
+$template = new Template(
+    new TemplateFinder,
+    new HelperLocator([
+        'title' => function () { return new Title; },
+    ])
+);
+$twostep = new TwoStep($template, new FormatTypes());
+
+$twostep->setInnerView([
+    '.html' => 'hello.html.php',
+    '.json' => function() use ($twostep) {
+        return json_encode($twostep->getData());
+    },
+]);
+
+$twostep->setOuterView([
+    '.html' => 'default.html.php',
+    '.json' => null
+]);
+
+$twostep->setInnerPaths([
+    __DIR__ . '/innerview'
+]);
+
+$twostep->addOuterPath(
+    __DIR__ . '/outerview'
+);
+
+$twostep->setData([
+    'title' => 'Hello my awesome title',
+    'name' => 'Bolivar',
+]);
+
+$twostep->setFormat('.html');
+
+$twostep->setAccept([
+    'text/html' => 1.0,
+    'application/json' => 0.9,
+]);
+
+$contents = $twostep->render();
+
+echo $contents;
+```
+Now when you execute the above code, you will see the two step view 
+rendered.
+
+```html
+<html>
+<head>
+<title>Hello my awesome title</title>
+</head>
+<body>
+    <div>Two step view example</div>
+    <div>Hello and welcome to Aura.View Bolivar, I am from Inner view :-)</div>
+</body>
+</html>
+```
+
+Now change the `setFormat` method to `.json` and see the rendered output.
+
+```php
+{"title":"Hello my awesome title","name":"Bolivar"}
+```
+
+You can always change the variable used in `outerview` via the 
+`setInnerViewVar` . By default it is `inner_view`.
