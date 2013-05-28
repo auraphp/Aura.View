@@ -173,26 +173,39 @@ class Object implements \ArrayAccess
      * 
      * Returns an escaped value.
      * 
-     * @param mixed $spec The value to escape. If a string, uses
-     * htmlspecialchars(); if an array or object, wraps it in an escaper;
-     * otherwise, does not escape (e.g. numerics, resources, bools, nulls,
-     * etc.).
+     * @param mixed $raw The value to escape. If a string, uses
+     * htmlspecialchars(); if an array, recursively escapes keys and values;
+     * if an object, wraps it in an escaper; otherwise, does not escape (e.g.
+     * numerics, resources, bools, nulls, etc.).
      * 
      * @return mixed
      * 
      */
-    public function __escape($spec)
+    public function __escape($raw)
     {
-        if (is_string($spec)) {
+        if (is_string($raw)) {
             // escape all actual strings, but do not double-escape
-            return htmlspecialchars($spec, $this->quotes, $this->charset, false);
-        } elseif (is_array($spec) || is_object($spec)) {
-            // wrap objects and arrays in escaper
-            return $this->factory->newInstance($spec);
-        } else {
-            // don't escape numerics, resources, bools, nulls, etc.
-            return $spec;
+            return htmlspecialchars($raw, $this->quotes, $this->charset, false);
         }
+        
+        if (is_array($raw)) {
+            // recursively escape the array
+            $esc = [];
+            foreach ($raw as $key => $val) {
+                $key = $this->__escape($key);
+                $val = $this->__escape($val);
+                $esc[$key] = $val;
+            }
+            return $esc;
+        }
+        
+        if (is_object($raw)) {
+            // wrap objects in an escaper
+            return $this->factory->newInstance($raw);
+        }
+        
+        // not a string, array, or object; leave it alone
+        return $raw;
     }
 
     /**
