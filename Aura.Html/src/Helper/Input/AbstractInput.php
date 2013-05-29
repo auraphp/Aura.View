@@ -76,11 +76,17 @@ abstract class AbstractInput extends AbstractHelper
      * @return string
      * 
      */
-    abstract public function __invoke(array $spec = [])
+    public function __invoke(array $spec = [])
+    {
+        $this->prep($spec);
+        return $this->html();
+    }
+    
+    protected function prep($spec)
     {
         // base spec inputs
         $base = [
-            'type' => 'text',
+            'type' => null,
             'name' => null,
             'value' => null,
             'attribs' => [],
@@ -97,18 +103,13 @@ abstract class AbstractInput extends AbstractHelper
         $this->attribs = $spec['attribs'];
         $this->options = $spec['options'];
         
-        // is there a type?
-        if (! $this->type) {
-            throw new Exception("No type.");
-        }
-        
-        // is there a name?
-        if (! $this->name) {
-            throw new Exception("No name.");
-        }
-        
-        // generate the html
-        return $this->html();
+        // set up base attributes
+        $attribs = [
+            'id'   => null,
+            'type' => null,
+            'name' => $this->name,
+        ];
+        $this->attribs = array_merge($attribs, $this->attribs);
     }
     
     /**

@@ -28,6 +28,7 @@ class Checkbox extends AbstractChecked
      */
     protected function html()
     {
+        $this->attribs['type'] = 'checkbox';
         $input = $this->htmlUnchecked() . $this->htmlChecked();
         $html  = $this->htmlLabel($input);
         return $this->indent(0, $html);

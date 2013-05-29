@@ -78,7 +78,7 @@ abstract class AbstractHelper
      * @return string The attribute string.
      * 
      */
-    protected function attribs(array $attribs, array $skip = [])
+    protected function strAttribs(array $attribs, array $skip = [])
     {
         // pre-empt processing
         if (! $attribs) {
@@ -128,7 +128,7 @@ abstract class AbstractHelper
      */
     protected function void($tag, array $attribs)
     {
-        $attribs = $this->attribs($attribs);
+        $attribs = $this->strAttribs($attribs);
         $html = "<{$tag} {$attribs} />";
         return $html;
     }

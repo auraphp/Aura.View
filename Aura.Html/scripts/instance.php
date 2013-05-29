@@ -8,10 +8,10 @@ return new Locator([
     'form'          => function () { return new Helper\Form; },
     'input'         => function () {
         return new Helper\Input(
-            require __DIR__ . '/input_locator.php'
+            new Locator(require __DIR__ . '/input_registry.php'),
         );
     },
-    'img'           => function () { return new Helper\Image; },
+    'img'           => function () { return new Helper\Img; },
     'links'         => function () { return new Helper\Links; },
     'metas'         => function () { return new Helper\Metas; },
     'ol'            => function () { return new Helper\Ol; },

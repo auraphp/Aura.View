@@ -8,7 +8,7 @@
  * @license http://opensource.org/licenses/bsd-license.php BSD
  * 
  */
-namespace Aura\Html\Helper\Form;
+namespace Aura\Html\Helper;
 
 use Aura\Html\Locator;
 
@@ -56,6 +56,11 @@ class Input
         if (empty($spec['type'])) {
             $spec['type'] = 'text';
         }
+        
+        if (empty($spec['attribs']['name'])) {
+            $spec['attribs']['name'] = $spec['name'];
+        }
+        
         $input = $this->locator->get($spec['type']);
         return $input($spec);
     }

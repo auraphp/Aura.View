@@ -82,7 +82,7 @@ class Locator
     public function get($name)
     {
         if (! isset($this->registry[$name])) {
-            throw new Exception\HelperNotMapped($name);
+            throw new Exception\HelperNotFound($name);
         }
 
         if (! $this->converted[$name]) {

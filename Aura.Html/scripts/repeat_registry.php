@@ -1,5 +1,5 @@
 <?php
-namespace Aura\View;
+namespace Aura\Html;
 return array_merge(
     require __DIR__ . '/element_registry.php',
     [

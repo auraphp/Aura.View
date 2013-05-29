@@ -53,8 +53,10 @@ class Styles extends AbstractHelper
      * @return void
      * 
      */
-    public function add($href, array $attribs = [], $pos = 100)
+    public function add($href, array $attribs = null, $pos = 100)
     {
+        $attribs = (array) $attribs;
+        
         $base = [
             'rel'   => 'stylesheet',
             'href'  => $href,
@@ -93,8 +95,10 @@ class Styles extends AbstractHelper
      * @return void
      * 
      */
-    public function addCond($exp, $href, array $attribs = [], $pos = 100)
+    public function addCond($exp, $href, array $attribs = null, $pos = 100)
     {
+        $attribs = (array) $attribs;
+        
         $base = [
             'rel'   => 'stylesheet',
             'href'  => $href,

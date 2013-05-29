@@ -37,7 +37,7 @@ class Anchor extends AbstractHelper
         // build text and return
         if ($attribs) {
             $skip = ['href'];
-            $attribs = $this->attribs($attribs, $skip);
+            $attribs = $this->strAttribs($attribs, $skip);
             return "<a href=\"$href\" $attribs>$text</a>";
         } else {
             return "<a href=\"$href\">$text</a>";

@@ -60,7 +60,7 @@ class Scripts extends AbstractHelper
             $attribs['type'] = 'text/javascript';
         }
 
-        $attribs = $this->attribs($attribs);
+        $attribs = $this->strAttribs($attribs);
         $tag = "<script src=\"$src\" $attribs></script>";
         $this->scripts[(int) $pos][] = $tag;
     }
@@ -88,7 +88,7 @@ class Scripts extends AbstractHelper
             $attribs['type'] = 'text/javascript';
         }
 
-        $attribs = $this->attribs($attribs);
+        $attribs = $this->strAttribs($attribs);
         $tag = "<!--[if $exp]><script src=\"$src\" $attribs></script><![endif]-->";
         $this->scripts[(int) $pos][] = $tag;
     }

@@ -17,7 +17,7 @@ namespace Aura\Html\Helper;
  * @package Aura.Html
  * 
  */
-class Attr extends AbstractHelper
+class Attribs extends AbstractHelper
 {
     /**
      * 
@@ -33,6 +33,6 @@ class Attr extends AbstractHelper
      */
     public function __invoke(array $attribs, array $skip = [])
     {
-        return $this->attribs($attribs, $skip);
+        return $this->strAttribs($attribs, $skip);
     }
 }

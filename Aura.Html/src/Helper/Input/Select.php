@@ -46,18 +46,26 @@ class Select extends AbstractInput
      */
     protected $optlevel = 1;
     
+    protected $placeholder;
+    
     public function __invoke(array $spec = [])
     {
-        // reset the stack
-        $this->stack = [];
-        
         // if there's no spec, return $this so we can build manually
         if (! $spec) {
             return $this;
         }
         
-        // otherwise, build and return the html right now
-        return parent::__invoke($spec);
+        // reset the tracking properties
+        $this->stack = [];
+        $this->optgroup = false;
+        $this->optlevel = 1;
+        
+        // prep the spec, set up the stack, and deliver the html
+        $this->prep($spec);
+        $this->attribs($this->attribs);
+        $this->options($this->options);
+        $this->selected($this->value);
+        return $this->html();
     }
     
     /**
@@ -82,6 +90,12 @@ class Select extends AbstractInput
     public function attribs(array $attribs)
     {
         $this->attribs = $attribs;
+        $this->placeholder = null;
+        if (isset($this->attribs['placeholder'])) {
+            $this->placeholder = $this->attribs['placeholder'];
+            unset($this->attribs['placeholder']);
+        }
+        return $this;
     }
     
     /**
@@ -181,16 +195,6 @@ class Select extends AbstractInput
      */
     public function exec()
     {
-        // reset tracking properties
-        $this->optgroup = false;
-        $this->optlevel = 1;
-        
-        // handle a pseudo-attribute 'placeholder' for the select
-        if (isset($this->attribs['placeholder'])) {
-            $this->option('', $this->attribs['placeholder']);
-            unset($this->attribs['placeholder']);
-        }
-        
         $append_brackets = isset($this->attribs['multiple'])
                         && $this->attribs['multiple']
                         && isset($this->attribs['name'])
@@ -202,8 +206,17 @@ class Select extends AbstractInput
         }
         
         // open the select
-        $attribs = $this->attribs($this->attribs);
+        $attribs = $this->strAttribs($this->attribs);
         $html = $this->indent(0, "<select {$attribs}>");
+        
+        // is there a placeholder option?
+        if ($this->placeholder) {
+            $html .= $this->buildOption([
+                '',
+                $this->placeholder,
+                ['disabled' => true],
+            ]);
+        }
         
         // build the options
         foreach ($this->stack as $info) {
@@ -213,7 +226,7 @@ class Select extends AbstractInput
         
         // close any optgroup tags
         if ($this->optgroup) {
-            $this->endOptgroup();
+            $html .= $this->endOptgroup();
         }
         
         // close the select
@@ -242,13 +255,13 @@ class Select extends AbstractInput
         // is the value selected? use strict checking to avoid confusion
         // between 0/'0'/false/null/''.
         if (in_array($value, $this->value, true)) {
-            $attribs['selected'] = 'selected';
+            $attribs['selected'] = true;
         } else {
             unset($attribs['selected']);
         }
         
         // build attributes and return option tag with label text
-        $attribs = $this->attribs($attribs);
+        $attribs = $this->strAttribs($attribs);
         return $this->indent($this->optlevel, "<option {$attribs}>$label</option>");
     }
     
@@ -266,7 +279,7 @@ class Select extends AbstractInput
         list($label, $attribs) = $info;
         $this->optlevel += 1;
         $attribs['label'] = $label;
-        $attribs = $this->attribs($attribs);
+        $attribs = $this->strAttribs($attribs);
         return $this->indent(1, "<optgroup {$attribs}>");
     }
     

@@ -42,13 +42,16 @@ class Radios extends AbstractInput
      */
     protected function html()
     {
-        $this->attribs['type'] = 'radio';
-        $radio = $this->radio;
         $html = '';
-        foreach ($options as $value => $label) {
+        foreach ($this->options as $value => $label) {
             $this->attribs['value'] = $value;
             $this->attribs['label'] = $label;
-            $html .= $radio($this->attribs, $this->value);
+            $html .= $this->radio->__invoke([
+                'name'    => $this->name,
+                'value'   => $this->value,
+                'attribs' => $this->attribs,
+                'options' => [],
+            ]);
         }
         return $html;
     }

@@ -28,7 +28,8 @@ class Radio extends AbstractChecked
      */
     protected function html()
     {
-        $input = $this->htmlInput();
+        $this->attribs['type'] = 'radio';
+        $input = $this->htmlChecked();
         $html  = $this->htmlLabel($input);
         return $this->indent(0, $html);
     }

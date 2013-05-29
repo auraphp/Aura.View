@@ -33,11 +33,13 @@ class Form extends AbstractHelper
     public function __invoke(array $attribs = [])
     {
         $base = [
+            'id' => null,
             'method' => 'post',
+            'action' => null,
             'enctype' => 'multipart/form-data',
         ];
         
-        $attribs = $this->attribs(array_merge($base, $attribs));
+        $attribs = $this->strAttribs(array_merge($base, $attribs));
         return "<form $attribs>";
     }
 }

@@ -17,7 +17,7 @@ namespace Aura\Html\Helper\Input;
  * @package Aura.Html
  * 
  */
-class AbstractChecked extends AbstractInput
+abstract class AbstractChecked extends AbstractInput
 {
     /**
      * 
@@ -44,11 +44,8 @@ class AbstractChecked extends AbstractInput
             unset($this->attribs['label']);
         }
         
-        // use the specified input type
-        $this->attribs['type'] = $this->type;
-        
         // by default, the input is unchecked
-        $this->attribs['checked'] = null;
+        $this->attribs['checked'] = false;
         
         // is the input checked? make sure there's a value to compare to, and
         // use strict equality so that there is no confusion between
@@ -56,7 +53,7 @@ class AbstractChecked extends AbstractInput
         $checked = isset($this->attribs['value'])
                 && $this->value === $this->attribs['value'];
         if ($checked) {
-            $this->attribs['checked'] = 'checked';
+            $this->attribs['checked'] = true;
         }
         
         // build the HTML for the input
@@ -77,10 +74,10 @@ class AbstractChecked extends AbstractInput
         }
         
         if (isset($this->attribs['id'])) {
-            $attribs = $this->attribs(['for' => $this->attribs['id']]);
-            return "<label {$attribs}>{$input} {$label}</label>";
+            $attribs = $this->strAttribs(['for' => $this->attribs['id']]);
+            return "<label {$attribs}>{$input} {$this->label}</label>";
         } else {
-            return "<label>{$input} {$label}</label>";
+            return "<label>{$input} {$this->label}</label>";
         }
     }
 }

@@ -28,7 +28,7 @@ class Textarea extends AbstractInput
      */
     protected function html()
     {
-        $attribs = $this->attribs($this->attribs);
+        $attribs = $this->strAttribs($this->attribs);
         return "<textarea {$attribs}>{$this->value}</textarea>";
     }
 }
