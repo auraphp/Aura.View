@@ -55,6 +55,23 @@ class Locator
 
     /**
      * 
+     * Magic call to make the registry objects available as methods.
+     * 
+     * @param string $name A registered helper name.
+     * 
+     * @param array $params Params to pass to the helper.
+     * 
+     * @return mixed
+     * 
+     */
+    public function __call($name, $params)
+    {
+        $helper = $this->get($name);
+        return call_user_func_array($helper, $params);
+    }
+    
+    /**
+     * 
      * Sets a helper into the registry by name.
      * 
      * @param string $name The helper name.
@@ -72,7 +89,7 @@ class Locator
 
     /**
      * 
-     * Gets a helper from the registry by name.
+     * Gets a helper object from the registry by name.
      * 
      * @param string $name The helper to retrieve.
      * 

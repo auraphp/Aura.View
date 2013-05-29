@@ -27,6 +27,10 @@ class LocatorTest extends \PHPUnit_Framework_TestCase
         $actual = $this->locator->get('mockHelper');
         $this->assertInstanceOf($expect, $actual);
 
+        $expect = 'Hello World';
+        $actual = $this->locator->mockHelper('World');
+        $this->assertSame($expect, $actual);
+        
         $this->setExpectedException('Aura\Html\Exception\HelperNotFound');
         $this->locator->get('noSuchHelper');
     }

@@ -2,8 +2,8 @@
 namespace Aura\Html\Helper;
 class MockHelper extends AbstractHelper
 {
-    public function __invoke()
+    public function __invoke($noun)
     {
-        return "Hello Helper";
+        return "Hello $noun";
     }
 }
