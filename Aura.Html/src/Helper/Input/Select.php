@@ -8,16 +8,16 @@
  * @license http://opensource.org/licenses/bsd-license.php BSD
  * 
  */
-namespace Aura\Html\Helper\Form;
+namespace Aura\Html\Helper\Input;
 
 /**
  * 
- * An HTML select element.
+ * An HTML select input.
  * 
  * @package Aura.Html
  * 
  */
-class Select extends AbstractElement
+class Select extends AbstractInput
 {
     /**
      * 
@@ -62,7 +62,7 @@ class Select extends AbstractElement
     
     /**
      * 
-     * Returns the HTML for the element.
+     * Returns the HTML for the input.
      * 
      * @return string
      * 
@@ -137,7 +137,7 @@ class Select extends AbstractElement
     
     /**
      * 
-     * Adds an optgroup element to the stack.
+     * Adds an optgroup input to the stack.
      * 
      * @param string $label The optgroup label.
      * 

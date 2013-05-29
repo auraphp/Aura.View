@@ -14,13 +14,29 @@ use Aura\Html\Locator;
 
 /**
  * 
- * A locator to generate form elements.
+ * A helper to generate form input elements.
  * 
  * @package Aura.Html
  * 
  */
-class Element
+class Input
 {
+    /**
+     * 
+     * A locator with input element objects.
+     * 
+     * @var Locator
+     * 
+     */
+    protected $locator;
+    
+    /**
+     * 
+     * Constructor.
+     * 
+     * @param Locator $locator A locator with input element objects.
+     * 
+     */
     public function __construct(Locator $locator)
     {
         $this->locator = $locator;
@@ -40,7 +56,7 @@ class Element
         if (empty($spec['type'])) {
             $spec['type'] = 'text';
         }
-        $element = $this->locator->get($spec['type']);
-        return $element($spec);
+        $input = $this->locator->get($spec['type']);
+        return $input($spec);
     }
 }

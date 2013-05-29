@@ -8,16 +8,16 @@
  * @license http://opensource.org/licenses/bsd-license.php BSD
  * 
  */
-namespace Aura\Html\Helper\Form;
+namespace Aura\Html\Helper\Input;
 
 /**
  * 
- * A series of HTML radio elements with the same name.
+ * A series of HTML radio inputs with the same name.
  * 
  * @package Aura.Html
  * 
  */
-class Radios extends AbstractElement
+class Radios extends AbstractInput
 {
     protected $radio;
     
@@ -35,7 +35,7 @@ class Radios extends AbstractElement
     
     /**
      * 
-     * Returns the HTML for the element.
+     * Returns the HTML for the input.
      * 
      * @return string
      * 

@@ -8,20 +8,20 @@
  * @license http://opensource.org/licenses/bsd-license.php BSD
  * 
  */
-namespace Aura\Html\Helper\Form;
+namespace Aura\Html\Helper\Input;
 
 /**
  * 
- * Abstact helper for elements that can be checked (e.g. radio or checkbox).
+ * Abstact helper for inputs that can be checked (e.g. radio or checkbox).
  * 
  * @package Aura.Html
  * 
  */
-class AbstractChecked extends AbstractElement
+class AbstractChecked extends AbstractInput
 {
     /**
      * 
-     * The label for the element, if any.
+     * The label for the input, if any.
      * 
      * @var string
      * 

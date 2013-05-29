@@ -8,20 +8,20 @@
  * @license http://opensource.org/licenses/bsd-license.php BSD
  * 
  */
-namespace Aura\Html\Helper\Form;
+namespace Aura\Html\Helper\Input;
 
 /**
  * 
- * An HTML input element.
+ * An HTML button.
  * 
  * @package Aura.Html
  * 
  */
-class Input extends AbstractElement
+class Button extends AbstractInput
 {
     /**
      * 
-     * Returns the HTML for the element.
+     * Returns the HTML for the input.
      * 
      * @return string
      * 
@@ -31,10 +31,8 @@ class Input extends AbstractElement
         // set the type
         $this->attribs['type'] = $this->type;
         
-        // only set value if not null
-        if ($this->value !== null) {
-            $this->attribs['value'] = (string) $this->value;
-        }
+        // no values on buttons
+        unset($this->attribs['value']);
         
         // build html
         return $this->indent(0, $this->void('input', $this->attribs));

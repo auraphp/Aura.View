@@ -8,11 +8,11 @@
  * @license http://opensource.org/licenses/bsd-license.php BSD
  * 
  */
-namespace Aura\Html\Helper\Form;
+namespace Aura\Html\Helper\Input;
 
 /**
  * 
- * An HTML radio element.
+ * An HTML radio input.
  * 
  * @package Aura.Html
  * 
@@ -21,7 +21,7 @@ class Radio extends AbstractChecked
 {
     /**
      * 
-     * Returns the HTML for the element.
+     * Returns the HTML for the input.
      * 
      * @return string
      * 

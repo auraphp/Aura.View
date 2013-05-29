@@ -1,11 +1,15 @@
 <?php
 namespace Aura\Html;
+
 return new Locator([
     'anchor'        => function () { return new Helper\Anchor; },
     'attribs'       => function () { return new Helper\Attribs; },
     'base'          => function () { return new Helper\Base; },
-    'form'          => function () {
-        return new Helper\Form\Element(require __DIR__ . '/element_locator.php');
+    'form'          => function () { return new Helper\Form; },
+    'input'         => function () {
+        return new Helper\Input(
+            require __DIR__ . '/input_locator.php'
+        );
     },
     'img'           => function () { return new Helper\Image; },
     'links'         => function () { return new Helper\Links; },

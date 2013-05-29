@@ -8,20 +8,20 @@
  * @license http://opensource.org/licenses/bsd-license.php BSD
  * 
  */
-namespace Aura\Html\Helper\Form;
+namespace Aura\Html\Helper\Input;
 
 /**
  * 
- * An HTML textarea element.
+ * An HTML textarea input.
  * 
  * @package Aura.Html
  * 
  */
-class Textarea extends AbstractElement
+class Textarea extends AbstractInput
 {
     /**
      * 
-     * Returns the HTML for the element.
+     * Returns the HTML for the input.
      * 
      * @return string
      * 

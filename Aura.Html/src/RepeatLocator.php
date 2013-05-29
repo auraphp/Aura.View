@@ -78,7 +78,7 @@ class RepeatLocator extends Locator
             $spec['value'] = $val;
             
             // build the element html
-            $html .= $helper->getElement($spec);
+            $html .= $helper->getInput($spec);
         }
         
         // done!

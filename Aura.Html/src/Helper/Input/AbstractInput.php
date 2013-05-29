@@ -8,23 +8,23 @@
  * @license http://opensource.org/licenses/bsd-license.php BSD
  * 
  */
-namespace Aura\Html\Helper\Form;
+namespace Aura\Html\Helper\Input;
 
 use Aura\Html\Helper\AbstractHelper;
 use Aura\Html\Exception;
 
 /**
  * 
- * Abstact helper for elements that can be checked (e.g. radio or checkbox).
+ * Abstact helper for inputs that can be checked (e.g. radio or checkbox).
  * 
  * @package Aura.Html
  * 
  */
-abstract class AbstractElement extends AbstractHelper
+abstract class AbstractInput extends AbstractHelper
 {
     /**
      * 
-     * The element type.
+     * The input type.
      * 
      * @var string
      * 
@@ -33,7 +33,7 @@ abstract class AbstractElement extends AbstractHelper
     
     /**
      * 
-     * The element name.
+     * The input name.
      * 
      * @var string
      * 
@@ -42,7 +42,7 @@ abstract class AbstractElement extends AbstractHelper
     
     /**
      * 
-     * The current value of the element.
+     * The current value of the input.
      * 
      * @var mixed
      * 
@@ -51,7 +51,7 @@ abstract class AbstractElement extends AbstractHelper
     
     /**
      * 
-     * HTML attributes for the element.
+     * HTML attributes for the input.
      * 
      * @var array
      * 
@@ -60,7 +60,7 @@ abstract class AbstractElement extends AbstractHelper
     
     /**
      * 
-     * Value options for the element.
+     * Value options for the input.
      * 
      * @var array
      * 
@@ -69,16 +69,16 @@ abstract class AbstractElement extends AbstractHelper
     
     /**
      * 
-     * Given a element spec, returns the HTML for the element.
+     * Given a input spec, returns the HTML for the input.
      * 
-     * @param array $spec The element spec.
+     * @param array $spec The input spec.
      * 
      * @return string
      * 
      */
     abstract public function __invoke(array $spec = [])
     {
-        // base spec elements
+        // base spec inputs
         $base = [
             'type' => 'text',
             'name' => null,
@@ -87,7 +87,7 @@ abstract class AbstractElement extends AbstractHelper
             'options' => [],
         ];
         
-        // make sure we have the base spec elements
+        // make sure we have the base spec inputs
         $spec = array_merge($base, $spec);
         
         // retain as properties
@@ -113,7 +113,7 @@ abstract class AbstractElement extends AbstractHelper
     
     /**
      * 
-     * Returns the HTML for this element.
+     * Returns the HTML for this input.
      * 
      * @return string
      * 
