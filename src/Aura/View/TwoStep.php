@@ -535,4 +535,16 @@ class TwoStep
         // no match
         return false;
     }
+    
+    /**
+     * 
+     * The Template object to be used when rendering
+     * 
+     * @return Template 
+     * 
+     */
+    public function getTemplate()
+    {
+        return $this->template;
+    }
 }
