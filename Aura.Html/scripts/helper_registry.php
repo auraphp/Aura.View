@@ -3,7 +3,7 @@ namespace Aura\Html;
 
 return [
     'anchor'        => function () { return new Helper\Anchor; },
-    'attribs'       => function () { return new Helper\Attribs; },
+    'attr'          => function () { return new Helper\Attribs; },
     'base'          => function () { return new Helper\Base; },
     'form'          => function () { return new Helper\Form; },
     'input'         => function () {
@@ -26,4 +26,3 @@ return [
     'title'         => function () { return new Helper\Title; },
     'ul'            => function () { return new Helper\Ul; },
 ];
-

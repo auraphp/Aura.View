@@ -17,7 +17,7 @@ namespace Aura\Html\Helper;
  * @package Aura.Html
  * 
  */
-class Attribs extends AbstractHelper
+class Attr extends AbstractHelper
 {
     /**
      * 
