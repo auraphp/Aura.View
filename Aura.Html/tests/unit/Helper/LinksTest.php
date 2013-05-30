@@ -1,18 +1,18 @@
 <?php
 namespace Aura\Html\Helper;
 
-class LinksTest extends \PHPUnit_Framework_TestCase
+class LinksTest extends AbstractHelperTest
 {
     public function test__invoke()
     {
-        $links = new Links;
+        $links = $this->helper;
         $actual = $links();
         $this->assertInstanceOf('Aura\Html\Helper\Links', $actual);
     }
     
     public function testAddAndGet()
     {
-        $links = new Links;
+        $links = $this->helper;
         
         $data = (object) [
             'prev' => [
@@ -40,7 +40,7 @@ class LinksTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetIndent()
     {
-        $links = new Links;
+        $links = $this->helper;
         $links->setIndent('  ');
         
         $data = (object) [

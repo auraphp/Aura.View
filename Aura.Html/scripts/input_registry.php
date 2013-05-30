@@ -16,7 +16,6 @@ return [
     'number'            => function () { return new Generic; },
     'password'          => function () { return new Generic; },
     'radio'             => function () { return new Radio; },
-    'radios'            => function () { return new Radios(new Radio); },
     'range'             => function () { return new Generic; },
     'reset'             => function () { return new Generic; },
     'search'            => function () { return new Generic; },

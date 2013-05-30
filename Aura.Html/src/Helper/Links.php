@@ -44,14 +44,14 @@ class Links extends AbstractHelper
      * 
      * Adda a <link ... > tag to the stack.
      * 
-     * @param array $attribs Attributes for the <link> tag.
+     * @param array $attr Attributes for the <link> tag.
      * 
      * @return void
      * 
      */
-    public function add(array $attribs = [])
+    public function add(array $attr = [])
     {
-        $this->links[] = $this->void('link', $attribs);
+        $this->links[] = $this->void('link', $attr);
     }
 
     /**

@@ -46,22 +46,24 @@ class Scripts extends AbstractHelper
      * 
      * @param string $src The source href for the script.
      * 
-     * @param array $attribs Additional attributes for the <script> tag.
+     * @param array $attr Additional attributes for the <script> tag.
      * 
      * @param int $pos The script position in the stack.
      * 
      * @return void
      * 
      */
-    public function add($src, array $attribs = [], $pos = 100)
+    public function add($src, array $attr = [], $pos = 100)
     {
-        unset($attribs['src']);
-        if (empty($attribs['type'])) {
-            $attribs['type'] = 'text/javascript';
-        }
-
-        $attribs = $this->strAttribs($attribs);
-        $tag = "<script src=\"$src\" $attribs></script>";
+        $base = [
+            'src' => $src,
+            'type' => 'text/javascript',
+        ];
+        
+        unset($attr['src']);
+        
+        $attr = $this->attr(array_merge($base, $attr));
+        $tag = "<script $attr></script>";
         $this->scripts[(int) $pos][] = $tag;
     }
 
@@ -70,26 +72,30 @@ class Scripts extends AbstractHelper
      * Adds a conditional `<!--[if ...]><script><![endif] -->` tag to the 
      * stack.
      * 
-     * @param string $exp The conditional expression for the script.
+     * @param string $cond The conditional expression for the script.
      * 
      * @param string $src The source href for the script.
      * 
-     * @param array $attribs Additional attributes for the <script> tag.
+     * @param array $attr Additional attributes for the <script> tag.
      * 
      * @param string $pos The script position in the stack.
      * 
      * @return void
      * 
      */
-    public function addCond($exp, $src, array $attribs = [], $pos = 100)
+    public function addCond($cond, $src, array $attr = [], $pos = 100)
     {
-        unset($attribs['src']);
-        if (empty($attribs['type'])) {
-            $attribs['type'] = 'text/javascript';
-        }
-
-        $attribs = $this->strAttribs($attribs);
-        $tag = "<!--[if $exp]><script src=\"$src\" $attribs></script><![endif]-->";
+        $base = [
+            'src' => $src,
+            'type' => 'text/javascript',
+        ];
+        
+        unset($attr['src']);
+        
+        $attr = $this->attr(array_merge($base, $attr));
+        $cond = $this->escape->html($cond);
+        
+        $tag = "<!--[if $cond]><script $attr></script><![endif]-->";
         $this->scripts[(int) $pos][] = $tag;
     }
 

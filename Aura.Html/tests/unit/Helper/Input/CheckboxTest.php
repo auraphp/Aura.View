@@ -1,11 +1,13 @@
 <?php
 namespace Aura\Html\Helper\Input;
 
-class CheckboxTest extends \PHPUnit_Framework_TestCase
+use Aura\Html\Helper\AbstractHelperTest;
+
+class CheckboxTest extends AbstractHelperTest
 {
     public function testChecked()
     {
-        $checkbox = new Checkbox;
+        $checkbox = $this->helper;
         $actual = $checkbox([
             'value' => 'yes',
             'attribs' => [
@@ -19,7 +21,7 @@ class CheckboxTest extends \PHPUnit_Framework_TestCase
     
     public function testUnchecked()
     {
-        $checkbox = new Checkbox;
+        $checkbox = $this->helper;
         $actual = $checkbox([
             'value' => 'no',
             'attribs' => [
@@ -33,7 +35,7 @@ class CheckboxTest extends \PHPUnit_Framework_TestCase
     
     public function testCheckedWithUncheckedValue()
     {
-        $checkbox = new Checkbox;
+        $checkbox = $this->helper;
         $actual = $checkbox([
             'value' => 'yes',
             'attribs' => [
@@ -48,7 +50,7 @@ class CheckboxTest extends \PHPUnit_Framework_TestCase
     
     public function testUncheckedWithUncheckedValue()
     {
-        $checkbox = new Checkbox;
+        $checkbox = $this->helper;
         $actual = $checkbox([
             'value' => 'no',
             'attribs' => [
@@ -63,7 +65,7 @@ class CheckboxTest extends \PHPUnit_Framework_TestCase
     
     public function testNoLabel()
     {
-        $checkbox = new Checkbox;
+        $checkbox = $this->helper;
         $actual = $checkbox([
             'value' => 'no',
             'attribs' => [
@@ -76,7 +78,7 @@ class CheckboxTest extends \PHPUnit_Framework_TestCase
     
     public function testLabelWithFor()
     {
-        $checkbox = new Checkbox;
+        $checkbox = $this->helper;
         $actual = $checkbox([
             'value' => 'no',
             'attribs' => [

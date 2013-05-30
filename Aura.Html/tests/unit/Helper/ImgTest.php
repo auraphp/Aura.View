@@ -1,13 +1,13 @@
 <?php
 namespace Aura\Html\Helper;
 
-class ImgTest extends \PHPUnit_Framework_TestCase
+class ImgTest extends AbstractHelperTest
 {
     public function test__invoke()
     {
-        $image = new Img;
+        $img = $this->helper;
         $src = '/images/example.gif';
-        $actual = $image($src);
+        $actual = $img($src);
         $expect = '<img src="/images/example.gif" alt="example.gif" />';
         $this->assertSame($actual, $expect);
     }

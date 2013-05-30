@@ -17,20 +17,17 @@ namespace Aura\Html\Helper;
  * @package Aura.Html
  * 
  */
-class Attribs extends AbstractHelper
+class Escape extends AbstractHelper
 {
     /**
      * 
-     * Converts an associative array to an attribute string.
+     * Returns the escaper object.
      * 
-     * @param array $attr From this array, each key-value pair is 
-     * converted to an attribute name and value.
-     * 
-     * @return string The string of attributes.
+     * @return Escape
      * 
      */
-    public function __invoke(array $attr)
+    public function __invoke()
     {
-        return $this->attr($attr);
+        return $this->escape;
     }
 }

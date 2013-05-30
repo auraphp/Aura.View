@@ -1,11 +1,11 @@
 <?php
 namespace Aura\Html\Helper;
 
-class BaseTest extends \PHPUnit_Framework_TestCase
+class BaseTest extends AbstractHelperTest
 {
     public function test__invoke()
     {
-        $base = new Base;
+        $base = $this->helper;
         $base->setIndentLevel(1);
         $href = '/path/to/base';
         $actual = $base($href);

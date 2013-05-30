@@ -25,12 +25,12 @@ class Form extends AbstractHelper
      * 
      * @param string $tag The tag to generate.
      * 
-     * @param array $attribs Attributes for the tag.
+     * @param array $attr Attributes for the tag.
      * 
      * @return string
      * 
      */
-    public function __invoke(array $attribs = [])
+    public function __invoke(array $attr = [])
     {
         $base = [
             'id' => null,
@@ -39,7 +39,7 @@ class Form extends AbstractHelper
             'enctype' => 'multipart/form-data',
         ];
         
-        $attribs = $this->strAttribs(array_merge($base, $attribs));
-        return "<form $attribs>";
+        $attr = $this->attr(array_merge($base, $attr));
+        return "<form $attr>";
     }
 }

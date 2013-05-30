@@ -1,11 +1,13 @@
 <?php
 namespace Aura\Html\Helper\Input;
 
-class SelectTest extends \PHPUnit_Framework_TestCase
+use Aura\Html\Helper\AbstractHelperTest;
+
+class SelectTest extends AbstractHelperTest
 {
     public function testAutomatic()
     {
-        $select = new Select;
+        $select = $this->helper;
         
         $actual = $select([
             'name' => 'foo[bar]',
@@ -34,7 +36,7 @@ class SelectTest extends \PHPUnit_Framework_TestCase
     
     public function testManual()
     {
-        $select = new Select;
+        $select = $this->helper;
         
         $actual = $select()
             ->attribs([
@@ -57,7 +59,7 @@ class SelectTest extends \PHPUnit_Framework_TestCase
                ['disabled' => true]
             )
             ->selected(['value2', 'value3'])
-            ->exec();
+            ->get();
         
         $expect = '<select name="foo[bar][]" multiple="multiple">' . PHP_EOL
                 . '    <optgroup label="Group A">' . PHP_EOL

@@ -1,11 +1,11 @@
 <?php
 namespace Aura\Html\Helper;
 
-class AttribsTest extends \PHPUnit_Framework_TestCase
+class AttribsTest extends AbstractHelperTest
 {
     public function test__invoke()
     {
-        $attribs = new Attribs;
+        $attribs = $this->helper;
         
         $values = [
             'foo' => 'bar',
@@ -22,8 +22,10 @@ class AttribsTest extends \PHPUnit_Framework_TestCase
     
     public function test__invokeNoAttribs()
     {
-        $attribs = new Attribs;
+        $attribs = $this->helper;
+        
         $values = [];
+        
         $expect = '';
         $actual = $attribs($values);
         $this->assertSame($expect, $actual);

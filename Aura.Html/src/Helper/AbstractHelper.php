@@ -10,6 +10,8 @@
  */
 namespace Aura\Html\Helper;
 
+use Aura\Html\Escape;
+
 /**
  * 
  * Abstract helper base class.
@@ -36,6 +38,29 @@ abstract class AbstractHelper
      * 
      */
     protected $indent_level = 0;
+    
+    /**
+     * 
+     * An escape object.
+     * 
+     * @var Escape
+     * 
+     */
+    protected $escape;
+    
+    /**
+     * 
+     * Sets the escape object.
+     * 
+     * @param Escape $escape The escape object.
+     * 
+     * @return void
+     * 
+     */
+    public function setEscape(Escape $escape)
+    {
+        $this->escape = $escape;
+    }
     
     /**
      * 
@@ -70,49 +95,68 @@ abstract class AbstractHelper
      * 
      * Converts an associative array to an attribute string.
      * 
-     * @param array $attribs From this array, each key-value pair
+     * @param array $attr From this array, each key-value pair
      * is converted to an attribute name and value.
      * 
      * @param array $skip Skip attributes listed in this array.
      * 
      * @return string The attribute string.
      * 
+     * @todo Move this to the Escape object entirely.
+     * 
      */
-    protected function strAttribs(array $attribs, array $skip = [])
+    protected function attr(array $attr)
     {
         // pre-empt processing
-        if (! $attribs) {
+        if (! $attr) {
             return '';
         }
 
-        $html = [];
-        foreach ($attribs as $key => $val) {
+        $html = '';
+        foreach ($attr as $key => $val) {
 
-            // skip this attribute?
-            if (in_array($key, $skip)) {
-                continue;
-            }
-
-            // skip null and false values
+            // do not add null and false values to the html
             if ($val === null || $val === false) {
                 continue;
             }
-
+            
+            // get rid of extra spaces in the key
+            $key = trim($key);
+            
             // space-separate multiple values
             if (is_array($val)) {
                 $val = implode(' ', $val);
             }
-
-            // add to the attributes
-            if ($val === true) {
-                $html[] = $key;
-            } else {
-                $html[] = "{$key}=\"$val\"";
+            
+            // add to the html on a case-by-case basis
+            switch (true) {
+                // minimized attribute
+                case ($val === true):
+                    $html .= $this->escape->attr($key);
+                    break;
+                // css string
+                case (strtolower($key) == 'style'):
+                    $html .= $this->escape->attr($key) . '="'
+                           . $this->escape->attr($this->escape->css($val));
+                    break;
+                // javascript event
+                case (strtolower(substr($key, 0, 2)) == 'on'):
+                    $html .= $this->escape->attr($key) . '="'
+                           . $this->escape->attr($this->escape->js($val));
+                    break;
+                // regular attribute
+                default:
+                    $html .= $this->escape->attr($key) . '="'
+                           . $this->escape->attr($val) . '"';
+                    break;
             }
+            
+            // space separator
+            $html .= ' ';
         }
 
-        // done
-        return implode(' ', $html);
+        // done; remove the last space
+        return rtrim($html);
     }
     
     /**
@@ -121,15 +165,15 @@ abstract class AbstractHelper
      * 
      * @param string $tag The tag name.
      * 
-     * @param array $attribs The attributes for the tag.
+     * @param array $attr The attributes for the tag.
      * 
      * @return string
      * 
      */
-    protected function void($tag, array $attribs)
+    protected function void($tag, array $attr = [])
     {
-        $attribs = $this->strAttribs($attribs);
-        $html = "<{$tag} {$attribs} />";
+        $attr = $this->attr($attr);
+        $html = "<{$tag} {$attr} />";
         return $html;
     }
     

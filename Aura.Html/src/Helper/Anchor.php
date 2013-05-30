@@ -27,20 +27,21 @@ class Anchor extends AbstractHelper
      * 
      * @param string $text The text for the anchor.
      * 
-     * @param array $attribs Attributes for the anchor.
+     * @param array $attr Attributes for the anchor.
      * 
      * @return string
      * 
      */
-    public function __invoke($href, $text, array $attribs = [])
+    public function __invoke($href, $text, array $attr = [])
     {
-        // build text and return
-        if ($attribs) {
-            $skip = ['href'];
-            $attribs = $this->strAttribs($attribs, $skip);
-            return "<a href=\"$href\" $attribs>$text</a>";
-        } else {
-            return "<a href=\"$href\">$text</a>";
-        }
+        $base = [
+            'href' => $href,
+        ];
+        
+        unset($attr['href']);
+        
+        $attr = $this->attr(array_merge($base, $attr));
+        $text = $this->escape->html($text);
+        return "<a $attr>$text</a>";
     }
 }

@@ -1,16 +1,16 @@
 <?php
 namespace Aura\Html\Helper;
 
-class OlTest extends \PHPUnit_Framework_TestCase
+class OlTest extends AbstractHelperTest
 {
-    public function testAll()
+    public function test()
     {
-        $ol = new Ol;
+        $ol = $this->helper;
         
         $actual = $ol(['id' => 'test'])
                 ->items(['foo', 'bar', 'baz'])
                 ->item('dib', ['class' => 'callout'])
-                ->exec();
+                ->get();
         
         $expect = '<ol id="test">' . PHP_EOL
                 . '    <li>foo</li>' . PHP_EOL
@@ -21,7 +21,7 @@ class OlTest extends \PHPUnit_Framework_TestCase
         
         $this->assertSame($expect, $actual);
         
-        $actual = $ol()->items(['foo', 'bar', 'baz'])->exec();
+        $actual = $ol()->items(['foo', 'bar', 'baz'])->get();
         $expect = '<ol>' . PHP_EOL
                 . '    <li>foo</li>' . PHP_EOL
                 . '    <li>bar</li>' . PHP_EOL
@@ -29,7 +29,7 @@ class OlTest extends \PHPUnit_Framework_TestCase
                 . '</ol>' . PHP_EOL;
         $this->assertSame($expect, $actual);
         
-        $actual = $ol()->exec();
+        $actual = $ol()->get();
         $expect = null;
         $this->assertSame($expect, $actual);
     }

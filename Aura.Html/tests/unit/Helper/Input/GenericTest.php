@@ -1,14 +1,16 @@
 <?php
 namespace Aura\Html\Helper\Input;
 
-class GenericTest extends \PHPUnit_Framework_TestCase
+use Aura\Html\Helper\AbstractHelperTest;
+
+class GenericTest extends AbstractHelperTest
 {
     /**
      * @dataProvider provideTypes
      */
     public function test($type)
     {
-        $input = new Generic;
+        $input = $this->helper;
         
         // value should override attribute
         $actual = $input([

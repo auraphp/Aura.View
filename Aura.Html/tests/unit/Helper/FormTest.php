@@ -1,11 +1,11 @@
 <?php
 namespace Aura\Html\Helper;
 
-class FormTest extends \PHPUnit_Framework_TestCase
+class FormTest extends AbstractHelperTest
 {
     public function test__invoke()
     {
-        $form = new Form;
+        $form = $this->helper;
         $actual = $form([
             'method' => 'post',
             'action' => 'http://example.com/',

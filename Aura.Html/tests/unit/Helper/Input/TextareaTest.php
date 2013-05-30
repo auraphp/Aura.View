@@ -1,11 +1,13 @@
 <?php
 namespace Aura\Html\Helper\Input;
 
-class TextareaTest extends \PHPUnit_Framework_TestCase
+use Aura\Html\Helper\AbstractHelperTest;
+
+class TextareaTest extends AbstractHelperTest
 {
     public function test__invoke()
     {
-        $textarea = new Textarea;
+        $textarea = $this->helper;
         
         $actual = $textarea([
             'name' => 'field',

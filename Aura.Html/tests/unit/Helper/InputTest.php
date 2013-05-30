@@ -1,13 +1,24 @@
 <?php
 namespace Aura\Html\Helper;
 
-use Aura\Html\Locator;
+use Aura\Html\HelperFactory;
+use Aura\Html\HelperLocator;
+use Aura\Html\Escape;
 
-class InputTest extends \PHPUnit_Framework_TestCase
+class InputTest extends AbstractHelperTest
 {
-    protected function setUp()
+    protected function newHelper()
     {
-        $this->input = new Input(new Locator([
+        $helper = parent::newHelper();
+        
+        $escape = new Escape(
+            new Escape\AttrStrategy,
+            new Escape\CssStrategy,
+            new Escape\HtmlStrategy,
+            new Escape\JsStrategy
+        );
+        
+        $registry = [
             'button'            => function () { return new Input\Generic; },
             'checkbox'          => function () { return new Input\Checkbox; },
             'color'             => function () { return new Input\Generic; },
@@ -22,7 +33,6 @@ class InputTest extends \PHPUnit_Framework_TestCase
             'number'            => function () { return new Input\Generic; },
             'password'          => function () { return new Input\Generic; },
             'radio'             => function () { return new Input\Radio; },
-            'radios'            => function () { return new Input\Radios(new Input\Radio); },
             'range'             => function () { return new Input\Generic; },
             'reset'             => function () { return new Input\Generic; },
             'search'            => function () { return new Input\Generic; },
@@ -34,7 +44,15 @@ class InputTest extends \PHPUnit_Framework_TestCase
             'time'              => function () { return new Input\Generic; },
             'url'               => function () { return new Input\Generic; },
             'week'              => function () { return new Input\Generic; },
-        ]));
+        ];
+        
+        $helper_factory = new HelperFactory($escape, $registry);
+        
+        $helper_locator = new HelperLocator($helper_factory);
+        
+        $helper->setHelperLocator($helper_locator);
+        
+        return $helper;
     }
     
     public function testCheckbox()
@@ -52,7 +70,7 @@ class InputTest extends \PHPUnit_Framework_TestCase
             'value' => 'foo',
         ];
         
-        $input = $this->input;
+        $input = $this->helper;
         $actual = $input($spec);
         $expect = '<label><input type="checkbox" name="field_name" value="foo" checked /> DOOM</label>' . PHP_EOL;
         $this->assertSame($expect, $actual);
@@ -72,7 +90,7 @@ class InputTest extends \PHPUnit_Framework_TestCase
             'value' => 'foo',
         ];
         
-        $input = $this->input;
+        $input = $this->helper;
         $actual = $input($spec);
         $expect = '<input type="text" name="field_name" value="foo" />' . PHP_EOL;
         $this->assertSame($expect, $actual);
@@ -91,16 +109,16 @@ class InputTest extends \PHPUnit_Framework_TestCase
             'value' => 'foo',
         ];
         
-        $input = $this->input;
+        $input = $this->helper;
         $actual = $input($spec);
         $expect = '<input type="text" name="field_name" value="foo" />' . PHP_EOL;
         $this->assertSame($expect, $actual);
     }
     
-    public function testRadios()
+    public function testRadio()
     {
         $spec = [
-            'type' => 'radios',
+            'type' => 'radio',
             'name' => 'field_name',
             'label' => null,
             'attribs' => [
@@ -113,7 +131,7 @@ class InputTest extends \PHPUnit_Framework_TestCase
             'value' => 'opt2',
         ];
         
-        $input = $this->input;
+        $input = $this->helper;
         $actual = $input($spec);
         $expect = '<label><input type="radio" name="field_name" foo="bar" value="opt1" /> Label 1</label>' . PHP_EOL
                 . '<label><input type="radio" name="field_name" foo="bar" value="opt2" checked /> Label 2</label>' . PHP_EOL
@@ -150,7 +168,7 @@ class InputTest extends \PHPUnit_Framework_TestCase
             'value' => 'opt5',
         ];
         
-        $input = $this->input;
+        $input = $this->helper;
         $actual = $input($spec);
         
         $expect = '<select name="field_name" foo="bar">' . PHP_EOL
@@ -188,7 +206,7 @@ class InputTest extends \PHPUnit_Framework_TestCase
             'value' => 'Text in the textarea.',
         ];
         
-        $input = $this->input;
+        $input = $this->helper;
         $actual = $input($spec);
         $expect = '<textarea name="field_name" foo="bar">Text in the textarea.</textarea>';
         $this->assertSame($expect, $actual);

@@ -1,11 +1,11 @@
 <?php
 namespace Aura\Html\Helper;
 
-class TagTest extends \PHPUnit_Framework_TestCase
+class TagTest extends AbstractHelperTest
 {
-    public function test__invoke()
+    public function test()
     {
-        $tag = new Tag;
+        $tag = $this->helper;
         
         $actual = $tag('form', [
             'action' => '/action.php',

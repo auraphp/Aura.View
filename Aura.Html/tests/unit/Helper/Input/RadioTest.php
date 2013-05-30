@@ -1,20 +1,23 @@
 <?php
 namespace Aura\Html\Helper\Input;
 
-class RadiosTest extends \PHPUnit_Framework_TestCase
+use Aura\Html\Helper\AbstractHelperTest;
+
+class RadioTest extends AbstractHelperTest
 {
     public function test()
     {
         $attribs = ['type' => '', 'name' => 'field', 'value' => ''];
+        
         $options = [
             'foo' => 'bar',
             'baz' => 'dib',
             'zim' => 'gir',
         ];
         
-        $radios = new Radios(new Radio);
+        $radio = $this->helper;
         
-        $actual = $radios([
+        $actual = $radio([
             'name' => 'field',
             'value' => 'baz',
             'attribs' => $attribs,

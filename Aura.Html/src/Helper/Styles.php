@@ -46,36 +46,28 @@ class Styles extends AbstractHelper
      * 
      * @param string $href The source href for the stylesheet.
      * 
-     * @param array $attribs Additional attributes for the <link> tag.
+     * @param array $attr Additional attributes for the <link> tag.
      * 
      * @param int $pos The stylesheet position in the stack.
      * 
      * @return void
      * 
      */
-    public function add($href, array $attribs = null, $pos = 100)
+    public function add($href, array $attr = null, $pos = 100)
     {
-        $attribs = (array) $attribs;
+        $attr = (array) $attr;
         
         $base = [
             'rel'   => 'stylesheet',
             'href'  => $href,
             'type'  => 'text/css',
+            'media' => 'screen',
         ];
 
-        if (! isset($attribs['media'])) {
-            $base['media'] = 'screen';
-        } else {
-            $base['media'] = $attribs['media'];
-        }
+        unset($attr['href']);
 
-        unset($attribs['rel']);
-        unset($attribs['href']);
-        unset($attribs['type']);
-        unset($attribs['media']);
-
-        $attribs = array_merge($base, (array) $attribs);
-        $tag = $this->void('link', $attribs);
+        $attr = array_merge($base, (array) $attr);
+        $tag = $this->void('link', $attr);
         $this->styles[$tag] = $pos;
     }
 
@@ -84,42 +76,34 @@ class Styles extends AbstractHelper
      * Adds a conditional `<!--[if ...]><link rel="stylesheet" ... /><![endif] -->` 
      * tag to the stack.
      * 
-     * @param string $exp The conditional expression for the stylesheet.
+     * @param string $cond The conditional expression for the stylesheet.
      * 
      * @param string $href The source href for the stylesheet.
      * 
-     * @param array $attribs Additional attributes for the <link> tag.
+     * @param array $attr Additional attributes for the <link> tag.
      * 
      * @param string $pos The stylesheet position in the stack.
      * 
      * @return void
      * 
      */
-    public function addCond($exp, $href, array $attribs = null, $pos = 100)
+    public function addCond($cond, $href, array $attr = null, $pos = 100)
     {
-        $attribs = (array) $attribs;
+        $attr = (array) $attr;
         
         $base = [
             'rel'   => 'stylesheet',
             'href'  => $href,
             'type'  => 'text/css',
+            'media' => 'screen',
         ];
 
-        if (! isset($attribs['media'])) {
-            $base['media'] = 'screen';
-        } else {
-            $base['media'] = $attribs['media'];
-        }
+        unset($attr['href']);
 
-        unset($attribs['rel']);
-        unset($attribs['href']);
-        unset($attribs['type']);
-        unset($attribs['media']);
-
-        $attribs = array_merge($base, (array) $attribs);
-        $tag = "<!--[if $exp]>"
-             . $this->void('link', $attribs)
-             . "<![endif]-->";
+        $attr = array_merge($base, (array) $attr);
+        $link = $this->void('link', $attr);
+        $cond  = $this->escape->html($cond);
+        $tag  = "<!--[if $cond]>$link<![endif]-->";
         $this->styles[$tag] = $pos;
     }
 

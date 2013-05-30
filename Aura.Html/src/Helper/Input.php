@@ -10,7 +10,7 @@
  */
 namespace Aura\Html\Helper;
 
-use Aura\Html\Locator;
+use Aura\Html\HelperLocator;
 
 /**
  * 
@@ -19,32 +19,34 @@ use Aura\Html\Locator;
  * @package Aura.Html
  * 
  */
-class Input
+class Input extends AbstractHelper
 {
     /**
      * 
-     * A locator with input element objects.
+     * A locator for input elements.
      * 
-     * @var Locator
+     * @var HelperLocator
      * 
      */
-    protected $locator;
+    protected $helper_locator;
     
     /**
      * 
-     * Constructor.
+     * Sets the locator object.
      * 
-     * @param Locator $locator A locator with input element objects.
+     * @param HelperLocator $helper_locator
+     * 
+     * @return void
      * 
      */
-    public function __construct(Locator $locator)
+    public function setHelperLocator(HelperLocator $helper_locator)
     {
-        $this->locator = $locator;
+        $this->helper_locator = $helper_locator;
     }
     
     /**
      * 
-     * Given an element specification, returns the HTML for the element.
+     * Given an input specification, returns the HTML for the input.
      * 
      * @param array $spec The element specification.
      * 
@@ -61,7 +63,7 @@ class Input
             $spec['attribs']['name'] = $spec['name'];
         }
         
-        $input = $this->locator->get($spec['type']);
+        $input = $this->helper_locator->get($spec['type']);
         return $input($spec);
     }
 }

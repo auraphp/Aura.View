@@ -26,7 +26,7 @@ abstract class AbstractList extends AbstractHelper
      * @var array
      * 
      */
-    protected $attribs = [];
+    protected $attr = [];
     
     /**
      * 
@@ -50,16 +50,16 @@ abstract class AbstractList extends AbstractHelper
      * 
      * Initializes and returns the UL object.
      * 
-     * @param array $attribs Attributes for the UL tag.
+     * @param array $attr Attributes for the UL tag.
      * 
      * @return self
      * 
      * @todo As with select, allow a second param for the items?
      * 
      */
-    public function __invoke(array $attribs = [])
+    public function __invoke(array $attr = [])
     {
-        $this->attribs = $attribs;
+        $this->attr    = $attr;
         $this->stack   = [];
         $this->html    = '';
         return $this;
@@ -71,14 +71,14 @@ abstract class AbstractList extends AbstractHelper
      * 
      * @param string $html The HTML for the list item text.
      * 
-     * @param array $attribs Attributes for the list item tag.
+     * @param array $attr Attributes for the list item tag.
      * 
      * @return self
      * 
      */
-    public function item($html, array $attribs = [])
+    public function item($html, array $attr = [])
     {
-        $this->stack[] = [$html, $attribs];
+        $this->stack[] = [$html, $attr];
         return $this;
     }
     
@@ -88,15 +88,15 @@ abstract class AbstractList extends AbstractHelper
      * 
      * @param array $items An array of HTML for the list items.
      * 
-     * @param array $attribs Attributes for each list item tag.
+     * @param array $attr Attributes for each list item tag.
      * 
      * @return self
      * 
      */
-    public function items($items, array $attribs = [])
+    public function items($items, array $attr = [])
     {
         foreach ($items as $html) {
-            $this->item($html, $attribs);
+            $this->item($html, $attr);
         }
         return $this;
     }
@@ -108,7 +108,7 @@ abstract class AbstractList extends AbstractHelper
      * @return string
      * 
      */
-    public function exec()
+    public function get()
     {
         // if there is no stack of items, **do not** return an empty
         // <ul></ul> tag set.
@@ -117,9 +117,9 @@ abstract class AbstractList extends AbstractHelper
         }
         
         $tag = $this->getTag();
-        $attribs = $this->strAttribs($this->attribs);
-        if ($attribs) {
-            $this->html = $this->indent(0, "<{$tag} {$attribs}>");
+        $attr = $this->attr($this->attr);
+        if ($attr) {
+            $this->html = $this->indent(0, "<{$tag} {$attr}>");
         } else {
             $this->html = $this->indent(0, "<{$tag}>");
         }
@@ -143,10 +143,10 @@ abstract class AbstractList extends AbstractHelper
      */
     protected function buildItem($item)
     {
-        list($html, $attribs) = $item;
-        $attribs = $this->strAttribs($attribs);
-        if ($attribs) {
-            $this->html .= $this->indent(1, "<li {$attribs}>$html</li>");
+        list($html, $attr) = $item;
+        $attr = $this->attr($attr);
+        if ($attr) {
+            $this->html .= $this->indent(1, "<li {$attr}>$html</li>");
         } else {
             $this->html .= $this->indent(1, "<li>$html</li>");
         }
