@@ -49,7 +49,7 @@ class Escaper
      * @param string $encoding The encoding for raw and escaped strings.
      * 
      */
-    public function __construct($encoding = null)
+    public function __construct($encoding = 'UTF-8')
     {
         $encoding = trim($encoding);
         if ($encoding) {
@@ -218,7 +218,7 @@ class Escaper
 
         // convert UTF-8 to UTF-16BE
         if (strlen($chr) > 1) {
-            $chr = $this->convert($chr, 'UTF-16BE', 'UTF-8');
+            $chr = $this->convert($chr, 'UTF-8', 'UTF-16BE');
         }
 
         // retain the ord value
@@ -258,7 +258,7 @@ class Escaper
             $ord = ord($chr);
         } else {
             // no
-            $chr = $this->convert($chr, 'UTF-16BE', 'UTF-8');
+            $chr = $this->convert($chr, 'UTF-8', 'UTF-16BE');
             $ord = hexdec(bin2hex($chr));
         }
         
@@ -286,7 +286,7 @@ class Escaper
             return sprintf('\\x%02X', ord($chr));
         } else {
             // no
-            $chr = $this->convert($chr, 'UTF-16BE', 'UTF-8');
+            $chr = $this->convert($chr, 'UTF-8', 'UTF-16BE');
             return sprintf('\\u%04s', strtoupper(bin2hex($chr)));
         }
     }
@@ -310,7 +310,7 @@ class Escaper
         // do we need to convert it?
         if ($this->encoding != 'utf-8') {
             // convert to UTF-8
-            $str = $this->convert($str, 'UTF-8', $this->encoding);
+            $str = $this->convert($str, $this->encoding, 'UTF-8');
         }
 
         // do we have a valid UTF-8 string?
@@ -337,30 +337,30 @@ class Escaper
             return $str;
         }
         
-        return $this->convert($str, $this->encoding, 'UTF-8');
+        return $this->convert($str, 'UTF-8', $this->encoding);
     }
 
     /**
      * 
-     * Converts a string to a new encoding from an old one.
+     * Converts a string from one encoding to another.
      *
      * @param string $str The string to be converted.
      * 
-     * @param string $new Convert to this encoding.
+     * @param string $from Convert from this encoding.
      * 
-     * @param string $old The existing encoding for the string.
+     * @param string $to Convert to this encoding.
      * 
      * @return string The string in the new encoding.
      * 
      */
-    protected function convert($str, $new, $old)
+    protected function convert($str, $from, $to)
     {
         if (function_exists('iconv')) {
-            return (string) iconv($old, $new, $str);
+            return (string) iconv($from, $to, $str);
         }
         
         if (function_exists('mb_convert_encoding')) {
-            return (string) mb_convert_encoding($str, $new, $old);
+            return (string) mb_convert_encoding($str, $to, $from);
         }
         
         throw new Exception\ExtensionNotInstalled("Extension 'iconv' or 'mbstring' is required.");
