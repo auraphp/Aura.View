@@ -8,7 +8,7 @@ class HelperLocatorTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->helper_locator = new HelperLocator(new HelperFactory(
-            new Escape,
+            new Escaper,
             [
                 'mockHelper' => function () {
                     return new Helper\MockHelper;

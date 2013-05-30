@@ -41,7 +41,7 @@ class Anchor extends AbstractHelper
         unset($attr['href']);
         
         $attr = $this->attr(array_merge($base, $attr));
-        $text = $this->escape->html($text);
+        $text = $this->escaper->html($text);
         return "<a $attr>$text</a>";
     }
 }

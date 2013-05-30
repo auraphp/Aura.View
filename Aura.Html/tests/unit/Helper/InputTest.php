@@ -3,7 +3,7 @@ namespace Aura\Html\Helper;
 
 use Aura\Html\HelperFactory;
 use Aura\Html\HelperLocator;
-use Aura\Html\Escape;
+use Aura\Html\Escaper;
 
 class InputTest extends AbstractHelperTest
 {
@@ -12,7 +12,7 @@ class InputTest extends AbstractHelperTest
         $helper = parent::newHelper();
         
         $helper->setHelperLocator(new HelperLocator(new HelperFactory(
-            new Escape,
+            new Escaper,
             [
                 'button'            => function () { return new Input\Generic; },
                 'checkbox'          => function () { return new Input\Checkbox; },

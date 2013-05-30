@@ -1,7 +1,7 @@
 <?php
 namespace Aura\Html;
 
-class Escape
+class Escaper
 {
     /**
      * 
@@ -89,7 +89,7 @@ class Escape
 
     /**
      * 
-     * Escapes for HTML attribute context.
+     * Escapes for unquoted HTML attribute context.
      *
      * @param string $raw The raw string.
      * 
@@ -116,7 +116,7 @@ class Escape
 
     /**
      * 
-     * Escapes for HTML body context.
+     * Escapes for HTML body and quoted HTML attribute context.
      *
      * @param string $raw The raw string.
      * 

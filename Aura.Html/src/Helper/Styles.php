@@ -102,7 +102,7 @@ class Styles extends AbstractHelper
 
         $attr = array_merge($base, (array) $attr);
         $link = $this->void('link', $attr);
-        $cond  = $this->escape->html($cond);
+        $cond  = $this->escaper->html($cond);
         $tag  = "<!--[if $cond]>$link<![endif]-->";
         $this->styles[$tag] = $pos;
     }

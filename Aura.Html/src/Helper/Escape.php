@@ -23,11 +23,11 @@ class Escape extends AbstractHelper
      * 
      * Returns the escaper object.
      * 
-     * @return Escape
+     * @return Escaper
      * 
      */
     public function __invoke()
     {
-        return $this->escape;
+        return $this->escaper;
     }
 }

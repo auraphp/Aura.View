@@ -3,15 +3,15 @@ namespace Aura\Html;
 
 class HelperFactory
 {
-    public $escape;
+    public $escaper;
     
     public $registry;
     
     public function __construct(
-        Escape $escape,
+        Escaper $escaper,
         array $registry = [])
     {
-        $this->escape = $escape;
+        $this->escaper = $escaper;
         $this->registry = $registry;
     }
     
@@ -23,7 +23,7 @@ class HelperFactory
         
         $func = $this->registry[$name];
         $helper = $func();
-        $helper->setEscape($this->escape);
+        $helper->setEscaper($this->escaper);
         return $helper;
     }
 }

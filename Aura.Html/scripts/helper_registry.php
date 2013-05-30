@@ -8,7 +8,7 @@ return [
     'form'          => function () { return new Helper\Form; },
     'input'         => function () {
         $helper_locator = new HelperLocator(new HelperFactory(
-            new Escape,
+            new Escaper,
             require __DIR__ . '/input_registry.php'
         ));
         $input = new Helper\Input;

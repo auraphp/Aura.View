@@ -10,7 +10,7 @@
  */
 namespace Aura\Html\Helper;
 
-use Aura\Html\Escape;
+use Aura\Html\Escaper;
 
 /**
  * 
@@ -41,25 +41,25 @@ abstract class AbstractHelper
     
     /**
      * 
-     * An escape object.
+     * An escaper object.
      * 
-     * @var Escape
+     * @var Escaper
      * 
      */
-    protected $escape;
+    protected $escaper;
     
     /**
      * 
-     * Sets the escape object.
+     * Sets the escaper object.
      * 
-     * @param Escape $escape The escape object.
+     * @param Escaper $escaper The escaper object.
      * 
      * @return void
      * 
      */
-    public function setEscape(Escape $escape)
+    public function setEscaper(Escaper $escaper)
     {
-        $this->escape = $escape;
+        $this->escaper = $escaper;
     }
     
     /**
@@ -102,7 +102,7 @@ abstract class AbstractHelper
      * 
      * @return string The attribute string.
      * 
-     * @todo Move this to the Escape object entirely.
+     * @todo Move this to the Escaper object entirely.
      * 
      */
     protected function attr(array $attr)
@@ -131,11 +131,11 @@ abstract class AbstractHelper
             // what kind of attribute representation?
             if ($val === true) {
                 // minimized
-                $html .= $this->escape->attr($key);
+                $html .= $this->escaper->attr($key);
             } else {
-                // full
-                $html .= $this->escape->attr($key) . '="'
-                       . $this->escape->html($val) . '"';
+                // full; because the it is quoted, we can use html ecaping
+                $html .= $this->escaper->attr($key) . '="'
+                       . $this->escaper->html($val) . '"';
             }
             
             // space separator
