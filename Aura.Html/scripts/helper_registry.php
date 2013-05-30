@@ -7,20 +7,12 @@ return [
     'base'          => function () { return new Helper\Base; },
     'form'          => function () { return new Helper\Form; },
     'input'         => function () {
+        $helper_locator = new HelperLocator(new HelperFactory(
+            new Escape,
+            require __DIR__ . '/input_registry.php'
+        ));
         $input = new Helper\Input;
-        $input->setHelperLocator(
-            new HelperLocator(
-                new HelperFactory(
-                    new Escape(
-                        new Escape\AttrStrategy,
-                        new Escape\CssStrategy,
-                        new Escape\HtmlStrategy,
-                        new Escape\JsStrategy
-                    ),
-                    require __DIR__ . '/input_registry.php'
-                )
-            )
-        );
+        $input->setHelperLocator($helper_locator);
         return $input;
     },
     'img'           => function () { return new Helper\Img; },

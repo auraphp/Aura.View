@@ -11,46 +11,36 @@ class InputTest extends AbstractHelperTest
     {
         $helper = parent::newHelper();
         
-        $escape = new Escape(
-            new Escape\AttrStrategy,
-            new Escape\CssStrategy,
-            new Escape\HtmlStrategy,
-            new Escape\JsStrategy
-        );
-        
-        $registry = [
-            'button'            => function () { return new Input\Generic; },
-            'checkbox'          => function () { return new Input\Checkbox; },
-            'color'             => function () { return new Input\Generic; },
-            'date'              => function () { return new Input\Generic; },
-            'datetime'          => function () { return new Input\Generic; },
-            'datetime-local'    => function () { return new Input\Generic; },
-            'email'             => function () { return new Input\Generic; },
-            'file'              => function () { return new Input\Generic; },
-            'hidden'            => function () { return new Input\Generic; },
-            'image'             => function () { return new Input\Generic; },
-            'month'             => function () { return new Input\Generic; },
-            'number'            => function () { return new Input\Generic; },
-            'password'          => function () { return new Input\Generic; },
-            'radio'             => function () { return new Input\Radio; },
-            'range'             => function () { return new Input\Generic; },
-            'reset'             => function () { return new Input\Generic; },
-            'search'            => function () { return new Input\Generic; },
-            'select'            => function () { return new Input\Select; },
-            'submit'            => function () { return new Input\Generic; },
-            'tel'               => function () { return new Input\Generic; },
-            'text'              => function () { return new Input\Generic; },
-            'textarea'          => function () { return new Input\Textarea; },
-            'time'              => function () { return new Input\Generic; },
-            'url'               => function () { return new Input\Generic; },
-            'week'              => function () { return new Input\Generic; },
-        ];
-        
-        $helper_factory = new HelperFactory($escape, $registry);
-        
-        $helper_locator = new HelperLocator($helper_factory);
-        
-        $helper->setHelperLocator($helper_locator);
+        $helper->setHelperLocator(new HelperLocator(new HelperFactory(
+            new Escape,
+            [
+                'button'            => function () { return new Input\Generic; },
+                'checkbox'          => function () { return new Input\Checkbox; },
+                'color'             => function () { return new Input\Generic; },
+                'date'              => function () { return new Input\Generic; },
+                'datetime'          => function () { return new Input\Generic; },
+                'datetime-local'    => function () { return new Input\Generic; },
+                'email'             => function () { return new Input\Generic; },
+                'file'              => function () { return new Input\Generic; },
+                'hidden'            => function () { return new Input\Generic; },
+                'image'             => function () { return new Input\Generic; },
+                'month'             => function () { return new Input\Generic; },
+                'number'            => function () { return new Input\Generic; },
+                'password'          => function () { return new Input\Generic; },
+                'radio'             => function () { return new Input\Radio; },
+                'range'             => function () { return new Input\Generic; },
+                'reset'             => function () { return new Input\Generic; },
+                'search'            => function () { return new Input\Generic; },
+                'select'            => function () { return new Input\Select; },
+                'submit'            => function () { return new Input\Generic; },
+                'tel'               => function () { return new Input\Generic; },
+                'text'              => function () { return new Input\Generic; },
+                'textarea'          => function () { return new Input\Textarea; },
+                'time'              => function () { return new Input\Generic; },
+                'url'               => function () { return new Input\Generic; },
+                'week'              => function () { return new Input\Generic; },
+            ]
+        )));
         
         return $helper;
     }

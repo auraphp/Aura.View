@@ -15,16 +15,9 @@ abstract class AbstractHelperTest extends \PHPUnit_Framework_TestCase
     
     protected function newHelper()
     {
-        $escape = new Escape(
-            new Escape\AttrStrategy,
-            new Escape\CssStrategy,
-            new Escape\HtmlStrategy,
-            new Escape\JsStrategy
-        );
-        
         $class = substr(get_class($this), 0, -4);
         $helper = new $class;
-        $helper->setEscape($escape);
+        $helper->setEscape(new Escape);
         return $helper;
     }
 }

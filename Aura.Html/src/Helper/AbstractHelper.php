@@ -128,27 +128,14 @@ abstract class AbstractHelper
                 $val = implode(' ', $val);
             }
             
-            // add to the html on a case-by-case basis
-            switch (true) {
-                // minimized attribute
-                case ($val === true):
-                    $html .= $this->escape->attr($key);
-                    break;
-                // css string
-                case (strtolower($key) == 'style'):
-                    $html .= $this->escape->attr($key) . '="'
-                           . $this->escape->attr($this->escape->css($val));
-                    break;
-                // javascript event
-                case (strtolower(substr($key, 0, 2)) == 'on'):
-                    $html .= $this->escape->attr($key) . '="'
-                           . $this->escape->attr($this->escape->js($val));
-                    break;
-                // regular attribute
-                default:
-                    $html .= $this->escape->attr($key) . '="'
-                           . $this->escape->attr($val) . '"';
-                    break;
+            // what kind of attribute representation?
+            if ($val === true) {
+                // minimized
+                $html .= $this->escape->attr($key);
+            } else {
+                // full
+                $html .= $this->escapeAttr($key) . '="'
+                       . $this->escapeHtml($val) . '"';
             }
             
             // space separator
@@ -192,5 +179,135 @@ abstract class AbstractHelper
     {
         $level += $this->indent_level;
         return str_repeat($this->indent, $level) . $text . PHP_EOL;
+    }
+    /**
+     * 
+     * HTML entities mapped from ord() values for attribute characters.
+     * 
+     * @var array
+     * 
+     */
+    protected $attr_char_entities = array(
+        34 => '&quot;',
+        38 => '&amp;',
+        60 => '&lt;',
+        62 => '&gt;',
+    );
+
+    /**
+     * 
+     * Escapes a string for HTML content or quoted attribute context.
+     * 
+     * @param string $raw The raw string.
+     * 
+     * @return string The escaped string.
+     * 
+     */
+    protected function escapeHtml($raw)
+    {
+        return htmlspecialchars(
+            $raw,
+            ENT_QUOTES | ENT_SUBSTITUTE,
+            'UTF-8',
+            false // do not double-encode
+        );
+    }
+    
+    /**
+     * 
+     * Escapes strings for an unquoted attribute context.
+     * 
+     * @param mixed $raw The raw value.
+     * 
+     * @return mixed The escaped value.
+     * 
+     */
+    public function escapeAttr($raw)
+    {
+        // is the raw value composed only of safe characters?
+        if (preg_match("/^[a-z0-9,._-]*$/iDSu", $raw)) {
+            // yes, no need to escape further
+            return $raw;
+        }
+        
+        // replace unsafe chars in the raw value
+        return preg_replace_callback(
+            "/[^$this->safe]/iDSu",
+            [$this, 'escapeAttrChar'],
+            $raw
+        );
+    }
+    
+    /**
+     * 
+     * Callback to replace unsafe characters with escaped ones.
+     * 
+     * @param array $matches Characters matched from preg_replace_callback().
+     * 
+     * @return string Escaped characters.
+     * 
+     */
+    protected function escapeAttrChar(array $matches)
+    {
+        // get the character and its ord() value
+        $char = $matches[0];
+        $ord = ord($char);
+        
+        // handle chars undefined in HTML
+        $undef = ($ord <= 0x1f && $char != "\t" && $char != "\n" && $char != "\r")
+              || ($ord >= 0x7f && $ord <= 0x9f);
+        
+        if ($undef) {
+            // use the Unicode replacement char
+            return '&#xFFFD;';
+        }
+        
+        // is this a UTF-16BE character?
+        if (strlen($char) > 1) {
+            // convert it
+            $char = $this->convertUTF16BEtoUTF8($char);
+        }
+        
+        // retain the ord value
+        $ord = hexdec(bin2hex($char));
+        
+        // is this a mapped entity?
+        if (isset($this->attr_char_entities[$ord])) {
+            return $this->attr_char_entities[$ord];
+        }
+
+        // is this an upper-range hex entity?
+        if ($ord > 255) {
+            return sprintf('&#x%04X;', $ord);
+        }
+        
+        // everything else
+        return sprintf('&#x%02X;', $ord);
+    }
+    
+    /**
+     * 
+     * Converts a single character from UTF-16BE to UTF-8; used by extending
+     * escaper classes.
+     * 
+     * @param string $char The UTF-16BE character.
+     * 
+     * @return string The converted UTF-8 character.
+     * 
+     */
+    protected function convertUTF16BEtoUTF8($char)
+    {
+        $to = 'UTF-16BE';
+        $from = 'UTF-8';
+        
+        if (function_exists('iconv')) {
+            return (string) iconv($from, $to, $char);
+        }
+        
+        if (function_exists('mb_convert_encoding')) {
+            return (string) mb_convert_encoding($char, $to, $from);
+        }
+        
+        throw new Exception\ExtensionNotInstalled("Extension 'iconv' or 'mbstring' is required.");
     }
 }

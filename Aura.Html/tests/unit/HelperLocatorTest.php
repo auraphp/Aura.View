@@ -7,29 +7,16 @@ class HelperLocatorTest extends \PHPUnit_Framework_TestCase
     
     protected function setUp()
     {
-        $escape = new Escape(
-            new Escape\AttrStrategy,
-            new Escape\CssStrategy,
-            new Escape\HtmlStrategy,
-            new Escape\JsStrategy
-        );
-        
-        $registry = [
-            'mockHelper' => function () {
-                return new Helper\MockHelper;
-            },
-        ];
-        
-        $helper_factory = new HelperFactory($escape, $registry);
-        
-        $this->helper_locator = new HelperLocator($helper_factory);
+        $this->helper_locator = new HelperLocator(new HelperFactory(
+            new Escape,
+            [
+                'mockHelper' => function () {
+                    return new Helper\MockHelper;
+                },
+            ]
+        ));
     }
     
-    protected function tearDown()
-    {
-        parent::tearDown();
-    }
-
     public function test()
     {
         $expect = 'Aura\Html\Helper\MockHelper';
