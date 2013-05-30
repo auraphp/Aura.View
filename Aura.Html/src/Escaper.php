@@ -1,6 +1,27 @@
 <?php
+/**
+ * 
+ * This file is part of the Aura Project for PHP.
+ * 
+ * @package Aura.Html
+ * 
+ * @license http://opensource.org/licenses/bsd-license.php BSD
+ * 
+ */
 namespace Aura\Html;
 
+/**
+ * 
+ * A tool for escaping output.
+ * 
+ * Based almost entirely on Zend\Escaper by Padraic Brady et al. and modified
+ * for conceptual integrity with the rest of Aura.  Some portions copyright
+ * (c) 2005-2013 Zend Technologies USA Inc. (http://www.zend.com)
+ * under the New BSD License (http://framework.zend.com/license/new-bsd). 
+ * 
+ * @package Aura.Html
+ * 
+ */
 class Escaper
 {
     /**
@@ -197,7 +218,7 @@ class Escaper
      * 
      * Replaces unsafe HTML attribute characters.
      *
-     * @param array $matches A match from preg_replace_callback().
+     * @param array $matches Matches from preg_replace_callback().
      * 
      * @return string Escaped characters.
      * 
@@ -242,7 +263,7 @@ class Escaper
      * 
      * Replaces unsafe JavaScript attribute characters.
      *
-     * @param array $matches A match from preg_replace_callback().
+     * @param array $matches Matches from preg_replace_callback().
      * 
      * @return string Escaped characters.
      * 
@@ -270,7 +291,7 @@ class Escaper
      * 
      * Replaces unsafe JavaScript attribute characters.
      *
-     * @param array $matches A match from preg_replace_callback().
+     * @param array $matches Matches from preg_replace_callback().
      * 
      * @return string Escaped characters.
      * 
@@ -363,6 +384,7 @@ class Escaper
             return (string) mb_convert_encoding($str, $to, $from);
         }
         
-        throw new Exception\ExtensionNotInstalled("Extension 'iconv' or 'mbstring' is required.");
+        $message = "Extension 'iconv' or 'mbstring' is required.";
+        throw new Exception\ExtensionNotInstalled($message);
     }
 }

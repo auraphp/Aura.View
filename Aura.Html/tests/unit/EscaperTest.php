@@ -1,6 +1,14 @@
 <?php
 namespace Aura\Html;
 
+/**
+ * 
+ * Based almost entirely on Zend\Escaper by Padraic Brady et al. and modified
+ * for conceptual integrity with the rest of Aura.  Some portions copyright
+ * (c) 2005-2013 Zend Technologies USA Inc. (http://www.zend.com)
+ * under the New BSD License (http://framework.zend.com/license/new-bsd). 
+ * 
+ */
 class EscaperTest extends \PHPUnit_Framework_TestCase
 {
     public function setUp()
