@@ -95,14 +95,18 @@ abstract class AbstractHelper
      * 
      * Converts an associative array to an attribute string.
      * 
-     * @param array $attr From this array, each key-value pair
-     * is converted to an attribute name and value.
+     * Keys are attribute names, and values are attribute values. A value
+     * of boolean true indicates a minimized attribute; for example,
+     * `['disabled' => 'disabled']` results in `disabled="disabled"`, but
+     * `['disabled' => true]` results in `disabled`.  Values of `false` or
+     * `null` will omit the attribute from output.  Array values will be
+     * concatenated and space-separated before escaping.
      * 
-     * @param array $skip Skip attributes listed in this array.
+     * @param array $attr An array of key-value pairs where the key is the
+     * attribute name and the value is the attribute value.
      * 
-     * @return string The attribute string.
-     * 
-     * @todo Move this to the Escaper object entirely.
+     * @return string The attribute array converted to a properly-escaped
+     * string.
      * 
      */
     protected function attr(array $attr)
@@ -123,7 +127,7 @@ abstract class AbstractHelper
             // get rid of extra spaces in the key
             $key = trim($key);
             
-            // space-separate multiple values
+            // concatenate and space-separate multiple values
             if (is_array($val)) {
                 $val = implode(' ', $val);
             }
