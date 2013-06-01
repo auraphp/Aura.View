@@ -23,14 +23,14 @@ class EscapeAttr extends AbstractHelper
      * 
      * Converts an associative array to an attribute string.
      * 
-     * @param array $attr From this array, each key-value pair is 
-     * converted to an attribute name and value.
+     * @param mixed $raw The raw attribute key, value, or array of key-value
+     * pairs.
      * 
-     * @return string The string of attributes.
+     * @return string The escaped attribute string.
      * 
      */
-    public function __invoke(array $attr)
+    public function __invoke($raw)
     {
-        return $this->escaper->attr($attr);
+        return $this->escaper->attr($raw);
     }
 }
