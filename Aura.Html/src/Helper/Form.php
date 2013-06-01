@@ -39,7 +39,7 @@ class Form extends AbstractHelper
             'enctype' => 'multipart/form-data',
         ];
         
-        $attr = $this->attr(array_merge($base, $attr));
+        $attr = $this->escaper->attr(array_merge($base, $attr));
         return "<form $attr>";
     }
 }

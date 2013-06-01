@@ -117,7 +117,7 @@ abstract class AbstractList extends AbstractHelper
         }
         
         $tag = $this->getTag();
-        $attr = $this->attr($this->attr);
+        $attr = $this->escaper->attr($this->attr);
         if ($attr) {
             $this->html = $this->indent(0, "<{$tag} {$attr}>");
         } else {
@@ -144,7 +144,7 @@ abstract class AbstractList extends AbstractHelper
     protected function buildItem($item)
     {
         list($html, $attr) = $item;
-        $attr = $this->attr($attr);
+        $attr = $this->escaper->attr($attr);
         if ($attr) {
             $this->html .= $this->indent(1, "<li {$attr}>$html</li>");
         } else {

@@ -93,65 +93,6 @@ abstract class AbstractHelper
 
     /**
      * 
-     * Converts an associative array to an attribute string.
-     * 
-     * Keys are attribute names, and values are attribute values. A value
-     * of boolean true indicates a minimized attribute; for example,
-     * `['disabled' => 'disabled']` results in `disabled="disabled"`, but
-     * `['disabled' => true]` results in `disabled`.  Values of `false` or
-     * `null` will omit the attribute from output.  Array values will be
-     * concatenated and space-separated before escaping.
-     * 
-     * @param array $attr An array of key-value pairs where the key is the
-     * attribute name and the value is the attribute value.
-     * 
-     * @return string The attribute array converted to a properly-escaped
-     * string.
-     * 
-     */
-    protected function attr(array $attr)
-    {
-        // pre-empt processing
-        if (! $attr) {
-            return '';
-        }
-
-        $html = '';
-        foreach ($attr as $key => $val) {
-
-            // do not add null and false values to the html
-            if ($val === null || $val === false) {
-                continue;
-            }
-            
-            // get rid of extra spaces in the key
-            $key = trim($key);
-            
-            // concatenate and space-separate multiple values
-            if (is_array($val)) {
-                $val = implode(' ', $val);
-            }
-            
-            // what kind of attribute representation?
-            if ($val === true) {
-                // minimized
-                $html .= $this->escaper->attr($key);
-            } else {
-                // full; because the it is quoted, we can use html ecaping
-                $html .= $this->escaper->attr($key) . '="'
-                       . $this->escaper->html($val) . '"';
-            }
-            
-            // space separator
-            $html .= ' ';
-        }
-
-        // done; remove the last space
-        return rtrim($html);
-    }
-    
-    /**
-     * 
      * Returns a "void" tag (i.e., one with no body and no closing tag).
      * 
      * @param string $tag The tag name.
@@ -163,7 +104,7 @@ abstract class AbstractHelper
      */
     protected function void($tag, array $attr = [])
     {
-        $attr = $this->attr($attr);
+        $attr = $this->escaper->attr($attr);
         $html = "<{$tag} {$attr} />";
         return $html;
     }

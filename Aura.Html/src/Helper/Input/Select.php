@@ -206,7 +206,7 @@ class Select extends AbstractInput
         }
         
         // open the select
-        $attribs = $this->attr($this->attribs);
+        $attribs = $this->escaper->attr($this->attribs);
         $html = $this->indent(0, "<select {$attribs}>");
         
         // is there a placeholder option?
@@ -261,7 +261,7 @@ class Select extends AbstractInput
         }
         
         // build attributes and return option tag with label text
-        $attribs = $this->attr($attribs);
+        $attribs = $this->escaper->attr($attribs);
         return $this->indent($this->optlevel, "<option {$attribs}>$label</option>");
     }
     
@@ -279,7 +279,7 @@ class Select extends AbstractInput
         list($label, $attribs) = $info;
         $this->optlevel += 1;
         $attribs['label'] = $label;
-        $attribs = $this->attr($attribs);
+        $attribs = $this->escaper->attr($attribs);
         return $this->indent(1, "<optgroup {$attribs}>");
     }
     

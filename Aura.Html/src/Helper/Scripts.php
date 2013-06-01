@@ -62,7 +62,7 @@ class Scripts extends AbstractHelper
         
         unset($attr['src']);
         
-        $attr = $this->attr(array_merge($base, $attr));
+        $attr = $this->escaper->attr(array_merge($base, $attr));
         $tag = "<script $attr></script>";
         $this->scripts[(int) $pos][] = $tag;
     }
@@ -92,7 +92,7 @@ class Scripts extends AbstractHelper
         
         unset($attr['src']);
         
-        $attr = $this->attr(array_merge($base, $attr));
+        $attr = $this->escaper->attr(array_merge($base, $attr));
         $cond = $this->escaper->html($cond);
         
         $tag = "<!--[if $cond]><script $attr></script><![endif]-->";

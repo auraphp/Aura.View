@@ -74,7 +74,7 @@ abstract class AbstractChecked extends AbstractInput
         }
         
         if (isset($this->attribs['id'])) {
-            $attribs = $this->attr(['for' => $this->attribs['id']]);
+            $attribs = $this->escaper->attr(['for' => $this->attribs['id']]);
             return "<label {$attribs}>{$input} {$this->label}</label>";
         } else {
             return "<label>{$input} {$this->label}</label>";

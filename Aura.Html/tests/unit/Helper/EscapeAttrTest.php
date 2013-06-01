@@ -1,7 +1,7 @@
 <?php
 namespace Aura\Html\Helper;
 
-class AttrTest extends AbstractHelperTest
+class EscapeAttrTest extends AbstractHelperTest
 {
     public function test__invoke()
     {

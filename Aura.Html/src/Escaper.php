@@ -119,6 +119,15 @@ class Escaper
      */
     public function attr($raw)
     {
+        if (is_array($raw)) {
+            return $this->attrArray($raw);
+        }
+        
+        return $this->attrString($raw);
+    }
+
+    protected function attrString($raw)
+    {
         // pre-empt escaping
         if ($raw === '' || ctype_digit($raw)) {
             return $raw;
@@ -134,7 +143,61 @@ class Escaper
         // return using original encoding
         return $this->fromUtf8($esc);
     }
+    
+    /**
+     * 
+     * Converts an associative array to an attribute string.
+     * 
+     * Keys are attribute names, and values are attribute values. A value
+     * of boolean true indicates a minimized attribute; for example,
+     * `['disabled' => 'disabled']` results in `disabled="disabled"`, but
+     * `['disabled' => true]` results in `disabled`.  Values of `false` or
+     * `null` will omit the attribute from output.  Array values will be
+     * concatenated and space-separated before escaping.
+     * 
+     * @param array $raw An array of key-value pairs where the key is the
+     * attribute name and the value is the attribute value.
+     * 
+     * @return string The attribute array converted to a properly-escaped
+     * string.
+     * 
+     */
+    protected function attrArray(array $raw)
+    {
+        $esc = '';
+        foreach ($raw as $key => $val) {
 
+            // do not add null and false values
+            if ($val === null || $val === false) {
+                continue;
+            }
+            
+            // get rid of extra spaces in the key
+            $key = trim($key);
+            
+            // concatenate and space-separate multiple values
+            if (is_array($val)) {
+                $val = implode(' ', $val);
+            }
+            
+            // what kind of attribute representation?
+            if ($val === true) {
+                // minimized
+                $esc .= $this->attr($key);
+            } else {
+                // full; because the it is quoted, we can use html ecaping
+                $esc .= $this->attr($key) . '="'
+                      . $this->html($val) . '"';
+            }
+            
+            // space separator
+            $esc .= ' ';
+        }
+
+        // done; remove the last space
+        return rtrim($esc);
+    }
+    
     /**
      * 
      * Escapes for HTML body and quoted HTML attribute context.
