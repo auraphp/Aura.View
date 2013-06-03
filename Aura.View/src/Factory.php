@@ -1,6 +1,8 @@
 <?php
 namespace Aura\View;
 
+use Closure;
+
 class Factory
 {
     protected $finder;
@@ -20,10 +22,10 @@ class Factory
         // can we find the named template?
         $template = $this->finder->find($name);
         if (! $template) {
-            throw new Exception\TemplateNotFound($name);
+            return false;
         }
         
-        if ($template instanceof \Closure) {
+        if ($template instanceof Closure) {
             // bind the closure to a blank template. this means the closure
             // acts as the __invoke() method for the blank template.
             $newthis  = new Template($this, $helper, $data);

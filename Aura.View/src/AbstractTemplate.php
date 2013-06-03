@@ -61,7 +61,7 @@ abstract class AbstractTemplate
     public function __construct(
         Factory $factory,
         $helper,
-        $data = []
+        $data = null
     ) {
         $this->setFactory($factory);
         $this->setHelper($helper);
@@ -147,8 +147,9 @@ abstract class AbstractTemplate
      * Replaces all template data at once; this will remove all previous
      * data.
      * 
-     * @param array $data An array of key-value pairs where the keys are 
-     * template variable names, and the values are the variable values.
+     * @param mixes $data An array or object where the keys or properties are
+     * variable names, and the corresponding values are the variable values.
+     * (Arrays will be converted to objects.)
      * 
      * @return void
      * 
@@ -160,28 +161,9 @@ abstract class AbstractTemplate
 
     /**
      * 
-     * Merges new data with the existing template data.
+     * Gets the template data object.
      * 
-     * @param array $data An array of key-value pairs where the keys are 
-     * template variable names, and the values are the variable values.
-     * 
-     * @return void
-     * 
-     */
-    public function addData($data)
-    {
-        $this->data = (object) array_merge(
-            (array) $this->data,
-            (array) $data
-        );
-    }
-
-    /**
-     * 
-     * Gets all template variables.
-     * 
-     * @return array An array of key-value pairs where the keys are 
-     * template variable names, and the values are the variable values.
+     * @return object
      * 
      */
     public function getData()
@@ -246,52 +228,34 @@ abstract class AbstractTemplate
 
     /**
      * 
-     * Renders the named template and returns its output.
+     * Renders a sub-template and returns its output, optionally with 
+     * scope-separated data.
      * 
-     * @param string $name The template name to look for in the factory.
+     * @param string $name The template to render to use.
      * 
-     * @return string The template output.
-     * 
-     */
-    public function template($name)
-    {
-        $template = $this->factory->newInstance($name, $this->helper, $this->data);
-        return $this->render($template);
-    }
-    
-    /**
-     * 
-     * Fetches the output from a partial. The partial will be executed in
-     * isolation from the rest of the template, which means `$this` refers
-     * to the *partial* data, not the original template data. However, helper
-     * objects *are* shared between the original template and the partial.
-     * 
-     * @param string $name The partial to use.
-     * 
-     * @param array $data Data to use for the partial.
+     * @param mixed $data Scope-separated data to use in the template. Passing
+     * data here means the main template data *will not* be available, but
+     * leaving it empty means the main template data *will* be available.
      * 
      * @return string
      * 
      */
-    public function partial($name, array $data = [])
+    public function render($name, $data = null)
     {
-        $partial = $this->factory->newInstance($name, $this->helper, $data);
-        return $this->render($partial);
-    }
-    
-    /**
-     * 
-     * Renders a template by invoking it inside an output buffer.
-     * 
-     * @param callable $tpl The template to invoke.
-     * 
-     * @return string The template output.
-     * 
-     */
-    private function render(callable $tpl)
-    {
+        // use the main data, or scope-separated data?
+        if (! $data) {
+            $data = $this->data;
+        }
+        
+        // get the template
+        $template = $this->factory->newInstance($name, $this->helper, $data);
+        if (! $template) {
+            throw new Exception\TemplateNotFound($name);
+        }
+        
+        // render and return the sub-template
         ob_start();
-        $tpl();
+        $template();
         return ob_get_clean();
     }
 }

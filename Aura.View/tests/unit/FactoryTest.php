@@ -25,8 +25,8 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
     
     public function testNewInstance_templateNotFound()
     {
-        $this->setExpectedException('Aura\View\Exception\TemplateNotFound');
-        $this->factory->newInstance('no_such_template', $this->helper, $this->data);
+        $template = $this->factory->newInstance('no_such_template', $this->helper, $this->data);
+        $this->assertFalse($template);
     }
     
     public function testNewInstance_closure()

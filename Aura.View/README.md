@@ -509,7 +509,7 @@ echo "    <li>{$this->item}</li>" . PHP_EOL;
 foreach ($this->list as $item) {
     $template_name = '_item';
     $template_vars = ['item' => $item];
-    echo $this->partial($template_name, $template_vars);
+    echo $this->render($template_name, $template_vars);
 }
 ```
 

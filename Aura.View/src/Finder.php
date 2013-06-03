@@ -199,7 +199,7 @@ class Finder
      */
     public function find($name)
     {
-        // is the name already in the registry?
+        // is the name registered?
         if (isset($this->registry[$name])) {
             return $this->registry[$name];
         }
