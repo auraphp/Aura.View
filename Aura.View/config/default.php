@@ -154,8 +154,8 @@ $di->params['Aura\View\HelperLocator']['registry'] = [
  */
 $di->params['Aura\View\Template'] = [
     'escaper_factory' => $di->lazyNew('Aura\View\EscaperFactory'),
-    'helper_locator'  => $di->lazyNew('Aura\View\HelperLocator'),
-    'template_finder' => $di->lazyNew('Aura\View\TemplateFinder'),
+    'helper'  => $di->lazyNew('Aura\View\HelperLocator'),
+    'template_finder' => $di->lazyNew('Aura\View\Finder'),
 ];
 
 /**

@@ -1,13 +1,13 @@
 <?php
-// preload source files
-require dirname(__DIR__) . DIRECTORY_SEPARATOR . 'src.php';
+// autoloader
+require dirname(__DIR__) . '/autoload.php';
 
-// autoload test files
-spl_autoload_register(function($class) {
-    $file = dirname(__DIR__). DIRECTORY_SEPARATOR
-          . 'tests' . DIRECTORY_SEPARATOR
-          . str_replace('\\', DIRECTORY_SEPARATOR, $class) . '.php';
-    if (file_exists($file)) {
-        require $file;
-    }
-});
+// default globals
+if (is_readable(__DIR__ . '/globals.default.php')) {
+    require __DIR__ . '/globals.default.php';
+}
+
+// override globals
+if (is_readable(__DIR__ . '/globals.php')) {
+    require __DIR__ . '/globals.php';
+}

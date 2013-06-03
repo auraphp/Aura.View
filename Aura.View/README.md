@@ -44,12 +44,12 @@ instantiate manually:
 <?php
 use Aura\View\Template;
 use Aura\View\EscaperFactory;
-use Aura\View\TemplateFinder;
+use Aura\View\Finder;
 use Aura\View\HelperLocator;
 
 $template = new Template(
     new EscaperFactory,
-    new TemplateFinder,
+    new Finder,
     new HelperLocator
 );
 ```
@@ -428,17 +428,17 @@ The Template Finder
 
 Although we can use an absolute template script path with `fetch()`, it is
 more powerful to specify one or more paths where template scripts are located.
-Then we can `fetch()` based on a template name, and the `TemplateFinder` will
+Then we can `fetch()` based on a template name, and the `Finder` will
 search through the assigned paths for that template. This allows us to specify
 baseline templates, and override them as needed.
 
-To tell the `TemplateFinder` where to find template scripts, get it from the
+To tell the `Finder` where to find template scripts, get it from the
 `Template` and use `setPaths()`.
 
 ```php
 <?php
 // business logic
-$finder = $template->getTemplateFinder();
+$finder = $template->getFinder();
 
 // set the paths where templates can be found
 $finder->setPaths([
@@ -449,13 +449,13 @@ $finder->setPaths([
 ```
 
 Now when we call `fetch()`, the `Template` object will use the
-`TemplateFinder` to look through those directories for the template script we
+`Finder` to look through those directories for the template script we
 specified.
 
-For example, if we `echo $template->fetch('tpl')` the `TemplateFinder` will
+For example, if we `echo $template->fetch('tpl')` the `Finder` will
 look through each of the directories in turn to use the first 'tpl.php'
 template script it finds. This allows us to set up several locations for
-templates, and put replacement templates in locations the `TemplateFinder`
+templates, and put replacement templates in locations the `Finder`
 will get to before the baseline ones.
 
 
@@ -590,13 +590,13 @@ To instantiate the two-step view template, do the following:
 
 ```php
 use Aura\View\Template;
-use Aura\View\TemplateFinder;
+use Aura\View\Finder;
 use Aura\View\HelperLocator;
 use Aura\View\TwoStep;
 use Aura\View\FormatTypes;
 
 $template = new Template(
-    new TemplateFinder,
+    new Finder,
     new HelperLocator
 );
 $twostep = new TwoStep($template, new FormatTypes());
@@ -733,14 +733,14 @@ in `innerview` directory.
 require dirname(__DIR__) . '/aurasystem/package/Aura.View/src.php';
 
 use Aura\View\Template;
-use Aura\View\TemplateFinder;
+use Aura\View\Finder;
 use Aura\View\HelperLocator;
 use Aura\View\TwoStep;
 use Aura\View\FormatTypes;
 use Aura\View\Helper\Title;
 
 $template = new Template(
-    new TemplateFinder,
+    new Finder,
     new HelperLocator([
         'title' => function () { return new Title; },
     ])

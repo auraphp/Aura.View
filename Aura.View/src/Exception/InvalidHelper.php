@@ -14,11 +14,11 @@ use Aura\View\Exception as Exception;
 
 /**
  * 
- * Throw Template Not Found Exception
+ * The template helper object is not vald.
  * 
  * @package Aura.View
  * 
  */
-class TemplateNotFound extends Exception
+class InvalidHelper extends Exception
 {
 }

@@ -4,7 +4,7 @@ require_once __DIR__ . '/src/Aura/View/Exception.php';
 require_once __DIR__ . '/src/Aura/View/Exception/TemplateNotFound.php';
 require_once __DIR__ . '/src/Aura/View/Exception/HelperNotMapped.php';
 require_once __DIR__ . '/src/Aura/View/FormatTypes.php';
-require_once __DIR__ . '/src/Aura/View/TemplateFinder.php';
+require_once __DIR__ . '/src/Aura/View/Finder.php';
 require_once __DIR__ . '/src/Aura/View/HelperLocator.php';
 require_once __DIR__ . '/src/Aura/View/EscaperFactory.php';
 require_once __DIR__ . '/src/Aura/View/Escaper/Object.php';
