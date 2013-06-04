@@ -206,8 +206,16 @@ class Manager
      */
     protected function renderStep(Finder $finder, $name, $data)
     {
+        // inject the correct finder into the factory
         $this->factory->setFinder($finder);
+        
+        // find the template
         $template = $this->factory->newInstance($name, $this->helper, $data);
+        if (! $template) {
+            throw new Exception\TemplateNotFound($name);
+        }
+        
+        // render and return the template
         ob_start();
         $template();
         return ob_get_clean();

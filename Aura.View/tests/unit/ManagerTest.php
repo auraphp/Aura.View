@@ -59,6 +59,13 @@ class ManagerTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($expect, $actual);
     }
     
+    public function testRenderView_templateNotFound()
+    {
+        $data = ['noun' => 'World'];
+        $this->setExpectedException('Aura\View\Exception\TemplateNotFound');
+        $actual = $this->manager->render($data, 'no-such-template');
+    }
+    
     public function testRenderViewAndLayout()
     {
         $data = ['noun' => 'World'];
@@ -69,6 +76,5 @@ class ManagerTest extends \PHPUnit_Framework_TestCase
                 . '</html>';
         $this->assertSame($expect, $actual);
     }
-    
     
 }
