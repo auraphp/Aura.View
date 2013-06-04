@@ -14,9 +14,6 @@ class ScriptsTest extends AbstractHelperTest
         $this->assertInstanceOf('Aura\Html\Helper\Scripts', $actual);
     }
     
-    /**
-     * @todo Implement testSetIndent().
-     */
     public function testSetIndent()
     {
         $scripts = $this->helper;
@@ -34,9 +31,6 @@ class ScriptsTest extends AbstractHelperTest
         $this->assertSame($expect, $actual);
     }
 
-    /**
-     * @todo Implement testAddHead().
-     */
     public function testAddAndGet()
     {
         $scripts = $this->helper;

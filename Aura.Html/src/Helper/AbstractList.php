@@ -93,7 +93,7 @@ abstract class AbstractList extends AbstractHelper
      * @return self
      * 
      */
-    public function items($items, array $attr = [])
+    public function items(array $items, array $attr = [])
     {
         foreach ($items as $html) {
             $this->item($html, $attr);

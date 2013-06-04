@@ -35,9 +35,6 @@ class LinksTest extends AbstractHelperTest
         $this->assertSame($expect, $actual);
     }
 
-    /**
-     * @todo Implement testSetIndent().
-     */
     public function testSetIndent()
     {
         $links = $this->helper;

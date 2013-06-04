@@ -14,9 +14,6 @@ class MetasTest extends AbstractHelperTest
         $this->assertInstanceOf('Aura\Html\Helper\Metas', $actual);
     }
     
-    /**
-     * @todo Implement test__invoke().
-     */
     public function testAddAndGet_noPosition()
     {
         $metas = $this->helper;
@@ -31,9 +28,6 @@ class MetasTest extends AbstractHelperTest
         $this->assertSame($expect, $actual);
     }
 
-    /**
-     * @todo Implement testSetIndent().
-     */
     public function testSetIndent()
     {
         $metas = $this->helper;

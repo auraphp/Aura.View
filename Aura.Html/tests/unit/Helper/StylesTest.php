@@ -32,9 +32,6 @@ class StylesTest extends AbstractHelperTest
         $this->assertSame($expect, $actual);
     }
     
-    /**
-     * @todo Implement testSetIndent().
-     */
     public function testSetIndentAndAttribs()
     {
         $styles = $this->helper;
