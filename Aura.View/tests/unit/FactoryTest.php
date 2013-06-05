@@ -7,7 +7,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
     {
         $this->finder = new Finder;
         $this->finder->setClosure('closure_tpl', function () {
-            echo 'Closure-based template';
+            echo 'Finder closure template';
         });
         
         $this->finder->setPrefixes(['Aura\View']);
@@ -23,22 +23,35 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($this->finder, $this->factory->getFinder());
     }
     
+    public function testNewInstance_closure()
+    {
+        $closure = function () {
+            echo 'Inline closure template';
+        };
+        
+        $template = $this->factory->newInstance($closure, $this->helper, $this->data);
+        ob_start();
+        $template();
+        $actual = ob_get_clean();
+        $this->assertSame('Inline closure template', $actual);
+    }
+    
     public function testNewInstance_templateNotFound()
     {
         $template = $this->factory->newInstance('no_such_template', $this->helper, $this->data);
         $this->assertFalse($template);
     }
     
-    public function testNewInstance_closure()
+    public function testNewInstance_finderClosure()
     {
         $template = $this->factory->newInstance('closure_tpl', $this->helper, $this->data);
         ob_start();
         $template();
         $actual = ob_get_clean();
-        $this->assertSame('Closure-based template', $actual);
+        $this->assertSame('Finder closure template', $actual);
     }
     
-    public function testNewInstance_class()
+    public function testNewInstance_finderClass()
     {
         $template = $this->factory->newInstance('MockTemplate', $this->helper, $this->data);
         $template->noun = 'World';

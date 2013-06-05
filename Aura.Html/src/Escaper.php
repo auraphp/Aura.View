@@ -218,8 +218,7 @@ class Escaper
         return htmlspecialchars(
             $raw, 
             ENT_QUOTES | ENT_SUBSTITUTE,
-            $this->encoding,
-            false // do not double-escape
+            $this->encoding
         );
     }
 

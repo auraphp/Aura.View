@@ -16,6 +16,33 @@ notice compliance oversights, please send a patch via pull request.
 [PSR-1]: https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-1-basic-coding-standard.md
 [PSR-2]: https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md
 
+* * *
+
+- instantiate manager
+
+- build some data
+
+- one step: $manager->render($data, function () {...});
+
+- two step: $manager->render($data, function () {...}, function () {...});
+
+- how to use helpers
+
+- extract the view & layout to the finder as named closures
+
+- extract the finder view & layout to a class
+
+- using resolution stacks in the finder
+
+
+<?php
+$view->render($data, function () {
+    echo 'Hello, ' . $this->noun . '!';
+});
+
+?>
+
+* * * 
 Basic Usage
 ===========
 

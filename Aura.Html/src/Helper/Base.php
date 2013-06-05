@@ -12,7 +12,7 @@ namespace Aura\Html\Helper;
 
 /**
  * 
- * Helper to generate `<base ... />` tags.
+ * Helper to generate a `<base ... />` tag.
  * 
  * @package Aura.Html
  * 

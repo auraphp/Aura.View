@@ -12,7 +12,7 @@ namespace Aura\Html\Helper;
 
 /**
  * 
- * Helper to generate an <img ... /> tag.
+ * Helper to generate an `<img ... />` tag.
  * 
  * @package Aura.Html
  * 

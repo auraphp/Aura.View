@@ -199,20 +199,20 @@ class Manager
      * 
      * Renders a template.
      * 
-     * @var string $name The template name.
+     * @var string $spec The template name.
      * 
      * @return string
      * 
      */
-    protected function renderStep(Finder $finder, $name, $data)
+    protected function renderStep(Finder $finder, $spec, $data)
     {
         // inject the correct finder into the factory
         $this->factory->setFinder($finder);
         
         // find the template
-        $template = $this->factory->newInstance($name, $this->helper, $data);
+        $template = $this->factory->newInstance($spec, $this->helper, $data);
         if (! $template) {
-            throw new Exception\TemplateNotFound($name);
+            throw new Exception\TemplateNotFound($spec);
         }
         
         // render and return the template

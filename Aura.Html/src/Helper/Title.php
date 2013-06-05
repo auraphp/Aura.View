@@ -12,7 +12,7 @@ namespace Aura\Html\Helper;
 
 /**
  * 
- * Sets the title of the layout
+ * Helper to generate a `<title>` tag.
  *  
  * @package Aura.Html
  * 
@@ -21,7 +21,7 @@ class Title extends AbstractHelper
 {
     /**
      * 
-     * The <title> value.
+     * The title value.
      * 
      * @var string
      * 
