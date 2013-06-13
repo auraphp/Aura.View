@@ -49,88 +49,110 @@ Basic Usage
 Instantiation
 -------------
 
-The easiest way to instantiate a new `Template` with all the associated
-helpers is to include the `instance.php` script.
+We begin by instantiating a view manager; this will retain the support objects
+as well as a template finder.  The easiest way to instantiate is to use the
+`instance.php` script provided in the package:
 
 ```php
 <?php
-$template = require '/path/to/Aura.View/scripts/instance.php';
+$view = require '/path/to/Aura.View/scripts/instance.php';
 ```
 
-Then use the `Template` object to `fetch()` the output of a template script.
+Alternatively, we can include the package `autoloader.php` or add the `Aura\View`
+namespace to an existing autoloader, and instantiate manually:
 
 ```php
 <?php
-echo $template->fetch('/path/to/tpl.php');
-```
-
-Alternatively, we can add the `Aura.View` package to an autoloader, and
-instantiate manually:
-
-```php
-<?php
-use Aura\View\Template;
-use Aura\View\EscaperFactory;
+use Aura\View\Factory;
 use Aura\View\Finder;
-use Aura\View\HelperLocator;
+use Aura\View\Helper;
+use Aura\View\Manager;
 
-$template = new Template(
-    new EscaperFactory,
-    new Finder,
-    new HelperLocator
+return new Manager(
+    new Factory,    // template factory
+    new Helper,     // bare-bones helper object
+    new Finder,     // view-template finder
+    new Finder      // layout-template finder
 );
 ```
 
-(Note that if we instantiate manually, we will need to configure the
-`HelperLocator` manually to add helper services. See the "Helpers" section
-near the end of this page for more information.)
 
+Rendering A View Template
+-------------------------
 
-Assigning Data
---------------
-
-We can add data to the template script as properties ...
+All templates for Aura View take the form of closures or of classes with an
+__invoke() method.  We'll start by rendering the simplest possible template:
+an inline closure.
 
 ```php
 <?php
-// business logic
-$template->var = 'World';
+// data for the template
+$data = [
+    'name' => 'Bolivar',
+    'email' => 'boshag@example.com',
+];
+
+// the view template
+$view_template = function () {
+    echo '<p>Hello ' . $this->safeHtml($this->name) . '. '
+       . 'Your email address is ' . $this->safeHtml($this->email) . '.</p>';
+}
+
+// get the rendered output, then do what you like with it
+$output = $view->render($data, $view_template);
 ```
 
-... or by using the `addData()` method:
+### What's With $this ?
+
+In the template closure, we see the use of `$this` to refer assigned data
+and to helper methods.  The closure gets access to them via the use of the
+`Closure::bindTo()` method, where the closure is bound to a `Template` object
+with the assigned data and helper methods.
+
+
+Rendering a View and Layout
+---------------------------
+
+We can wrap the results of the view in a layout by adding a third parameter
+to the `render()` call: a layout template.  Data for the view is shared with
+the layout, so any changes to the data from the view will be accessible in
+the layout (but not vice versa, since the view is processed before the layout).
 
 ```php
 <?php
-// business logic
-$template->addData([
-    'foo' => 'value of foo',
-    'bar' => 'value of bar',
-]);
+// data for the templates
+$data = [
+    'name' => 'Bolivar',
+    'email' => 'boshag@example.com',
+];
+
+// the view template
+$view_template = function () {
+    // set a new variable into the data
+    $this->title = 'Example Two-Step View';
+    // show the same view output as before
+    echo '<p>Hello ' . $this->safeHtml($this->name) . '. '
+       . 'Your email address is ' . $this->safeHtml($this->email) . '.</p>';
+}
+
+// the layout template
+$layout_template = function () {
+    echo '<html>'
+       . '<head><title>' . $this->safeHtml($this->title) . '</title></head>'
+       . '<body>' . $this->content . '</body>'
+       . '</html>';
+}
+
+// get the rendered output, then do what you like with it
+$output = $view->render($data, $view_template, $layout_template);
 ```
 
-We can then refer to the data as properties from within the template script
-using `$this`:
-
-```php
-<?php
-// template script
-echo $this->var;
-```
-
-Finally, we can replace all the `Template` data values at once using
-`setData()`.
-
-```php
-<?php
-// business logic
-// this will remove $var, $foo, and $bar from the template
-$template->setData([
-    'baz' => 'Value of baz',
-    'dib' => 'Value of dib',
-]);
-```
+The output from the view template is automatically placed into a data property
+called `$content` that the layout can use to wrap around.  If you want to use
+a different property name, call `$view->setContentVar()` to set a new name.
 
 
+ 
 Writing Template Scripts
 ------------------------
 
