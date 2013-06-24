@@ -53,11 +53,11 @@ class TwoStepTest extends \PHPUnit_Framework_TestCase
             return new \Aura\View\Helper\MockHelper;
         });
         
-        $template = new Template($escaper_factory, $template_finder, $helper_locator);
+        $this->template = new Template($escaper_factory, $template_finder, $helper_locator);
         
         $format_types = new FormatTypes;
         
-        $this->twostep = new TwoStep($template, $format_types);
+        $this->twostep = new TwoStep($this->template, $format_types);
     }
 
     public function testSetAndGetAccept()
@@ -302,5 +302,16 @@ class TwoStepTest extends \PHPUnit_Framework_TestCase
         $expect = 'text/html';
         $actual = $this->twostep->getContentType();
         $this->assertSame($expect, $actual);
+    }
+    
+    public function testSetPathTemplateFinder()
+    {
+        $actual = $this->dirs['foo'] . DIRECTORY_SEPARATOR . 'inner_view.php';        
+        $this->assertSame($this->twostep->getTemplate()->find('inner_view'), $actual);
+    }
+    
+    public function testGetTemplate()
+    {
+        $this->assertInstanceOf('Aura\View\Template', $this->template);
     }
 }
