@@ -14,7 +14,8 @@ use Closure;
 
 /**
  * 
- * Finds template closures or class names from among namespace prefixes.
+ * Finds template specifications, whether registered directly or from among
+ * class paths.
  * 
  * @package Aura.View
  * 
@@ -23,218 +24,232 @@ class Finder
 {
     /**
      * 
-     * An array of closures to be used as named templates.
+     * A set of named templates, either as closures or as absolute file paths.
+     * These take precedence over file system lookups.
      * 
      * @var array
      * 
      */
-    protected $closures = [];
+    protected $names = [];
     
     /**
      * 
-     * The namespace prefixes.
+     * Paths to templates for classes.
      * 
      * @var array
      * 
      */
-    protected $prefixes = [];
+    protected $paths = [];
 
     /**
      * 
-     * A cache of template objects, so we do not need to search for a template
-     * more than once.
+     * Templates that have been found, to avoid repeated lookups.
      * 
      * @var array
      * 
      */
-    protected $registry = [];
-
+    protected $found = [];
+    
+    /**
+     * 
+     * The logical separator for template name segments.
+     * 
+     * @param string
+     * 
+     */
+    protected $separator = '\\';
+    
     /**
      * 
      * Constructor.
      * 
-     * @param array $prefixes The default prefixes for this Finder.
+     * @param array $paths The default paths for this Finder.
      * 
      */
     public function __construct(
-        array $closures = [],
-        array $prefixes = []
+        array $names = [],
+        array $paths = []
     ) {
-        $this->setClosures($closures);
-        $this->setPrefixes($prefixes);
+        $this->setNames($names);
+        $this->setPaths($paths);
     }
 
-    public function setClosures(array $closures)
+    public function setNames(array $names)
     {
-        $this->registry = [];
-        $this->closures = [];
-        foreach ($closures as $name => $closure) {
-            $this->setClosure($name, $closure);
+        $this->found = [];
+        $this->names = [];
+        foreach ($names as $name => $spec) {
+            $this->setName($name, $spec);
         }
     }
-    
-    public function setClosure($name, Closure $closure)
+
+    // save the user from himself and replace DIRECTORY_SEPARATOR with
+    // $this->separator?
+    public function setName($name, $spec)
     {
-        unset($this->registry[$name]);
-        $this->closures[$name] = $closure;
+        // force a leading backslash
+        $name = $this->separator . ltrim($name, $this->separator);
+        // retain it
+        $this->names[$name] = $spec;
+        // unset found template of the name name
+        unset($this->found[$name]);
     }
-    
-    public function getClosures()
+
+    public function getNames()
     {
-        return $this->closures;
+        return $this->names;
     }
     
     /**
      * 
-     * Sets the prefixes directly.
+     * Sets file system paths for logical prefixes (e.g. class names).
      * 
      * {{code: php
      *      $finder->set([
-     *          'Foo\Bar\Baz',
-     *          'Foo\Bar',
-     *          'Foo',
+     *          'Foo'         => '/path/to/Foo/views',
+     *          'Foo\Bar'     => '/path/to/Foo/Bar/views',
+     *          'Foo\Bar\Baz' => '/path/to/Foo/Bar/Baz/views',
      *      ]);
-     *      // $finder->get() reveals that the search order will be
-     *      // 'Foo\Bar\Baz', 'Foo\Bar', 'Foo'.
      * }}
      * 
-     * @param array|string $prefixes The directories to add to the prefixes.
+     * @param array|string $paths The directories to add to the paths.
      * 
      * @return void
      * 
      */
-    public function setPrefixes(array $prefixes)
+    public function setPaths(array $paths)
     {
-        $this->registry = [];
-        $this->prefixes = $prefixes;
+        $this->found = [];
+        foreach ($paths as $class => $path) {
+            $this->setPath($class, $path);
+        }
     }
 
+    public function setPath($prefix, $path)
+    {
+        // force a leading backslash and trailing backslash
+        $prefix = $this->separator . ltrim($prefix, $this->separator);
+        $prefix = rtrim($prefix, $this->separator) . $this->separator;
+        
+        // force a trailing directory separator
+        $path = rtrim($path, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
+        
+        // retain it
+        $this->paths[$prefix] = $path;
+        
+        // unset all found templates
+        $this->found = [];
+    }
+    
     /**
      * 
-     * Gets a copy of the current prefixes.
+     * Gets a copy of the current paths.
      * 
      * @return array
      * 
      */
-    public function getPrefixes()
+    public function getPaths()
     {
-        return $this->prefixes;
+        return $this->paths;
     }
 
-    /**
-     * 
-     * Adds one element to the top of the prefixes.
-     * 
-     * {{code: php
-     *      $finder->unshift('Foo');
-     *      $finder->unshift('Foo\Bar');
-     *      $finder->unshift('Foo\Bar\Baz');
-     *      // $finder->get() reveals that the search order will be
-     *      // 'Foo\Bar\Baz', 'Foo\Bar', 'Foo'.
-     * }}
-     * 
-     * @param array|string $prefix The directories to add to the prefixes.
-     * 
-     * @return void
-     * 
-     */
-    public function unshiftPrefix($prefix)
+    public function getFound()
     {
-        $this->registry = [];
-        array_unshift($this->prefixes, rtrim($prefix, '\\'));
-    }
-
-    /**
-     * 
-     * Adds one element to the end of the prefixes.
-     * 
-     * {{code: php
-     *      $finder->push('Foo\Bar\Baz');
-     *      $finder->push('Foo\Bar');
-     *      $finder->push('Foo');
-     *      // $finder->get() reveals that the search order will be
-     *      // 'Foo\Bar\Baz', 'Foo\Bar', 'Foo'.
-     * }}
-     * 
-     * @param array|string $prefix The directories to add to the prefixes.
-     * 
-     * @return void
-     * 
-     */
-    public function pushPrefix($prefix)
-    {
-        $this->registry = [];
-        array_push($this->prefixes, rtrim($prefix, '\\'));
-    }
-
-    public function popPrefix()
-    {
-        $this->registry = [];
-        return array_pop($this->prefixes);
+        return $this->found;
     }
     
-    public function shiftPrefix()
+    public function setPrefixes($prefixes)
     {
-        $this->registry = [];
-        return array_shift($this->prefixes);
+        $this->prefixes = $prefixes;
+        $this->found = [];
     }
     
     /**
      * 
-     * Finds a class using the prefixes.
+     * Finds a template specification.
      * 
      * {{code: php
      *      $finder->set(['Foo\Bar\Baz', 'Foo\Bar', 'Foo']);
      *      $class = $finder->find('IndexView');
-     *      // $name is now the first instance of 'IndexView' registry from the         
-     *      // assigned prefixes, looking first for 'Foo\Bar\Baz\IndexView', then
+     *      // $name is now the first instance of 'IndexView' found from the         
+     *      // assigned paths, looking first for 'Foo\Bar\Baz\IndexView', then
      *      // for 'Foo\Bar\IndexView', then finally for 'Foo\IndexView'.
      * }}
      * 
-     * @param string $name The class to find using the prefix prefixes.
+     * @param string $name The class to find using the prefix paths.
      * 
-     * @return mixed The absolute path to the file, or false if not
-     * registry using the prefixes.
+     * @return mixed The template spec: a string path to a PHP script, or a
+     * closure.
      * 
      */
-    public function find($name)
+    public function find($suffix)
     {
-        // is the name registered?
-        if (isset($this->registry[$name])) {
-            return $this->registry[$name];
-        }
-
-        // is the name relative?
-        foreach ($this->prefixes as $prefix) {
-            $class = $prefix . '\\' . $name;
-            $result = $this->exists($class);
-            if ($result) {
-                $this->registry[$name] = $result;
-                return $result;
+        // get a copy of the assigned prefixes
+        $prefixes = $this->prefixes;
+        
+        while ($prefixes) {
+            // get the next prefix (FIFO)
+            $prefix = array_shift($prefixes);
+            
+            // normalize it
+            $prefix = $this->separator . ltrim($prefix, $this->separator);
+            $prefix = rtrim($prefix, $this->separator) . $this->separator;
+            
+            // does the template exist in the prefix?
+            $found = $this->exists($prefix, $suffix);
+            if ($found) {
+                // yes, return it
+                return $found;
             }
         }
-
-        // is the name absolute?
-        $result = $this->exists($name);
-        if ($result) {
-            $this->registry[$name] = $result;
-            return $result;
+        
+        // look for it without a prefix
+        $found = $this->exists(null, $suffix);
+        if ($found) {
+            return $found;
         }
         
-        // did not find it
+        // never found it
         return false;
     }
     
-    public function exists($class)
+    public function exists($prefix, $suffix)
     {
-        // closures take precedence
-        if (isset($this->closures[$class])) {
-            return $this->closures[$class];
+        // create the name we're going to look for
+        $name = $prefix . $suffix;
+        
+        // has it been found previously?
+        if (isset($this->found[$name])) {
+            // yes, return it
+            return $this->found[$name];
         }
         
-        // look for a class file
-        if (class_exists($class)) {
-            return $class;
+        // has it been set directly?
+        if (isset($this->names[$name])) {
+            // yes, mark it as found and return it
+            $this->found[$name] = $this->names[$name];
+            return $this->found[$name];
         }
+        
+        // is a path available for the prefix?
+        if (isset($this->paths[$prefix])) {
+            // does a .php file exist for suffix? note that logical separators
+            // in the suffix get converted to directory separators.
+            $file = $this->paths[$prefix]
+                  . str_replace($this->separator, DIRECTORY_SEPARATOR, $suffix)
+                  . '.php';
+            if ($this->isReadable($file)) {
+                $this->found[$name] = $file;
+                return $this->found[$name];
+            }
+        }
+        
+        // does not exist
+        return false;
+    }
+    
+    protected function isReadable($file)
+    {
+        return is_readable($file);
     }
 }

@@ -35,8 +35,11 @@ class Factory
             return $this->bindClosure($template, $helper, $data);
         }
         
-        // create a new template object and return
-        return new $template($this, $helper, $data);
+        // create a new closure, bind to a template object, and return
+        $closure = function () use ($template) {
+            require $template;
+        }
+        return $this->bindClosure($closure, $helper, $data);
     }
     
     // binds the closure to a blank template. this means the closure

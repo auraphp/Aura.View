@@ -28,7 +28,7 @@ abstract class AbstractTemplate
      * @var Finder
      * 
      */
-    private $factory;
+    private $finder;
 
     /**
      * 
@@ -58,14 +58,10 @@ abstract class AbstractTemplate
      * methods on this template object.
      * 
      */
-    public function __construct(
-        Factory $factory,
-        $helper,
-        $data = null
-    ) {
-        $this->setFactory($factory);
+    public function __construct(Finder $finder, $helper)
+    {
+        $this->setFinder($finder);
         $this->setHelper($helper);
-        $this->setData($data);
     }
 
     /**
@@ -202,60 +198,27 @@ abstract class AbstractTemplate
 
     /**
      * 
-     * Sets the factory object.
+     * Sets the finder object.
      * 
-     * @param Factory $factory A template factory.
+     * @param Finder $finder A template finder.
      * 
      * @return void
      * 
      */
-    public function setFactory(Factory $factory)
+    public function setFinder(Finder $finder)
     {
-        $this->factory = $factory;
+        $this->finder = $finder;
     }
 
     /**
      * 
-     * Returns the factory object.
+     * Returns the finder object.
      * 
      * @return object
      * 
      */
-    public function getFactory()
+    public function getFinder()
     {
-        return $this->factory;
-    }
-
-    /**
-     * 
-     * Renders a sub-template and returns its output, optionally with 
-     * scope-separated data.
-     * 
-     * @param string $name The template to render to use.
-     * 
-     * @param mixed $data Scope-separated data to use in the template. Passing
-     * data here means the main template data *will not* be available, but
-     * leaving it empty means the main template data *will* be available.
-     * 
-     * @return string
-     * 
-     */
-    public function render($name, $data = null)
-    {
-        // use the main data, or scope-separated data?
-        if (! $data) {
-            $data = $this->data;
-        }
-        
-        // get the template
-        $template = $this->factory->newInstance($name, $this->helper, $data);
-        if (! $template) {
-            throw new Exception\TemplateNotFound($name);
-        }
-        
-        // render and return the sub-template
-        ob_start();
-        $template();
-        return ob_get_clean();
+        return $this->finder;
     }
 }

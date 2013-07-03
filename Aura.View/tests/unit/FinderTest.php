@@ -7,83 +7,56 @@ class FinderTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->finder = new Finder;
+        $this->finder = new MockFinder;
     }
     
-    public function testPrefixes()
+    public function testPaths()
     {
-        // should be no prefixes yet
-        $expect = [];
-        $actual = $this->finder->getPrefixes();
-        $this->assertSame($expect, $actual);
-        
-        // set the prefixes
         $expect = [
-            'Foo\Bar\Baz',
-            'Foo\Bar',
-            'Foo',
+            'Foo\Bar\Baz' => '/path/to/Foo/Bar/Baz',
+            'Foo\Bar' => '/path/to/Foo/Bar',
+            'Foo' => '/path/to/Foo',
         ];
-        $this->finder->setPrefixes($expect);
-        $actual = $this->finder->getPrefixes();
+        
+        $this->finder->setPaths($expect);
+        $actual = $this->finder->getPaths();
         $this->assertSame($expect, $actual);
-        
-        // off the top
-        $actual = $this->finder->shiftPrefix();
-        $this->assertSame('Foo\Bar\Baz', $actual);
-        
-        // off the end
-        $actual = $this->finder->popPrefix();
-        $this->assertSame('Foo', $actual);
-        
-        // onto top
-        $this->finder->unshiftPrefix('Qux');
-        $this->assertSame(['Qux', 'Foo\Bar'], $this->finder->getPrefixes());
-        
-        // onto end
-        $this->finder->pushPrefix('Quux');
-        $this->assertSame(['Qux', 'Foo\Bar', 'Quux'], $this->finder->getPrefixes());
-        
     }
     
-    public function testClosures()
+    public function testNames()
     {
-        // should be no closures yet
-        $expect = [];
-        $actual = $this->finder->getClosures();
-        $this->assertSame($expect, $actual);
-        
-        // set the closures
-        $closures = [
+        // set the names
+        $names = [
             'browse' => function () { echo 'browse'; },
             'read'   => function () { echo 'read'; },
             'edit'   => function () { echo 'edit'; },
             'add'    => function () { echo 'add'; },
             'delete' => function () { echo 'delete'; },
         ];
-        $this->finder->setClosures($closures);
-        $this->assertSame($closures, $this->finder->getClosures());
+        $this->finder->setNames($names);
+        $this->assertSame($names, $this->finder->getNames());
     }
     
     public function testFind()
     {
-        // set the prefixes
-        $this->finder->setPrefixes([
+        // set the paths
+        $this->finder->setPaths([
             'Foo\Bar',
             'Aura\View',
             'Baz\Qux',
         ]);
         
-        // add a relative closure
+        // add a relative name
         $relative =  function () {
             echo 'Baz Qux';
         };
-        $this->finder->setClosure('Baz\Qux\MockTemplate', $relative);
+        $this->finder->setName('Baz\Qux\MockTemplate', $relative);
         
-        // add an absolute closure
+        // add an absolute name
         $absolute = function () {
             echo 'Absolute';
         };
-        $this->finder->setClosure('AbsoluteTemplate', $absolute);
+        $this->finder->setName('AbsoluteTemplate', $absolute);
         
         // now find the MockTemplate as a class
         $expect = 'Aura\View\MockTemplate';
@@ -98,7 +71,7 @@ class FinderTest extends \PHPUnit_Framework_TestCase
         $actual = $this->finder->find('Baz\Qux\MockTemplate');
         $this->assertSame($relative, $actual);
         
-        // find as an absolute closure
+        // find as an absolute name
         $actual = $this->finder->find('AbsoluteTemplate');
         $this->assertSame($absolute, $actual);
         
