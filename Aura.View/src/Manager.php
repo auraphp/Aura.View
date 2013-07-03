@@ -72,41 +72,20 @@ class Manager
      * 
      */
     public function __construct(
-        Factory $factory,
+        Template $template,
         $helper,
         Finder $view_finder,
         Finder $layout_finder
     ) {
-        $this->factory       = $factory;
-        $this->helper        = $helper;
-        $this->view_finder   = $view_finder;
+        // retain the template and helper
+        $this->template = $template;
+        $this->template->setHelper($helper);
+        
+        // retain the finders
+        $this->view_finder = $view_finder;
         $this->layout_finder = $layout_finder;
     }
     
-    /**
-     * 
-     * Returns the template factory.
-     * 
-     * @return Factory
-     * 
-     */
-    public function getFactory()
-    {
-        return $this->factory;
-    }
-
-    /**
-     * 
-     * Returns the helper object.
-     * 
-     * @return object
-     * 
-     */
-    public function getHelper()
-    {
-        return $this->helper;
-    }
-
     /**
      * 
      * Returns the layout finder.
@@ -133,11 +112,22 @@ class Manager
 
     /**
      * 
+     * Returns the Template object.
+     * 
+     * @return Factory
+     * 
+     */
+    public function getTemplate()
+    {
+        return $this->template;
+    }
+
+    /**
+     * 
      * Sets the name of the variable in the layout template that should 
      * be replaced with the output of the view template.
      * 
-     * @param string $content_var The variable name in the layout
-     * template.
+     * @param string $content_var The variable name in the layout template.
      * 
      * @return void
      * 
@@ -162,8 +152,7 @@ class Manager
 
     /**
      * 
-     * Renders the view and layout and returns the resulting output,
-     * negotiating a format from the accept header values.
+     * Renders data into the view and layout, then returns the result.
      * 
      * @param object $data The data for rendering.
      * 
@@ -176,48 +165,24 @@ class Manager
      */
     public function render($data, $view, $layout = null)
     {
-        // force the data to an object so it can be shared
-        $data = (object) $data;
+        // set the template data
+        $this->template->setData($data);
         
-        // render the view and retain the output
-        $content = $this->renderStep($this->view_finder, $view, $data);
+        // inject the view finder and retain the rendered result
+        $this->template->setFinder($this->view_finder);
+        $content = $this->template->render($view);
         
         // do we have a layout?
         if (! $layout) {
-            // no, return just the view
+            // no, return just the view content
             return $content;
         }
         
-        // assign the content to the data
-        $data->{$this->content_var} = $content;
+        // set the content var in the template data
+        $this->template->{$this->content_var} = $content;
         
-        // render and return the layout
-        return $this->renderStep($this->layout_finder, $layout, $data);
-    }
-
-    /**
-     * 
-     * Renders a template.
-     * 
-     * @var string $spec The template name.
-     * 
-     * @return string
-     * 
-     */
-    protected function renderStep(Finder $finder, $spec, $data)
-    {
-        // inject the correct finder into the factory
-        $this->factory->setFinder($finder);
-        
-        // find the template
-        $template = $this->factory->newInstance($spec, $this->helper, $data);
-        if (! $template) {
-            throw new Exception\TemplateNotFound($spec);
-        }
-        
-        // render and return the template
-        ob_start();
-        $template();
-        return ob_get_clean();
+        // inject the layout finder and return the rendered result
+        $this->template->setFinder($this->layout_finder);
+        return $this->template->render($layout);
     }
 }

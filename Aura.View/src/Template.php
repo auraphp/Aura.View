@@ -1,22 +1,29 @@
 <?php
 namespace Aura\View;
 
+use Closure;
+
+/**
+ * 
+ * Concrete template object; having render() and partial() here keeps script
+ * code away from the private properties of the AbstractTemplate.
+ * 
+ */
 class Template extends AbstractTemplate
 {
     /**
      * 
-     * Renders a sub-template and returns its output, optionally with 
-     * scope-separated data.
+     * Returns rendered output.
      * 
-     * @param string $name The template to render to use.
+     * @param string $name The rendering instructions; found via the Finder.
      * 
      * @return string
      * 
      */
     public function render($name)
     {
-        // get the template execution code
-        $render = $this->finder->find($name);
+        // find the rendering code
+        $render = $this->getFinder()->find($name);
         if (! $render) {
             throw new Exception\TemplateNotFound($name);
         }
@@ -26,10 +33,10 @@ class Template extends AbstractTemplate
             $file = $render;
             $render = function () use ($file) {
                 require $file;
-            }
+            };
         }
-        
-        // bind the template to this object
+	    
+        // bind the rendering code to this template object
         $render = $render->bindTo($this, get_class($this));
 
         // render and return
@@ -38,10 +45,10 @@ class Template extends AbstractTemplate
         return ob_get_clean();
     }
     
-    public function partial($name, array $data = [])
+    public function partial($name, $data)
     {
-        $partial = clone($this);
-        $partial->setData((object) $data);
+        $partial = clone $this;
+        $partial->setData($data);
         return $partial->render($name);
     }
 }

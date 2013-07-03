@@ -24,7 +24,7 @@ class Finder
 {
     /**
      * 
-     * A set of named templates, either as closures or as absolute file paths.
+     * A set of named templates, either as closures or as file paths.
      * These take precedence over file system lookups.
      * 
      * @var array
@@ -49,6 +49,8 @@ class Finder
      * 
      */
     protected $found = [];
+    
+    protected $prefixes = [];
     
     /**
      * 
@@ -83,15 +85,13 @@ class Finder
         }
     }
 
-    // save the user from himself and replace DIRECTORY_SEPARATOR with
-    // $this->separator?
     public function setName($name, $spec)
     {
         // force a leading backslash
         $name = $this->separator . ltrim($name, $this->separator);
         // retain it
         $this->names[$name] = $spec;
-        // unset found template of the name name
+        // unset found template of the same name
         unset($this->found[$name]);
     }
 
@@ -120,6 +120,7 @@ class Finder
     public function setPaths(array $paths)
     {
         $this->found = [];
+        $this->paths = [];
         foreach ($paths as $class => $path) {
             $this->setPath($class, $path);
         }
@@ -153,15 +154,21 @@ class Finder
         return $this->paths;
     }
 
-    public function getFound()
+    public function setPrefixes(array $prefixes)
     {
-        return $this->found;
+        $this->prefixes = [];
+        foreach ($prefixes as $prefix) {
+            // force a leading backslash and trailing backslash
+            $prefix = $this->separator . ltrim($prefix, $this->separator);
+            $prefix = rtrim($prefix, $this->separator) . $this->separator;
+            $this->prefixes[] = $prefix;
+        }
+        $this->found = [];
     }
     
-    public function setPrefixes($prefixes)
+    public function getPrefixes()
     {
-        $this->prefixes = $prefixes;
-        $this->found = [];
+        return $this->prefixes;
     }
     
     /**
@@ -203,8 +210,10 @@ class Finder
             }
         }
         
-        // look for it without a prefix
-        $found = $this->exists(null, $suffix);
+        // look for it as an absolute location
+        $prefix = $this->separator;
+        $suffix = ltrim($suffix, $this->separator);
+        $found = $this->exists($prefix, $suffix);
         if ($found) {
             return $found;
         }
@@ -213,7 +222,7 @@ class Finder
         return false;
     }
     
-    public function exists($prefix, $suffix)
+    protected function exists($prefix, $suffix)
     {
         // create the name we're going to look for
         $name = $prefix . $suffix;
@@ -248,6 +257,7 @@ class Finder
         return false;
     }
     
+    // separated for testing
     protected function isReadable($file)
     {
         return is_readable($file);

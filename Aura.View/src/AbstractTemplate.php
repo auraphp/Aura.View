@@ -23,7 +23,7 @@ abstract class AbstractTemplate
 {
     /**
      * 
-     * Object to to find views in a path stack.
+     * Object to to find rendering code for the template.
      * 
      * @var Finder
      * 
@@ -34,7 +34,7 @@ abstract class AbstractTemplate
      * 
      * Data assigned to the template.
      * 
-     * @var array
+     * @var object
      * 
      */
     private $data;
@@ -48,22 +48,11 @@ abstract class AbstractTemplate
      */
     private $helper;
 
-    /**
-     * 
-     * Constructor.
-     * 
-     * @param Finder $finder A template finder.
-     * 
-     * @param object $helper An arbitrary object for helper methods exposed as
-     * methods on this template object.
-     * 
-     */
-    public function __construct(Finder $finder, $helper)
+    public function __construct()
     {
-        $this->setFinder($finder);
-        $this->setHelper($helper);
+        $this->data = (object) [];
     }
-
+    
     /**
      * 
      * Magic read access to template data.
@@ -140,12 +129,11 @@ abstract class AbstractTemplate
 
     /**
      * 
-     * Replaces all template data at once; this will remove all previous
-     * data.
+     * Sets the template data object.
      * 
-     * @param mixes $data An array or object where the keys or properties are
+     * @param mixed $data An array or object where the keys or properties are
      * variable names, and the corresponding values are the variable values.
-     * (Arrays will be converted to objects.)
+     * (This param is cast to an object.)
      * 
      * @return void
      * 

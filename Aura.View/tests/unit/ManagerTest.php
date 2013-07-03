@@ -12,24 +12,26 @@ class ManagerTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         parent::setUp();
+        
+        $this->template = new Template;
+        
+        $this->helper = new Helper;
+        
         $this->view_finder = new Finder;
-        $this->view_finder->setClosure('IndexView', function () {
+        $this->view_finder->setName('IndexView', function () {
             echo '<p>Hello ' . $this->noun . '!</p>';
         });
         
         $this->layout_finder = new Finder;
-        $this->layout_finder->setClosure('DefaultLayout', function () {
+        $this->layout_finder->setName('DefaultLayout', function () {
             echo '<html>'
                . '<head><title>Test</title></head>'
                . '<body>' . $this->content . '</body>'
                . '</html>';
         });
         
-        $this->factory = new Factory;
-        $this->helper = new Helper;
-        
         $this->manager = new Manager(
-            $this->factory,
+            $this->template,
             $this->helper,
             $this->view_finder,
             $this->layout_finder
@@ -38,14 +40,13 @@ class ManagerTest extends \PHPUnit_Framework_TestCase
     
     public function testGetters()
     {
-        $this->assertSame($this->factory, $this->manager->getFactory());
-        $this->assertSame($this->helper, $this->manager->getHelper());
+        $this->assertSame($this->template, $this->manager->getTemplate());
         $this->assertSame($this->view_finder, $this->manager->getViewFinder());
         $this->assertSame($this->layout_finder, $this->manager->getLayoutFinder());
         $this->assertSame('content', $this->manager->getContentVar());
     }
     
-    public function testSContentVar()
+    public function testContentVar()
     {
         $this->manager->setContentVar('layout_content');
         $this->assertSame('layout_content', $this->manager->getContentVar());
@@ -76,5 +77,4 @@ class ManagerTest extends \PHPUnit_Framework_TestCase
                 . '</html>';
         $this->assertSame($expect, $actual);
     }
-    
 }

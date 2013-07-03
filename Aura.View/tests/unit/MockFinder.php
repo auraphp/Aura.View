@@ -5,8 +5,23 @@ class MockFinder extends Finder
 {
     public $is_readable = [];
     
-    public function is_readable($file)
+    protected function isReadable($file)
     {
-        return in_array($this->is_readable, $file);
+        // for coverage
+        parent::isReadable(DIRECTORY_SEPARATOR);
+        
+        // for testing
+        return in_array($file, $this->is_readable);
+    }
+    
+    protected function getClosure($file)
+    {
+        // for coverage
+        parent::getClosure($file);
+        
+        // for testing
+        return function () use ($file) {
+            return $file;
+        };
     }
 }
