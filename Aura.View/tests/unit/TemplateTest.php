@@ -81,6 +81,17 @@ class TemplateTest extends \PHPUnit_Framework_TestCase
         $this->template->render('no-such-template');
     }
     
+    public function testRender_closure()
+    {
+        $render = function () {
+            echo 'Already a closure';
+        };
+        
+        $actual = $this->template->render($render);
+        $expect = 'Already a closure';
+        $this->assertSame($expect, $actual);
+    }
+    
     public function testPartial()
     {
         $actual = $this->template->partial('partial', ['noun' => 'World']);
