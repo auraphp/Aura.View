@@ -25,6 +25,7 @@ require_once __DIR__ . '/src/Aura/View/Helper/Form/Input/Generic.php';
 require_once __DIR__ . '/src/Aura/View/Helper/Form/Input/Checked.php';
 require_once __DIR__ . '/src/Aura/View/Helper/Form/Input/Value.php';
 require_once __DIR__ . '/src/Aura/View/Helper/Form/Radios.php';
+require_once __DIR__ . '/src/Aura/View/Helper/Form/Checkboxes.php';
 require_once __DIR__ . '/src/Aura/View/Helper/Form/Repeat.php';
 require_once __DIR__ . '/src/Aura/View/Helper/Form/Select.php';
 require_once __DIR__ . '/src/Aura/View/Helper/Form/Textarea.php';
