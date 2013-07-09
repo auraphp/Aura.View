@@ -32,11 +32,12 @@ class FieldTest extends AbstractHelperTest
             'url'            => function () { return new Input\Value; },
             'week'           => function () { return new Input\Value; },
             'radios'         => function () { return new Radios(new Input\Checked); },
+            'checkboxes'     => function () { return new Checkboxes(new Input\Checked); },
             'select'         => function () { return new Select; },
             'textarea'       => function () { return new Textarea; },
         ]);
     }
-    
+
     public function testCheckbox()
     {
         $spec = $this->escape([
@@ -51,13 +52,13 @@ class FieldTest extends AbstractHelperTest
             ],
             'value' => 'foo',
         ]);
-        
+
         $field = $this->newField();
         $actual = $field($spec);
         $expect = '<label><input type="checkbox" name="field_name" value="foo" checked="checked" /> DOOM</label>' . PHP_EOL;
         $this->assertSame($expect, $actual);
     }
-    
+
     public function testInput()
     {
         $spec = $this->escape([
@@ -71,13 +72,13 @@ class FieldTest extends AbstractHelperTest
             'options' => [],
             'value' => 'foo',
         ]);
-        
+
         $field = $this->newField();
         $actual = $field($spec);
         $expect = '<input type="text" name="field_name" value="foo" />' . PHP_EOL;
         $this->assertSame($expect, $actual);
     }
-    
+
     public function testNoType()
     {
         $spec = $this->escape([
@@ -90,13 +91,13 @@ class FieldTest extends AbstractHelperTest
             'options' => [],
             'value' => 'foo',
         ]);
-        
+
         $field = $this->newField();
         $actual = $field($spec);
         $expect = '<input type="text" name="field_name" value="foo" />' . PHP_EOL;
         $this->assertSame($expect, $actual);
     }
-    
+
     public function testRadios()
     {
         $spec = $this->escape([
@@ -112,7 +113,7 @@ class FieldTest extends AbstractHelperTest
             'options' => ['opt1' => 'Label 1', 'opt2' => 'Label 2', 'opt3' => 'Label 3'],
             'value' => 'opt2',
         ]);
-        
+
         $field = $this->newField();
         $actual = $field($spec);
         $expect = '<label><input type="radio" name="field_name" foo="bar" value="opt1" /> Label 1</label>' . PHP_EOL
@@ -120,7 +121,31 @@ class FieldTest extends AbstractHelperTest
                 . '<label><input type="radio" name="field_name" foo="bar" value="opt3" /> Label 3</label>' . PHP_EOL;
         $this->assertSame($expect, $actual);
     }
-    
+
+    public function testCheckboxes()
+    {
+        $spec = $this->escape([
+            'type' => 'checkboxes',
+            'name' => 'field_name',
+            'label' => null,
+            'attribs' => [
+                'id' => null,
+                'type' => null,
+                'name' => null,
+                'foo' => 'bar',
+            ],
+            'options' => ['opt1' => 'Label 1', 'opt2' => 'Label 2', 'opt3' => 'Label 3'],
+            'value' => array('opt1', 'opt3'),
+        ]);
+
+        $field = $this->newField();
+        $actual = $field($spec);
+        $expect = '<label><input type="checkbox" name="field_name" foo="bar" value="opt1" checked="checked" /> Label 1</label>' . PHP_EOL
+                . '<label><input type="checkbox" name="field_name" foo="bar" value="opt2" /> Label 2</label>' . PHP_EOL
+                . '<label><input type="checkbox" name="field_name" foo="bar" value="opt3" checked="checked" /> Label 3</label>' . PHP_EOL;
+        $this->assertSame($expect, $actual);
+    }
+
     public function testSelect()
     {
         $spec = $this->escape([
@@ -150,10 +175,10 @@ class FieldTest extends AbstractHelperTest
             ],
             'value' => 'opt5',
         ]);
-        
+
         $field = $this->newField();
         $actual = $field($spec);
-        
+
         $expect = '<select name="field_name" foo="bar">' . PHP_EOL
                 . '    <option value="opt1">Label 1</option>' . PHP_EOL
                 . '    <option value="opt2">Label 2</option>' . PHP_EOL
@@ -169,10 +194,10 @@ class FieldTest extends AbstractHelperTest
                 . '        <option value="opt9">Label 9</option>' . PHP_EOL
                 . '    </optgroup>' . PHP_EOL
                 . '</select>' . PHP_EOL;
-        
+
         $this->assertSame($expect, $actual);
     }
-    
+
     public function testTextarea()
     {
         $spec = $this->escape([
@@ -188,7 +213,7 @@ class FieldTest extends AbstractHelperTest
             'options' => ['baz' => 'dib'],
             'value' => 'Text in the textarea.',
         ]);
-        
+
         $field = $this->newField();
         $actual = $field($spec);
         $expect = '<textarea name="field_name" foo="bar">Text in the textarea.</textarea>';
