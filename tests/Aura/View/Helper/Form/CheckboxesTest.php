@@ -7,7 +7,7 @@ class CheckboxesTest extends AbstractHelperTest
 {
     public function test__invoke()
     {
-        $attribs = ['type' => '', 'name' => 'field', 'value' => ''];
+        $attribs = ['type' => '', 'name' => 'field[]', 'value' => ''];
         $options = [
             'foo' => 'bar',
             'baz' => 'dib',
@@ -17,9 +17,9 @@ class CheckboxesTest extends AbstractHelperTest
         $checkboxes = new Checkboxes(new Input\Checked);
 
         $actual = $checkboxes($attribs, $options, array('baz'));
-        $expect = '<label><input type="checkbox" name="field" value="foo" /> bar</label>' . PHP_EOL
-                . '<label><input type="checkbox" name="field" value="baz" checked="checked" /> dib</label>' . PHP_EOL
-                . '<label><input type="checkbox" name="field" value="zim" /> gir</label>' . PHP_EOL;
+        $expect = '<label><input type="checkbox" name="field[]" value="foo" /> bar</label>' . PHP_EOL
+                . '<label><input type="checkbox" name="field[]" value="baz" checked="checked" /> dib</label>' . PHP_EOL
+                . '<label><input type="checkbox" name="field[]" value="zim" /> gir</label>' . PHP_EOL;
 
         $this->assertSame($expect, $actual);
     }

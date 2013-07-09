@@ -126,7 +126,7 @@ class FieldTest extends AbstractHelperTest
     {
         $spec = $this->escape([
             'type' => 'checkboxes',
-            'name' => 'field_name',
+            'name' => 'field_name[]',
             'label' => null,
             'attribs' => [
                 'id' => null,
@@ -140,9 +140,9 @@ class FieldTest extends AbstractHelperTest
 
         $field = $this->newField();
         $actual = $field($spec);
-        $expect = '<label><input type="checkbox" name="field_name" foo="bar" value="opt1" checked="checked" /> Label 1</label>' . PHP_EOL
-                . '<label><input type="checkbox" name="field_name" foo="bar" value="opt2" /> Label 2</label>' . PHP_EOL
-                . '<label><input type="checkbox" name="field_name" foo="bar" value="opt3" checked="checked" /> Label 3</label>' . PHP_EOL;
+        $expect = '<label><input type="checkbox" name="field_name[]" foo="bar" value="opt1" checked="checked" /> Label 1</label>' . PHP_EOL
+                . '<label><input type="checkbox" name="field_name[]" foo="bar" value="opt2" /> Label 2</label>' . PHP_EOL
+                . '<label><input type="checkbox" name="field_name[]" foo="bar" value="opt3" checked="checked" /> Label 3</label>' . PHP_EOL;
         $this->assertSame($expect, $actual);
     }
 
