@@ -4,21 +4,21 @@ namespace Aura\View;
 class InstanceTest extends \PHPUnit_Framework_TestCase
 {
     protected $instance;
-    
+
     protected function setUp()
     {
         $this->instance = require dirname(__DIR__) . '/scripts/instance.php';
     }
-    
+
     public function testInstance()
     {
         $this->assertInstanceOf('Aura\View\Template', $this->instance);
     }
-    
+
     public function testHelpers()
     {
         $helper = $this->instance->getHelperLocator();
-        
+
         $name_class = [
             'anchor'        => 'Aura\View\Helper\Anchor',
             'attribs'       => 'Aura\View\Helper\Attribs',
@@ -32,6 +32,7 @@ class InstanceTest extends \PHPUnit_Framework_TestCase
             'metas'         => 'Aura\View\Helper\Metas',
             'ol'            => 'Aura\View\Helper\Ol',
             'radios'        => 'Aura\View\Helper\Form\Radios',
+            'checkboxes'    => 'Aura\View\Helper\Form\Checkboxes',
             'repeat'        => 'Aura\View\Helper\Form\Repeat',
             'scripts'       => 'Aura\View\Helper\Scripts',
             'scriptsFoot'   => 'Aura\View\Helper\Scripts',
@@ -42,16 +43,16 @@ class InstanceTest extends \PHPUnit_Framework_TestCase
             'textarea'      => 'Aura\View\Helper\Form\Textarea',
             'ul'            => 'Aura\View\Helper\Ul',
         ];
-        
+
         foreach ($name_class as $name => $class) {
             $this->assertInstanceOf($class, $helper->get($name));
         }
     }
-    
+
     public function testInputHelper()
     {
         $input = $this->instance->getHelperLocator()->get('input');
-        
+
         $name_class = [
             'button'         => 'Aura\View\Helper\Form\Input\Generic',
             'checkbox'       => 'Aura\View\Helper\Form\Input\Checked',
@@ -77,16 +78,16 @@ class InstanceTest extends \PHPUnit_Framework_TestCase
             'url'            => 'Aura\View\Helper\Form\Input\Value',
             'week'           => 'Aura\View\Helper\Form\Input\Value',
         ];
-        
+
         foreach ($name_class as $name => $class) {
             $this->assertInstanceOf($class, $input->get($name));
         }
     }
-    
+
     public function testFieldHelper()
     {
         $field = $this->instance->getHelperLocator()->get('field');
-        
+
         $name_class = [
             'button'         => 'Aura\View\Helper\Form\Input\Generic',
             'checkbox'       => 'Aura\View\Helper\Form\Input\Checked',
@@ -112,10 +113,11 @@ class InstanceTest extends \PHPUnit_Framework_TestCase
             'url'            => 'Aura\View\Helper\Form\Input\Value',
             'week'           => 'Aura\View\Helper\Form\Input\Value',
             'radios'         => 'Aura\View\Helper\Form\Radios',
+            'checkboxes'     => 'Aura\View\Helper\Form\Checkboxes',
             'select'         => 'Aura\View\Helper\Form\Select',
             'textarea'       => 'Aura\View\Helper\Form\Textarea',
         ];
-        
+
         foreach ($name_class as $name => $class) {
             $this->assertInstanceOf($class, $field->get($name));
         }
