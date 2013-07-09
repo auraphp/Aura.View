@@ -2,12 +2,13 @@ Aura View
 =========
 
 The Aura View package is an implementation of the
-[`TemplateView`](http://martinfowler.com/eaaCatalog/templateView.html) pattern,
-with support for automatic escaping, path stacks, and helpers. It adheres to
+[`TemplateView`](http://martinfowler.com/eaaCatalog/templateView.html) and [`TwoStepView`] patterns,
+with support for helpers and template finders. It adheres to
 the "use PHP for presentation logic" ideology, and is preceded by systems such
 as [`Savant`](http://phpsavant.com),
 [`Zend_View`](http://framework.zend.com/manual/en/zend.view.html), and
-[`Solar_View`](http://solarphp.com/class/Solar_View).
+[`Solar_View`](http://solarphp.com/class/Solar_View).  The presentation logic
+can take the form of closures or PHP scripts proper.
 
 This package is compliant with [PSR-0][], [PSR-1][], and [PSR-2][]. If you
 notice compliance oversights, please send a patch via pull request.
@@ -26,14 +27,13 @@ notice compliance oversights, please send a patch via pull request.
 
 - two step: $manager->render($data, function () {...}, function () {...});
 
-- how to use helpers
-
 - extract the view & layout to the finder as named closures
 
-- extract the finder view & layout to a class
+- extract the finder view & layout to a named script
 
-- using resolution stacks in the finder
+- using paths and prefix stacks in the finder
 
+- using helpers
 
 <?php
 $view->render($data, function () {
