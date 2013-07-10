@@ -15,12 +15,12 @@ use Aura\View\Helper\Form\Input\Checked;
 
 /**
  *
- * Helper for series of `<input type="radio">` tags.
+ * Helper for series of `<input type="checkbox">` tags.
  *
  * @package Aura.View
  *
  */
-class Radios extends AbstractHelper
+class Checkboxes extends AbstractHelper
 {
     /**
      *
@@ -36,16 +36,15 @@ class Radios extends AbstractHelper
 
     /**
      *
-     * Returns mulitple radio input fields.
+     * Returns mulitple checkbox input fields.
      *
-     * @param array $attribs The base attributes for the radios.
+     * @param array  $attribs   The base attributes for the checkboxes.
      *
-     * @param array $options The radio values and labels.
+     * @param array  $options   The checkbox values and labels.
      *
-     * @param bool $checked Which radio value should be checked.
+     * @param bool   $checked   Which checkbox value should be checked.
      *
-     * @param string $separator The separator string to use between each
-     * radio.
+     * @param string $separator The separator string to use between each checkbox.
      *
      * @return string
      *
@@ -56,13 +55,18 @@ class Radios extends AbstractHelper
         $checked = null,
         $separator = null
     ) {
+
         $input = $this->input;
-        $attribs['type'] = 'radio';
+        $attribs['type'] = 'checkbox';
         $html = '';
         foreach ($options as $value => $label) {
             $attribs['value'] = $value;
             $attribs['label'] = $label;
-            $html .= $input($attribs, $checked) . $separator;
+            if (in_array($value, $checked, true)) {
+                $html .= $input($attribs, $value) . $separator;
+            } else {
+                $html .= $input($attribs, '') . $separator;
+            }
         }
         return $html;
     }

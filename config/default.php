@@ -49,6 +49,7 @@ $di->params['Aura\View\Helper\Form\Field']['registry'] = [
     'url'            => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
     'week'           => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
     'radios'         => $di->lazyNew('Aura\View\Helper\Form\Radios'),
+    'checkboxes'     => $di->lazyNew('Aura\View\Helper\Form\Checkboxes'),
     'select'         => $di->lazyNew('Aura\View\Helper\Form\Select'),
     'textarea'       => $di->lazyNew('Aura\View\Helper\Form\Textarea'),
     'repeat'         => $di->lazyNew('Aura\View\Helper\Form\Repeat'),
@@ -111,6 +112,7 @@ $di->params['Aura\View\Helper\Form\Repeat']['registry'] = [
     'url'            => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
     'week'           => $di->lazyNew('Aura\View\Helper\Form\Input\Value'),
     'radios'         => $di->lazyNew('Aura\View\Helper\Form\Radios'),
+    'checkboxes'     => $di->lazyNew('Aura\View\Helper\Form\Checkboxes'),
     'select'         => $di->lazyNew('Aura\View\Helper\Form\Select'),
     'textarea'       => $di->lazyNew('Aura\View\Helper\Form\Textarea'),
 ];
@@ -119,6 +121,13 @@ $di->params['Aura\View\Helper\Form\Repeat']['registry'] = [
  * Aura\View\Helper\Radios
  */
 $di->params['Aura\View\Helper\Form\Radios'] = [
+    'input' => $di->lazyNew('Aura\View\Helper\Form\Input\Checked'),
+];
+
+/**
+ * Aura\View\Helper\Checkboxes
+ */
+$di->params['Aura\View\Helper\Form\Checkboxes'] = [
     'input' => $di->lazyNew('Aura\View\Helper\Form\Input\Checked'),
 ];
 
@@ -138,6 +147,7 @@ $di->params['Aura\View\HelperLocator']['registry'] = [
     'metas'       => $di->lazyNew('Aura\View\Helper\Metas'),
     'ol'          => $di->lazyNew('Aura\View\Helper\Ol'),
     'radios'      => $di->lazyNew('Aura\View\Helper\Form\Radios'),
+    'checkboxes'  => $di->lazyNew('Aura\View\Helper\Form\Checkboxes'),
     'repeat'      => $di->lazyNew('Aura\View\Helper\Form\Repeat'),
     'scripts'     => $di->lazyNew('Aura\View\Helper\Scripts'),
     'scriptsFoot' => $di->lazyNew('Aura\View\Helper\Scripts'),
