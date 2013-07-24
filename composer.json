@@ -18,10 +18,10 @@
         {
             "name": "Aura.View Contributors",
             "homepage": "https://github.com/auraphp/Aura.View/contributors"
-        },
+        }
     ],
     "require": {
-        "php": ">=5.4.0",
+        "php": ">=5.4.0"
     },
     "autoload": {
         "psr-0": {
