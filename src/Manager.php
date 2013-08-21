@@ -41,15 +41,6 @@ class Manager
 
     /**
      * 
-     * The factory for template objects.
-     * 
-     * @var Factory
-     * 
-     */
-    protected $factory;
-
-    /**
-     * 
      * The finder for layouts.
      * 
      * @var mixed
@@ -90,7 +81,7 @@ class Manager
      * 
      * Returns the layout finder.
      * 
-     * @return Factory
+     * @return Finder
      * 
      */
     public function getLayoutFinder()
@@ -114,7 +105,7 @@ class Manager
      * 
      * Returns the Template object.
      * 
-     * @return Factory
+     * @return AbstractTemplate
      * 
      */
     public function getTemplate()
