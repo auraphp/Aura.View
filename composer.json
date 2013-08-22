@@ -1,6 +1,5 @@
 {
     "name": "aura/view",
-    "version": "2.0.0",
     "type": "library",
     "description": "Provides an implementation of the TemplateView and TwoStepView patterns, with support for helpers and stacks, using PHP itself as the templating language.",
     "keywords": [
@@ -25,5 +24,10 @@
     },
     "autoload": {
         "files": ["autoload.php"]
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-develop-2": "2.x-dev"
+        }
     }
 }
