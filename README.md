@@ -1,6 +1,8 @@
 Aura View
 =========
 
+[![Build Status](https://travis-ci.org/auraphp/Aura.View.png)](https://travis-ci.org/auraphp/Aura.View)
+
 The Aura View package is an implementation of the
 [`TemplateView`](http://martinfowler.com/eaaCatalog/templateView.html) pattern,
 with support for automatic escaping, path stacks, and helpers. It adheres to
