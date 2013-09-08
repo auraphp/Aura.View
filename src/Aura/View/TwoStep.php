@@ -547,4 +547,16 @@ class TwoStep
     {
         return $this->template;
     }
+    
+    /**
+     * 
+     * A FormatTypes object to map .format values to Content-Type values.
+     * 
+     * @return Aura\View\FormatTypes
+     * 
+     */
+    public function getFormatTypes()
+    {
+        return $this->format_types;
+    }
 }
