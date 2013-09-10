@@ -293,9 +293,6 @@ class TwoStepTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($expect, $actual);
     }
     
-    /**
-     * @todo Implement testGetContentType().
-     */
     public function testGetContentType()
     {
         $this->twostep->setFormat('.html');
@@ -304,15 +301,8 @@ class TwoStepTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($expect, $actual);
     }
     
-    public function testSetPathTemplateFinder()
-    {
-        $this->markTestIncomplete("This test cannot pass because the paths have not been set on the template yet.");
-        $actual = $this->dirs['foo'] . DIRECTORY_SEPARATOR . 'inner_view.php';
-        $this->assertSame($this->twostep->getTemplate()->find('inner_view'), $actual);
-    }
-    
     public function testGetTemplate()
     {
-        $this->assertInstanceOf('Aura\View\Template', $this->template);
+        $this->assertSame($this->template, $this->twostep->getTemplate());
     }
 }
