@@ -788,7 +788,7 @@ echo $contents;
 Now when you execute the above code, you will see the two step view 
 rendered.
 
-```html
+```php
 <html>
 <head>
 <title>Hello my awesome title</title>
