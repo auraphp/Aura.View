@@ -1,4 +1,8 @@
-(updated to include the InstanceTest)
+- [TST] Add PHP 5.5 to the Travis build.
 
-- [FIX] Correct the instance.php script and its associated scripts, and add
-  an InstanceTest for it. Thanks, HariKT, for reporting this.
+- [CHG] Escaper\Object now recursively escapes arrays instead of converting to
+  ArrayObject and wrapping in an escaper
+
+- [ADD] TwoStepView::getTemplate() to get the template out of the view
+
+- [NEW] Helper\Form\Checkboxes

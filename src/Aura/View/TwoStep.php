@@ -177,7 +177,7 @@ class TwoStep
      * Sets the .format to pick when the inner/outer views provide multiple
      * formats.
      * 
-     * @param string
+     * @param string $format
      * 
      * @return void
      * 
@@ -534,5 +534,17 @@ class TwoStep
 
         // no match
         return false;
+    }
+    
+    /**
+     * 
+     * The Template object to be used when rendering
+     * 
+     * @return Template 
+     * 
+     */
+    public function getTemplate()
+    {
+        return $this->template;
     }
 }

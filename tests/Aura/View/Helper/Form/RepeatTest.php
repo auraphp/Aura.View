@@ -32,11 +32,12 @@ class RepeatTest extends AbstractHelperTest
             'url'            => function () { return new Input\Value; },
             'week'           => function () { return new Input\Value; },
             'radios'         => function () { return new Radios(new Input\Checked); },
+            'checkboxes'     => function () { return new Checkboxes(new Input\Checked); },
             'select'         => function () { return new Select; },
             'textarea'       => function () { return new Textarea; },
         ]);
     }
-    
+
     public function testAll()
     {
         $spec = $this->escape([
@@ -55,7 +56,7 @@ class RepeatTest extends AbstractHelperTest
                 '3' => 'dib',
             ],
         ]);
-        
+
         $repeat = $this->newRepeat();
         $actual = $repeat($spec);
         $expect = '<input id="field_id-1" type="text" name="field_name[1]" value="foo" />' . PHP_EOL

@@ -14,6 +14,7 @@ return new Template(new EscaperFactory, new TemplateFinder, new HelperLocator([
     'metas'         => function () { return new Helper\Metas; },
     'ol'            => function () { return new Helper\Ol; },
     'radios'        => function () { return new Helper\Form\Radios(new Helper\Form\Input\Checked); },
+    'checkboxes'    => function () { return new Helper\Form\Checkboxes(new Helper\Form\Input\Checked); },
     'repeat'        => function () { return new Helper\Form\Repeat(require __DIR__ . '/repeat_registry.php'); },
     'scripts'       => function () { return new Helper\Scripts; },
     'scriptsFoot'   => function () { return new Helper\Scripts; },

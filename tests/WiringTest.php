@@ -19,29 +19,30 @@ class WiringTest extends \PHPUnit_Framework_TestCase
         $this->assertNewInstance('Aura\View\Template');
         $this->assertNewInstance('Aura\View\TwoStep');
     }
-    
+
     public function testHelpers()
     {
         $helper = $this->assertNewInstance('Aura\View\HelperLocator');
-        $this->assertInstanceOf('Aura\View\Helper\Anchor',        $helper->get('anchor'));
-        $this->assertInstanceOf('Aura\View\Helper\Attribs',       $helper->get('attribs'));
-        $this->assertInstanceOf('Aura\View\Helper\Base',          $helper->get('base'));
-        $this->assertInstanceOf('Aura\View\Helper\Datetime',      $helper->get('datetime'));
-        $this->assertInstanceOf('Aura\View\Helper\Escape',        $helper->get('escape'));
-        $this->assertInstanceOf('Aura\View\Helper\Form\Radios',   $helper->get('radios'));
-        $this->assertInstanceOf('Aura\View\Helper\Form\Select',   $helper->get('select'));
-        $this->assertInstanceOf('Aura\View\Helper\Form\Textarea', $helper->get('textarea'));
-        $this->assertInstanceOf('Aura\View\Helper\Image',         $helper->get('image'));
-        $this->assertInstanceOf('Aura\View\Helper\Links',         $helper->get('links'));
-        $this->assertInstanceOf('Aura\View\Helper\Metas',         $helper->get('metas'));
-        $this->assertInstanceOf('Aura\View\Helper\Ol',            $helper->get('ol'));
-        $this->assertInstanceOf('Aura\View\Helper\Scripts',       $helper->get('scripts'));
-        $this->assertInstanceOf('Aura\View\Helper\Scripts',       $helper->get('scriptsFoot'));
-        $this->assertInstanceOf('Aura\View\Helper\Styles',        $helper->get('styles'));
-        $this->assertInstanceOf('Aura\View\Helper\Tag',           $helper->get('tag'));
-        $this->assertInstanceOf('Aura\View\Helper\Title',         $helper->get('title'));
-        $this->assertInstanceOf('Aura\View\Helper\Ul',            $helper->get('ul'));
-        
+        $this->assertInstanceOf('Aura\View\Helper\Anchor',          $helper->get('anchor'));
+        $this->assertInstanceOf('Aura\View\Helper\Attribs',         $helper->get('attribs'));
+        $this->assertInstanceOf('Aura\View\Helper\Base',            $helper->get('base'));
+        $this->assertInstanceOf('Aura\View\Helper\Datetime',        $helper->get('datetime'));
+        $this->assertInstanceOf('Aura\View\Helper\Escape',          $helper->get('escape'));
+        $this->assertInstanceOf('Aura\View\Helper\Form\Radios',     $helper->get('radios'));
+        $this->assertInstanceOf('Aura\View\Helper\Form\Checkboxes', $helper->get('checkboxes'));
+        $this->assertInstanceOf('Aura\View\Helper\Form\Select',     $helper->get('select'));
+        $this->assertInstanceOf('Aura\View\Helper\Form\Textarea',   $helper->get('textarea'));
+        $this->assertInstanceOf('Aura\View\Helper\Image',           $helper->get('image'));
+        $this->assertInstanceOf('Aura\View\Helper\Links',           $helper->get('links'));
+        $this->assertInstanceOf('Aura\View\Helper\Metas',           $helper->get('metas'));
+        $this->assertInstanceOf('Aura\View\Helper\Ol',              $helper->get('ol'));
+        $this->assertInstanceOf('Aura\View\Helper\Scripts',         $helper->get('scripts'));
+        $this->assertInstanceOf('Aura\View\Helper\Scripts',         $helper->get('scriptsFoot'));
+        $this->assertInstanceOf('Aura\View\Helper\Styles',          $helper->get('styles'));
+        $this->assertInstanceOf('Aura\View\Helper\Tag',             $helper->get('tag'));
+        $this->assertInstanceOf('Aura\View\Helper\Title',           $helper->get('title'));
+        $this->assertInstanceOf('Aura\View\Helper\Ul',              $helper->get('ul'));
+
         $input = $this->assertNewInstance('Aura\View\Helper\Form\Input');
         $this->assertInstanceOf('Aura\View\Helper\Form\Input\Generic',  $input->get('button'));
         $this->assertInstanceOf('Aura\View\Helper\Form\Input\Checked',  $input->get('checkbox'));
@@ -66,7 +67,7 @@ class WiringTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Aura\View\Helper\Form\Input\Value',    $input->get('time'));
         $this->assertInstanceOf('Aura\View\Helper\Form\Input\Value',    $input->get('url'));
         $this->assertInstanceOf('Aura\View\Helper\Form\Input\Value',    $input->get('week'));
-        
+
         $field = $this->assertNewInstance('Aura\View\Helper\Form\Field');
         $this->assertInstanceOf('Aura\View\Helper\Form\Input\Generic',  $field->get('button'));
         $this->assertInstanceOf('Aura\View\Helper\Form\Input\Checked',  $field->get('checkbox'));
@@ -93,9 +94,10 @@ class WiringTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Aura\View\Helper\Form\Input\Value',    $field->get('week'));
         $this->assertInstanceOf('Aura\View\Helper\Form\Repeat',         $field->get('repeat'));
         $this->assertInstanceOf('Aura\View\Helper\Form\Radios',         $field->get('radios'));
+        $this->assertInstanceOf('Aura\View\Helper\Form\Checkboxes',     $field->get('checkboxes'));
         $this->assertInstanceOf('Aura\View\Helper\Form\Select',         $field->get('select'));
         $this->assertInstanceOf('Aura\View\Helper\Form\Textarea',       $field->get('textarea'));
-        
+
         $repeat = $this->assertNewInstance('Aura\View\Helper\Form\Repeat');
         $this->assertInstanceOf('Aura\View\Helper\Form\Input\Generic',  $repeat->get('button'));
         $this->assertInstanceOf('Aura\View\Helper\Form\Input\Checked',  $repeat->get('checkbox'));
@@ -121,6 +123,7 @@ class WiringTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Aura\View\Helper\Form\Input\Value',    $repeat->get('url'));
         $this->assertInstanceOf('Aura\View\Helper\Form\Input\Value',    $repeat->get('week'));
         $this->assertInstanceOf('Aura\View\Helper\Form\Radios',         $repeat->get('radios'));
+        $this->assertInstanceOf('Aura\View\Helper\Form\Checkboxes',     $repeat->get('checkboxes'));
         $this->assertInstanceOf('Aura\View\Helper\Form\Select',         $repeat->get('select'));
         $this->assertInstanceOf('Aura\View\Helper\Form\Textarea',       $repeat->get('textarea'));
     }
