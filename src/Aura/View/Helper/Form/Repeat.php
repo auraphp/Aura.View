@@ -32,11 +32,6 @@ class Repeat extends HelperLocator
      */
     public function __invoke($spec)
     {
-        $trav = $spec instanceof \Traversable;
-        if ($trav) {
-            $spec = iterator_to_array($spec);
-        }
-        
         // make sure we have a type
         if (! $spec['type']) {
             $spec['type'] = 'text';
