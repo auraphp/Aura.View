@@ -1,7 +1,7 @@
 Aura View
 =========
 
-[![Build Status](https://travis-ci.org/auraphp/Aura.View.png)](https://travis-ci.org/auraphp/Aura.View)
+[![Build Status](https://travis-ci.org/auraphp/Aura.View.png?branch=develop)](https://travis-ci.org/auraphp/Aura.View)
 
 The Aura View package is an implementation of the
 [`TemplateView`](http://martinfowler.com/eaaCatalog/templateView.html) pattern,
