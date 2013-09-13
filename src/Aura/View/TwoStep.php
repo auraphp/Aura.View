@@ -449,7 +449,7 @@ class TwoStep
 
         // render inner view
         $inner = $this->renderView(
-            $this->getInnerView($this->format),
+            $this->getView($this->inner_view, $this->format, true),
             $this->inner_paths
         );
 
@@ -458,7 +458,7 @@ class TwoStep
 
         // render outer view, and done
         return $this->renderView(
-            $this->getOuterView($this->format),
+            $this->getView($this->outer_view, $this->format, true),
             $this->outer_paths,
             $inner
         );
@@ -509,7 +509,7 @@ class TwoStep
      * @return mixed The matching view for the format.
      * 
      */
-    protected function getView($view, $format)
+    protected function getView($view, $format, $first_if_empty = false)
     {
         // is the view empty?
         if (! $view) {
@@ -517,8 +517,16 @@ class TwoStep
         }
 
         // is a format specified?
-        if ($format === null) {
-            return $view;
+        if (! $format) {
+            // $first_if_empty is a hack to maintain backwards-compat.
+            // should we return the first view?
+            if (! $first_if_empty) {
+                // return all possible views (the original behavior)
+                return $view;
+            }
+            // return the first view (the new behavior)
+            $convert = (array) $view;
+            return reset($convert);
         }
 
         // is the view anything besides an array?

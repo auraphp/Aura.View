@@ -333,8 +333,7 @@ part of Aura View include:
 
 - `$this->image($src)` returns an `<img src="$src" />` tag.
 
-- `$this->input($attribs, $value, $label, $label_attribs)` 
-returns an `<input>` tag, optionally wrapped in a `<label>` tag
+- `$this->input($attribs, $value, $label, $label_attribs)` returns an `<input>` tag, optionally wrapped in a `<label>` tag
     
     In general `$this->input(['type' => $type], $value, $label, $label_attribs)` 
     
@@ -346,10 +345,8 @@ returns an `<input>` tag, optionally wrapped in a `<label>` tag
     - `checkbox` : checkbox
     - `color` : color picker
     - `date` : date control (year, month and day)
-    - `datetime` : date and time control (year, month, day, hour, 
-    minute, second, and fraction of a second, UTC time zone)
-    - `datetime-local` : date and time control (year, month, day, 
-    hour, minute, second, and fraction of a second, no time zone)
+    - `datetime` : date and time control (year, month, day, hour, minute, second, and fraction of a second, UTC time zone)
+    - `datetime-local` : date and time control (year, month, day, hour, minute, second, and fraction of a second, no time zone)
     - `email` : e-mail address
     - `file` : file-select field and a "Browse..." button for file uploads
     - `hidden` : hidden input field
@@ -358,8 +355,7 @@ returns an `<input>` tag, optionally wrapped in a `<label>` tag
     - `number` : field for entering a number
     - `password` : password field
     - `radio` : radio button
-    - `range` : control for entering a number whose exact value is not 
-    important (like a slider control)
+    - `range` : control for entering a number whose exact value is not important (like a slider control)
     - `reset` : reset button (resets all form values to default values)
     - `search` : text field for entering a search string
     - `submit` : submit button
@@ -580,6 +576,7 @@ useful to name the service for the helper class.
 Please examine the classes in `Aura\View\Helper` for more complex and powerful
 examples.
 
+
 Two Step View
 =============
 
@@ -655,6 +652,10 @@ $twostep->setInnerView(
 );
 
 ```
+
+> N.b.: If no format is specified, and the Accept content-type cannot be
+> determined, then the two-step view will use the first view format available.
+
 
 Setting and Getting Inner View Path
 -----------------------------------

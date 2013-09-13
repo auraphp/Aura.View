@@ -55,11 +55,19 @@ class TwoStepTest extends \PHPUnit_Framework_TestCase
         
         $this->template = new Template($escaper_factory, $template_finder, $helper_locator);
         
-        $format_types = new FormatTypes;
+        $this->format_types = new FormatTypes;
         
-        $this->twostep = new TwoStep($this->template, $format_types);
+        $this->twostep = new TwoStep($this->template, $this->format_types);
     }
 
+    public function testGetFormatTypes()
+    {
+        $this->assertSame(
+            $this->format_types,
+            $this->twostep->getFormatTypes()
+        );
+    }
+    
     public function testSetAndGetAccept()
     {
         $expect = [
