@@ -1,6 +1,6 @@
 {
     "name": "aura/view",
-    "version": "1.2.0",
+    "version": "1.2.1",
     "type": "aura-package",
     "description": "The Aura View package provides an implementation of the TemplateView and TwoStepView patterns, with support for helpers and path stacks, using PHP itself as the templating language.",
     "keywords": [
@@ -12,7 +12,7 @@
         "view"
     ],
     "homepage": "http://auraphp.com/Aura.View",
-    "time": "2013-09-10",
+    "time": "2013-09-16",
     "license": "BSD-2-Clause",
     "authors": [
         {
