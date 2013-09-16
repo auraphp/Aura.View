@@ -506,6 +506,9 @@ class TwoStep
      * 
      * @param string $format The format to use.
      * 
+     * @param bool $first_if_empty If the format is empty, use the first
+     * available view; otherwise return all available views.
+     * 
      * @return mixed The matching view for the format.
      * 
      */
@@ -521,10 +524,10 @@ class TwoStep
             // $first_if_empty is a hack to maintain backwards-compat.
             // should we return the first view?
             if (! $first_if_empty) {
-                // return all possible views (the original behavior)
+                // return all available views (the original behavior)
                 return $view;
             }
-            // return the first view (the new behavior)
+            // return only the first view (the new behavior)
             $convert = (array) $view;
             return reset($convert);
         }
