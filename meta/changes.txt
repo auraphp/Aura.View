@@ -1,8 +1,4 @@
-- [TST] Add PHP 5.5 to the Travis build.
-
-- [CHG] Escaper\Object now recursively escapes arrays instead of converting to
-  ArrayObject and wrapping in an escaper
-
-- [ADD] TwoStepView::getTemplate() to get the template out of the view
-
-- [NEW] Helper\Form\Checkboxes
+- [FIX] TwoStepView::getView() now optionally returns the first view when
+  there is no format specified; this stops exceptions from being raised when
+  the client passes no Accept header and there are multiple view formats
+  available.
