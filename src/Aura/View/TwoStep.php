@@ -211,6 +211,20 @@ class TwoStep
     {
         return $this->format_types->getContentType($this->format);
     }
+    
+    /**
+     * 
+     * Merges new data with existing data for inner and outer views.
+     * 
+     * @param array $data The data for the inner and outer views.
+     * 
+     * @return void
+     * 
+     */
+    public function addData(array $data = [])
+    {
+        $this->data = array_merge($this->data, $data);
+    }
 
     /**
      * 
