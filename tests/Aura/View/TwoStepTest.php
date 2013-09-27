@@ -99,53 +99,53 @@ class TwoStepTest extends \PHPUnit_Framework_TestCase
         $this->twostep->setData($expect);
         $this->assertSame($expect, $this->twostep->getData());
     }
-	
-	public function testAddAndGetData()
+    
+    public function testAddAndGetData()
     {
         // add initial data
-		$initial = [
+        $initial = [
             'foo' => 'bar',
             'baz' => 'dib',
             'zim' => 'gir',
             'irk' => 'doom',
         ];
         $this->twostep->setData($initial);
-		
-		// Add new data with new keys
-		$new = [
-			'sit' => 'amet',
-			'sed' => 'zorn',
-		];
-		$this->twostep->addData($new);
-		
-		$expect = [
-			'foo' => 'bar',
+        
+        // Add new data with new keys
+        $new = [
+            'sit' => 'amet',
+            'sed' => 'zorn',
+        ];
+        $this->twostep->addData($new);
+        
+        $expect = [
+            'foo' => 'bar',
             'baz' => 'dib',
             'zim' => 'gir',
             'irk' => 'doom',
-			'sit' => 'amet',
-			'sed' => 'zorn',
-		];
+            'sit' => 'amet',
+            'sed' => 'zorn',
+        ];
         $this->assertSame($expect, $this->twostep->getData());
-		
-		// Add more new data this time overwritting existing data
-		$new = [
-			'sit' => 'down',
-			'foo' => 'fight',
-		];
-		
-		$this->twostep->addData($new);
-		
-		$expect = [
-			'foo' => 'fight',
+        
+        // Add more new data this time overwritting existing data
+        $new = [
+            'sit' => 'down',
+            'foo' => 'fight',
+        ];
+        
+        $this->twostep->addData($new);
+        
+        $expect = [
+            'foo' => 'fight',
             'baz' => 'dib',
             'zim' => 'gir',
             'irk' => 'doom',
-			'sit' => 'down',
-			'sed' => 'zorn',
-		];
-		
-		$this->assertSame($expect, $this->twostep->getData());
+            'sit' => 'down',
+            'sed' => 'zorn',
+        ];
+        
+        $this->assertSame($expect, $this->twostep->getData());
     }
 
     public function testSetAddAndGetInnerPaths()
