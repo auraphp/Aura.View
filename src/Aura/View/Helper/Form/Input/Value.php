@@ -35,5 +35,5 @@ class Value extends Generic
         
         // build and return html
         return parent::exec();
-    }    
+    }
 }
