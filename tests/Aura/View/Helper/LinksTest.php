@@ -37,6 +37,25 @@ class LinksTest extends AbstractHelperTest
                 . '    <link rel="next" href="/path/to/next?this&amp;that" />' . PHP_EOL;
        
         $this->assertSame($expect, $actual);
+        
+        // Now test adding links fluently
+        unset($links);
+        $links = new Links;
+        
+        $escaper = $this->escape((object) [
+            'prev' => [
+                'rel' => 'prev',
+                'href' => '/path/to/prev?this&that',
+            ],
+            'next' => [
+                'rel' => 'next',
+                'href' => '/path/to/next?this&that',
+            ]
+        ]);
+        
+        $actual = $links->add($escaper->prev)->add($escaper->next)->get();
+        
+        $this->assertSame($expect, $actual);
     }
 
     /**
