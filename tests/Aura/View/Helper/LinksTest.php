@@ -37,6 +37,16 @@ class LinksTest extends AbstractHelperTest
                 . '    <link rel="next" href="/path/to/next?this&amp;that" />' . PHP_EOL;
        
         $this->assertSame($expect, $actual);
+        
+        // Check add and get via fluency as well.
+        unset($links);
+        
+         $links = new Links;
+         $actual = $links->add($escaper->prev)
+                         ->add($escaper->next)
+                         ->get();
+         
+         $this->assertSame($expect, $actual);
     }
 
     /**
