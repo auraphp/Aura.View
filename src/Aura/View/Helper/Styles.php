@@ -74,7 +74,7 @@ class Styles extends AbstractHelper
 
         $attribs = array_merge($base, (array) $attribs);
         $tag = $this->void('link', $attribs);
-        $this->styles[$tag] = $pos;
+        $this->styles[(int) $pos][] = $tag;
         
         return $this;
     }
@@ -118,8 +118,8 @@ class Styles extends AbstractHelper
         $tag = "<!--[if $exp]>"
              . $this->void('link', $attribs)
              . "<![endif]-->";
-        $this->styles[$tag] = $pos;
         
+        $this->styles[(int) $pos][] = $tag;
         return $this;
     }
 
@@ -133,10 +133,14 @@ class Styles extends AbstractHelper
      */
     public function get()
     {
-        asort($this->styles);
-        $styles = array_keys($this->styles);
-        return $this->indent
-             . implode(PHP_EOL . $this->indent, $styles)
-             . PHP_EOL;
+        
+        $html = '';
+        ksort($this->styles);
+        foreach ($this->styles as $list) {
+            foreach ($list as $style) {
+                $html .= $this->indent . $style . PHP_EOL;
+            }
+        }
+        return $html;
     }
 }

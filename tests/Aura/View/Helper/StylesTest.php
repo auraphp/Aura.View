@@ -34,7 +34,6 @@ class StylesTest extends AbstractHelperTest
     
     /**
      * Tests add and get in a fluent interface
-     * Currently fails!! Need to fix how it is ordered. See Scripts helper
      */
     public function testAddAndGet_fluent()
     {
