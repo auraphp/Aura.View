@@ -48,12 +48,13 @@ class Metas extends AbstractHelper
      * 
      * @param int $pos The meta position.
      * 
-     * @return void
+     * @return $this
      * 
      */
     public function add($attribs = [], $pos = 100)
     {
         $this->metas[(int) $pos][] = $this->void('meta', $attribs);
+        return $this;
     }
 
     /**
@@ -66,7 +67,7 @@ class Metas extends AbstractHelper
      * 
      * @param int $pos The meta position.
      * 
-     * @return void
+     * @return $this
      * 
      */
     public function addHttp($http_equiv, $content, $pos = 100)
@@ -77,6 +78,7 @@ class Metas extends AbstractHelper
         ];
 
         $this->add($attribs, $pos);
+        return $this;
     }
 
     /**
@@ -89,7 +91,7 @@ class Metas extends AbstractHelper
      * 
      * @param int $pos The meta position.
      * 
-     * @return void
+     * @return $this
      * 
      */
     public function addName($name, $content, $pos = 100)
@@ -100,6 +102,7 @@ class Metas extends AbstractHelper
         ];
 
         $this->add($attribs, $pos);
+        return $this;
     }
 
     /**

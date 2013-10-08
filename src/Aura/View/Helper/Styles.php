@@ -50,7 +50,7 @@ class Styles extends AbstractHelper
      * 
      * @param int $pos The stylesheet position in the stack.
      * 
-     * @return void
+     * @return $this
      * 
      */
     public function add($href, $attribs = [], $pos = 100)
@@ -75,6 +75,8 @@ class Styles extends AbstractHelper
         $attribs = array_merge($base, (array) $attribs);
         $tag = $this->void('link', $attribs);
         $this->styles[$tag] = $pos;
+        
+        return $this;
     }
 
     /**
@@ -90,7 +92,7 @@ class Styles extends AbstractHelper
      * 
      * @param string $pos The stylesheet position in the stack.
      * 
-     * @return void
+     * @return $this
      * 
      */
     public function addCond($exp, $href, $attribs = [], $pos = 100)
@@ -117,6 +119,8 @@ class Styles extends AbstractHelper
              . $this->void('link', $attribs)
              . "<![endif]-->";
         $this->styles[$tag] = $pos;
+        
+        return $this;
     }
 
     /**
