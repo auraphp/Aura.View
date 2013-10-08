@@ -42,7 +42,7 @@ class Checkboxes extends AbstractHelper
      *
      * @param array  $options   The checkbox values and labels.
      *
-     * @param bool   $checked   Which checkbox value should be checked.
+     * @param array   $checked   Which checkbox value should be checked.
      *
      * @param string $separator The separator string to use between each checkbox.
      *
