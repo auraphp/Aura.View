@@ -50,7 +50,7 @@ class Scripts extends AbstractHelper
      * 
      * @param int $pos The script position in the stack.
      * 
-     * @return void
+     * @return $this
      * 
      */
     public function add($src, $attribs = [], $pos = 100)
@@ -63,6 +63,7 @@ class Scripts extends AbstractHelper
         $attr = $this->attribs($attribs);
         $tag = "<script src=\"$src\" $attr></script>";
         $this->scripts[(int) $pos][] = $tag;
+        return $this;
     }
 
     /**
@@ -78,7 +79,7 @@ class Scripts extends AbstractHelper
      * 
      * @param string $pos The script position in the stack.
      * 
-     * @return void
+     * @return $this
      * 
      */
     public function addCond($exp, $src, $attribs = [], $pos = 100)
@@ -91,6 +92,7 @@ class Scripts extends AbstractHelper
         $attr = $this->attribs($attribs);
         $tag = "<!--[if $exp]><script src=\"$src\" $attr></script><![endif]-->";
         $this->scripts[(int) $pos][] = $tag;
+        return $this;
     }
 
     /**

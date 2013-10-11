@@ -42,7 +42,7 @@ class Radios extends AbstractHelper
      *
      * @param array $options The radio values and labels.
      *
-     * @param bool $checked Which radio value should be checked.
+     * @param string $checked Which radio value should be checked.
      *
      * @param string $separator The separator string to use between each
      * radio.
