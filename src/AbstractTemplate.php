@@ -37,7 +37,7 @@ abstract class AbstractTemplate
      * @var object
      * 
      */
-    private $data;
+    protected $data;
 
     /**
      * 
