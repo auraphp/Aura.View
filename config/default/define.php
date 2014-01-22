@@ -3,8 +3,8 @@
  * Aura\View\Manager
  */
 $di->params['Aura\View\Manager'] = [
-    'factory'       => $di->lazyNew('Aura\View\Factory'),
-    'helper'        => $di->lazyNew('Aura\Html\Helper'),
+    'template'       => $di->lazyNew('Aura\View\Template'),
+    'helper'        => $di->lazyNew('Aura\Html\HelperLocator'),
     'view_finder'   => $di->lazyNew('Aura\View\Finder'),
     'layout_finder' => $di->lazyNew('Aura\View\Finder'),
 ];
