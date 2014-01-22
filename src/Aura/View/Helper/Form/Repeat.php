@@ -40,9 +40,6 @@ class Repeat extends HelperLocator
         // get the helper
         $helper = $this->get($spec['type']);
         
-        // the eventual html
-        $html = '';
-        
         // do we have a name?
         $name = null;
         if ($spec['name']) {
