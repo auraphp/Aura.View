@@ -36,7 +36,7 @@ class Checkboxes extends AbstractHelper
 
     /**
      *
-     * Returns mulitple checkbox input fields.
+     * Returns multiple checkbox input fields.
      *
      * @param array  $attribs   The base attributes for the checkboxes.
      *

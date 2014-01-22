@@ -36,7 +36,7 @@ class Radios extends AbstractHelper
 
     /**
      *
-     * Returns mulitple radio input fields.
+     * Returns multiple radio input fields.
      *
      * @param array $attribs The base attributes for the radios.
      *
