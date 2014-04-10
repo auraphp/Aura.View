@@ -31,7 +31,7 @@
         "aura": {
             "type": "library",
             "config": {
-                "common": "Aura\\View\\_Config\\Common",
+                "common": "Aura\\View\\_Config\\Common"
             }
         },
         "branch-alias": {
