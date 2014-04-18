@@ -24,7 +24,8 @@
     },
     "autoload": {
         "psr-4": {
-            "Aura\\View\\": "src/"
+            "Aura\\View\\": "src/",
+            "Aura\\View\\_Config\\": "config/"
         }
     },
     "extra": {
