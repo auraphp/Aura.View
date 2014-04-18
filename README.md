@@ -1,46 +1,37 @@
 # Aura View
 
 The Aura View package is an implementation of the
-[`TemplateView`](http://martinfowler.com/eaaCatalog/templateView.html) and [`TwoStepView`] patterns,
-with support for helpers and template finders. It adheres to
-the "use PHP for presentation logic" ideology, and is preceded by systems such
-as [`Savant`](http://phpsavant.com),
+[`TemplateView`](http://martinfowler.com/eaaCatalog/templateView.html) and 
+[`TwoStepView`](http://martinfowler.com/eaaCatalog/twoStepView.html) patterns, 
+with support for helpers and template finders. It adheres to the "use PHP for 
+presentation logic" ideology, and is preceded by systems such as
+[`Savant`](http://phpsavant.com),
 [`Zend_View`](http://framework.zend.com/manual/en/zend.view.html), and
-[`Solar_View`](http://solarphp.com/class/Solar_View).  The presentation logic
-can take the form of closures or PHP scripts proper.
+[`Solar_View`](http://solarphp.com/class/Solar_View).
+The presentation logic can take the form of closures or PHP scripts proper.
 
 ## Foreword
 
-### Requirements
+### Installation
 
 This library requires PHP 5.4 or later, and has no userland dependencies.
 
-### Installation
+It is installable and autoloadable via Composer as [aura/view](https://packagist.org/packages/aura/view).
 
-This library is installable and autoloadable via Composer with the following
-`require` element in your `composer.json` file:
+Alternatively, [download a release](https://github.com/auraphp/Aura.View/releases) or clone this repository, then require or include its _autoload.php_ file.
 
-    "require": {
-        "aura/view": "2.*@dev"
-    }
-    
-Alternatively, download or clone this repository, then require or include its
-_autoload.php_ file.
+### Quality
 
-### Tests
-
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/auraphp/Aura.View/badges/quality-score.png?s=82e59f35f779d7f5a2bdb87dea1d1842909674ef)](https://scrutinizer-ci.com/g/auraphp/Aura.View/)
+[![Code Coverage](https://scrutinizer-ci.com/g/auraphp/Aura.View/badges/coverage.png?s=776e6c29a00984aea422f416fd90108a5f88ca87)](https://scrutinizer-ci.com/g/auraphp/Aura.View/)
 [![Build Status](https://travis-ci.org/auraphp/Aura.View.png?branch=develop-2)](https://travis-ci.org/auraphp/Aura.View)
 
-This library has 100% code coverage with [PHPUnit][]. To run the tests at the
-command line, go to the _tests_ directory and issue `phpunit`.
-
-[phpunit]: http://phpunit.de/manual/
-
-### PSR Compliance
+To run the [PHPUnit][] tests at the command line, go to the _tests_ directory and issue `phpunit`.
 
 This library attempts to comply with [PSR-1][], [PSR-2][], and [PSR-4][]. If
 you notice compliance oversights, please send a patch via pull request.
 
+[PHPUnit]: http://phpunit.de/manual/
 [PSR-1]: https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-1-basic-coding-standard.md
 [PSR-2]: https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md
 [PSR-4]: https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-4-autoloader.md
