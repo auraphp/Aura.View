@@ -8,12 +8,11 @@ class Common extends Config
 {
     public function define(Container $di)
     {        
-        $di->params['Aura\View\Manager'] = [
-            'template'       => $di->lazyNew('Aura\View\Template'),
-            'helper'        => $di->lazyNew('Aura\Html\HelperLocator'),
-            'view_finder'   => $di->lazyNew('Aura\View\Finder'),
-            'layout_finder' => $di->lazyNew('Aura\View\Finder'),
-        ];
+        $di->params['Aura\View\View'] = array(
+            'view_registry'   => $di->lazyNew('Aura\View\TemplateRegistry'),
+            'layout_registry' => $di->lazyNew('Aura\View\TemplateRegistry'),
+            'helpers'         => $di->lazyNew('Aura\View\HelperRegistry'),
+        );
     }
 
     public function modify(Container $di)
