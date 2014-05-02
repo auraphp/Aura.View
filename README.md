@@ -14,7 +14,7 @@ The presentation logic can take the form of closures or PHP scripts proper.
 
 ### Installation
 
-This library requires PHP 5.3 or later, and has no userland dependencies.
+This library requires PHP 5.4 or later, and has no userland dependencies.
 
 It is installable and autoloadable via Composer as [aura/view](https://packagist.org/packages/aura/view).
 
