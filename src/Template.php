@@ -3,6 +3,8 @@ namespace Aura\View;
 
 use Closure;
 
+use Aura\View\Exception\LogicException;
+
 /**
  * 
  * Concrete template object; having render() and partial() here keeps script
@@ -11,6 +13,8 @@ use Closure;
  */
 class Template extends AbstractTemplate
 {
+    protected $section;
+    
     /**
      * 
      * Returns rendered output.
@@ -66,5 +70,21 @@ class Template extends AbstractTemplate
         return function () use ($file) {
             require $file;
         };
+    }
+    
+    public function sectionStart($name)
+    {
+        $this->section = $name;
+        ob_start();
+    }
+
+    public function sectionEnd()
+    {
+        if (empty($this->section)) {
+            throw new LogicException('You must start a section before you can end it.');
+        }
+
+        $this->data->{$this->section} = ob_get_clean();
+        $this->section = null;
     }
 }

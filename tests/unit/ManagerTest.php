@@ -30,6 +30,23 @@ class ManagerTest extends \PHPUnit_Framework_TestCase
                . '</html>';
         });
         
+        $this->view_finder->setName('SectionView', function () {
+            $this->sectionStart('sidebar');
+            echo 'I am from sidebar';
+            $this->sectionEnd();
+            echo '<p>Hello ' . $this->noun . '!</p>';
+        });        
+        $this->layout_finder->setName('SectionLayout', function () {
+            echo '<html>'
+               . '<head><title>Test</title></head>'
+               . '<body><div>' . $this->content . '</div>'
+               . '<div>';
+            echo isset($this->sidebar) ? $this->sidebar : 'I am default sidebar';
+            echo '</div>'
+               . '</body>'
+               . '</html>';
+        });
+        
         $this->manager = new Manager(
             $this->template,
             $this->helper,
@@ -74,6 +91,32 @@ class ManagerTest extends \PHPUnit_Framework_TestCase
         $expect = '<html>'
                 . '<head><title>Test</title></head>'
                 . '<body><p>Hello World!</p></body>'
+                . '</html>';
+        $this->assertSame($expect, $actual);
+    }
+    
+    public function testRenderViewAndLayoutSection()
+    {        
+        $data = ['noun' => 'World'];
+        $actual = $this->manager->render($data, 'SectionView', 'SectionLayout');
+        $expect = '<html>'
+                . '<head><title>Test</title></head>'
+                . '<body><div><p>Hello World!</p></div>'
+                . '<div>I am from sidebar</div>'
+                . '</body>'
+                . '</html>';
+        $this->assertSame($expect, $actual);
+    }
+    
+    public function testRenderViewAndLayoutWithoutSection()
+    { 
+        $data = ['noun' => 'World'];
+        $actual = $this->manager->render($data, 'IndexView', 'SectionLayout');
+        $expect = '<html>'
+                . '<head><title>Test</title></head>'
+                . '<body><div><p>Hello World!</p></div>'
+                . '<div>I am default sidebar</div>'
+                . '</body>'
                 . '</html>';
         $this->assertSame($expect, $actual);
     }
