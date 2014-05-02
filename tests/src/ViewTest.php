@@ -7,7 +7,8 @@ class ViewTest extends \PHPUnit_Framework_TestCase
     
     protected function setUp()
     {
-        $this->view = (new ViewFactory)->newInstance();
+        $view_factory = new ViewFactory;
+        $this->view = $view_factory->newInstance();
 
         $helpers = $this->view->getHelpers();
         $helpers->set('hello', function ($name) {
