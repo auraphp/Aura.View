@@ -19,6 +19,14 @@ class ViewTest extends \PHPUnit_Framework_TestCase
         $view_registry->set('index', function () {
             echo $this->hello($this->name);
         });
+        $view_registry->set('master', function () {
+            foreach (array('bar', 'baz', 'dib') as $this->_foo) {
+                echo $this->render('_partial');
+            }
+        });
+        $view_registry->set('_partial', function () {
+            echo "foo = {$this->_foo}" . PHP_EOL;
+        });
 
         $layout_registry = $this->view->getLayoutRegistry();
         $layout_registry->set('default', function () {
@@ -87,6 +95,16 @@ class ViewTest extends \PHPUnit_Framework_TestCase
         $this->view->setLayout('default');
         $actual = $this->view->__invoke();
         $expect = "before -- Hello Index! -- after";
+        $this->assertSame($expect, $actual);
+    }
+
+    public function testPartial()
+    {
+        $this->view->setView('master');
+        $actual = $this->view->__invoke();
+        $expect = "foo = bar" . PHP_EOL
+                . "foo = baz" . PHP_EOL
+                . "foo = dib" . PHP_EOL;
         $this->assertSame($expect, $actual);
     }
 }

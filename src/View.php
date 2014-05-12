@@ -35,22 +35,17 @@ class View extends AbstractView
 
     /**
      * 
-     * Returns a rendered template by name.
+     * Renders a template by name.
      * 
-     * @param string $__name__ The template to be rendered.
-     * 
-     * @param array $__data__ Variables to `extract()` into the local scope.
+     * @param string $name The name of the template to be rendered.
      * 
      * @return string
      * 
      */
-    protected function render($__name__, array $__data__ = array())
+    protected function render($name)
     {
-        unset($__data__['this']);
-        unset($__data__['__name__']);
-        extract($__data__);
         ob_start();
-        $this->getTemplate($__name__)->__invoke();
+        $this->getTemplate($name)->__invoke();
         return ob_get_clean();
     }
 }
