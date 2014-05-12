@@ -54,6 +54,14 @@ $view = $view_factory->newInstance();
 ?>
 ```
 
+### Escaping Output
+
+Security-minded observers will note that all the examples in this document use unescaped output. Because this package is not specific to any particular media type, it **does not** come with escaping functionality.
+
+When you generate output via templates, you **must** escape it appropriately for security purposes. This means that HTML templates should use HTML escaping, CSS templates should use CSS escaping, XML templates should use XML escaping, PDF templates should use PDF escaping, RTF templates should use RTF escaping, and so on.
+
+For a good set of HTML escapers, please consider [Aura.Html](https://github.com/auraphp/Aura.Html#escaping).
+
 ### Registering View Templates
 
 Now that we have a _View_, we need to add named templates to its view template registry. These can be closures or PHP file paths.  For example:
@@ -112,23 +120,28 @@ The `$output` in this case will be "Hello World!".
 ### Using Sub-Templates (aka "Partials")
 
 Sometimes we will want to split a template up into multiple pieces. We can
-render these "partial" templates using the `render()` method in our template
-code. We can pass an array of variables to be extracted into the sub-template
-scope; `$this` is available in both the main template and sub-template scopes.
+render these "partial" template pieces using the `render()` method in our main template code. 
+
+First, we place the sub-template in the view registry (or in the layout regsitry if it for use in layouts). Then we `render()` it from inside the main template code. Sub-templates can use any naming scheme we like. Some systems use the convention of prefixing partial templates with an underscore, and the following example will use that convention.
+
+Because `$this` is available in both the main template and sub-template scopes, we need to deconflict any variables specifically for sub-templates with variables intended for the main templates. The following example does so by prefixing sub-template variables with an underscore, but you can choose any convention you like.
 
 ```php
 <?php
 // add templates to the view registry
 $view_registry = $view->getViewRegistry();
 
+// the "main" template
 $view_registry->set('item_rows', function () {
-    foreach ($this->items as $item) {
-        echo $this->render('item_row', array('item' => $item));
+    foreach ($this->items as $this->_item) {
+        echo $this->render('_item_row');
     };
 });
 
-$view_registry->set('item_row', function () {
-    echo $item['name']  . ' costs ' . $item['price'] . PHP_EOL;
+// the "sub" (partial) template
+$view_registry->set('_item_row', function () {
+    echo "The item names '{$this->_item['name']}'' "
+       . "costs {$this->_item['price']}" . PHP_EOL
 });
 
 // set the data and the view template name
@@ -145,8 +158,7 @@ in the current template scope.
 
 ### Using Helpers
 
-The _ViewFactory_ instantiates the _View_ with an empty _HelperRegistry_. We 
-can register closures or other invokable objects as helpers through the _HelperRegistry_. We can then call these helpers as if they are methods on the _View_.
+The _ViewFactory_ instantiates the _View_ with an empty _HelperRegistry_ to manage helpers. We can register closures or other invokable objects as helpers through the _HelperRegistry_. We can then call these helpers as if they are methods on the _View_.
 
 ```php
 <?php
@@ -168,7 +180,9 @@ $output = $view();
 This library does not come with any view helpers. You will need to add your own
 helpers to the registry as closures or invokable objects.
 
-The _View_ is not type-hinted to any particular class for helpers. This means you may inject an arbitrary object of your own at _View_ construction time to manage helpers. To do so, pass a helper manager of your own to the _ViewFactory_.
+### Custom Helper Managers
+
+The _View_ is not type-hinted to any particular class for its helper manager. This means you may inject an arbitrary object of your own at _View_ construction time to manage helpers. To do so, pass a helper manager of your own to the _ViewFactory_.
 
 ```php
 <?php
@@ -186,9 +200,15 @@ $view = $view_factory->newInstance($helpers);
 ?>
 ```
 
-Note that the [Aura.Html](https://github.com/Aura.Html) package includes a
-series of HTML-specific helpers and a service locator to manage them.
+For a comprehensive set of HTML helpers, including form and input helpers, please consider the [Aura.Html](https://github.com/Aura.Html) package and its _HelperLocator_ as an alternative to the _HelperRegistry_ in this package. You can pass it to the _ViewFactory_ like so:
 
+```php
+<?php
+$helpers_factory = new Aura\Html\HelperLocatorFactory;
+$helpers = $helpers_factory->newInstance();
+$view = $view_factory->newInstance($helpers);
+?>
+```
 
 ### Rendering a Two-Step View
 
