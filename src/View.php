@@ -1,4 +1,13 @@
 <?php
+/**
+ * 
+ * This file is part of Aura for PHP.
+ * 
+ * @package Aura.View
+ * 
+ * @license http://opensource.org/licenses/bsd-license.php BSD
+ * 
+ */
 namespace Aura\View;
 
 /**
@@ -12,7 +21,7 @@ class View extends AbstractView
 {
     /**
      * 
-     * Returns the rendered view, optionally with layout.
+     * Returns the rendered view along with any specified layout.
      * 
      * @return string
      * 
@@ -35,7 +44,8 @@ class View extends AbstractView
 
     /**
      * 
-     * Renders a template by name.
+     * Renders a template from the current template registry using output
+     * buffering.
      * 
      * @param string $name The name of the template to be rendered.
      * 

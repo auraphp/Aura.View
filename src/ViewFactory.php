@@ -1,7 +1,7 @@
 <?php
 /**
  * 
- * This file is part of the Aura Project for PHP.
+ * This file is part of Aura for PHP.
  * 
  * @package Aura.View
  * 
@@ -10,8 +10,25 @@
  */
 namespace Aura\View;
 
+/**
+ * 
+ * Factory to create View objects.
+ * 
+ * @package Aura.View
+ * 
+ */
 class ViewFactory
 {
+    /**
+     * 
+     * Returns a new View instance.
+     * 
+     * @param object $helpers An arbitrary helper manager for the View; if not
+     * specified, uses the HelperRegistry from this package.
+     * 
+     * @return View
+     * 
+     */
     public function newInstance($helpers = null)
     {
         if (! $helpers) {
