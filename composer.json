@@ -3,6 +3,9 @@
     "type": "library",
     "description": "Provides an implementation of the TemplateView and TwoStepView patterns, with support for helpers and for closures as templates, using PHP itself as the templating language.",
     "keywords": [
+        "escape",
+        "escaper",
+        "escaping",
         "template",
         "template view",
         "two step view",
@@ -10,8 +13,7 @@
         "twostep view",
         "view"
     ],
-    "homepage": "http://auraphp.com/Aura.View",
-    "time": "2013-05-16",
+    "homepage": "https://github.com/auraphp/Aura.View",
     "license": "BSD-2-Clause",
     "authors": [
         {
