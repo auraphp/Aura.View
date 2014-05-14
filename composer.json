@@ -1,7 +1,7 @@
 {
     "name": "aura/view",
     "type": "library",
-    "description": "Provides an implementation of the TemplateView and TwoStepView patterns, with support for helpers and stacks, using PHP itself as the templating language.",
+    "description": "Provides an implementation of the TemplateView and TwoStepView patterns, with support for helpers and for closures as templates, using PHP itself as the templating language.",
     "keywords": [
         "template",
         "template view",

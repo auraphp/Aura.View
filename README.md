@@ -1,14 +1,12 @@
 # Aura View
 
-The Aura View package is an implementation of the
-[`TemplateView`](http://martinfowler.com/eaaCatalog/templateView.html) and 
-[`TwoStepView`](http://martinfowler.com/eaaCatalog/twoStepView.html) patterns, 
-with support for helpers and template finders. It adheres to the "use PHP for 
-presentation logic" ideology, and is preceded by systems such as
+This package provides an implementation of the [TemplateView](http://martinfowler.com/eaaCatalog/templateView.html) and 
+[TwoStepView](http://martinfowler.com/eaaCatalog/twoStepView.html) patterns, with support for helpers and for closures as templates, using PHP itself as the templating language. Template code can be in closures or PHP include files.
+
+It is preceded by systems such as
 [`Savant`](http://phpsavant.com),
 [`Zend_View`](http://framework.zend.com/manual/en/zend.view.html), and
 [`Solar_View`](http://solarphp.com/class/Solar_View).
-The presentation logic can take the form of closures or PHP scripts proper.
 
 ## Foreword
 
