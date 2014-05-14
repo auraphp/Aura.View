@@ -98,7 +98,11 @@ abstract class AbstractView
      * 
      * Constructor.
      * 
-     * @param object $helper An arbitrary helper object.
+     * @param TemplateRegistry $view_registry A registry for view templates.
+     * 
+     * @param TemplateRegistry $layout_registry A registry for layout templates.
+     * 
+     * @param object $helpers An arbitrary helper object.
      * 
      */
     public function __construct(
