@@ -29,15 +29,13 @@ class View extends AbstractView
     public function __invoke()
     {
         $this->setTemplateRegistry($this->getViewRegistry());
-        $content = $this->render($this->getView());
+        $this->setContent($this->render($this->getView()));
 
         $layout = $this->getLayout();
         if (! $layout) {
-            return $content;
+            return $this->getContent();
         }
 
-        $content_var = $this->getContentVar();
-        $this->getData()->$content_var = $content;
         $this->setTemplateRegistry($this->getLayoutRegistry());
         return $this->render($layout);
     }

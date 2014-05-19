@@ -225,7 +225,7 @@ $view_registry->set('main', function () {
 $layout_registry = $view->getLayoutRegistry();
 $layout_registry->set('wrapper', function () {
     echo "Before the main content." . PHP_EOL;
-    echo $this->content;
+    echo $this->getContent();
     echo "After the main content." . PHP_EOL;
 })
 
@@ -235,11 +235,7 @@ $output = $view();
 ?>
 ```
 
-The output from the view template is automatically placed into a data property
-called `$content` that the layout can then use as needed.  If you want to use
-a different property name for the content, call `$view->setContentVar()` to 
-set a new name.  We can also call `setLayout()` from inside the view template,
-allowing us to pick a layout as part of the view logic.
+The output from the view template is automatically retained and becomes available via the `getContent()` method. We can also call `setLayout()` from inside the view template, allowing us to pick a layout as part of the view logic.
 
 All template data is shared between the view and the layout. Any data values
 assigned to the view, or modified by the view, are used as-is by the layout.

@@ -27,10 +27,25 @@ class ViewTest extends \PHPUnit_Framework_TestCase
         $view_registry->set('_partial', function () {
             echo "foo = {$this->_foo}" . PHP_EOL;
         });
+        $view_registry->set('sections', function () {
+            $this->setSection('foo', 'foo bar baz');
+            $this->beginSection('dib');
+            echo "dib zim gir";
+            $this->endSection();
+        });
 
         $layout_registry = $this->view->getLayoutRegistry();
         $layout_registry->set('default', function () {
-            echo "before -- {$this->content} -- after";
+            echo "before -- "
+               . $this->getContent()
+               . " -- after";
+        });
+        $layout_registry->set('sections', function () {
+            echo $this->getSection('foo') . ' ';
+            echo $this->getSection('dib') . ' ';
+            if (! $this->hasSection('doom')) {
+                echo 'irk';
+            }
         });
     }
     
@@ -62,13 +77,6 @@ class ViewTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Aura\View\HelperRegistry', $this->view->getHelpers());
     }
     
-    public function testSetAndGetContentVar()
-    {
-        $this->assertSame('content', $this->view->getContentVar());
-        $this->view->setContentVar('content_for_layout');
-        $this->assertSame('content_for_layout', $this->view->getContentVar());
-    }
-
     public function testSetAndGetData()
     {
         $data = array('foo' => 'bar');
@@ -105,6 +113,15 @@ class ViewTest extends \PHPUnit_Framework_TestCase
         $expect = "foo = bar" . PHP_EOL
                 . "foo = baz" . PHP_EOL
                 . "foo = dib" . PHP_EOL;
+        $this->assertSame($expect, $actual);
+    }
+
+    public function testSections()
+    {
+        $this->view->setView('sections');
+        $this->view->setLayout('sections');
+        $actual = $this->view->__invoke();
+        $expect = 'foo bar baz dib zim gir irk';
         $this->assertSame($expect, $actual);
     }
 }

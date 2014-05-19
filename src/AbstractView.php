@@ -23,13 +23,12 @@ abstract class AbstractView
 {
     /**
      * 
-     * The name of the variable in the layout template that should be
-     * replaced with the rendered content of the view template.
+     * The content to be placed into the layout.
      * 
      * @var string
      * 
      */
-    private $content_var = 'content';
+    private $content;
 
     /**
      * 
@@ -48,6 +47,24 @@ abstract class AbstractView
      * 
      */
     private $helpers;
+
+    /**
+     * 
+     * A collection point for section content.
+     * 
+     * @var array
+     * 
+     */
+    private $section;
+
+    /**
+     * 
+     * A stack of section names currently being captured.
+     * 
+     * @var array
+     * 
+     */
+    private $capture;
 
     /**
      * 
@@ -195,30 +212,28 @@ abstract class AbstractView
 
     /**
      * 
-     * Sets the name of the variable in the layout template that should 
-     * be replaced with the output of the view template.
+     * Sets the content to be used in the layout.
      * 
-     * @param string $content_var The variable name in the layout template.
+     * @param string $content The content to be used in the layout.
      * 
      * @return void
      * 
      */
-    public function setContentVar($content_var)
+    protected function setContent($content)
     {
-        $this->content_var = $content_var;
+        $this->content = $content;
     }
 
     /**
      * 
-     * Returns the name of the variable in the layout template that should 
-     * be replaced with the content of the view template.
+     * Gets the content to be used in the layout.
      * 
      * @return string
      * 
      */
-    public function getContentVar()
+    public function getContent()
     {
-        return $this->content_var;
+        return $this->content;
     }
 
     /**
@@ -364,5 +379,33 @@ abstract class AbstractView
     {
         $tmpl = $this->template_registry->get($name);
         return $tmpl->bindTo($this, get_class($this));
+    }
+
+    protected function beginSection($name)
+    {
+        $this->capture[] = $name;
+        ob_start();
+    }
+
+    protected function endSection()
+    {
+        $body = ob_get_clean();
+        $name = array_pop($this->capture);
+        $this->setSection($name, $body);
+    }
+
+    protected function setSection($name, $body)
+    {
+        $this->section[$name] = $body;
+    }
+
+    protected function getSection($name)
+    {
+        return $this->section[$name];
+    }
+
+    protected function hasSection($name)
+    {
+        return isset($this->section[$name]);
     }
 }
