@@ -154,6 +154,46 @@ $output = $view();
 Alternatively, we can use `include` or `require` to execute a PHP file directly
 in the current template scope.
 
+### Using Sections
+
+Sections are similar to sub-templates (aka "partials") except that they are captured inline for later use. In general, they are used by view templates to capture output for layout templates.
+
+For example, we can capture output in the view template to a named section ...
+
+```php
+<?php
+// begin buffering output for a named section
+$this->beginSection('local-nav');
+
+echo "<div>";
+// ... echo the local navigation output ...
+echo "</div>";
+
+// end buffering and capture the output
+$this->endSection();
+?>
+```
+
+... and then use that output in a layout template:
+
+```php
+<?php
+if ($this->hasSection('local-nav')) {
+    echo $this->getSection('local-nav');
+} else {
+    echo "<div>No local navigation.</div>";
+}
+?>
+```
+
+In addition, the `setSection()` method can be used to set the section body directly, instead of capturing it:
+
+```php
+<?php
+$this->setSection('local-nav', $this->render('_local-nav.php'));
+?>
+```
+
 ### Using Helpers
 
 The _ViewFactory_ instantiates the _View_ with an empty _HelperRegistry_ to manage helpers. We can register closures or other invokable objects as helpers through the _HelperRegistry_. We can then call these helpers as if they are methods on the _View_.
@@ -237,8 +277,11 @@ $output = $view();
 
 The output from the view template is automatically retained and becomes available via the `getContent()` method. We can also call `setLayout()` from inside the view template, allowing us to pick a layout as part of the view logic.
 
-All template data is shared between the view and the layout. Any data values
+All template dats is shared between the view and the layout. Any data values
 assigned to the view, or modified by the view, are used as-is by the layout.
+
 Similarly, all helpers are shared between the view and the layout. This sharing
 situation allows the view to modify data and helpers before the layout is 
 executed.
+
+Finally, all section bodies are shared between the view and the layout. A section that is captured from the view template can therefore be used by the layout template.
