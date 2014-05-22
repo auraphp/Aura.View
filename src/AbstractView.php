@@ -23,6 +23,15 @@ abstract class AbstractView
 {
     /**
      * 
+     * The stack of section names currently being captured.
+     * 
+     * @var array
+     * 
+     */
+    private $capture;
+
+    /**
+     * 
      * The content to be placed into the layout.
      * 
      * @var string
@@ -50,24 +59,6 @@ abstract class AbstractView
 
     /**
      * 
-     * A collection point for section content.
-     * 
-     * @var array
-     * 
-     */
-    private $section;
-
-    /**
-     * 
-     * A stack of section names currently being captured.
-     * 
-     * @var array
-     * 
-     */
-    private $capture;
-
-    /**
-     * 
      * The name of the layout template in the layout template registry.
      * 
      * @var string
@@ -86,6 +77,24 @@ abstract class AbstractView
 
     /**
      * 
+     * A collection point for section content.
+     * 
+     * @var array
+     * 
+     */
+    private $section;
+
+    /**
+     * 
+     * The template registry currently in use.
+     * 
+     * @var TemplateRegistry
+     * 
+     */
+    private $template_registry;
+
+    /**
+     * 
      * The name of the view template in the view template registry.
      * 
      * @var string
@@ -101,15 +110,6 @@ abstract class AbstractView
      * 
      */
     private $view_registry;
-
-    /**
-     * 
-     * A template registry.
-     * 
-     * @var TemplateRegistry
-     * 
-     */
-    private $template_registry;
 
     /**
      * 
@@ -381,31 +381,71 @@ abstract class AbstractView
         return $tmpl->bindTo($this, get_class($this));
     }
 
+    /**
+     * 
+     * Is a particular named section available?
+     * 
+     * @param string $name The section name.
+     * 
+     * @return bool
+     * 
+     */
+    protected function hasSection($name)
+    {
+        return isset($this->section[$name]);
+    }
+
+    /**
+     * 
+     * Sets the body of a named section directly, as opposed to buffering and
+     * capturing output.
+     * 
+     * @return null
+     * 
+     */
+    protected function setSection($name, $body)
+    {
+        $this->section[$name] = $body;
+    }
+
+    /**
+     * 
+     * Gets the body of a named section.
+     * 
+     * @return string
+     * 
+     */
+    protected function getSection($name)
+    {
+        return $this->section[$name];
+    }
+
+    /**
+     * 
+     * Begins output buffering for a named section.
+     * 
+     * @param string $name The section name.
+     * 
+     * @return null
+     * 
+     */
     protected function beginSection($name)
     {
         $this->capture[] = $name;
         ob_start();
     }
 
+    /**
+     * 
+     * Ends buffering and retains output for the most-recent section.
+     * 
+     * @return null
+     * 
+     */
     protected function endSection()
     {
         $body = ob_get_clean();
         $name = array_pop($this->capture);
         $this->setSection($name, $body);
-    }
-
-    protected function setSection($name, $body)
-    {
-        $this->section[$name] = $body;
-    }
-
-    protected function getSection($name)
-    {
-        return $this->section[$name];
-    }
-
-    protected function hasSection($name)
-    {
-        return isset($this->section[$name]);
     }
 }
