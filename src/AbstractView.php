@@ -212,32 +212,6 @@ abstract class AbstractView
 
     /**
      * 
-     * Sets the content to be used in the layout.
-     * 
-     * @param string $content The content to be used in the layout.
-     * 
-     * @return void
-     * 
-     */
-    protected function setContent($content)
-    {
-        $this->content = $content;
-    }
-
-    /**
-     * 
-     * Gets the content to be used in the layout.
-     * 
-     * @return string
-     * 
-     */
-    public function getContent()
-    {
-        return $this->content;
-    }
-
-    /**
-     * 
      * Sets the data object.
      * 
      * @param array|object $data An array or object where the keys or properties
@@ -379,6 +353,32 @@ abstract class AbstractView
     {
         $tmpl = $this->template_registry->get($name);
         return $tmpl->bindTo($this, get_class($this));
+    }
+
+    /**
+     * 
+     * Sets the content to be used in the layout.
+     * 
+     * @param string $content The content to be used in the layout.
+     * 
+     * @return void
+     * 
+     */
+    protected function setContent($content)
+    {
+        $this->content = $content;
+    }
+
+    /**
+     * 
+     * Gets the content to be used in the layout.
+     * 
+     * @return string
+     * 
+     */
+    protected function getContent()
+    {
+        return $this->content;
     }
 
     /**
