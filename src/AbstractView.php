@@ -400,6 +400,10 @@ abstract class AbstractView
      * Sets the body of a named section directly, as opposed to buffering and
      * capturing output.
      * 
+     * @param string $name The section name.
+     * 
+     * @param string $body The section body.
+     * 
      * @return null
      * 
      */
@@ -411,6 +415,8 @@ abstract class AbstractView
     /**
      * 
      * Gets the body of a named section.
+     * 
+     * @param string $name The section name.
      * 
      * @return string
      * 
