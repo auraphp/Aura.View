@@ -228,6 +228,24 @@ abstract class AbstractView
 
     /**
      * 
+     * Adds to the view data.
+     * 
+     * @param array|Traversable $data An array or object where the keys or
+     * properties are variable names, and the corresponding values are the
+     * variable values; these are looped over and added to the view data.
+     * 
+     * @return null
+     * 
+     */
+    public function addData($data)
+    {
+        foreach ($data as $key => $val) {
+            $this->data->$key = $val;
+        }
+    }
+
+    /**
+     * 
      * Gets the data object.
      * 
      * @return object

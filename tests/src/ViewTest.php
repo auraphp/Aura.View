@@ -20,8 +20,10 @@ class ViewTest extends \PHPUnit_Framework_TestCase
             echo $this->hello($this->name);
         });
         $view_registry->set('master', function () {
-            foreach (array('bar', 'baz', 'dib') as $this->_foo) {
-                echo $this->render('_partial');
+            foreach (array('bar', 'baz', 'dib') as $foo) {
+                echo $this->render('_partial', array(
+                    '_foo' => $foo,
+                ));
             }
         });
         $view_registry->set('_partial', function () {

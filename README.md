@@ -122,7 +122,7 @@ render these "partial" template pieces using the `render()` method in our main t
 
 First, we place the sub-template in the view registry (or in the layout regsitry if it for use in layouts). Then we `render()` it from inside the main template code. Sub-templates can use any naming scheme we like. Some systems use the convention of prefixing partial templates with an underscore, and the following example will use that convention.
 
-Because `$this` is available in both the main template and sub-template scopes, we need to deconflict any variables specifically for sub-templates with variables intended for the main templates. The following example does so by prefixing sub-template variables with an underscore, but you can choose any convention you like.
+Because `$this` is available in both the main template and sub-template scopes, we need to deconflict any variables specifically for sub-templates with variables intended for the main templates. The following example does so by prefixing sub-template variables with an underscore, but you can choose any convention you like.  The example uses the second argument of `render()` as a convenience to add data to the view.
 
 ```php
 <?php
@@ -131,8 +131,10 @@ $view_registry = $view->getViewRegistry();
 
 // the "main" template
 $view_registry->set('item_rows', function () {
-    foreach ($this->items as $this->_item) {
-        echo $this->render('_item_row');
+    foreach ($this->items as $item) {
+        echo $this->render('_item_row', array(
+            '_item' => $item,
+        ));
     };
 });
 
