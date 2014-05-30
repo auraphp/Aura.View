@@ -4,7 +4,7 @@ namespace Aura\View;
 class ViewTest extends \PHPUnit_Framework_TestCase
 {
     protected $view;
-    
+
     protected function setUp()
     {
         $view_factory = new ViewFactory;
@@ -50,13 +50,13 @@ class ViewTest extends \PHPUnit_Framework_TestCase
             }
         });
     }
-    
+
     public function testInvalidHelpersObject()
     {
         $this->setExpectedException('Aura\View\Exception\InvalidHelpersObject');
         new View(new TemplateRegistry, new TemplateRegistry, 'invalid');
     }
-    
+
     public function testMagicMethods()
     {
         $this->assertFalse(isset($this->view->foo));
@@ -67,24 +67,24 @@ class ViewTest extends \PHPUnit_Framework_TestCase
 
         unset($this->view->foo);
         $this->assertFalse(isset($this->view->foo));
-        
+
         $actual = $this->view->hello('Helper');
         $this->assertSame('Hello Helper!', $actual);
     }
-    
+
     public function testGetters()
     {
         $this->assertInstanceOf('Aura\View\TemplateRegistry', $this->view->getViewRegistry());
         $this->assertInstanceOf('Aura\View\TemplateRegistry', $this->view->getLayoutRegistry());
         $this->assertInstanceOf('Aura\View\HelperRegistry', $this->view->getHelpers());
     }
-    
+
     public function testSetAndGetData()
     {
         $data = array('foo' => 'bar');
         $this->view->setData($data);
         $this->assertSame('bar', $this->view->foo);
-        
+
         $actual = (array) $this->view->getData();
         $this->assertSame($data, $actual);
     }

@@ -4,12 +4,12 @@ namespace Aura\View;
 class TemplateRegistryTest extends \PHPUnit_Framework_TestCase
 {
     protected $template_registry;
-    
+
     protected function setUp()
     {
         $this->template_registry = new TemplateRegistry;
     }
-    
+
     public function testSetHasGet()
     {
         $foo = function () {
@@ -27,7 +27,7 @@ class TemplateRegistryTest extends \PHPUnit_Framework_TestCase
         $this->setExpectedException('Aura\View\Exception\TemplateNotFound');
         $this->template_registry->get('bar');
     }
-    
+
     public function testSetString()
     {
         $this->template_registry->set('foo', __DIR__ . '/foo_template.php');

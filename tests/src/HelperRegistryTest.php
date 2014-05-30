@@ -9,7 +9,7 @@ class HelperRegistryTest extends \PHPUnit_Framework_TestCase
     {
         $this->helper_registry = new HelperRegistry;
     }
-    
+
     public function testSetHasGet()
     {
         $foo = function () {
@@ -27,7 +27,7 @@ class HelperRegistryTest extends \PHPUnit_Framework_TestCase
         $this->setExpectedException('Aura\View\Exception\HelperNotFound');
         $this->helper_registry->get('bar');
     }
-    
+
     public function testCall()
     {
         $this->helper_registry->set('hello', function ($noun) {
