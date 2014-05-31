@@ -33,6 +33,27 @@ class StylesTest extends AbstractHelperTest
     }
     
     /**
+     * Tests add and get in a fluent interface
+     */
+    public function testAddAndGet_fluent()
+    {
+        $styles = new Styles;
+        
+        $actual = $styles->add('/css/first.css')
+                         ->add('/css/second.css')
+                         ->add('/css/third.css')
+                         ->addCond('IE6', '/css/ie6.css')
+                         ->get();
+        
+        $expect = '    <link rel="stylesheet" href="/css/first.css" type="text/css" media="screen" />' . PHP_EOL
+                . '    <link rel="stylesheet" href="/css/second.css" type="text/css" media="screen" />' . PHP_EOL
+                . '    <link rel="stylesheet" href="/css/third.css" type="text/css" media="screen" />' . PHP_EOL
+                . '    <!--[if IE6]><link rel="stylesheet" href="/css/ie6.css" type="text/css" media="screen" /><![endif]-->' . PHP_EOL;
+        
+        $this->assertSame($expect, $actual);
+    }
+    
+    /**
      * @todo Implement testSetIndent().
      */
     public function testSetIndentAndAttribs()

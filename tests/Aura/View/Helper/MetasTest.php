@@ -30,6 +30,42 @@ class MetasTest extends AbstractHelperTest
         
         $this->assertSame($expect, $actual);
     }
+    
+    public function testAddAndGet_withPosition()
+    {
+        $metas = new Metas;
+        
+        $metas->addHttp('Location', '/redirect/to/here', 30);
+        $metas->addName('foo', 'bar', 20);
+        $metas->add(['charset'=>'utf-8'], 10);
+        
+        $actual = $metas->get();
+        $expect = '    <meta charset="utf-8" />' . PHP_EOL
+                . '    <meta name="foo" content="bar" />' . PHP_EOL
+                . '    <meta http-equiv="Location" content="/redirect/to/here" />' . PHP_EOL;
+        
+        $this->assertSame($expect, $actual);
+    }
+    
+    /**
+     * Tests add and get in a fluent interface
+     */
+    public function testAddAndGet_fluent()
+    {
+        $metas = new Metas;
+        
+        $actual = $metas->addHttp('Location', '/redirect/to/here')
+                        ->addName('foo', 'bar')
+                        ->add(['charset'=>'utf-8'])
+                        ->get();
+        
+        $actual = $metas->get();
+        $expect = '    <meta http-equiv="Location" content="/redirect/to/here" />' . PHP_EOL
+                . '    <meta name="foo" content="bar" />' . PHP_EOL
+                . '    <meta charset="utf-8" />' . PHP_EOL;
+        
+        $this->assertSame($expect, $actual);
+    }
 
     /**
      * @todo Implement testSetIndent().

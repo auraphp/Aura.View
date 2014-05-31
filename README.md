@@ -333,12 +333,10 @@ part of Aura View include:
 
 - `$this->image($src)` returns an `<img src="$src" />` tag.
 
-- `$this->input($attribs, $value, $label, $label_attribs)` returns an `<input>` tag, optionally wrapped in a `<label>` tag
+- `$this->input($attribs, $value)` returns an `<input>` tag, optionally wrapped in a `<label>` tag
     
-    In general `$this->input(['type' => $type], $value, $label, $label_attribs)` 
-    
-    `$value`, `$label` and `$label_attribs` are optional.
-    
+    In general `$this->input(['type' => $type], $value)` 
+       
     Supported types:
     
     - `button` : clickable button

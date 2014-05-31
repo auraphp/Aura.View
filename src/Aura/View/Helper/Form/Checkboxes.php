@@ -36,13 +36,13 @@ class Checkboxes extends AbstractHelper
 
     /**
      *
-     * Returns mulitple checkbox input fields.
+     * Returns multiple checkbox input fields.
      *
      * @param array  $attribs   The base attributes for the checkboxes.
      *
      * @param array  $options   The checkbox values and labels.
      *
-     * @param bool   $checked   Which checkbox value should be checked.
+     * @param array   $checked   Which checkbox value should be checked.
      *
      * @param string $separator The separator string to use between each checkbox.
      *

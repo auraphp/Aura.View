@@ -1,4 +1,21 @@
-- [FIX] TwoStepView::getView() now optionally returns the first view when
-  there is no format specified; this stops exceptions from being raised when
-  the client passes no Accept header and there are multiple view formats
-  available.
+Hygiene release.
+
+- Merge pull request #52 from harikt/v2config; adds configuration for v2 framework
+
+- Merge pull request #50 from koriym/fix-typos; fixes some doc typos.
+
+- Merge pull request #45 from harikt/label-issue; fix label issue pointed out in groups by guillaume ferrand and poiting to wrong docs
+
+- Merge pull request #44 from jelofson/helpers; various helper updates:
+    
+    - Changed docblock to correct type for 'checked'
+
+    - Fixed the ordering of the styles helper to match that of the scripts helper
+
+    - Updated some tests
+
+    - Added fluency to some helpers
+
+    - Added some documentation for helpers
+
+    - Fluent method in the Links helper and updated test.

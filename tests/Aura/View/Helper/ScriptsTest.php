@@ -54,4 +54,24 @@ class ScriptsTest extends AbstractHelperTest
         
         $this->assertSame($expect, $actual);
     }
+    
+    /**
+     * Tests add and get in a fluent interface
+     */
+    public function testAddAndGet_fluent()
+    {
+        $scripts = new Scripts;
+        $actual = $scripts->add('/js/first.js')
+                          ->add('/js/second.js')
+                          ->add('/js/third.js')
+                          ->addCond('IE6', '/js/ie6.js')
+                          ->get();
+                          
+        $expect = '    <script src="/js/first.js" type="text/javascript"></script>' . PHP_EOL
+                . '    <script src="/js/second.js" type="text/javascript"></script>' . PHP_EOL
+                . '    <script src="/js/third.js" type="text/javascript"></script>' . PHP_EOL
+                . '    <!--[if IE6]><script src="/js/ie6.js" type="text/javascript"></script><![endif]-->' . PHP_EOL;
+        
+        $this->assertSame($expect, $actual);
+    }
 }
