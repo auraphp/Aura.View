@@ -18,7 +18,7 @@
     "autoload": {
         "psr-0": {
             "Aura\\View": "src/"
-        },        
+        },
         "psr-4": {
             "Aura\\View\\_Config\\": "config/"
         }
@@ -27,8 +27,11 @@
         "aura": {
             "type": "library",
             "config": {
-                "common": "Aura\\View\\_Config\\Common"                
+                "common": "Aura\\View\\_Config\\Common"
             }
+        },
+        "branch-alias": {
+            "dev-develop": "1.2.x-dev"
         }
     }
 }
