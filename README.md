@@ -735,12 +735,14 @@ require dirname(__DIR__) . '/aurasystem/package/Aura.View/src.php';
 
 use Aura\View\Template;
 use Aura\View\TemplateFinder;
+use Aura\View\EscaperFactory;
 use Aura\View\HelperLocator;
 use Aura\View\TwoStep;
 use Aura\View\FormatTypes;
 use Aura\View\Helper\Title;
 
 $template = new Template(
+    new EscaperFactory,
     new TemplateFinder,
     new HelperLocator([
         'title' => function () { return new Title; },
