@@ -88,7 +88,7 @@ class TemplateRegistry
      *
      * @param string $name The template name.
      *
-     * @return callable
+     * @return \Closure
      *
      */
     public function get($name)
