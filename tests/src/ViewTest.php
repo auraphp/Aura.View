@@ -22,12 +22,13 @@ class ViewTest extends \PHPUnit_Framework_TestCase
         $view_registry->set('master', function () {
             foreach (array('bar', 'baz', 'dib') as $foo) {
                 echo $this->render('_partial', array(
-                    '_foo' => $foo,
+                    'foo' => $foo,
                 ));
             }
         });
-        $view_registry->set('_partial', function () {
-            echo "foo = {$this->_foo}" . PHP_EOL;
+        $view_registry->set('_partial', function (array $vars) {
+            extract($vars);
+            echo "foo = {$foo}" . PHP_EOL;
         });
         $view_registry->set('sections', function () {
             $this->setSection('foo', 'foo bar baz');

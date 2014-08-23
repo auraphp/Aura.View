@@ -59,9 +59,10 @@ class TemplateRegistry
     public function set($name, $spec)
     {
         if (is_string($spec)) {
-            $__file__ = $spec;
-            $spec = function () use ($__file__) {
-                require $__file__;
+            $__FILE__ = $spec;
+            $spec = function (array $__VARS__ = array()) use ($__FILE__) {
+                extract($__VARS__, EXTR_SKIP);
+                require $__FILE__;
             };
         }
         $this->map[$name] = $spec;

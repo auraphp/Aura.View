@@ -47,20 +47,17 @@ class View extends AbstractView
      *
      * @param string $name The name of the template to be rendered.
      *
-     * @param array|Traversable $data Data to add to the view; note that the
-     * data is added to the view object as a whole, not just for the template
-     * being rendered.
+     * @param array $vars Variables to `extract()` within the view as local
+     * variables. Closure-based templates will need to call `extract()` on
+     * their own.
      *
      * @return string
      *
      */
-    protected function render($name, $data = null)
+    protected function render($name, array $vars = array())
     {
-        if ($data) {
-            $this->addData($data);
-        }
         ob_start();
-        $this->getTemplate($name)->__invoke();
+        $this->getTemplate($name)->__invoke($vars);
         return ob_get_clean();
     }
 }

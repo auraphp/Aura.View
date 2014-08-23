@@ -1,7 +1,7 @@
 # Aura View
 
-This package provides an implementation of the [TemplateView](http://martinfowler.com/eaaCatalog/templateView.html) and 
-[TwoStepView](http://martinfowler.com/eaaCatalog/twoStepView.html) patterns, with support for helpers and for closures as templates, using PHP itself as the templating language. Template code can be in closures or PHP include files.
+This package provides an implementation of the [TemplateView](http://martinfowler.com/eaaCatalog/templateView.html) and
+[TwoStepView](http://martinfowler.com/eaaCatalog/twoStepView.html) patterns using PHP itself as the templating language. It supports both file-based and closure-based templates along with helpers and sections.
 
 It is preceded by systems such as
 [`Savant`](http://phpsavant.com),
@@ -54,7 +54,7 @@ $view = $view_factory->newInstance();
 
 ### Escaping Output
 
-Security-minded observers will note that all the examples in this document use unescaped output. Because this package is not specific to any particular media type, it **does not** come with escaping functionality.
+Security-minded observers will note that all the examples in this document use manually-escaped output. Because this package is not specific to any particular media type, it **does not** come with escaping functionality.
 
 When you generate output via templates, you **must** escape it appropriately for security purposes. This means that HTML templates should use HTML escaping, CSS templates should use CSS escaping, XML templates should use XML escaping, PDF templates should use PDF escaping, RTF templates should use RTF escaping, and so on.
 
@@ -62,67 +62,93 @@ For a good set of HTML escapers, please consider [Aura.Html](https://github.com/
 
 ### Registering View Templates
 
-Now that we have a _View_, we need to add named templates to its view template registry. These can be closures or PHP file paths.  For example:
+Now that we have a _View_, we need to add named templates to its view template registry. These are typically PHP file paths, but [templates can also be closures](#closures-as-templates).  For example:
 
 ```php
 <?php
 $view_registry = $view->getViewRegistry();
-$view_registry->set('browse', function () {
-    echo "The browse view.";
-});
-$view_registry->set('read', '/path/to/views/read.php');
+$view_registry->set('browse', '/path/to/views/browse.php');
 ?>
 ```
 
-Note that we use `echo`, and not `return`, in closures. Likewise, the PHP file should use `echo` to generate output.
+The `browse.php` file may look something like this:
+
+```php
+<?php
+foreach ($this->items as $item) {
+    $id = htmlspecialchars($item['id'], ENT_QUOTES, 'UTF-8');
+    $name = htmlspecialchars($item['name'], ENT_QUOTES, 'UTF-8')
+    echo "Item ID #{$id} is '{$name}'." . PHP_EOL;
+?>
+```
+
+Note that we use `echo`, and not `return`, in templates.
 
 > N.b.: The template logic will be executed inside the _View_ object scope,
 > which means that `$this` in the template code will refer to the _View_
-> object. This is true both for closures and for PHP files.
-
-### Rendering A One-Step View
-
-Now that we have registered some templates, we tell the _View_ which one we want to use, and then invoke the _View_:
-
-```php
-<?php
-$view->setView('browse');
-$output = $view();
-?>
-```
-
-The `$output` in this case will be "The browse view."
+> object. The same is true for closure-based templates.
 
 ### Setting Data
 
-We will almost always want to use dynamic data in our templates. To assign a data collection to the _View_, use the `setData()` method and either an array or an object. We can then use data elements as if they are properties on the 
-_View_ object:
+We will almost always want to use dynamic data in our templates. To assign a data collection to the _View_, use the `setData()` method and either an array or an object. We can then use data elements as if they are properties on the
+_View_ object.
 
 ```php
 <?php
-$view_registry = $view->getViewRegistry();
-$view_registry->set('hello', function () {
-    echo "Hello {$this->name}!";
-});
-$view->setData(array('name' => 'World'));
-$view->setView('hello');
-$output = $view();
+$view->setData(array(
+    'items' => array(
+        array(
+            'id' => '1',
+            'name' => 'Foo',
+        ),
+        array(
+            'id' => '2',
+            'name' => 'Bar',
+        ),
+        array(
+            'id' => '3',
+            'name' => 'Baz',
+        ),
+    )
+));
 ?>
 ```
 
 > N.b.: Recall that `$this` in the template logic refers to the _View_ object,
 > so that data assigned to the _View_ can be accessed as properties on `$this`.
 
-The `$output` in this case will be "Hello World!".
+The `setData()` method will overwrite all existing data in the _View_ object. The `addData()` method, on the other hand, will merge with existing data in the _View_ object.
+
+### Invoking A One-Step View
+
+Now that we have registered a template and assigned some data to the _View_, we tell the _View_ which template to use, and then invoke the _View_:
+
+```php
+<?php
+$view->setView('browse');
+$output = $view->__invoke(); // or just $view()
+?>
+```
+
+The `$output` in this case will be something like this:
+
+```
+Item #1 is 'Foo'.
+Item #2 is 'Bar'.
+Item #3 is 'Baz'.
+```
+
 
 ### Using Sub-Templates (aka "Partials")
 
 Sometimes we will want to split a template up into multiple pieces. We can
-render these "partial" template pieces using the `render()` method in our main template code. 
+render these "partial" template pieces using the `render()` method in our main template code.
 
-First, we place the sub-template in the view registry (or in the layout regsitry if it for use in layouts). Then we `render()` it from inside the main template code. Sub-templates can use any naming scheme we like. Some systems use the convention of prefixing partial templates with an underscore, and the following example will use that convention.
+First, we place the sub-template in the view registry (or in the layout registry if it for use in layouts). Then we `render()` it from inside the main template code. Sub-templates can use any naming scheme we like. Some systems use the convention of prefixing partial templates with an underscore, and the following example will use that convention.
 
-Because `$this` is available in both the main template and sub-template scopes, we need to deconflict any variables specifically for sub-templates with variables intended for the main templates. The following example does so by prefixing sub-template variables with an underscore, but you can choose any convention you like.  The example uses the second argument of `render()` as a convenience to add data to the view.
+Second, we can pass an array of variables to be extracted into the local scope of the partial template. (The `$this` variable will always be available regardless.)
+
+For example, let's split up our `browse.php` template file so that it uses a sub-template for displaying items.
 
 ```php
 <?php
@@ -130,31 +156,38 @@ Because `$this` is available in both the main template and sub-template scopes, 
 $view_registry = $view->getViewRegistry();
 
 // the "main" template
-$view_registry->set('item_rows', function () {
-    foreach ($this->items as $item) {
-        echo $this->render('_item_row', array(
-            '_item' => $item,
-        ));
-    };
-});
+$view_registry->set('browse', '/path/to/views/browse.php');
 
-// the "sub" (partial) template
-$view_registry->set('_item_row', function () {
-    echo "The item names '{$this->_item['name']}'' "
-       . "costs {$this->_item['price']}" . PHP_EOL
-});
-
-// set the data and the view template name
-$view->setData(array('items' => array(...));
-$view->setView('item_rows');
-
-// execute the view
-$output = $view();
+// the "sub" template
+$view_registry->set('_item', '/path/to/views/_item.php');
 ?>
 ```
 
-Alternatively, we can use `include` or `require` to execute a PHP file directly
-in the current template scope.
+We extract the item-display code from `browse.php` into `_item.php`:
+
+```php
+<?php
+$id = htmlspecialchars($item['id'], ENT_QUOTES, 'UTF-8');
+$name = htmlspecialchars($item['name'], ENT_QUOTES, 'UTF-8')
+echo "Item ID #{$id} is '{$name}'." . PHP_EOL;
+?>
+```
+
+Then we modify `browse.php` to use the sub-template:
+
+```php
+<?php
+foreach ($this->items as $item) {
+    echo $this->render('_item', array(
+        'item' => $item,
+    ));
+?>
+```
+
+The output will be the same as earlier when we invoke the view.
+
+> N.b.: Alternatively, we can use `include` or `require` to execute a PHP file directly in the current template scope.
+
 
 ### Using Sections
 
@@ -257,33 +290,79 @@ layout templates with the _View_ and then call `setLayout()` to pick one of
 them for the second step. (If no layout is set, the second step will not be
 executed.)
 
+Let's say we have already set the `browse` template above into our view registry. We then set a layout template called `default` into the layout registry:
+
 ```php
 <?php
-$view_registry = $view->getViewRegistry();
-$view_registry->set('main', function () {
-    echo "This is the main content." . PHP_EOL;
-});
-
 $layout_registry = $view->getLayoutRegistry();
-$layout_registry->set('wrapper', function () {
-    echo "Before the main content." . PHP_EOL;
-    echo $this->getContent();
-    echo "After the main content." . PHP_EOL;
-})
-
-$view->setView('main_content');
-$view->setLayout('wrapper');
-$output = $view();
+$layout_registry->set('default', '/path/to/layouts/default.php');
 ?>
 ```
 
-The output from the view template is automatically retained and becomes available via the `getContent()` method. We can also call `setLayout()` from inside the view template, allowing us to pick a layout as part of the view logic.
+The `default.php` layout template might look like this:
 
-All template dats is shared between the view and the layout. Any data values
-assigned to the view, or modified by the view, are used as-is by the layout.
+```html+php
+<html>
+<head>
+    <title>My Site</title>
+</head>
+<body>
+<?= $this->getContent(); ?>
+</body>
+</html>
+```
 
-Similarly, all helpers are shared between the view and the layout. This sharing
-situation allows the view to modify data and helpers before the layout is 
-executed.
+We can then set the view and layout templates on the _View_ object and then invoke it:
 
-Finally, all section bodies are shared between the view and the layout. A section that is captured from the view template can therefore be used by the layout template.
+```php
+<?php
+$view->setView('browse');
+$view->setLayout('default');
+$output = $view->__invoke(); // or just $view()
+?>
+```
+
+The output from the inner view template is automatically retained and becomes available via the `getContent()` method on the _View_ object. The layout template then calls `getContent()` to place the inner view results in the outer layout template.
+
+> N.b. We can also call `setLayout()` from inside the view template, allowing us to pick a layout as part of the view logic.
+
+The view template and the layout template both execute inside the same _View_ object. This means:
+
+- All data values are shared between the view and the layout. Any data assigned to the view, or modified by the view, is used as-is by the layout.
+
+- All helpers are shared between the view and the layout. This sharing situation allows the view to modify data and helpers before the layout is executed.
+
+- All section bodies are shared between the view and the layout. A section that is captured from the view template can therefore be used by the layout template.
+
+### Closures As Templates
+
+The view and layout registries accept closures as templates. For example, these are closure-based equivlents of the `browse.php` and `_item.php` template files above:
+
+```php
+<?php
+$view_registry->set('browse', function () {
+    foreach ($this->items as $item) {
+        echo $this->render('_item', array(
+            'item' => $item,
+        ));
+    }
+);
+
+$view_registry->set('_item', function (array $vars) {
+    extract($vars, EXTR_SKIP);
+    $id = htmlspecialchars($item['id'], ENT_QUOTES, 'UTF-8');
+    $name = htmlspecialchars($item['name'], ENT_QUOTES, 'UTF-8')
+    echo "Item ID #{$id} is '{$name}'." . PHP_EOL;
+);
+?>
+```
+
+When registering a closure-based template, continue to use `echo` instead of `return` when generating output. The closure is rebound to the _View_ object, so `$this` in the closure will refer to the _View_ just as it does in a file-based template.
+
+A bit of extra effort is required with closure-based sub-templates (aka "partials"). Whereas file-based templates automatically extract the passed array of variables into the local scope, a closure-based template must:
+
+1. Define a function parameter to receive the injected variables (the `$vars` param in the `_item` template); and,
+
+2. Extract the injected variables using `extract()`. Alternatively, the closure may use the injected variables parameter directly.
+
+Aside from that, closure-based templates work exactly like file-based templates.
