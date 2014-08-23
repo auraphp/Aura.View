@@ -20,8 +20,8 @@ Alternatively, [download a release](https://github.com/auraphp/Aura.View/release
 
 ### Quality
 
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/auraphp/Aura.View/badges/quality-score.png?s=82e59f35f779d7f5a2bdb87dea1d1842909674ef)](https://scrutinizer-ci.com/g/auraphp/Aura.View/)
-[![Code Coverage](https://scrutinizer-ci.com/g/auraphp/Aura.View/badges/coverage.png?s=776e6c29a00984aea422f416fd90108a5f88ca87)](https://scrutinizer-ci.com/g/auraphp/Aura.View/)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/auraphp/Aura.View/badges/quality-score.png?b=develop-2)](https://scrutinizer-ci.com/g/auraphp/Aura.View/)
+[![Code Coverage](https://scrutinizer-ci.com/g/auraphp/Aura.View/badges/coverage.png?b=develop-2)](https://scrutinizer-ci.com/g/auraphp/Aura.View/)
 [![Build Status](https://travis-ci.org/auraphp/Aura.View.png?branch=develop-2)](https://travis-ci.org/auraphp/Aura.View)
 
 To run the [PHPUnit][] tests at the command line, go to the _tests_ directory and issue `phpunit`.
