@@ -80,14 +80,19 @@ class ViewTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Aura\View\HelperRegistry', $this->view->getHelpers());
     }
 
-    public function testSetAndGetData()
+    public function testSetAddAndGetData()
     {
         $data = array('foo' => 'bar');
         $this->view->setData($data);
         $this->assertSame('bar', $this->view->foo);
 
+        $data = array('baz' => 'dib');
+        $this->view->addData($data);
+        $this->assertSame('dib', $this->view->baz);
+
+        $expect = array('foo' => 'bar', 'baz' => 'dib');
         $actual = (array) $this->view->getData();
-        $this->assertSame($data, $actual);
+        $this->assertSame($expect, $actual);
     }
 
     public function testInvokeOneStep()
