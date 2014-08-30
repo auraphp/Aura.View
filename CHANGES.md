@@ -1,3 +1,5 @@
-- [BRK] Stop using a "content variable" and begin using setContent()/getContent() instead.  In your layouts, replace `echo $this->content_var_name` with `echo $this->getContent()`. (This also removes the `setContentVar()` and `getContentVar()` methods.)
+First stable 2.0 release.
 
-- [ADD] Add support for sections per strong desire from @harikt, which fixes #46.  The new methods are `setSection()`, `hasSection()`, and `getSection()`, along with `beginSection()` and `endSection()`.
+- DOC: Update docblocks and README.
+
+- CHG: View::render() now takes a second param, $data, for an array of vars to be extract()ed into the template scope. Closure-based templates will need to extract this on their own. (The previous technique of placing partial vars in the main template object still works.)
