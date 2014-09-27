@@ -1,21 +1,21 @@
 <?php
 namespace Aura\View\_Config;
 
-use Aura\Di\ContainerAssertionsTrait;
+use Aura\Di\_Config\AbstractContainerTest;
 
-class CommonTest extends \PHPUnit_Framework_TestCase
+class CommonTest extends AbstractContainerTest
 {
-    use ContainerAssertionsTrait;
-
-    public function setUp()
+    protected function getConfigClasses()
     {
-        $this->setUpContainer(array(
+        return array(
             'Aura\View\_Config\Common',
-        ));
+        );
     }
 
-    public function test()
+    public function provideNewInstance()
     {
-        $this->assertNewInstance('Aura\View\View');
+        return array(
+            array('Aura\View\View'),
+        );
     }
 }
