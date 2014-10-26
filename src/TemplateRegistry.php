@@ -37,7 +37,9 @@ class TemplateRegistry
      */
     public function __construct(array $map = array())
     {
-        $this->map = $map;
+        foreach ($map as $name => $spec) {
+            $this->set($name, $spec);
+        }
     }
 
     /**
