@@ -1,5 +1,6 @@
-First stable 2.0 release.
+- TST: Update testing structure, and disable  auto-resolve for container tests
 
-- DOC: Update docblocks and README.
+- DOC: Update README and docblocks
 
-- CHG: View::render() now takes a second param, $data, for an array of vars to be extract()ed into the template scope. Closure-based templates will need to extract this on their own. (The previous technique of placing partial vars in the main template object still works.)
+- FIX: TemplateRegistry map now passes the array via set to make the file
+  inside a closure
