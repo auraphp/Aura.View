@@ -17,7 +17,7 @@ namespace Aura\View;
  * @package Aura.View
  *
  */
-class TemplateRegistry
+class TemplateRegistry implements TemplateRegistryInterface
 {
     /**
      *
