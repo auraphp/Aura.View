@@ -189,12 +189,12 @@ class TemplateRegistry
      *      // $registry->getPaths() reveals that the search order will
      *      // be '/path/1', '/path/2', '/path/3'.
      *
-     * @param array|string $paths The directories to add to the paths.
+     * @param array $paths The paths to set.
      *
      * @return void
      *
      */
-    public function setPaths($paths)
+    public function setPaths(array $paths)
     {
         $this->paths = $paths;
         $this->found = [];
