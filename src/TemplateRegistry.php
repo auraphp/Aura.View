@@ -112,7 +112,7 @@ class TemplateRegistry
      */
     public function get($name)
     {
-        if ($this->has($name)) {
+        if (isset($this->map[$name])) {
             return $this->map[$name];
         }
 
