@@ -372,3 +372,20 @@ A bit of extra effort is required with closure-based sub-templates (aka "partial
 2. Extract the injected variables using `extract()`. Alternatively, the closure may use the injected variables parameter directly.
 
 Aside from that, closure-based templates work exactly like file-based templates.
+
+### Registering Template Search Paths
+
+We can also tell the view and layout registries to search the filesystem for templates. First, we tell the registry what directories contain template files:
+
+```php
+<?php
+$view_registry = $view->getViewRegistry();
+$view_registry->setPaths(array(
+    '/path/to/foo',
+    '/path/to/bar',
+    '/path/to/baz'
+));
+?>
+```
+
+When we refer to named templates later, the registry will search from the first directory to the last. For finer control over the search paths, we can call `prependPath()` to add a directory to search earlier, or `appendPath()` to add a directory to search later. Regardless, the _View_ will auto-append `.php` to the end of template names when searching through the directories.
