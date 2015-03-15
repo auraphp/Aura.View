@@ -215,9 +215,8 @@ class TemplateRegistry
             return true;
         }
 
-        $ext = substr($name, -4) == '.php' ?: '.php';
         foreach ($this->paths as $path) {
-            $file = $path . DIRECTORY_SEPARATOR . $name . $ext;
+            $file = $path . DIRECTORY_SEPARATOR . $name . '.php';
             if ($this->isReadable($file)) {
                 $this->found[$name] = $this->enclose($file);
                 return true;
