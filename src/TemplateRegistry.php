@@ -19,7 +19,7 @@ class TemplateRegistry
 {
     /**
      *
-     * The map of registered templates.
+     * The map of explicit template names and locations.
      *
      * @var array
      *
@@ -28,16 +28,39 @@ class TemplateRegistry
 
     /**
      *
-     * Constructor.
+     * The paths to search for implicit template names.
      *
-     * @param array $map A map of templates.
+     * @var array
      *
      */
-    public function __construct(array $map = array())
-    {
+    protected $paths = array();
+
+    /**
+     *
+     * Templates found in the search paths.
+     *
+     * @var array
+     *
+     */
+    protected $found = array();
+
+    /**
+     *
+     * Constructor.
+     *
+     * @param array $map A map of explicit template names and locations.
+     *
+     * @param array $paths A map of filesystem paths to search for templates.
+     *
+     */
+    public function __construct(
+        array $map = array(),
+        array $paths = array()
+    ) {
         foreach ($map as $name => $spec) {
             $this->set($name, $spec);
         }
+        $this->setPaths($paths);
     }
 
     /**
@@ -59,11 +82,7 @@ class TemplateRegistry
     public function set($name, $spec)
     {
         if (is_string($spec)) {
-            $__FILE__ = $spec;
-            $spec = function (array $__VARS__ = array()) use ($__FILE__) {
-                extract($__VARS__, EXTR_SKIP);
-                require $__FILE__;
-            };
+            $spec = $this->enclose($spec);
         }
         $this->map[$name] = $spec;
     }
@@ -79,7 +98,7 @@ class TemplateRegistry
      */
     public function has($name)
     {
-        return isset($this->map[$name]);
+        return isset($this->map[$name]) || $this->find($name);
     }
 
     /**
@@ -93,10 +112,148 @@ class TemplateRegistry
      */
     public function get($name)
     {
-        if (! $this->has($name)) {
-            throw new Exception\TemplateNotFound($name);
+        if ($this->has($name)) {
+            return $this->map[$name];
         }
 
-        return $this->map[$name];
+        if ($this->find($name)) {
+            return $this->found[$name];
+        }
+
+        throw new Exception\TemplateNotFound($name);
+    }
+
+    /**
+     *
+     * Gets a copy of the current search paths.
+     *
+     * @return array
+     *
+     */
+    public function getPaths()
+    {
+        return $this->paths;
+    }
+
+    /**
+     *
+     * Adds one path to the top of the search paths.
+     *
+     *     $registry->prependPath('/path/1');
+     *     $registry->prependPath('/path/2');
+     *     $registry->prependPath('/path/3');
+     *     // $this->getPaths() reveals that the directory search
+     *     // order will be '/path/3/', '/path/2/', '/path/1/'.
+     *
+     * @param array|string $path The directories to add to the paths.
+     *
+     * @return void
+     *
+     */
+    public function prependPath($path)
+    {
+        array_unshift($this->paths, rtrim($path, DIRECTORY_SEPARATOR));
+        $this->found = [];
+    }
+
+    /**
+     *
+     * Adds one path to the end of the search paths.
+     *
+     *     $registry->appendPath('/path/1');
+     *     $registry->appendPath('/path/2');
+     *     $registry->appendPath('/path/3');
+     *     // $registry->getPaths() reveals that the directory search
+     *     // order will be '/path/1/', '/path/2/', '/path/3/'.
+     *
+     * @param array|string $path The directories to add to the paths.
+     *
+     * @return void
+     *
+     */
+    public function appendPath($path)
+    {
+        $this->paths[] = rtrim($path, DIRECTORY_SEPARATOR);
+        $this->found = [];
+    }
+
+    /**
+     *
+     * Sets the paths directly.
+     *
+     *      $registry->setPaths([
+     *          '/path/1',
+     *          '/path/2',
+     *          '/path/3',
+     *      ]);
+     *      // $registry->getPaths() reveals that the search order will
+     *      // be '/path/1', '/path/2', '/path/3'.
+     *
+     * @param array|string $paths The directories to add to the paths.
+     *
+     * @return void
+     *
+     */
+    public function setPaths($paths)
+    {
+        $this->paths = $paths;
+        $this->found = [];
+    }
+
+    /**
+     *
+     * Finds a file in the search paths.
+     *
+     * @param string $file The file to find using the search paths.
+     *
+     * @return bool True if found, false if not.
+     *
+     */
+    protected function find($file)
+    {
+        if (isset($this->found[$file])) {
+            return true;
+        }
+
+        foreach ($this->paths as $path) {
+            $fullpath = $path . DIRECTORY_SEPARATOR . $file;
+            if ($this->isReadable($fullpath)) {
+                $this->found[$file] = $this->enclose($fullpath);
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     *
+     * Checks to see if a file is readable.
+     *
+     * @param string $file The file to find.
+     *
+     * @return bool
+     *
+     */
+    protected function isReadable($file)
+    {
+        return is_readable($file);
+    }
+
+    /**
+     *
+     * Wraps a template file name in a Closure.
+     *
+     * @param string $__FILE__ The file name.
+     *
+     * @return \Closure
+     *
+     */
+    protected function enclose($__FILE__)
+    {
+        return function (array $__VARS__ = array()) use ($__FILE__) {
+            extract($__VARS__, EXTR_SKIP);
+            require $__FILE__;
+        };
     }
 }
