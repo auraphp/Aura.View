@@ -202,23 +202,24 @@ class TemplateRegistry
 
     /**
      *
-     * Finds a file in the search paths.
+     * Finds a template in the search paths.
      *
-     * @param string $file The file to find using the search paths.
+     * @param string $name The template name.
      *
      * @return bool True if found, false if not.
      *
      */
-    protected function find($file)
+    protected function find($name)
     {
-        if (isset($this->found[$file])) {
+        if (isset($this->found[$name])) {
             return true;
         }
 
+        $ext = substr($name, -4) == '.php' ?: '.php';
         foreach ($this->paths as $path) {
-            $fullpath = $path . DIRECTORY_SEPARATOR . $file;
-            if ($this->isReadable($fullpath)) {
-                $this->found[$file] = $this->enclose($fullpath);
+            $file = $path . DIRECTORY_SEPARATOR . $name . $ext;
+            if ($this->isReadable($file)) {
+                $this->found[$name] = $this->enclose($file);
                 return true;
             }
         }

@@ -91,15 +91,15 @@ class TemplateRegistryTest extends \PHPUnit_Framework_TestCase
 
         // now get it
         $expect = $file;
-        $actual = $this->template_registry->get('zim.php');
+        $actual = $this->template_registry->get('zim');
         $this->assertSame($expect, $actual);
 
         // get it again for code coverage
-        $actual = $this->template_registry->get('zim.php');
+        $actual = $this->template_registry->get('zim');
         $this->assertSame($expect, $actual);
 
         // look for a file that doesn't exist
         $this->setExpectedException('Aura\View\Exception\TemplateNotFound');
-        $actual = $this->template_registry->get('no-such-file.php');
+        $actual = $this->template_registry->get('no-such-template');
     }
 }
