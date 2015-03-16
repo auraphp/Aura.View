@@ -121,8 +121,8 @@ abstract class AbstractView
      *
      */
     public function __construct(
-        TemplateRegistry $view_registry,
-        TemplateRegistry $layout_registry,
+        TemplateRegistryInterface $view_registry,
+        TemplateRegistryInterface $layout_registry,
         $helpers = null
     ) {
         $this->data = (object) array();
