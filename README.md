@@ -12,7 +12,7 @@ It is preceded by systems such as
 
 ### Installation
 
-This library requires PHP 5.4 or later, and has no userland dependencies.
+This library requires PHP 5.4 or later; we recommend using the latest available version of PHP as a matter of principle. It has no userland dependencies.
 
 It is installable and autoloadable via Composer as [aura/view](https://packagist.org/packages/aura/view).
 
@@ -24,14 +24,7 @@ Alternatively, [download a release](https://github.com/auraphp/Aura.View/release
 [![Code Coverage](https://scrutinizer-ci.com/g/auraphp/Aura.View/badges/coverage.png?b=develop-2)](https://scrutinizer-ci.com/g/auraphp/Aura.View/)
 [![Build Status](https://travis-ci.org/auraphp/Aura.View.png?branch=develop-2)](https://travis-ci.org/auraphp/Aura.View)
 
-To run the unit tests at the command line, issue `phpunit -c tests/unit/`. (This requires [PHPUnit][] to be available as `phpunit`.)
-
-[PHPUnit]: http://phpunit.de/manual/
-
-To run the [Aura.Di][] container configuration tests at the command line, go to the _tests/container_ directory and issue `./phpunit.sh`. (This requires [PHPUnit][] to be available as `phpunit` and [Composer][] to be available as `composer`.)
-
-[Aura.Di]: https://github.com/auraphp/Aura.Di
-[Composer]: http://getcomposer.org/
+To run the unit tests at the command line, issue `composer install` and then `phpunit` at the package root. This requires [Composer](http://getcomposer.org/) to be available as `composer`, and [PHPUnit](http://phpunit.de/manual/) to be available as `phpunit`.
 
 This library attempts to comply with [PSR-1][], [PSR-2][], and [PSR-4][]. If
 you notice compliance oversights, please send a patch via pull request.
