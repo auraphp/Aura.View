@@ -29,10 +29,6 @@
             "config": {
                 "common": "Aura\\View\\_Config\\Common"
             }
-        },
-        "branch-alias": {
-            "dev-develop": "1.2.x-dev"
         }
     }
 }
-
