@@ -382,3 +382,21 @@ $view_registry->setPaths(array(
 ```
 
 When we refer to named templates later, the registry will search from the first directory to the last. For finer control over the search paths, we can call `prependPath()` to add a directory to search earlier, or `appendPath()` to add a directory to search later. Regardless, the _View_ will auto-append `.php` to the end of template names when searching through the directories.
+
+### Changing Template Extension
+
+By default the _View_ will auto-append `.php` but we can alter the behavior with `setTemplateFileExtension` method in the `TemplateRegistry`.
+
+```php
+<?php
+$view_registry = $view->getViewRegistry();
+$view_registry->setTemplateFileExtension('phtml');
+```
+
+As the `TemplateRegistry` object passed to for view and layout are different,
+if we need to alter the extension for layout we need to do as
+
+```php
+$layout_registry = $view->getLayoutRegistry();
+$layout_registry->setTemplateFileExtension('phtml');
+```
