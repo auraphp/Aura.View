@@ -156,7 +156,7 @@ class TemplateRegistry
      *
      * @param array|string $path The directories to add to the paths.
      *
-     * @return void
+     * @return null
      *
      */
     public function prependPath($path)
@@ -177,7 +177,7 @@ class TemplateRegistry
      *
      * @param array|string $path The directories to add to the paths.
      *
-     * @return void
+     * @return null
      *
      */
     public function appendPath($path)
@@ -200,7 +200,7 @@ class TemplateRegistry
      *
      * @param array $paths The paths to set.
      *
-     * @return void
+     * @return null
      *
      */
     public function setPaths(array $paths)
@@ -211,9 +211,12 @@ class TemplateRegistry
 
     /**
      *
-     * sets the extension to be used when searching for templates in find()
+     * Sets the extension to be used when searching for templates via find().
      *
      * @param string $templateFileExtension
+     *
+     * @return null
+     *
      */
     public function setTemplateFileExtension($templateFileExtension)
     {
