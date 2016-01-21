@@ -46,11 +46,12 @@ class TemplateRegistry
 
     /**
      *
-     * File extension to use when searching the path list for templates
+     * File extension to use when searching the path list for templates.
      *
      * @var string
+     *
      */
-    protected $templateFileExtension = 'php';
+    protected $templateFileExtension = '.php';
 
     /**
      *
@@ -219,8 +220,6 @@ class TemplateRegistry
         $this->templateFileExtension = $templateFileExtension;
     }
 
-
-
     /**
      *
      * Finds a template in the search paths.
@@ -237,7 +236,7 @@ class TemplateRegistry
         }
 
         foreach ($this->paths as $path) {
-            $file = $path . DIRECTORY_SEPARATOR . $name . '.' . $this->templateFileExtension;
+            $file = $path . DIRECTORY_SEPARATOR . $name . $this->templateFileExtension;
             if ($this->isReadable($file)) {
                 $this->found[$name] = $this->enclose($file);
                 return true;

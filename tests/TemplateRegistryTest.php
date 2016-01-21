@@ -102,7 +102,7 @@ class TemplateRegistryTest extends \PHPUnit_Framework_TestCase
         // test searching with a non-default template file extension
         $this->template_registry = new FakeTemplateRegistry;
         $this->template_registry->appendPath('/foo');
-        $this->template_registry->setTemplateFileExtension('phtml');
+        $this->template_registry->setTemplateFileExtension('.phtml');
         $file = "/foo" . DIRECTORY_SEPARATOR . 'test.phtml';
         $this->template_registry->fakefs[$file] = 'fake';
 
