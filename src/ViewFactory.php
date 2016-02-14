@@ -27,15 +27,20 @@ class ViewFactory
      * @return View
      *
      */
-    public function newInstance($helpers = null)
-    {
+    public function newInstance(
+        $helpers = null,
+        $view_map = [],
+        $view_paths = [],
+        $layout_map = [],
+        $layout_paths = [],
+    ) {
         if (! $helpers) {
             $helpers = new HelperRegistry;
         }
 
         return new View(
-            new TemplateRegistry,
-            new TemplateRegistry,
+            new TemplateRegistry($view_map, $view_paths),
+            new TemplateRegistry($layout_map, $layout_paths),
             $helpers
         );
     }
