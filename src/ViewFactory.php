@@ -32,7 +32,7 @@ class ViewFactory
         $view_map = [],
         $view_paths = [],
         $layout_map = [],
-        $layout_paths = [],
+        $layout_paths = []
     ) {
         if (! $helpers) {
             $helpers = new HelperRegistry;
