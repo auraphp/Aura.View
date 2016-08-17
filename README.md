@@ -225,7 +225,7 @@ In addition, the `setSection()` method can be used to set the section body direc
 
 ```php
 <?php
-$this->setSection('local-nav', $this->render('_local-nav.php'));
+$this->setSection('local-nav', $this->render('_local-nav'));
 ?>
 ```
 
