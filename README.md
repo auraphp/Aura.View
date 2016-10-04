@@ -402,3 +402,43 @@ $layout_registry = $view->getLayoutRegistry();
 $layout_registry->setTemplateFileExtension('.phtml');
 ?>
 ```
+
+### Advanced Configuration
+
+Alternatively you can pass [$helpers](https://github.com/harikt/Aura.View#custom-helper-managers),
+mapping information or paths for views and layouts as below.
+
+```php
+<?php
+$view_factory = new \Aura\View\ViewFactory;
+$view = $view_factory->newInstance(
+    $helpers = null,
+    [
+        'browse' => '/path/to/views/browse.php'
+    ],
+    [
+        '/path/to/views/welcome',
+        '/path/to/views/user',
+    ],
+    [
+        'layout' => '/path/to/layouts/default.php'
+    ],    
+    [
+        '/path/to/layouts',
+    ],
+);
+?>
+```
+
+If you are passing the mapping information or paths to `views` and `layouts` you don't need to
+call the `getViewRegistry` or `getLayoutRegistry` and `set` the mapping information.
+
+Eg :
+
+```php
+$view_registry = $view->getViewRegistry();
+$view_registry->set('browse', '/path/to/views/browse.php');
+
+$layout_registry = $view->getLayoutRegistry();
+$layout_registry->set('default', '/path/to/layouts/default.php');
+```
