@@ -405,7 +405,7 @@ $layout_registry->setTemplateFileExtension('.phtml');
 
 ### Advanced Configuration
 
-Alternatively you can pass [$helpers](https://github.com/harikt/Aura.View#custom-helper-managers),
+Alternatively you can pass [$helpers](https://github.com/auraphp/Aura.View#custom-helper-managers),
 mapping information or paths for views and layouts as below.
 
 ```php
