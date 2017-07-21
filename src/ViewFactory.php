@@ -24,6 +24,14 @@ class ViewFactory
      * @param object $helpers An arbitrary helper manager for the View; if not
      * specified, uses the HelperRegistry from this package.
      *
+     * @param array $view_map A map of explicit template names and locations in View registry.
+     *
+     * @param array $view_paths A map of filesystem paths to search for templates in View registry.
+     *
+     * @param array $layout_map A map of explicit template names and locations in Layout registry.
+     *
+     * @param array $layout_paths A map of filesystem paths to search for templates in Layout registry.
+     *
      * @return View
      *
      */
