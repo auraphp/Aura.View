@@ -3,7 +3,7 @@ language: php
 matrix:
     include:
         - os: linux
-          dist: precise
+          dist: trusty
           sudo: false
           php: hhvm
         - os: linux
