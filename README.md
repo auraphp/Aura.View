@@ -384,6 +384,23 @@ $view_registry->setPaths(array(
 
 When we refer to named templates later, the registry will search from the first directory to the last. For finer control over the search paths, we can call `prependPath()` to add a directory to search earlier, or `appendPath()` to add a directory to search later. Regardless, the _View_ will auto-append `.php` to the end of template names when searching through the directories.
 
+#### Template Namespaces
+
+We can also add namespaced templates which we can refer to with the syntax `namespace::template`.
+We can add directories that coorespond to namespaces:
+
+```php
+<?php
+$view_registry = $view->getViewRegistry();
+$view_registry->appendPath('/path/to/templates', 'my-namespace');
+
+$view->setView('my-namespace::browse');
+```
+
+When we refer to namespaced templates, only the paths associated with that
+namespace will be searched.
+
+
 ### Changing The Template File Extension
 
 By default, each _TemplateRegistry_ will auto-append `.php` to template file names. If the template files end with a different extension, change it usin the `setTemplateFileExtension()` method:
