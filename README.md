@@ -387,7 +387,7 @@ When we refer to named templates later, the registry will search from the first 
 #### Template Namespaces
 
 We can also add namespaced templates which we can refer to with the syntax `namespace::template`.
-We can add directories that coorespond to namespaces:
+We can add directories that correspond to namespaces:
 
 ```php
 <?php
@@ -403,7 +403,7 @@ namespace will be searched.
 
 ### Changing The Template File Extension
 
-By default, each _TemplateRegistry_ will auto-append `.php` to template file names. If the template files end with a different extension, change it usin the `setTemplateFileExtension()` method:
+By default, each _TemplateRegistry_ will auto-append `.php` to template file names. If the template files end with a different extension, change it using the `setTemplateFileExtension()` method:
 
 ```php
 <?php
