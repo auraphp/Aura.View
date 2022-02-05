@@ -146,21 +146,21 @@ class TemplateRegistryTest extends TestCase
 
 
         // doesnt exist
-        $this->setExpectedException('Aura\View\Exception\TemplateNotFound');
+        $this->expectException('Aura\View\Exception\TemplateNotFound');
         $actual = $this->template_registry->get('ns::zam');
     }
 
     public function testUnregisteredNs()
     {
         $this->template_registry = new FakeTemplateRegistry;
-        $this->setExpectedException('Aura\View\Exception\TemplateNotFound');
+        $this->expectException('Aura\View\Exception\TemplateNotFound');
         $actual = $this->template_registry->get('ns::no-exist');
     }
 
     public function testBadNamespace()
     {
         $this->template_registry = new FakeTemplateRegistry;
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException('InvalidArgumentException');
         $actual = $this->template_registry->get('ns::wrong::format');
     }
 
