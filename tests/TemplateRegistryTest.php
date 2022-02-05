@@ -117,4 +117,51 @@ class TemplateRegistryTest extends TestCase
         $actual = $this->template_registry->get('no-such-template');
     }
 
+    public function testFindNamespaced()
+    {
+        $this->template_registry = new FakeTemplateRegistry;
+        $this->template_registry->appendPath('/foo');
+        $this->template_registry->appendPath('/bar', 'ns');
+
+        $file = '/bar' . DIRECTORY_SEPARATOR . 'zim.php';
+        $this->template_registry->fakefs[$file] = 'fake';
+
+        $expect = $file;
+        $actual = $this->template_registry->get('ns::zim');
+        $this->assertSame($expect, $actual);
+
+        // prepend
+        $this->template_registry->prependPath('/bar', 'ns2');
+        $this->template_registry->prependPath('/baz', 'ns2');
+
+        $wrong = '/bar' . DIRECTORY_SEPARATOR . 'zim.php';
+        $this->template_registry->fakefs[$wrong] = 'wrong';
+
+        $file = '/baz' . DIRECTORY_SEPARATOR . 'zim.php';
+        $this->template_registry->fakefs[$file] = 'new';
+
+        $expect = $file;
+        $actual = $this->template_registry->get('ns2::zim');
+        $this->assertSame($expect, $actual);
+
+
+        // doesnt exist
+        $this->setExpectedException('Aura\View\Exception\TemplateNotFound');
+        $actual = $this->template_registry->get('ns::zam');
+    }
+
+    public function testUnregisteredNs()
+    {
+        $this->template_registry = new FakeTemplateRegistry;
+        $this->setExpectedException('Aura\View\Exception\TemplateNotFound');
+        $actual = $this->template_registry->get('ns::no-exist');
+    }
+
+    public function testBadNamespace()
+    {
+        $this->template_registry = new FakeTemplateRegistry;
+        $this->setExpectedException('InvalidArgumentException');
+        $actual = $this->template_registry->get('ns::wrong::format');
+    }
+
 }
