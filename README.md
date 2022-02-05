@@ -20,9 +20,9 @@ Alternatively, [download a release](https://github.com/auraphp/Aura.View/release
 
 ### Quality
 
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/auraphp/Aura.View/badges/quality-score.png?b=develop-2)](https://scrutinizer-ci.com/g/auraphp/Aura.View/)
-[![Code Coverage](https://scrutinizer-ci.com/g/auraphp/Aura.View/badges/coverage.png?b=develop-2)](https://scrutinizer-ci.com/g/auraphp/Aura.View/)
-[![Build Status](https://travis-ci.org/auraphp/Aura.View.png?branch=develop-2)](https://travis-ci.org/auraphp/Aura.View)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/auraphp/Aura.View/badges/quality-score.png?b=2.x)](https://scrutinizer-ci.com/g/auraphp/Aura.View/)
+[![codecov](https://codecov.io/gh/auraphp/Aura.View/branch/2.x/graph/badge.svg?token=UASDouLxyc)](https://codecov.io/gh/auraphp/Aura.View)
+[![Continuous Integration](https://github.com/auraphp/Aura.View/actions/workflows/continuous-integration.yml/badge.svg?branch=2.x)](https://github.com/auraphp/Aura.View/actions/workflows/continuous-integration.yml)
 
 To run the unit tests at the command line, issue `composer install` and then `./vendor/bin/phpunit` at the package root. This requires [Composer](http://getcomposer.org/) to be available as `composer`.
 
@@ -423,7 +423,7 @@ $view = $view_factory->newInstance(
     ],
     [
         'layout' => '/path/to/layouts/default.php'
-    ],    
+    ],
     [
         '/path/to/layouts',
     ],

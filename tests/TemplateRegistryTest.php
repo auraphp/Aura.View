@@ -1,9 +1,11 @@
 <?php
 namespace Aura\View;
 
-class TemplateRegistryTest extends \PHPUnit_Framework_TestCase
+use Yoast\PHPUnitPolyfills\TestCases\TestCase;
+
+class TemplateRegistryTest extends TestCase
 {
-    protected function setUp()
+    protected function set_up()
     {
         $this->template_registry = new TemplateRegistry;
     }
@@ -22,7 +24,7 @@ class TemplateRegistryTest extends \PHPUnit_Framework_TestCase
         $this->template = $this->template_registry->get('foo');
         $this->assertSame($foo, $this->template);
 
-        $this->setExpectedException('Aura\View\Exception\TemplateNotFound');
+        $this->expectException('Aura\View\Exception\TemplateNotFound');
         $this->template_registry->get('bar');
     }
 
@@ -111,7 +113,7 @@ class TemplateRegistryTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($expect, $actual);
 
         // look for a file that doesn't exist
-        $this->setExpectedException('Aura\View\Exception\TemplateNotFound');
+        $this->expectException('Aura\View\Exception\TemplateNotFound');
         $actual = $this->template_registry->get('no-such-template');
     }
 
