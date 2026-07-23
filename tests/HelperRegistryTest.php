@@ -1,13 +1,13 @@
 <?php
 namespace Aura\View;
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
+use PHPUnit\Framework\TestCase;
 
 class HelperRegistryTest extends TestCase
 {
     protected $helper_registry;
 
-    protected function set_up()
+    protected function setUp(): void
     {
         $this->helper_registry = new HelperRegistry;
     }
