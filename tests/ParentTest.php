@@ -125,6 +125,27 @@ class ParentTest extends TestCase
         $view->callParent();
     }
 
+    public function testParentThrowsWhenASubclassOverridesRenderWithoutTheStack()
+    {
+        // the failure this guard exists for: a subclass reimplements render()
+        // and forgets pushRender()/popRender(). Without the throw, every
+        // parent() in the application would quietly return '' and every
+        // override would silently go back to replacing instead of extending.
+        $registry = $this->view->getViewRegistry();
+
+        $view = new class ($registry, new TemplateRegistry) extends View {
+            protected function render(string $name, array $vars = []): string
+            {
+                return $this->captureTemplate($this->getTemplate($name), $vars);
+            }
+        };
+
+        $view->setView('read');
+
+        $this->expectException('Aura\View\Exception');
+        $view();
+    }
+
     public function testParentIsEmptyWhenTheRegistryHasNoSearchPaths()
     {
         // a registry backed by a precompiled name-to-file map has no paths to

@@ -146,7 +146,27 @@ Chains can be any depth -- an application shadowing a module shadowing a core de
 - the template came from the explicit map, which has no search path behind it;
 - the registry does not implement _SearchPathInterface_ at all.
 
-Calling `parent()` outside of a render throws _Aura\View\Exception_ -- there is no "current template" to resume from.
+Those three are the answers to a well-formed question: there *is* a current template, and nothing follows it.
+
+Calling `parent()` when there is no current template at all throws _Aura\View\Exception_ instead. Template code cannot reach this -- if a template is running, it was rendered, and a render always has a frame. It is a guard for code that steps outside the normal path: a _View_ subclass calling `parent()` directly, a template closure invoked without going through `render()`, or -- the one that matters -- a subclass that overrides `render()` and does not maintain the render stack:
+
+```php
+<?php
+protected function render(string $name, array $vars = []): string
+{
+    $template = $this->getTemplate($name);
+    $this->pushRender($name, $this->getResolvedPath($name));
+
+    try {
+        return $this->captureTemplate($template, $vars);
+    } finally {
+        $this->popRender();   // in a finally, so a throwing template still unwinds
+    }
+}
+?>
+```
+
+Without those two calls every `parent()` in the application would quietly return `''` and every override would go back to replacing instead of extending -- wrong output, nothing raised. The exception makes that mistake announce itself.
 
 Because resolution is per *name*, `parent()` is the seam a modular application needs: the shadowing file and the shadowed file share a name, and neither has to know how many other packages sit in the chain.
 
