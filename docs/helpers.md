@@ -27,6 +27,39 @@ Helpers return their output rather than echoing it, and they are responsible for
 
 If a called helper does not resolve, the _View_ throws _Aura\View\Exception\HelperNotFound_.
 
+### Helper Name Collisions
+
+The registry is a flat `name => callable` map, so two packages that both register `url` are competing for one name. Registering over a name that is already taken throws _Aura\View\Exception\HelperAlreadyRegistered_:
+
+```php
+<?php
+$helpers->set('url', $from_module_a);
+$helpers->set('url', $from_module_b); // throws HelperAlreadyRegistered
+?>
+```
+
+The old behaviour was silent last-one-wins: whichever package registered later replaced the other, with no warning and no way to tell it had happened. Making it loud turns a mystery about which helper is running into an error naming the helper.
+
+To replace one deliberately, say so:
+
+```php
+<?php
+$helpers->set('url', $mine, override: true);
+?>
+```
+
+`override: true` is not an error when the name is *unregistered* -- it means "I accept replacing whatever is there", not "something must be there" -- so an application can assert its own helper without first checking whether a module got there first. To branch on it instead, use `has()`:
+
+```php
+<?php
+if (! $helpers->has('url')) {
+    $helpers->set('url', $default);
+}
+?>
+```
+
+Registering the same callable twice under one name still throws. Two packages that happen to share a helper implementation still have to say which one owns the name.
+
 ### Custom Helper Managers
 
 The helper manager parameter is typed `?object` -- **not** `HelperRegistryInterface` -- and that is on purpose. A _View_ reaches its helpers through exactly one call:
@@ -87,7 +120,7 @@ _HelperRegistryInterface_ describes the registry contract itself -- for code tha
 ```php
 interface HelperRegistryInterface
 {
-    public function set(string $name, callable $callable): void;
+    public function set(string $name, callable $callable, bool $override = false): void;
     public function has(string $name): bool;
     public function get(string $name): callable;
 }

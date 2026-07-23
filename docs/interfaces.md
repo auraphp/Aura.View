@@ -64,11 +64,13 @@ public function addTemplatePath(SearchPathInterface $registry, string $path): vo
 ```php
 interface HelperRegistryInterface
 {
-    public function set(string $name, callable $callable): void;
+    public function set(string $name, callable $callable, bool $override = false): void;
     public function has(string $name): bool;
     public function get(string $name): callable;
 }
 ```
+
+`set()` throws _Aura\View\Exception\HelperAlreadyRegistered_ when the name is taken; see [Helper Name Collisions](helpers.md#helper-name-collisions).
 
 Note that the _View_ does **not** type-hint against this interface -- the helper manager parameter is `?object`. See [Custom Helper Managers](helpers.md#custom-helper-managers) for why.
 
