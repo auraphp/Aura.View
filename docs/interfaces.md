@@ -34,9 +34,17 @@ interface SearchPathInterface
     public function appendPath(string $path, ?string $namespace = null): void;
     public function setNamespaces(array $namespaces): void;
     public function hasNamespace(string $namespace): bool;
+    public function getNamespaces(): array;
+    public function getNamespacePaths(string $namespace): array;
     public function setTemplateFileExtension(string $templateFileExtension): void;
 }
 ```
+
+`getNamespaces()` returns the whole namespace-to-paths map, and
+`getNamespacePaths()` returns the search paths for one namespace (an empty
+array if that namespace is not registered). They answer "which directory did
+this template come from?" when several modules contribute paths under the same
+namespace -- previously only the un-namespaced paths were readable back out.
 
 Path management is **not** part of _TemplateRegistryInterface_ because a registry backed by a precompiled name-to-file map has no paths to manage -- it resolves names from a lookup table built ahead of time. Forcing such a registry to implement `prependPath()` would mean stubbing out methods it cannot honour.
 

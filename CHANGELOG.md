@@ -78,6 +78,12 @@ yours to choose. See the README's *Escaping Output* section.
 - [BRK] `endSection()` without a matching `beginSection()` now throws
   `Aura\View\Exception` instead of silently capturing under a null key.
 
+- [BRK] **A template name with more than one `::` throws
+  `Aura\View\Exception\InvalidTemplateName`** instead of a bare
+  `\InvalidArgumentException`, so every exception this package raises descends
+  from `Aura\View\Exception`. Code catching `\InvalidArgumentException` around
+  a name lookup must catch the new class instead.
+
 ### Deprecated
 
 - [DEP] `Aura\View\Exception\InvalidHelpersObject` is never thrown. The
@@ -90,6 +96,7 @@ yours to choose. See the README's *Escaping Output* section.
 - [ADD] **`TemplateRegistryInterface`** (`set()`, `has()`, `get()`) and
   **`SearchPathInterface`** (`getPaths()`, `setPaths()`, `prependPath()`,
   `appendPath()`, `setNamespaces()`, `hasNamespace()`,
+  `getNamespaces()`, `getNamespacePaths()`,
   `setTemplateFileExtension()`). Previously `setTemplateRegistry()` type-hinted
   the concrete class, so a framework could not substitute a module-aware
   registry without extending it. Path management is kept out of
@@ -107,6 +114,19 @@ yours to choose. See the README's *Escaping Output* section.
   implement an Aura.View interface without depending on Aura.View, the wrong
   direction -- while using none of that interface's methods. **The documented
   Aura.Html wiring therefore continues to work unchanged, with no adapter.**
+
+- [ADD] **`getNamespaces()` and `getNamespacePaths()` on
+  _SearchPathInterface_** (and _TemplateRegistry_). `setNamespaces()` and
+  `hasNamespace()` existed with no getter, while `getPaths()` did exist -- so
+  with several modules contributing paths under one namespace, "which
+  directory did this template come from?" was unanswerable without reflection.
+  `getNamespacePaths()` returns `[]` for an unregistered namespace rather than
+  throwing; asking about a namespace that was never registered is a normal
+  question, and `hasNamespace()` is there when you want to distinguish
+  "unregistered" from "registered but empty".
+
+- [ADD] **`Aura\View\Exception\InvalidTemplateName`**, thrown by name parsing.
+  See *Breaking*.
 
 - [ADD] **`ViewSpec`**, a readonly value object describing one template
   registry: `map`, `paths`, `namespaces`, and `extension`. Its `newRegistry()`
@@ -131,6 +151,11 @@ yours to choose. See the README's *Escaping Output* section.
 
 - [FIX] `$capture` and `$section` initialise to `[]` rather than null;
   appending to null is deprecated as of PHP 8.3.
+
+- [FIX] `TemplateRegistry::setTemplateFileExtension()` now clears the cache of
+  already-resolved templates, as every other path-mutating method already did. Changing
+  the extension after a name had been resolved kept returning the stale hit
+  under the old extension.
 
 - [FIX] Stray double semicolon in `TemplateRegistry::isNamespaced()`.
 

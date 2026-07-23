@@ -84,7 +84,24 @@ $view->setView('my-namespace::browse');
 
 When we refer to namespaced templates, only the paths associated with that namespace will be searched.
 
-A name containing more than one `::` is invalid and raises `\InvalidArgumentException`.
+A name containing more than one `::` is invalid and raises `Aura\View\Exception\InvalidTemplateName`.
+
+To read the namespaced paths back out -- useful when several modules contribute to the same namespace and you need to know which directory a template came from -- use `getNamespaces()` for the whole map, or `getNamespacePaths()` for one namespace:
+
+```php
+<?php
+$view_registry->getNamespaces();
+// ['my-namespace' => ['/path/to/templates']]
+
+$view_registry->getNamespacePaths('my-namespace');
+// ['/path/to/templates']
+
+$view_registry->getNamespacePaths('no-such-namespace');
+// []
+?>
+```
+
+These are the namespaced counterparts of `getPaths()`; `hasNamespace()` reports whether a namespace is registered at all.
 
 ### Changing The Template File Extension
 

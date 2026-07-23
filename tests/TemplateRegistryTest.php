@@ -166,8 +166,73 @@ class TemplateRegistryTest extends TestCase
     public function testBadNamespace()
     {
         $this->template_registry = new FakeTemplateRegistry;
-        $this->expectException('InvalidArgumentException');
+        $this->expectException('Aura\View\Exception\InvalidTemplateName');
         $actual = $this->template_registry->get('ns::wrong::format');
     }
 
+    public function testSetTemplateFileExtensionResetsFound()
+    {
+        $this->template_registry = new FakeTemplateRegistry;
+        $this->template_registry->appendPath('/foo');
+
+        $php = '/foo' . DIRECTORY_SEPARATOR . 'zim.php';
+        $phtml = '/foo' . DIRECTORY_SEPARATOR . 'zim.phtml';
+        $this->template_registry->fakefs[$php] = 'fake';
+        $this->template_registry->fakefs[$phtml] = 'fake';
+
+        // resolve once under the default extension ...
+        $this->assertResolvesTo($php, 'zim');
+
+        // ... then change the extension; the memoized hit must not survive.
+        $this->template_registry->setTemplateFileExtension('.phtml');
+        $this->assertResolvesTo($phtml, 'zim');
+    }
+
+    public function testGetNamespaces()
+    {
+        $this->template_registry = new FakeTemplateRegistry;
+        $this->assertSame([], $this->template_registry->getNamespaces());
+
+        $this->template_registry->appendPath('/no-namespace');
+        $this->template_registry->appendPath('/bar', 'ns');
+        $this->template_registry->appendPath('/baz', 'ns');
+        $this->template_registry->prependPath('/foo', 'ns');
+        $this->template_registry->appendPath('/dib', 'other');
+
+        $expect = [
+            'ns' => ['/foo', '/bar', '/baz'],
+            'other' => ['/dib'],
+        ];
+        $this->assertSame($expect, $this->template_registry->getNamespaces());
+
+        // the un-namespaced path stays out of the namespaces
+        $this->assertSame(['/no-namespace'], $this->template_registry->getPaths());
+    }
+
+    public function testGetNamespacePaths()
+    {
+        $this->template_registry = new FakeTemplateRegistry;
+        $this->template_registry->appendPath('/bar', 'ns');
+        $this->template_registry->appendPath('/baz', 'ns');
+
+        $this->assertSame(
+            ['/bar', '/baz'],
+            $this->template_registry->getNamespacePaths('ns')
+        );
+
+        // an unregistered namespace has no paths
+        $this->assertSame(
+            [],
+            $this->template_registry->getNamespacePaths('no-such-namespace')
+        );
+    }
+
+    public function testGetNamespacesAfterSetNamespaces()
+    {
+        $this->template_registry = new FakeTemplateRegistry;
+        $namespaces = ['ns' => ['/foo', '/bar']];
+        $this->template_registry->setNamespaces($namespaces);
+        $this->assertSame($namespaces, $this->template_registry->getNamespaces());
+        $this->assertSame(['/foo', '/bar'], $this->template_registry->getNamespacePaths('ns'));
+    }
 }

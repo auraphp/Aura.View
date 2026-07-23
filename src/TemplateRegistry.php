@@ -168,6 +168,37 @@ class TemplateRegistry implements TemplateRegistryInterface, SearchPathInterface
 
     /**
      *
+     * Gets a copy of the namespaced search paths, keyed on namespace.
+     *
+     * @return array<string, list<string>>
+     *
+     */
+    public function getNamespaces(): array
+    {
+        return $this->namespaces;
+    }
+
+    /**
+     *
+     * Gets a copy of the search paths for one namespace.
+     *
+     *     $registry->appendPath('/path/1', 'blog');
+     *     $registry->appendPath('/path/2', 'blog');
+     *     // $registry->getNamespacePaths('blog') reveals that the search
+     *     // order will be '/path/1', '/path/2'.
+     *
+     * An unregistered namespace has no paths, so it returns an empty array.
+     *
+     * @return list<string>
+     *
+     */
+    public function getNamespacePaths(string $namespace): array
+    {
+        return $this->namespaces[$namespace] ?? [];
+    }
+
+    /**
+     *
      * Adds one path to the top of the search paths.
      *
      *     $registry->prependPath('/path/1');
@@ -271,6 +302,7 @@ class TemplateRegistry implements TemplateRegistryInterface, SearchPathInterface
     public function setTemplateFileExtension(string $templateFileExtension): void
     {
         $this->templateFileExtension = $templateFileExtension;
+        $this->found = [];
     }
 
     /**
@@ -307,7 +339,7 @@ class TemplateRegistry implements TemplateRegistryInterface, SearchPathInterface
      *
      * @return array{namespace?: string, name: string}
      *
-     * @throws \InvalidArgumentException if the template name is invalid.
+     * @throws Exception\InvalidTemplateName if the template name is invalid.
      *
      */
     protected function parseName(string $name): array
@@ -326,7 +358,7 @@ class TemplateRegistry implements TemplateRegistryInterface, SearchPathInterface
             ];
         }
 
-        throw new \InvalidArgumentException('Invalid name: ' . $name);
+        throw new Exception\InvalidTemplateName('Invalid name: ' . $name);
     }
 
     /**

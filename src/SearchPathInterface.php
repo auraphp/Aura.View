@@ -77,6 +77,25 @@ interface SearchPathInterface
 
     /**
      *
+     * Gets a copy of the namespaced search paths, keyed on namespace.
+     *
+     * @return array<string, list<string>>
+     *
+     */
+    public function getNamespaces(): array;
+
+    /**
+     *
+     * Gets a copy of the search paths for one namespace; an unregistered
+     * namespace has no paths, so it returns an empty array.
+     *
+     * @return list<string>
+     *
+     */
+    public function getNamespacePaths(string $namespace): array;
+
+    /**
+     *
      * Sets the file extension used when searching the paths for templates.
      *
      */
