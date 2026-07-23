@@ -78,6 +78,24 @@ yours to choose. See the README's *Escaping Output* section.
 - [BRK] `endSection()` without a matching `beginSection()` now throws
   `Aura\View\Exception` instead of silently capturing under a null key.
 
+- [BRK] **`HelperRegistry::set()` throws
+  `Aura\View\Exception\HelperAlreadyRegistered` when the name is already
+  taken.** Previously registration was silent last-one-wins: two packages
+  both registering `url` meant whichever ran later replaced the other, with no
+  warning and no way to tell it had happened. Pass `override: true` to replace
+  deliberately.
+
+      $helpers->set('url', $mine);                  // throws if taken
+      $helpers->set('url', $mine, override: true);  // replaces
+
+  `override: true` is not an error when the name is unregistered -- it means
+  "I accept replacing whatever is there", not "something must be there" -- so
+  an application can assert its own helper without first probing for a module's.
+  Use `has()` to branch instead. Registering the identical callable twice also
+  throws; two packages sharing an implementation still have to say which owns
+  the name. `HelperRegistryInterface::set()` gains the same third parameter,
+  which affects anyone who has already implemented that interface.
+
 - [BRK] **A template name with more than one `::` throws
   `Aura\View\Exception\InvalidTemplateName`** instead of a bare
   `\InvalidArgumentException`, so every exception this package raises descends
@@ -127,6 +145,9 @@ yours to choose. See the README's *Escaping Output* section.
 
 - [ADD] **`Aura\View\Exception\InvalidTemplateName`**, thrown by name parsing.
   See *Breaking*.
+
+- [ADD] **`Aura\View\Exception\HelperAlreadyRegistered`**, thrown by
+  `HelperRegistry::set()` on a collision. See *Breaking*.
 
 - [ADD] **`ViewSpec`**, a readonly value object describing one template
   registry: `map`, `paths`, `namespaces`, and `extension`. Its `newRegistry()`

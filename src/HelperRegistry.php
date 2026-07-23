@@ -37,7 +37,9 @@ class HelperRegistry implements HelperRegistryInterface
      */
     public function __construct(array $map = [])
     {
-        $this->map = $map;
+        foreach ($map as $name => $callable) {
+            $this->set($name, $callable);
+        }
     }
 
     /**
@@ -59,13 +61,29 @@ class HelperRegistry implements HelperRegistryInterface
      *
      * Registers a helper.
      *
+     * Registering over a name that is already taken throws, so that two
+     * packages contributing the same helper name is a loud error rather than a
+     * silent last-one-wins. Pass `override: true` to replace deliberately;
+     * that is not an error even when the name is unregistered, because it
+     * means "I accept replacing whatever is there", not "something must be
+     * there".
+     *
      * @param string $name Register the helper under this name.
      *
      * @param callable $callable The callable helper.
      *
+     * @param bool $override Replace an existing helper of the same name.
+     *
+     * @throws Exception\HelperAlreadyRegistered when the name is taken and
+     * $override is false.
+     *
      */
-    public function set(string $name, callable $callable): void
+    public function set(string $name, callable $callable, bool $override = false): void
     {
+        if (! $override && $this->has($name)) {
+            throw new Exception\HelperAlreadyRegistered($name);
+        }
+
         $this->map[$name] = $callable;
     }
 

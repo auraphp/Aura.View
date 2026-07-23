@@ -29,8 +29,11 @@ interface HelperRegistryInterface
      *
      * Registers a helper under a name.
      *
+     * @throws Exception\HelperAlreadyRegistered when the name is taken and
+     * $override is false.
+     *
      */
-    public function set(string $name, callable $callable): void;
+    public function set(string $name, callable $callable, bool $override = false): void;
 
     /**
      *
