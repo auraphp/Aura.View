@@ -58,6 +58,16 @@ class TemplateRegistry implements TemplateRegistryInterface, SearchPathInterface
 
     /**
      *
+     * The search path directory each found template came from, keyed on the
+     * same names as $found.
+     *
+     * @var array<string, string>
+     *
+     */
+    protected array $foundIn = [];
+
+    /**
+     *
      * File extension to use when searching the path list for templates.
      *
      */
@@ -199,6 +209,71 @@ class TemplateRegistry implements TemplateRegistryInterface, SearchPathInterface
 
     /**
      *
+     * Gets the search path directory a name resolved from.
+     *
+     * Returns null when the name came from the explicit map (which has no
+     * search path behind it) or cannot be resolved at all. This answers "which
+     * of the contributed directories won?" -- with several packages
+     * contributing paths, that is otherwise unanswerable.
+     *
+     */
+    public function getResolvedPath(string $name): ?string
+    {
+        if (isset($this->map[$name])) {
+            return null;
+        }
+
+        if (! $this->find($name)) {
+            return null;
+        }
+
+        return $this->foundIn[$name] ?? null;
+    }
+
+    /**
+     *
+     * Gets the next template of this name, resuming the search *after* a given
+     * directory.
+     *
+     * This is what makes a shadowed template reachable. Ordinary resolution
+     * stops at the first hit and the rest of the chain is lost, so a package
+     * template can only be replaced wholesale; resuming from the path that
+     * won lets the shadowing template render the one it shadowed.
+     *
+     * Returns null when nothing further in the chain has this name -- including
+     * when $afterPath is not one of the search paths at all. A template that
+     * turns out to shadow nothing is a normal state, not an error.
+     *
+     */
+    public function getNext(string $name, string $afterPath): ?ResolvedTemplate
+    {
+        $info = $this->parseName($name);
+        $namespace = $info['namespace'] ?? null;
+        $shortname = $info['name'];
+
+        $paths = $namespace === null
+            ? $this->paths
+            : $this->getNamespacePaths($namespace);
+
+        $afterPath = rtrim($afterPath, DIRECTORY_SEPARATOR);
+        $after = array_search($afterPath, $paths, true);
+
+        if ($after === false) {
+            return null;
+        }
+
+        foreach (array_slice($paths, $after + 1) as $path) {
+            $file = $path . DIRECTORY_SEPARATOR . $shortname . $this->templateFileExtension;
+            if ($this->isReadable($file)) {
+                return new ResolvedTemplate($name, $this->enclose($file), $path);
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     *
      * Adds one path to the top of the search paths.
      *
      *     $registry->prependPath('/path/1');
@@ -215,6 +290,7 @@ class TemplateRegistry implements TemplateRegistryInterface, SearchPathInterface
     public function prependPath(string $path, ?string $namespace = null): void
     {
         $this->found = [];
+        $this->foundIn = [];
         $path = rtrim($path, DIRECTORY_SEPARATOR);
 
         if ($namespace !== null) {
@@ -246,6 +322,7 @@ class TemplateRegistry implements TemplateRegistryInterface, SearchPathInterface
     public function appendPath(string $path, ?string $namespace = null): void
     {
         $this->found = [];
+        $this->foundIn = [];
         $path = rtrim($path, DIRECTORY_SEPARATOR);
 
         if ($namespace !== null) {
@@ -278,6 +355,7 @@ class TemplateRegistry implements TemplateRegistryInterface, SearchPathInterface
     {
         $this->paths = $paths;
         $this->found = [];
+        $this->foundIn = [];
     }
 
     /**
@@ -292,6 +370,7 @@ class TemplateRegistry implements TemplateRegistryInterface, SearchPathInterface
     {
         $this->namespaces = $namespaces;
         $this->found = [];
+        $this->foundIn = [];
     }
 
     /**
@@ -303,6 +382,7 @@ class TemplateRegistry implements TemplateRegistryInterface, SearchPathInterface
     {
         $this->templateFileExtension = $templateFileExtension;
         $this->found = [];
+        $this->foundIn = [];
     }
 
     /**
@@ -326,6 +406,7 @@ class TemplateRegistry implements TemplateRegistryInterface, SearchPathInterface
             $file = $path . DIRECTORY_SEPARATOR . $name . $this->templateFileExtension;
             if ($this->isReadable($file)) {
                 $this->found[$name] = $this->enclose($file);
+                $this->foundIn[$name] = $path;
                 return true;
             }
         }
@@ -395,6 +476,7 @@ class TemplateRegistry implements TemplateRegistryInterface, SearchPathInterface
             $file = $path . DIRECTORY_SEPARATOR . $shortname . $this->templateFileExtension;
             if ($this->isReadable($file)) {
                 $this->found[$name] = $this->enclose($file);
+                $this->foundIn[$name] = $path;
                 return true;
             }
         }

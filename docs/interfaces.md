@@ -36,9 +36,15 @@ interface SearchPathInterface
     public function hasNamespace(string $namespace): bool;
     public function getNamespaces(): array;
     public function getNamespacePaths(string $namespace): array;
+    public function getResolvedPath(string $name): ?string;
+    public function getNext(string $name, string $afterPath): ?ResolvedTemplate;
     public function setTemplateFileExtension(string $templateFileExtension): void;
 }
 ```
+
+`getResolvedPath()` reports which directory actually satisfied a name (null for a mapped or unresolvable one) -- the answer to "which package's template won?".
+
+`getNext()` resumes the search after a given directory, which is what makes a shadowed template reachable; it backs [`parent()`](templates.md#extending-a-shadowed-template). It returns a _ResolvedTemplate_ -- a readonly `name` / `template` / `path` triple -- rather than a bare _\Closure_, because walking a chain more than one step needs the path the parent itself came from, and a closure does not carry that.
 
 `getNamespaces()` returns the whole namespace-to-paths map, and
 `getNamespacePaths()` returns the search paths for one namespace (an empty

@@ -82,6 +82,20 @@ abstract class AbstractView
 
     /**
      *
+     * The stack of in-flight renders, innermost last. Each frame is the
+     * template name and the search path directory it resolved from (null when
+     * it came from an explicit map, or from a registry with no search paths).
+     *
+     * render() can nest, so parent() needs to know which template is currently
+     * executing rather than which one was rendered first.
+     *
+     * @var list<array{0: string, 1: string|null}>
+     *
+     */
+    private array $render_stack = [];
+
+    /**
+     *
      * The template registry currently in use.
      *
      */
@@ -336,6 +350,41 @@ abstract class AbstractView
 
     /**
      *
+     * Gets the search path directory a template name resolves from, or null
+     * when the registry in use cannot say.
+     *
+     */
+    protected function getResolvedPath(string $name): ?string
+    {
+        $registry = $this->template_registry;
+
+        return $registry instanceof SearchPathInterface
+            ? $registry->getResolvedPath($name)
+            : null;
+    }
+
+    /**
+     *
+     * Pushes a render frame; call popRender() when the render finishes.
+     *
+     */
+    protected function pushRender(string $name, ?string $path): void
+    {
+        $this->render_stack[] = [$name, $path];
+    }
+
+    /**
+     *
+     * Pops the innermost render frame.
+     *
+     */
+    protected function popRender(): void
+    {
+        array_pop($this->render_stack);
+    }
+
+    /**
+     *
      * Invokes a template and captures its output.
      *
      * Output is discarded rather than flushed if the template throws, so a
@@ -370,6 +419,62 @@ abstract class AbstractView
         }
 
         return (string) ob_get_clean();
+    }
+
+    /**
+     *
+     * Renders the template that the currently-executing one shadows.
+     *
+     * Ordinary resolution stops at the first hit, so a template earlier in the
+     * search path replaces a later one wholesale -- to change one part you
+     * copy the whole file. `parent()` resumes the search after the directory
+     * the current template came from, letting the override render the thing it
+     * overrode:
+     *
+     *     <?php $this->beginSection('extra') ?>
+     *         ...
+     *     <?php $this->endSection() ?>
+     *     <?= $this->parent() ?>
+     *
+     * Returns `''` -- rather than throwing -- when there is nothing further to
+     * render: the current template shadows nothing, it came from an explicit
+     * map, or the registry has no search paths. Overriding a template that
+     * turns out not to shadow anything is a normal state during development.
+     *
+     * @param array<string, mixed> $vars Variables for the shadowed template.
+     *
+     * @throws Exception when called outside of a render.
+     *
+     */
+    protected function parent(array $vars = []): string
+    {
+        $frame = end($this->render_stack);
+
+        if ($frame === false) {
+            throw new Exception('parent() called outside of a template render');
+        }
+
+        [$name, $path] = $frame;
+        $registry = $this->template_registry;
+
+        if ($path === null || ! $registry instanceof SearchPathInterface) {
+            return '';
+        }
+
+        $next = $registry->getNext($name, $path);
+
+        if ($next === null) {
+            return '';
+        }
+
+        $template = $next->template->bindTo($this, static::class) ?? $next->template;
+        $this->pushRender($name, $next->path);
+
+        try {
+            return $this->captureTemplate($template, $vars);
+        } finally {
+            $this->popRender();
+        }
     }
 
     /**

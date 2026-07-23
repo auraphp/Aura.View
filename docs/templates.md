@@ -103,6 +103,53 @@ $view_registry->getNamespacePaths('no-such-namespace');
 
 These are the namespaced counterparts of `getPaths()`; `hasNamespace()` reports whether a namespace is registered at all.
 
+### Extending A Shadowed Template
+
+Search paths are first-hit-wins, so a template in an earlier directory *shadows* one of the same name in a later directory. On its own that means a template can only be replaced wholesale: to change one part of a package's template, you copy the whole file into your own directory and edit it -- and it stops tracking the original from then on.
+
+`parent()` renders the template the current one shadows, by resuming the search *after* the directory the current template was found in:
+
+```php
+<?php
+$view_registry->setPaths([
+    '/app/templates',           // searched first
+    '/vendor/acme/templates',   // shadowed by /app
+]);
+?>
+```
+
+```php
+<?php /* /vendor/acme/templates/read.php */ ?>
+<h1><?= $this->title ?></h1>
+<?= $this->getSection('extra') ?>
+```
+
+```php
+<?php /* /app/templates/read.php -- shadows the one above */ ?>
+<?php $this->beginSection('extra') ?>
+    <p>Something only this application wants.</p>
+<?php $this->endSection() ?>
+<?= $this->parent() ?>
+```
+
+Rendering `read` now runs the application's file, which sets a section and then renders the package's file, which picks that section up. Only the difference lives in the application.
+
+Chains can be any depth -- an application shadowing a module shadowing a core default -- and each level calls `parent()` to reach the next. You can pass variables down:
+
+```php
+<?= $this->parent(['heading' => 'Custom']) ?>
+```
+
+`parent()` returns `''` rather than throwing when there is nothing further to render:
+
+- the current template shadows nothing (common while developing -- you add an override before the thing it overrides exists, or the name is simply unique);
+- the template came from the explicit map, which has no search path behind it;
+- the registry does not implement _SearchPathInterface_ at all.
+
+Calling `parent()` outside of a render throws _Aura\View\Exception_ -- there is no "current template" to resume from.
+
+Because resolution is per *name*, `parent()` is the seam a modular application needs: the shadowing file and the shadowed file share a name, and neither has to know how many other packages sit in the chain.
+
 ### Changing The Template File Extension
 
 By default, each _TemplateRegistry_ will auto-append `.php` to template file names. If the template files end with a different extension, change it using the `setTemplateFileExtension()` method:
