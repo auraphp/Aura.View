@@ -238,8 +238,10 @@ yours to choose. See the README's *Escaping Output* section.
   moves to `AbstractView::captureTemplate()`, which records the buffer and
   capture depths on entry and restores both on failure.
 
-- [FIX] `$capture` and `$section` initialise to `[]` rather than null;
-  appending to null is deprecated as of PHP 8.3.
+- [FIX] `$capture` and `$section` initialise to `[]` rather than null, so
+  appending never relies on autovivification. (Appending to null still works
+  silently; it is autovivification from `false` that PHP 8.1 deprecated. The
+  explicit `[]` avoids depending on either.)
 
 - [FIX] **`setPaths()` and `setNamespaces()` strip trailing directory
   separators**, as `prependPath()` and `appendPath()` always have. Previously

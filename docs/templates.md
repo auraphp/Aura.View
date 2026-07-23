@@ -162,7 +162,7 @@ $view->setStrictParent(true);
 
 The message names the template and why the lookup came up empty:
 
-```
+```text
 parent() found no template to render for 'read': nothing after
 '/app/templates' in the search paths has that name.
 ```
