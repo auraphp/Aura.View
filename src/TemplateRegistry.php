@@ -302,6 +302,7 @@ class TemplateRegistry implements TemplateRegistryInterface, SearchPathInterface
     public function setTemplateFileExtension(string $templateFileExtension): void
     {
         $this->templateFileExtension = $templateFileExtension;
+        $this->found = [];
     }
 
     /**

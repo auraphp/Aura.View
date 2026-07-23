@@ -152,6 +152,11 @@ yours to choose. See the README's *Escaping Output* section.
 - [FIX] `$capture` and `$section` initialise to `[]` rather than null;
   appending to null is deprecated as of PHP 8.3.
 
+- [FIX] `TemplateRegistry::setTemplateFileExtension()` now clears the cache of
+  already-resolved templates, as every other path-mutating method already did. Changing
+  the extension after a name had been resolved kept returning the stale hit
+  under the old extension.
+
 - [FIX] Stray double semicolon in `TemplateRegistry::isNamespaced()`.
 
 - [FIX] 19 docblock defects found by PHPStan (15 bogus `@return null` tags, 5

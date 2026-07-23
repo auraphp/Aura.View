@@ -170,6 +170,24 @@ class TemplateRegistryTest extends TestCase
         $actual = $this->template_registry->get('ns::wrong::format');
     }
 
+    public function testSetTemplateFileExtensionResetsFound()
+    {
+        $this->template_registry = new FakeTemplateRegistry;
+        $this->template_registry->appendPath('/foo');
+
+        $php = '/foo' . DIRECTORY_SEPARATOR . 'zim.php';
+        $phtml = '/foo' . DIRECTORY_SEPARATOR . 'zim.phtml';
+        $this->template_registry->fakefs[$php] = 'fake';
+        $this->template_registry->fakefs[$phtml] = 'fake';
+
+        // resolve once under the default extension ...
+        $this->assertResolvesTo($php, 'zim');
+
+        // ... then change the extension; the memoized hit must not survive.
+        $this->template_registry->setTemplateFileExtension('.phtml');
+        $this->assertResolvesTo($phtml, 'zim');
+    }
+
     public function testGetNamespaces()
     {
         $this->template_registry = new FakeTemplateRegistry;
