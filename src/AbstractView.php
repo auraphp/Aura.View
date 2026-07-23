@@ -336,6 +336,44 @@ abstract class AbstractView
 
     /**
      *
+     * Invokes a template and captures its output.
+     *
+     * Output is discarded rather than flushed if the template throws, so a
+     * failed render does not leak half-rendered output into the enclosing one.
+     *
+     * A template can leave more than the render buffer open: beginSection()
+     * opens its own buffer and pushes a capture frame, so a template that
+     * throws mid-section has two buffers and a frame in flight. Unwinding only
+     * the innermost buffer would leave the render buffer orphaned -- later
+     * output would disappear into it -- and leave a stale frame for a later
+     * endSection() to consume, silently capturing the wrong content under the
+     * wrong name. Restore both to the depth they had on entry.
+     *
+     * @param array<string, mixed> $vars Variables for the template.
+     *
+     */
+    protected function captureTemplate(\Closure $template, array $vars): string
+    {
+        $buffer_level = ob_get_level();
+        $capture_level = count($this->capture);
+
+        ob_start();
+
+        try {
+            $template->__invoke($vars);
+        } catch (\Throwable $e) {
+            while (ob_get_level() > $buffer_level) {
+                ob_end_clean();
+            }
+            array_splice($this->capture, $capture_level);
+            throw $e;
+        }
+
+        return (string) ob_get_clean();
+    }
+
+    /**
+     *
      * Sets the content to be used in the layout.
      *
      */
