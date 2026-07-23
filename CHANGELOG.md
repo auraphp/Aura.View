@@ -6,6 +6,13 @@ The first release of the `6.x` line. The version jumps 2.x -> 6.x to keep step
 with the rest of the suite (Aura.Filter `6.x`, Aura.Auth `6.x`, Aura.Router
 `6.x`); there is no 3.x, 4.x, or 5.x.
 
+**The license is now MIT**, changed from BSD-2-Clause. MIT is the suite
+convention; Aura.Auth and Aura.Router moved earlier, and Aura.Html's BSD was
+corrected as an oversight. MIT is more permissive than BSD-2-Clause, so this
+relaxes rather than restricts what consumers may do. The `LICENSE` file, the
+`composer.json` `license` field, and all 12 `src/**.php` headers are updated;
+copyright is `2011-2026, Aura for PHP`.
+
 Aura.View still has **no runtime dependencies**. It ships no escaper, by
 design -- the package is media-type agnostic, so escaping stays explicit and
 yours to choose. See the README's *Escaping Output* section.
