@@ -177,25 +177,7 @@ $view->setStrictParent((bool) getenv('APP_DEBUG'));
 ?>
 ```
 
-Calling `parent()` when there is no current template at all throws _Aura\View\Exception_ instead. Template code cannot reach this -- if a template is running, it was rendered, and a render always has a frame. It is a guard for code that steps outside the normal path: a _View_ subclass calling `parent()` directly, a template closure invoked without going through `render()`, or -- the one that matters -- a subclass that overrides `render()` and does not maintain the render stack:
-
-```php
-<?php
-protected function render(string $name, array $vars = []): string
-{
-    $template = $this->getTemplate($name);
-    $this->pushRender($name, $this->getResolvedPath($name));
-
-    try {
-        return $this->captureTemplate($template, $vars);
-    } finally {
-        $this->popRender();   // in a finally, so a throwing template still unwinds
-    }
-}
-?>
-```
-
-Without those two calls every `parent()` in the application would quietly return `''` and every override would go back to replacing instead of extending -- wrong output, nothing raised. The exception makes that mistake announce itself.
+Calling `parent()` when there is no current template at all is a different thing, and throws _Aura\View\Exception_ regardless of strict mode. Template code cannot reach it: if a template is running then it was rendered, and a render always has a frame. It is a guard for code that steps outside the normal path -- most usefully, a _View_ subclass that overrides `render()` without maintaining the render stack, which would otherwise make every `parent()` in the application quietly return `''`. If you override `render()`, push a frame before invoking the template and pop it in a `finally`; see `Aura\View\View::render()`.
 
 Because resolution is per *name*, `parent()` is the seam a modular application needs: the shadowing file and the shadowed file share a name, and neither has to know how many other packages sit in the chain.
 
