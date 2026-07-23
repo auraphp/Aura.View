@@ -14,7 +14,7 @@
         "view"
     ],
     "homepage": "https://github.com/auraphp/Aura.View",
-    "license": "BSD-2-Clause",
+    "license": "MIT",
     "authors": [
         {
             "name": "Aura.View Contributors",
