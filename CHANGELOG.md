@@ -54,6 +54,27 @@ yours to choose. See the README's *Escaping Output* section.
   Aura.Di 5.x, and encoded the dead v2 kernel discovery convention. Wiring
   moves to the consuming framework's module class.
 
+- [BRK] **`ViewFactory::newInstance()` takes a _ViewSpec_ per registry** instead
+  of four flat array arguments. `$helpers` remains the first parameter, so
+  `newInstance()` and `newInstance($helpers)` are unaffected; only the longer
+  positional form changes, and it fails with a `\TypeError` naming the
+  parameter.
+
+      // 2.x
+      $view_factory->newInstance($helpers, $view_map, $view_paths, $layout_map, $layout_paths);
+
+      // 6.x
+      $view_factory->newInstance(
+          $helpers,
+          new \Aura\View\ViewSpec(map: $view_map, paths: $view_paths),
+          new \Aura\View\ViewSpec(map: $layout_map, paths: $layout_paths),
+      );
+
+  The four settings that describe a registry -- `map`, `paths`, `namespaces`,
+  `extension` -- belong together; flat arguments interleaved the view
+  registry's with the layout registry's, and adding the two missing ones would
+  have made a nine-parameter method.
+
 - [BRK] `endSection()` without a matching `beginSection()` now throws
   `Aura\View\Exception` instead of silently capturing under a null key.
 
@@ -86,6 +107,18 @@ yours to choose. See the README's *Escaping Output* section.
   implement an Aura.View interface without depending on Aura.View, the wrong
   direction -- while using none of that interface's methods. **The documented
   Aura.Html wiring therefore continues to work unchanged, with no adapter.**
+
+- [ADD] **`ViewSpec`**, a readonly value object describing one template
+  registry: `map`, `paths`, `namespaces`, and `extension`. Its `newRegistry()`
+  method builds the corresponding _TemplateRegistry_, so it is useful when
+  assembling a _View_ without the factory.
+
+- [FIX] **Template namespaces and the template file extension are reachable
+  through _ViewFactory_.** Previously the factory built each _TemplateRegistry_
+  with two of its three constructor arguments -- dropping `$namespaces`
+  entirely -- and never called `setTemplateFileExtension()`. Both were
+  therefore unusable through the factory even though _TemplateRegistry_ has
+  supported namespaces since 2.4.0.
 
 - [ADD] `aura/html` is listed under `suggest` and `require-dev`, and the
   integration is now covered by tests. It remains optional; Aura.View does not

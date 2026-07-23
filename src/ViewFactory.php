@@ -23,35 +23,35 @@ class ViewFactory
      *
      * Returns a new View instance.
      *
+     *     $factory->newInstance(
+     *         view: new ViewSpec(
+     *             paths: ['/path/to/views'],
+     *             namespaces: ['blog' => ['/path/to/blog/templates']],
+     *         ),
+     *         layout: new ViewSpec(paths: ['/path/to/layouts']),
+     *     );
+     *
      * @param object|null $helpers An arbitrary helper manager for the View; if
-     * not specified, uses the HelperRegistry from this package. This is typed
-     * `object` rather than HelperRegistryInterface on purpose -- the View
-     * reaches helpers only through `__call()`, so any object with a `__call()`
-     * method works, including Aura.Html's _HelperLocator_.
+     * null, uses the HelperRegistry from this package. This is typed `object`
+     * rather than HelperRegistryInterface on purpose -- the View reaches
+     * helpers only through `__call()`, so any object with a `__call()` method
+     * works, including Aura.Html's _HelperLocator_.
      *
-     * @param array<string, string|callable> $view_map A map of explicit
-     * template names and locations in the view registry.
+     * @param ViewSpec|null $view The specification for the view registry; if
+     * null, an empty registry is built.
      *
-     * @param list<string> $view_paths Filesystem paths to search for templates
-     * in the view registry.
-     *
-     * @param array<string, string|callable> $layout_map A map of explicit
-     * template names and locations in the layout registry.
-     *
-     * @param list<string> $layout_paths Filesystem paths to search for
-     * templates in the layout registry.
+     * @param ViewSpec|null $layout The specification for the layout registry;
+     * if null, an empty registry is built.
      *
      */
     public function newInstance(
         ?object $helpers = null,
-        array $view_map = [],
-        array $view_paths = [],
-        array $layout_map = [],
-        array $layout_paths = []
+        ?ViewSpec $view = null,
+        ?ViewSpec $layout = null
     ): View {
         return new View(
-            new TemplateRegistry($view_map, $view_paths),
-            new TemplateRegistry($layout_map, $layout_paths),
+            ($view ?? new ViewSpec())->newRegistry(),
+            ($layout ?? new ViewSpec())->newRegistry(),
             $helpers ?? new HelperRegistry()
         );
     }

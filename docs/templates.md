@@ -108,41 +108,90 @@ $layout_registry->setTemplateFileExtension('.phtml');
 
 ### Configuring the Registries Up Front
 
-Alternatively you can pass a [helper manager](helpers.md), plus mapping information or paths for views and layouts, directly to the _ViewFactory_:
+Rather than configuring each registry after the fact, you can describe both up front and pass them to the _ViewFactory_. A _ViewSpec_ describes one registry -- its map, paths, namespaces, and file extension:
 
 ```php
 <?php
-$view_factory = new \Aura\View\ViewFactory;
+use Aura\View\ViewFactory;
+use Aura\View\ViewSpec;
+
+$view_factory = new ViewFactory;
+
 $view = $view_factory->newInstance(
-    null, // the helper manager; null gives you a HelperRegistry
-    [
-        'browse' => '/path/to/views/browse.php',
-    ],
-    [
-        '/path/to/views/welcome',
-        '/path/to/views/user',
-    ],
-    [
-        'layout' => '/path/to/layouts/default.php',
-    ],
-    [
-        '/path/to/layouts',
-    ],
+    view: new ViewSpec(
+        map: ['browse' => '/path/to/views/browse.php'],
+        paths: ['/path/to/views/welcome', '/path/to/views/user'],
+        namespaces: ['blog' => ['/path/to/blog/templates']],
+    ),
+    layout: new ViewSpec(
+        map: ['default' => '/path/to/layouts/default.php'],
+        paths: ['/path/to/layouts'],
+    ),
 );
 ?>
 ```
 
-If you pass the mapping information or paths for views and layouts this way, you do not need to call `getViewRegistry()` or `getLayoutRegistry()` and `set()` the mapping information afterwards. That is, the above is equivalent to:
+`newInstance()` takes three parameters, all optional:
+
+1. `$helpers` -- the [helper manager](helpers.md); omit it, or pass `null`, to get the default _HelperRegistry_
+2. `$view` -- a _ViewSpec_ for the view registry
+3. `$layout` -- a _ViewSpec_ for the layout registry
+
+`$helpers` comes first so that `newInstance($helpers)` -- the one-line [Aura.Html wiring](helpers.md#using-aurahtml-helpers) -- keeps working as a positional call.
+
+The example above is equivalent to configuring the registries by hand:
 
 ```php
 <?php
 $view_registry = $view->getViewRegistry();
 $view_registry->set('browse', '/path/to/views/browse.php');
+$view_registry->setPaths(['/path/to/views/welcome', '/path/to/views/user']);
+$view_registry->appendPath('/path/to/blog/templates', 'blog');
 
 $layout_registry = $view->getLayoutRegistry();
-$layout_registry->set('layout', '/path/to/layouts/default.php');
+$layout_registry->set('default', '/path/to/layouts/default.php');
+$layout_registry->setPaths(['/path/to/layouts']);
 ?>
 ```
 
-> N.b.: Namespaced paths are not reachable through the factory; set them on the
-> registries with `appendPath()` or `setNamespaces()`.
+#### The ViewSpec
+
+Every _ViewSpec_ parameter is optional, so pass only what you need:
+
+```php
+<?php
+use Aura\View\ViewSpec;
+
+new ViewSpec(
+    map: [],          // array<string, string|callable>
+    paths: [],        // list<string>
+    namespaces: [],   // array<string, list<string>>
+    extension: '.php' // string
+);
+?>
+```
+
+The `extension` corresponds to `setTemplateFileExtension()`, and the view and layout registries are independent -- so a project with `.phtml` views and `.php` layouts is a single call:
+
+```php
+<?php
+use Aura\View\ViewSpec;
+
+$view = $view_factory->newInstance(
+    view: new ViewSpec(paths: ['/path/to/views'], extension: '.phtml'),
+    layout: new ViewSpec(paths: ['/path/to/layouts']),
+);
+?>
+```
+
+A _ViewSpec_ is a readonly value object with no setters. Build it once, with named arguments; there is nothing to mutate afterwards. If you need to vary one, construct a new one.
+
+It can also build a registry on its own, which is useful if you are assembling a _View_ without the factory:
+
+```php
+<?php
+use Aura\View\ViewSpec;
+
+$registry = (new ViewSpec(paths: ['/path/to/views']))->newRegistry();
+?>
+```
