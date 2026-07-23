@@ -58,16 +58,6 @@ class View extends AbstractView
      */
     protected function render(string $name, array $vars = []): string
     {
-        $template = $this->getTemplate($name);
-
-        ob_start();
-        try {
-            $template->__invoke($vars);
-        } catch (\Throwable $e) {
-            ob_end_clean();
-            throw $e;
-        }
-
-        return (string) ob_get_clean();
+        return $this->captureTemplate($this->getTemplate($name), $vars);
     }
 }

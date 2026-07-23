@@ -170,6 +170,18 @@ yours to choose. See the README's *Escaping Output* section.
 - [FIX] `View::render()` no longer leaks an output buffer when a template
   throws.
 
+- [FIX] **A template that throws *mid-section* no longer leaves an output
+  buffer and a section frame behind.** `render()` unwound exactly one buffer,
+  which is enough only when the render buffer is the sole one open;
+  `beginSection()` opens a second buffer and pushes a capture frame, so a
+  template throwing between `beginSection()` and `endSection()` left the render
+  buffer orphaned and a stale frame on the stack. Both leaked into whatever
+  rendered next: output vanished into the buffer nobody closed, and a later
+  unmatched `endSection()` consumed the stale frame instead of throwing,
+  silently capturing the wrong content under the wrong name. The buffering
+  moves to `AbstractView::captureTemplate()`, which records the buffer and
+  capture depths on entry and restores both on failure.
+
 - [FIX] `$capture` and `$section` initialise to `[]` rather than null;
   appending to null is deprecated as of PHP 8.3.
 
