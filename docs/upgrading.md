@@ -52,7 +52,35 @@ The helper manager parameter is typed `?object`, so PHP rejects a non-object wit
 
 `getViewRegistry()` and `getLayoutRegistry()` now return _TemplateRegistryInterface_ rather than the concrete _TemplateRegistry_. Runtime behaviour is unchanged, since _TemplateRegistry_ implements _SearchPathInterface_ too. But if you write a method that accepts a registry and then adds paths to it, type that parameter _SearchPathInterface_. See [Interfaces](interfaces.md).
 
-### 7. Set A View Template Before Invoking
+### 7. Wrap ViewFactory Arguments In A ViewSpec
+
+`ViewFactory::newInstance()` took five positional arguments in 2.x. It now takes three, with the per-registry settings grouped into a _ViewSpec_:
+
+```php
+<?php
+// 2.x
+$view = $view_factory->newInstance(
+    $helpers,
+    $view_map,
+    $view_paths,
+    $layout_map,
+    $layout_paths
+);
+
+// 6.x
+$view = $view_factory->newInstance(
+    $helpers,
+    new ViewSpec(map: $view_map, paths: $view_paths),
+    new ViewSpec(map: $layout_map, paths: $layout_paths),
+);
+?>
+```
+
+`$helpers` is still the first parameter, so `newInstance()` and `newInstance($helpers)` are unaffected -- only the longer positional form changes, and it fails with a `\TypeError` naming the parameter rather than misbehaving quietly.
+
+The grouping also closes two gaps: `namespaces` and `extension` were unreachable through the factory in 2.x, because it built each _TemplateRegistry_ with only two of its three constructor arguments and never touched `setTemplateFileExtension()`. See [Configuring the Registries Up Front](templates.md#configuring-the-registries-up-front).
+
+### 8. Set A View Template Before Invoking
 
 Invoking a _View_ with no view template set now returns `''` (wrapped in the layout, if one is set) rather than raising _TemplateNotFound_ on a null template name. If you relied on that exception to catch a misconfiguration, check `getView()` yourself.
 
