@@ -1,5 +1,114 @@
 # CHANGELOG
 
+## 6.0.0 (unreleased)
+
+The first release of the `6.x` line. The version jumps 2.x -> 6.x to keep step
+with the rest of the suite (Aura.Filter `6.x`, Aura.Auth `6.x`, Aura.Router
+`6.x`); there is no 3.x, 4.x, or 5.x.
+
+Aura.View still has **no runtime dependencies**. It ships no escaper, by
+design -- the package is media-type agnostic, so escaping stays explicit and
+yours to choose. See the README's *Escaping Output* section.
+
+### Breaking
+
+- [BRK] **PHP `^8.4` is now required**, up from `>=5.4.0`.
+
+- [BRK] **Native parameter and return types throughout, under
+  `declare(strict_types=1)`.** This breaks **subclasses**, not callers: a
+  userland class overriding e.g. `setData($data)` must now declare a matching
+  signature or it will fatal on load. Direct callers are unaffected.
+
+- [BRK] **Setters return `void`, they are not fluent.** Aura.View is a service,
+  not a specification builder -- the suite's fluent interfaces (Aura.SqlQuery,
+  Aura.Html, Aura.Router) are all builders. Setter calls cannot be chained.
+  Note that adding *any* return type is the break here; `void` versus `static`
+  only decides which break is spent.
+
+- [BRK] **`TemplateRegistry::get()` returns `\Closure`.** Non-closure callables
+  given to `set()` are now normalised to closures so the _View_ can bind
+  `$this` to them. Previously an array callable was stored as-is and then
+  failed in `bindTo()`, so this also fixes a latent bug.
+
+- [BRK] **The registry getters return `TemplateRegistryInterface`**, not the
+  concrete _TemplateRegistry_. Code that contributes search paths should type
+  against the new _SearchPathInterface_.
+
+- [BRK] **Invoking a _View_ with no view template set returns `''`** (wrapped in
+  the layout, if one is set) instead of raising _TemplateNotFound_ on a null
+  template name. The old behaviour is not expressible under strict types.
+
+- [BRK] **Calling an unresolvable helper throws
+  `Aura\View\Exception\HelperNotFound`** instead of a raw PHP `Error`.
+
+- [BRK] **`config/Common.php` and the `extra.aura` block are removed**, along
+  with the `Aura\View\_Config\` PSR-4 entry and the `aura/di` dev dependency.
+  The config extended `Aura\Di\Config`, a class that no longer exists in
+  Aura.Di 5.x, and encoded the dead v2 kernel discovery convention. Wiring
+  moves to the consuming framework's module class.
+
+- [BRK] `endSection()` without a matching `beginSection()` now throws
+  `Aura\View\Exception` instead of silently capturing under a null key.
+
+### Deprecated
+
+- [DEP] `Aura\View\Exception\InvalidHelpersObject` is never thrown. The
+  helpers parameter is typed `?object`, so PHP's own `\TypeError` rejects a
+  non-object first. The class is retained so existing `catch` blocks still
+  resolve, and will be removed in 7.0.
+
+### Added
+
+- [ADD] **`TemplateRegistryInterface`** (`set()`, `has()`, `get()`) and
+  **`SearchPathInterface`** (`getPaths()`, `setPaths()`, `prependPath()`,
+  `appendPath()`, `setNamespaces()`, `hasNamespace()`,
+  `setTemplateFileExtension()`). Previously `setTemplateRegistry()` type-hinted
+  the concrete class, so a framework could not substitute a module-aware
+  registry without extending it. Path management is kept out of
+  `TemplateRegistryInterface` on purpose: a registry backed by a precompiled
+  name-to-file map has no paths to manage. _TemplateRegistry_ implements both.
+
+- [ADD] **`HelperRegistryInterface`** (`set()`, `has()`, `get()`), implemented
+  by _HelperRegistry_.
+
+  Note that the _View_ deliberately does **not** type-hint against it. The
+  helper manager parameter on `ViewFactory::newInstance()` and
+  `AbstractView::__construct()` is typed `?object`, because a _View_ reaches
+  its helpers only through `__call()`. Typing it to the interface would exclude
+  valid managers -- including Aura.Html's _HelperLocator_, which cannot
+  implement an Aura.View interface without depending on Aura.View, the wrong
+  direction -- while using none of that interface's methods. **The documented
+  Aura.Html wiring therefore continues to work unchanged, with no adapter.**
+
+- [ADD] `aura/html` is listed under `suggest` and `require-dev`, and the
+  integration is now covered by tests. It remains optional; Aura.View does not
+  require it.
+
+### Fixed
+
+- [FIX] `View::render()` no longer leaks an output buffer when a template
+  throws.
+
+- [FIX] `$capture` and `$section` initialise to `[]` rather than null;
+  appending to null is deprecated as of PHP 8.3.
+
+- [FIX] Stray double semicolon in `TemplateRegistry::isNamespaced()`.
+
+- [FIX] 19 docblock defects found by PHPStan (15 bogus `@return null` tags, 5
+  global classes missing a leading backslash, 1 `@param` naming a nonexistent
+  parameter).
+
+### Support
+
+- [CHG] PHPUnit ^12; `yoast/phpunit-polyfills` dropped -- it exists to span
+  PHPUnit 4-9 assertion signatures and is dead weight on an 8.4-only major.
+  `phpunit.php` and the dead `ContainerTest` are removed.
+
+- [CHG] PHPStan ^2 added; `src/` is clean at level 9. `composer test`,
+  `composer test-coverage`, and `composer phpstan` scripts added.
+
+- [CHG] CI matrix reduced to PHP 8.4 and 8.5.
+
 ## 2.4.0
 
 * Added namespace support to TemplateRegistry by @jakejohns https://github.com/auraphp/Aura.View/pull/83.

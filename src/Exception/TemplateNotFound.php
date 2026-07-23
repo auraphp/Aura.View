@@ -6,6 +6,8 @@
  * @license http://opensource.org/licenses/bsd-license.php BSD
  *
  */
+declare(strict_types=1);
+
 namespace Aura\View\Exception;
 
 use Aura\View\Exception as Exception;

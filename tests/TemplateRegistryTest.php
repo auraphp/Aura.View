@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Aura\View;
 
 use PHPUnit\Framework\TestCase;
@@ -10,6 +12,17 @@ class TemplateRegistryTest extends TestCase
     protected function setUp(): void
     {
         $this->template_registry = new TemplateRegistry;
+    }
+
+    /**
+     * FakeTemplateRegistry encloses a found file in a closure that echoes the
+     * file name, so invoking the template reveals which file the search picked.
+     */
+    protected function assertResolvesTo(string $expect, string $name): void
+    {
+        ob_start();
+        $this->template_registry->get($name)();
+        $this->assertSame($expect, ob_get_clean());
     }
 
     public function testSetHasGet()
@@ -94,13 +107,10 @@ class TemplateRegistryTest extends TestCase
         $this->template_registry->fakefs[$file] = 'fake';
 
         // now get it
-        $expect = $file;
-        $actual = $this->template_registry->get('zim');
-        $this->assertSame($expect, $actual);
+        $this->assertResolvesTo($file, 'zim');
 
         // get it again for code coverage
-        $actual = $this->template_registry->get('zim');
-        $this->assertSame($expect, $actual);
+        $this->assertResolvesTo($file, 'zim');
 
 
         // test searching with a non-default template file extension
@@ -110,9 +120,7 @@ class TemplateRegistryTest extends TestCase
         $file = "/foo" . DIRECTORY_SEPARATOR . 'test.phtml';
         $this->template_registry->fakefs[$file] = 'fake';
 
-        $expect = $file;
-        $actual = $this->template_registry->get('test');
-        $this->assertSame($expect, $actual);
+        $this->assertResolvesTo($file, 'test');
 
         // look for a file that doesn't exist
         $this->expectException('Aura\View\Exception\TemplateNotFound');
@@ -128,9 +136,7 @@ class TemplateRegistryTest extends TestCase
         $file = '/bar' . DIRECTORY_SEPARATOR . 'zim.php';
         $this->template_registry->fakefs[$file] = 'fake';
 
-        $expect = $file;
-        $actual = $this->template_registry->get('ns::zim');
-        $this->assertSame($expect, $actual);
+        $this->assertResolvesTo($file, 'ns::zim');
 
         // prepend
         $this->template_registry->prependPath('/bar', 'ns2');
@@ -142,9 +148,7 @@ class TemplateRegistryTest extends TestCase
         $file = '/baz' . DIRECTORY_SEPARATOR . 'zim.php';
         $this->template_registry->fakefs[$file] = 'new';
 
-        $expect = $file;
-        $actual = $this->template_registry->get('ns2::zim');
-        $this->assertSame($expect, $actual);
+        $this->assertResolvesTo($file, 'ns2::zim');
 
 
         // doesnt exist

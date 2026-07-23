@@ -1,13 +1,19 @@
 <?php
+declare(strict_types=1);
+
 namespace Aura\View;
 
 class FakeTemplateRegistry extends TemplateRegistry
 {
-    // a fake file system
-    public $fakefs = array();
+    /**
+     * A fake file system: file name => contents.
+     *
+     * @var array<string, string>
+     */
+    public array $fakefs = [];
 
     // read from the fake file system
-    protected function isReadable($file)
+    protected function isReadable(string $file): bool
     {
         // use parent for coverage
         parent::isReadable($file);
@@ -15,9 +21,12 @@ class FakeTemplateRegistry extends TemplateRegistry
         return isset($this->fakefs[$file]);
     }
 
-    // do not wrap in closure
-    protected function enclose($__FILE__)
+    // do not require the file; echo the resolved name instead, so tests can
+    // assert on which file the path search picked.
+    protected function enclose(string $__FILE__): \Closure
     {
-        return $__FILE__;
+        return function (array $__VARS__ = []) use ($__FILE__): void {
+            echo $__FILE__;
+        };
     }
 }

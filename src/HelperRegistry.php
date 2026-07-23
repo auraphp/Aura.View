@@ -6,6 +6,8 @@
  * @license http://opensource.org/licenses/bsd-license.php BSD
  *
  */
+declare(strict_types=1);
+
 namespace Aura\View;
 
 /**
@@ -15,25 +17,25 @@ namespace Aura\View;
  * @package Aura.View
  *
  */
-class HelperRegistry
+class HelperRegistry implements HelperRegistryInterface
 {
     /**
      *
      * The map of registered helpers.
      *
-     * @var array
+     * @var array<string, callable>
      *
      */
-    protected $map = array();
+    protected array $map = [];
 
     /**
      *
      * Constructor.
      *
-     * @param array $map A map of helpers.
+     * @param array<string, callable> $map A map of helpers.
      *
      */
-    public function __construct(array $map = array())
+    public function __construct(array $map = [])
     {
         $this->map = $map;
     }
@@ -44,12 +46,11 @@ class HelperRegistry
      *
      * @param string $name The registered helper name.
      *
-     * @param array $args Arguments to pass to the helper invocation.
-     *
-     * @return mixed
+     * @param array<int, mixed> $args Arguments to pass to the helper
+     * invocation.
      *
      */
-    public function __call($name, $args)
+    public function __call(string $name, array $args): mixed
     {
         return call_user_func_array($this->get($name), $args);
     }
@@ -63,7 +64,7 @@ class HelperRegistry
      * @param callable $callable The callable helper.
      *
      */
-    public function set($name, $callable)
+    public function set(string $name, callable $callable): void
     {
         $this->map[$name] = $callable;
     }
@@ -72,12 +73,8 @@ class HelperRegistry
      *
      * Is a named helper registered?
      *
-     * @param string $name The helper name.
-     *
-     * @return bool
-     *
      */
-    public function has($name)
+    public function has(string $name): bool
     {
         return isset($this->map[$name]);
     }
@@ -86,12 +83,10 @@ class HelperRegistry
      *
      * Gets a helper from the registry.
      *
-     * @param string $name The helper name.
-     *
-     * @return callable
+     * @throws Exception\HelperNotFound when the name is not registered.
      *
      */
-    public function get($name)
+    public function get(string $name): callable
     {
         if (! $this->has($name)) {
             throw new Exception\HelperNotFound($name);

@@ -1,0 +1,11 @@
+{
+    "title": "Aura.View 6.x",
+    "content": [
+        "getting-started.md",
+        "templates.md",
+        "escaping.md",
+        "helpers.md",
+        "interfaces.md",
+        "upgrading.md"
+    ]
+}

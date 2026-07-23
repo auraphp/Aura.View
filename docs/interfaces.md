@@ -1,0 +1,69 @@
+## Interfaces
+
+Version 6.0 splits what used to be one concrete class into two interfaces, so that a framework can substitute a registry without extending _TemplateRegistry_. In 2.x, `setTemplateRegistry()` type-hinted the concrete class, which made substitution impossible without inheritance.
+
+### TemplateRegistryInterface
+
+The minimum contract: name in, closure out.
+
+```php
+interface TemplateRegistryInterface
+{
+    public function set(string $name, string|callable $spec): void;
+    public function has(string $name): bool;
+    public function get(string $name): \Closure;
+}
+```
+
+A string `$spec` is treated as a path to a PHP include file and is wrapped in a closure. Any other callable is normalised to a `\Closure`, so that `get()` can always return something the _View_ can bind `$this` to.
+
+`get()` throws _Aura\View\Exception\TemplateNotFound_ when the name cannot be resolved.
+
+The _View_ constructor and the `getViewRegistry()` / `getLayoutRegistry()` methods are typed against this interface.
+
+### SearchPathInterface
+
+Filesystem search-path management, kept deliberately separate:
+
+```php
+interface SearchPathInterface
+{
+    public function getPaths(): array;
+    public function setPaths(array $paths): void;
+    public function prependPath(string $path, ?string $namespace = null): void;
+    public function appendPath(string $path, ?string $namespace = null): void;
+    public function setNamespaces(array $namespaces): void;
+    public function hasNamespace(string $namespace): bool;
+    public function setTemplateFileExtension(string $templateFileExtension): void;
+}
+```
+
+Path management is **not** part of _TemplateRegistryInterface_ because a registry backed by a precompiled name-to-file map has no paths to manage -- it resolves names from a lookup table built ahead of time. Forcing such a registry to implement `prependPath()` would mean stubbing out methods it cannot honour.
+
+_TemplateRegistry_, the implementation shipped with this package, implements both interfaces. So if you are using the default registry, everything continues to work exactly as before. The split only matters when you write or accept an alternative implementation:
+
+```php
+<?php
+// accept any registry
+public function setViewRegistry(TemplateRegistryInterface $registry): void
+
+// accept only a registry you can contribute paths to
+public function addTemplatePath(SearchPathInterface $registry, string $path): void
+```
+
+### HelperRegistryInterface
+
+```php
+interface HelperRegistryInterface
+{
+    public function set(string $name, callable $callable): void;
+    public function has(string $name): bool;
+    public function get(string $name): callable;
+}
+```
+
+Note that the _View_ does **not** type-hint against this interface -- the helper manager parameter is `?object`. See [Custom Helper Managers](helpers.md#custom-helper-managers) for why.
+
+### Why These Live In aura/view
+
+The suite has a precedent for separate interface packages (Aura.Filter_Interface, Aura.Session_Interface), but these three interfaces are small enough to live in `aura/view` itself. There is no `Aura.View_Interface` package, and there will not be one unless a second implementation lands that needs to be shared across packages.

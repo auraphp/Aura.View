@@ -1,11 +1,13 @@
 <?php
+declare(strict_types=1);
+
 namespace Aura\View;
 
 use PHPUnit\Framework\TestCase;
 
 class HelperRegistryTest extends TestCase
 {
-    protected $helper_registry;
+    protected HelperRegistry $helper_registry;
 
     protected function setUp(): void
     {

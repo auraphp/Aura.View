@@ -6,6 +6,8 @@
  * @license http://opensource.org/licenses/bsd-license.php BSD
  *
  */
+declare(strict_types=1);
+
 namespace Aura\View;
 
 /**
@@ -21,35 +23,36 @@ class ViewFactory
      *
      * Returns a new View instance.
      *
-     * @param object $helpers An arbitrary helper manager for the View; if not
-     * specified, uses the HelperRegistry from this package.
+     * @param object|null $helpers An arbitrary helper manager for the View; if
+     * not specified, uses the HelperRegistry from this package. This is typed
+     * `object` rather than HelperRegistryInterface on purpose -- the View
+     * reaches helpers only through `__call()`, so any object with a `__call()`
+     * method works, including Aura.Html's _HelperLocator_.
      *
-     * @param array $view_map A map of explicit template names and locations in View registry.
+     * @param array<string, string|callable> $view_map A map of explicit
+     * template names and locations in the view registry.
      *
-     * @param array $view_paths A map of filesystem paths to search for templates in View registry.
+     * @param list<string> $view_paths Filesystem paths to search for templates
+     * in the view registry.
      *
-     * @param array $layout_map A map of explicit template names and locations in Layout registry.
+     * @param array<string, string|callable> $layout_map A map of explicit
+     * template names and locations in the layout registry.
      *
-     * @param array $layout_paths A map of filesystem paths to search for templates in Layout registry.
-     *
-     * @return View
+     * @param list<string> $layout_paths Filesystem paths to search for
+     * templates in the layout registry.
      *
      */
     public function newInstance(
-        $helpers = null,
-        $view_map = [],
-        $view_paths = [],
-        $layout_map = [],
-        $layout_paths = []
-    ) {
-        if (! $helpers) {
-            $helpers = new HelperRegistry;
-        }
-
+        ?object $helpers = null,
+        array $view_map = [],
+        array $view_paths = [],
+        array $layout_map = [],
+        array $layout_paths = []
+    ): View {
         return new View(
             new TemplateRegistry($view_map, $view_paths),
             new TemplateRegistry($layout_map, $layout_paths),
-            $helpers
+            $helpers ?? new HelperRegistry()
         );
     }
 }

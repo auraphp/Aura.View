@@ -6,6 +6,8 @@
  * @license http://opensource.org/licenses/bsd-license.php BSD
  *
  */
+declare(strict_types=1);
+
 namespace Aura\View;
 
 /**
@@ -23,114 +25,103 @@ abstract class AbstractView
      *
      * The stack of section names currently being captured.
      *
-     * @var array
+     * @var list<string>
      *
      */
-    private $capture;
+    private array $capture = [];
 
     /**
      *
      * The content to be placed into the layout.
      *
-     * @var string
-     *
      */
-    private $content;
+    private string $content = '';
 
     /**
      *
      * Data assigned to the template.
      *
-     * @var object
-     *
      */
-    private $data;
+    private object $data;
 
     /**
      *
-     * An aribtrary object for helpers.
+     * An arbitrary object for helpers.
      *
-     * @var object
+     * Deliberately typed `object` and not HelperRegistryInterface: the view
+     * reaches its helper manager only through `__call()`, so any object with a
+     * `__call()` method will do -- including Aura.Html's _HelperLocator_,
+     * which cannot implement an Aura.View interface without depending on
+     * Aura.View.
      *
      */
-    private $helpers;
+    private ?object $helpers;
 
     /**
      *
      * The name of the layout template in the layout template registry.
      *
-     * @var string
-     *
      */
-    private $layout;
+    private ?string $layout = null;
 
     /**
      *
      * The layout template registry.
      *
-     * @var TemplateRegistry
-     *
      */
-    private $layout_registry;
+    private TemplateRegistryInterface $layout_registry;
 
     /**
      *
      * A collection point for section content.
      *
-     * @var array
+     * @var array<string, string>
      *
      */
-    private $section;
+    private array $section = [];
 
     /**
      *
      * The template registry currently in use.
      *
-     * @var TemplateRegistry
-     *
      */
-    private $template_registry;
+    private TemplateRegistryInterface $template_registry;
 
     /**
      *
      * The name of the view template in the view template registry.
      *
-     * @var string
-     *
      */
-    private $view;
+    private ?string $view = null;
 
     /**
      *
      * The view template registry.
      *
-     * @var TemplateRegistry
-     *
      */
-    private $view_registry;
+    private TemplateRegistryInterface $view_registry;
 
     /**
      *
      * Constructor.
      *
-     * @param TemplateRegistry $view_registry A registry for view templates.
+     * @param TemplateRegistryInterface $view_registry A registry for view
+     * templates.
      *
-     * @param TemplateRegistry $layout_registry A registry for layout templates.
+     * @param TemplateRegistryInterface $layout_registry A registry for layout
+     * templates.
      *
-     * @param object $helpers An arbitrary helper object.
+     * @param object|null $helpers An arbitrary helper object.
      *
      */
     public function __construct(
-        TemplateRegistry $view_registry,
-        TemplateRegistry $layout_registry,
-        $helpers = null
+        TemplateRegistryInterface $view_registry,
+        TemplateRegistryInterface $layout_registry,
+        ?object $helpers = null
     ) {
-        $this->data = (object) array();
+        $this->data = (object) [];
         $this->view_registry = $view_registry;
         $this->layout_registry = $layout_registry;
-        if ($helpers && ! is_object($helpers)) {
-            throw new Exception\InvalidHelpersObject;
-        }
         $this->helpers = $helpers;
     }
 
@@ -140,10 +131,8 @@ abstract class AbstractView
      *
      * @param string $key The template variable name.
      *
-     * @return mixed
-     *
      */
-    public function __get($key)
+    public function __get(string $key): mixed
     {
         return $this->data->$key;
     }
@@ -154,12 +143,10 @@ abstract class AbstractView
      *
      * @param string $key The template variable name.
      *
-     * @param string $val The template variable value.
-     *
-     * @return mixed
+     * @param mixed $val The template variable value.
      *
      */
-    public function __set($key, $val)
+    public function __set(string $key, mixed $val): void
     {
         $this->data->$key = $val;
     }
@@ -170,10 +157,8 @@ abstract class AbstractView
      *
      * @param string $key The template variable name.
      *
-     * @return bool
-     *
      */
-    public function __isset($key)
+    public function __isset(string $key): bool
     {
         return isset($this->data->$key);
     }
@@ -185,7 +170,7 @@ abstract class AbstractView
      * @param string $key The template variable name.
      *
      */
-    public function __unset($key)
+    public function __unset(string $key): void
     {
         unset($this->data->$key);
     }
@@ -196,26 +181,30 @@ abstract class AbstractView
      *
      * @param string $name The helper object method name.
      *
-     * @param array $args The arguments to pass to the helper.
-     *
-     * @return mixed
+     * @param array<int, mixed> $args The arguments to pass to the helper.
      *
      */
-    public function __call($name, $args)
+    public function __call(string $name, array $args): mixed
     {
-        return call_user_func_array(array($this->helpers, $name), $args);
+        $helper = [$this->helpers, $name];
+
+        if (! is_callable($helper)) {
+            throw new Exception\HelperNotFound($name);
+        }
+
+        return $helper(...$args);
     }
 
     /**
      *
      * Sets the data object.
      *
-     * @param array|object $data An array or object where the keys or properties
-     * are variable names, and the corresponding values are the variable values.
-     * (This param is cast to an object.)
+     * @param array<string, mixed>|object $data An array or object where the
+     * keys or properties are variable names, and the corresponding values are
+     * the variable values. (This param is cast to an object.)
      *
      */
-    public function setData($data)
+    public function setData(array|object $data): void
     {
         $this->data = (object) $data;
     }
@@ -224,12 +213,12 @@ abstract class AbstractView
      *
      * Adds to the view data.
      *
-     * @param array|\Traversable $data An array or object where the keys or
-     * properties are variable names, and the corresponding values are the
+     * @param iterable<string, mixed> $data An array or object where the keys
+     * or properties are variable names, and the corresponding values are the
      * variable values; these are looped over and added to the view data.
      *
      */
-    public function addData($data)
+    public function addData(iterable $data): void
     {
         foreach ($data as $key => $val) {
             $this->data->$key = $val;
@@ -240,10 +229,8 @@ abstract class AbstractView
      *
      * Gets the data object.
      *
-     * @return object
-     *
      */
-    public function getData()
+    public function getData(): object
     {
         return $this->data;
     }
@@ -252,10 +239,8 @@ abstract class AbstractView
      *
      * Gets the arbitrary object for helpers.
      *
-     * @return object
-     *
      */
-    public function getHelpers()
+    public function getHelpers(): ?object
     {
         return $this->helpers;
     }
@@ -264,10 +249,11 @@ abstract class AbstractView
      *
      * Sets the name of the layout template to render.
      *
-     * @param string $layout The name of the layout template to render.
+     * @param string|null $layout The name of the layout template to render;
+     * null or an empty string means "no layout".
      *
      */
-    public function setLayout($layout)
+    public function setLayout(?string $layout): void
     {
         $this->layout = $layout;
     }
@@ -276,10 +262,8 @@ abstract class AbstractView
      *
      * Gets the name of the layout template to be rendered.
      *
-     * @return string
-     *
      */
-    public function getLayout()
+    public function getLayout(): ?string
     {
         return $this->layout;
     }
@@ -288,10 +272,8 @@ abstract class AbstractView
      *
      * Gets the layout template registry.
      *
-     * @return TemplateRegistry
-     *
      */
-    public function getLayoutRegistry()
+    public function getLayoutRegistry(): TemplateRegistryInterface
     {
         return $this->layout_registry;
     }
@@ -300,10 +282,10 @@ abstract class AbstractView
      *
      * Sets the name of the view template to render.
      *
-     * @param string $view The name of the view template to render.
+     * @param string|null $view The name of the view template to render.
      *
      */
-    public function setView($view)
+    public function setView(?string $view): void
     {
         $this->view = $view;
     }
@@ -312,10 +294,8 @@ abstract class AbstractView
      *
      * Gets the name of the view template to be rendered.
      *
-     * @return string
-     *
      */
-    public function getView()
+    public function getView(): ?string
     {
         return $this->view;
     }
@@ -324,23 +304,20 @@ abstract class AbstractView
      *
      * Gets the view template registry.
      *
-     * @return TemplateRegistry
-     *
      */
-    public function getViewRegistry()
+    public function getViewRegistry(): TemplateRegistryInterface
     {
         return $this->view_registry;
     }
 
     /**
      *
-     * Sets the template registry.
-     *
-     * @param TemplateRegistry $template_registry The template registry.
+     * Sets the template registry currently in use.
      *
      */
-    protected function setTemplateRegistry(TemplateRegistry $template_registry)
-    {
+    protected function setTemplateRegistry(
+        TemplateRegistryInterface $template_registry
+    ): void {
         $this->template_registry = $template_registry;
     }
 
@@ -348,27 +325,21 @@ abstract class AbstractView
      *
      * Gets a template from the registry and binds $this to it.
      *
-     * @param string $name The template name.
-     *
-     * @return \Closure
+     * A static closure cannot be bound; it is returned as-is.
      *
      */
-    protected function getTemplate($name)
+    protected function getTemplate(string $name): \Closure
     {
         $tmpl = $this->template_registry->get($name);
-        return $tmpl->bindTo($this, get_class($this));
+        return $tmpl->bindTo($this, static::class) ?? $tmpl;
     }
 
     /**
      *
      * Sets the content to be used in the layout.
      *
-     * @param string $content The content to be used in the layout.
-     *
-     * @return void
-     *
      */
-    protected function setContent($content)
+    protected function setContent(string $content): void
     {
         $this->content = $content;
     }
@@ -377,10 +348,8 @@ abstract class AbstractView
      *
      * Gets the content to be used in the layout.
      *
-     * @return string
-     *
      */
-    protected function getContent()
+    protected function getContent(): string
     {
         return $this->content;
     }
@@ -389,12 +358,8 @@ abstract class AbstractView
      *
      * Is a particular named section available?
      *
-     * @param string $name The section name.
-     *
-     * @return bool
-     *
      */
-    protected function hasSection($name)
+    protected function hasSection(string $name): bool
     {
         return isset($this->section[$name]);
     }
@@ -404,12 +369,8 @@ abstract class AbstractView
      * Sets the body of a named section directly, as opposed to buffering and
      * capturing output.
      *
-     * @param string $name The section name.
-     *
-     * @param string $body The section body.
-     *
      */
-    protected function setSection($name, $body)
+    protected function setSection(string $name, string $body): void
     {
         $this->section[$name] = $body;
     }
@@ -418,12 +379,8 @@ abstract class AbstractView
      *
      * Gets the body of a named section.
      *
-     * @param string $name The section name.
-     *
-     * @return string
-     *
      */
-    protected function getSection($name)
+    protected function getSection(string $name): string
     {
         return $this->section[$name];
     }
@@ -432,10 +389,8 @@ abstract class AbstractView
      *
      * Begins output buffering for a named section.
      *
-     * @param string $name The section name.
-     *
      */
-    protected function beginSection($name)
+    protected function beginSection(string $name): void
     {
         $this->capture[] = $name;
         ob_start();
@@ -446,10 +401,15 @@ abstract class AbstractView
      * Ends buffering and retains output for the most-recent section.
      *
      */
-    protected function endSection()
+    protected function endSection(): void
     {
         $body = ob_get_clean();
         $name = array_pop($this->capture);
-        $this->setSection($name, $body);
+
+        if ($name === null) {
+            throw new Exception('endSection() without a matching beginSection()');
+        }
+
+        $this->setSection($name, (string) $body);
     }
 }

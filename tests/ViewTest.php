@@ -1,11 +1,13 @@
 <?php
+declare(strict_types=1);
+
 namespace Aura\View;
 
 use PHPUnit\Framework\TestCase;
 
 class ViewTest extends TestCase
 {
-    protected $view;
+    protected View $view;
 
     protected function setUp(): void
     {
@@ -54,10 +56,32 @@ class ViewTest extends TestCase
         });
     }
 
-    public function testInvalidHelpersObject()
+    public function testHelpersMustBeAnObject()
     {
-        $this->expectException('Aura\View\Exception\InvalidHelpersObject');
+        // as of 6.0 the helpers param is typed `?object`, so PHP rejects a
+        // non-object before Exception\InvalidHelpersObject could be thrown.
+        $this->expectException(\TypeError::class);
+        /** @phpstan-ignore-next-line argument.type */
         new View(new TemplateRegistry, new TemplateRegistry, 'invalid');
+    }
+
+    public function testAnyObjectWithMagicCallIsAValidHelperManager()
+    {
+        $helpers = new class {
+            public function __call(string $name, array $args): string
+            {
+                return $name . '(' . implode(',', $args) . ')';
+            }
+        };
+
+        $view_factory = new ViewFactory;
+        $view = $view_factory->newInstance($helpers);
+        $view->getViewRegistry()->set('index', function () {
+            echo $this->anything('one', 'two');
+        });
+        $view->setView('index');
+
+        $this->assertSame('anything(one,two)', $view->__invoke());
     }
 
     public function testMagicMethods()

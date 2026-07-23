@@ -26,7 +26,11 @@
     },
     "require-dev": {
         "phpunit/phpunit": "^12.0",
-        "phpstan/phpstan": "^2.0"
+        "phpstan/phpstan": "^2.0",
+        "aura/html": "^6.0@dev"
+    },
+    "suggest": {
+        "aura/html": "For HTML escapers and helpers, including form and input helpers. Aura.View is media-type agnostic and ships no escaper by design; pass Aura.Html's HelperLocator to ViewFactory::newInstance() to use its helpers."
     },
     "autoload": {
         "psr-4": {
@@ -41,6 +45,6 @@
     "scripts": {
         "test": "phpunit",
         "test-coverage": "php -d xdebug.mode=coverage phpunit --coverage-clover=coverage.xml",
-        "phpstan": "phpstan analyse --level=2 src/"
+        "phpstan": "phpstan analyse --level=6 src/"
     }
 }

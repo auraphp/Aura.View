@@ -6,77 +6,81 @@
  * @license http://opensource.org/licenses/bsd-license.php BSD
  *
  */
+declare(strict_types=1);
+
 namespace Aura\View;
 
 /**
  *
- * A registry for templates.
+ * A registry for templates, resolving names against an explicit map first and
+ * a list of search paths second.
  *
  * @package Aura.View
  *
  */
-class TemplateRegistry
+class TemplateRegistry implements TemplateRegistryInterface, SearchPathInterface
 {
     /**
      *
      * The map of explicit template names and locations.
      *
-     * @var array
+     * @var array<string, \Closure>
      *
      */
-    protected $map = array();
+    protected array $map = [];
 
     /**
      *
      * The paths to search for implicit template names.
      *
-     * @var array
+     * @var list<string>
      *
      */
-    protected $paths = array();
+    protected array $paths = [];
 
     /**
      *
      * The namespaced paths to search for implicit template names.
      *
-     * @var array
+     * @var array<string, list<string>>
      *
      */
-    protected $namespaces = array();
+    protected array $namespaces = [];
 
     /**
      *
      * Templates found in the search paths.
      *
-     * @var array
+     * @var array<string, \Closure>
      *
      */
-    protected $found = array();
+    protected array $found = [];
 
     /**
      *
      * File extension to use when searching the path list for templates.
      *
-     * @var string
-     *
      */
-    protected $templateFileExtension = '.php';
+    protected string $templateFileExtension = '.php';
 
     /**
      *
      * Constructor.
      *
-     * @param array $map A map of explicit template names and locations.
+     * @param array<string, string|callable> $map A map of explicit template
+     * names and locations.
      *
-     * @param array $paths A map of filesystem paths to search for templates.
+     * @param list<string> $paths A list of filesystem paths to search for
+     * templates.
      *
-     * @param array $namespaces A map of filesystem paths to search for namespaced templates.
+     * @param array<string, list<string>> $namespaces A map of namespaces to
+     * the filesystem paths to search for namespaced templates.
      *
      */
     public function __construct(
-        array $map = array(),
-        array $paths = array(),
-        array $namespaces = array()
+        array $map = [],
+        array $paths = [],
+        array $namespaces = []
     ) {
         foreach ($map as $name => $spec) {
             $this->set($name, $spec);
@@ -91,7 +95,8 @@ class TemplateRegistry
      *
      * If the template is a string, it is treated as a path to a PHP include
      * file, and gets wrapped inside a closure that includes that file.
-     * Otherwise the template is treated as a callable.
+     * Otherwise the template is treated as a callable and is normalized to a
+     * \Closure, so that the view can bind `$this` to it.
      *
      * @param string $name Register the template under this name.
      *
@@ -99,24 +104,22 @@ class TemplateRegistry
      * callable.
      *
      */
-    public function set($name, $spec)
+    public function set(string $name, string|callable $spec): void
     {
         if (is_string($spec)) {
-            $spec = $this->enclose($spec);
+            $this->map[$name] = $this->enclose($spec);
+            return;
         }
-        $this->map[$name] = $spec;
+
+        $this->map[$name] = $spec instanceof \Closure ? $spec : $spec(...);
     }
 
     /**
      *
      * Is a named template registered?
      *
-     * @param string $name The template name.
-     *
-     * @return bool
-     *
      */
-    public function has($name)
+    public function has(string $name): bool
     {
         return isset($this->map[$name]) || $this->find($name);
     }
@@ -125,12 +128,8 @@ class TemplateRegistry
      *
      * Is a namespace registered?
      *
-     * @param string $namespace The namespace.
-     *
-     * @return bool
-     *
      */
-    public function hasNamespace($namespace)
+    public function hasNamespace(string $namespace): bool
     {
         return isset($this->namespaces[$namespace]);
     }
@@ -139,12 +138,10 @@ class TemplateRegistry
      *
      * Gets a template from the registry.
      *
-     * @param string $name The template name.
-     *
-     * @return \Closure
+     * @throws Exception\TemplateNotFound when the name cannot be resolved.
      *
      */
-    public function get($name)
+    public function get(string $name): \Closure
     {
         if (isset($this->map[$name])) {
             return $this->map[$name];
@@ -161,10 +158,10 @@ class TemplateRegistry
      *
      * Gets a copy of the current search paths.
      *
-     * @return array
+     * @return list<string>
      *
      */
-    public function getPaths()
+    public function getPaths(): array
     {
         return $this->paths;
     }
@@ -179,11 +176,12 @@ class TemplateRegistry
      *     // $this->getPaths() reveals that the directory search
      *     // order will be '/path/3/', '/path/2/', '/path/1/'.
      *
-     * @param string $path The directories to add to the paths.
-     * @param string|null $namespace The directory namespace
+     * @param string $path The directory to add to the paths.
+     *
+     * @param string|null $namespace The directory namespace.
      *
      */
-    public function prependPath($path, $namespace = null)
+    public function prependPath(string $path, ?string $namespace = null): void
     {
         $this->found = [];
         $path = rtrim($path, DIRECTORY_SEPARATOR);
@@ -195,6 +193,7 @@ class TemplateRegistry
             array_unshift($this->namespaces[$namespace], $path);
             return;
         }
+
         array_unshift($this->paths, $path);
     }
 
@@ -208,11 +207,12 @@ class TemplateRegistry
      *     // $registry->getPaths() reveals that the directory search
      *     // order will be '/path/1/', '/path/2/', '/path/3/'.
      *
-     * @param array|string $path The directories to add to the paths.
-     * @param string|null $namespace The directory namespace
+     * @param string $path The directory to add to the paths.
+     *
+     * @param string|null $namespace The directory namespace.
      *
      */
-    public function appendPath($path, $namespace = null)
+    public function appendPath(string $path, ?string $namespace = null): void
     {
         $this->found = [];
         $path = rtrim($path, DIRECTORY_SEPARATOR);
@@ -240,25 +240,24 @@ class TemplateRegistry
      *      // $registry->getPaths() reveals that the search order will
      *      // be '/path/1', '/path/2', '/path/3'.
      *
-     * @param array $paths The paths to set.
+     * @param list<string> $paths The paths to set.
      *
      */
-    public function setPaths(array $paths)
+    public function setPaths(array $paths): void
     {
         $this->paths = $paths;
         $this->found = [];
     }
 
     /**
-     * Set namespaces directly
      *
-     * @param array $namespaces array of namesspaces
+     * Sets the namespaces directly.
      *
-     * @return void
+     * @param array<string, list<string>> $namespaces A map of namespaces to
+     * their search paths.
      *
-     * @access public
      */
-    public function setNamespaces(array $namespaces)
+    public function setNamespaces(array $namespaces): void
     {
         $this->namespaces = $namespaces;
         $this->found = [];
@@ -268,10 +267,8 @@ class TemplateRegistry
      *
      * Sets the extension to be used when searching for templates via find().
      *
-     * @param string $templateFileExtension
-     *
      */
-    public function setTemplateFileExtension($templateFileExtension)
+    public function setTemplateFileExtension(string $templateFileExtension): void
     {
         $this->templateFileExtension = $templateFileExtension;
     }
@@ -280,12 +277,10 @@ class TemplateRegistry
      *
      * Finds a template in the search paths.
      *
-     * @param string $name The template name.
-     *
      * @return bool True if found, false if not.
      *
      */
-    protected function find($name)
+    protected function find(string $name): bool
     {
         if (isset($this->found[$name])) {
             return true;
@@ -307,62 +302,55 @@ class TemplateRegistry
     }
 
     /**
-     * Parse namespaced template name
      *
-     * @param string $name namespaced template name
+     * Parses a namespaced template name.
      *
-     * @return array
-     * @throws \InvalidArgumentException if invalid template name
+     * @return array{namespace?: string, name: string}
      *
-     * @access protected
+     * @throws \InvalidArgumentException if the template name is invalid.
+     *
      */
-    protected function parseName($name)
+    protected function parseName(string $name): array
     {
         $info  = explode('::', $name);
         $count = count($info);
 
         if ($count == 1) {
-            return array('name' => $info[0]);
+            return ['name' => $info[0]];
         }
 
         if ($count == 2) {
-            return array(
+            return [
                 'namespace' => $info[0],
-                'name'      => $info[1]
-            );
+                'name'      => $info[1],
+            ];
         }
 
         throw new \InvalidArgumentException('Invalid name: ' . $name);
     }
 
     /**
-     * Is template name namespaced?
      *
-     * @param string $name name to check
+     * Is the template name namespaced?
      *
-     * @return bool
-     *
-     * @access protected
      */
-    protected function isNamespaced($name)
+    protected function isNamespaced(string $name): bool
     {
         $info = $this->parseName($name);
-        return isset($info['namespace']);;
+        return isset($info['namespace']);
     }
 
     /**
-     * Fine a namespaced template
      *
-     * @param string $name namespaced template name
+     * Finds a namespaced template in that namespace's search paths.
      *
-     * @return bool
+     * @return bool True if found, false if not.
      *
-     * @access protected
      */
-    protected function findNamespaced($name)
+    protected function findNamespaced(string $name): bool
     {
         $info = $this->parseName($name);
-        $namespace = $info['namespace'];
+        $namespace = $info['namespace'] ?? '';
         $shortname = $info['name'];
 
         if (! $this->hasNamespace($namespace)) {
@@ -386,12 +374,8 @@ class TemplateRegistry
      *
      * Checks to see if a file is readable.
      *
-     * @param string $file The file to find.
-     *
-     * @return bool
-     *
      */
-    protected function isReadable($file)
+    protected function isReadable(string $file): bool
     {
         return is_readable($file);
     }
@@ -400,14 +384,16 @@ class TemplateRegistry
      *
      * Wraps a template file name in a \Closure.
      *
+     * The `$__FILE__` and `$__VARS__` naming is deliberate: `extract()` runs in
+     * this scope, and these names are unlikely to collide with a template
+     * variable.
+     *
      * @param string $__FILE__ The file name.
      *
-     * @return \Closure
-     *
      */
-    protected function enclose($__FILE__)
+    protected function enclose(string $__FILE__): \Closure
     {
-        return function (array $__VARS__ = array()) use ($__FILE__) {
+        return function (array $__VARS__ = []) use ($__FILE__): void {
             extract($__VARS__, EXTR_SKIP);
             require $__FILE__;
         };

@@ -6,11 +6,13 @@
  * @license http://opensource.org/licenses/bsd-license.php BSD
  *
  */
+declare(strict_types=1);
+
 namespace Aura\View;
 
 /**
  *
- * Pacakge-level exception.
+ * Package-level exception.
  *
  * @package Aura.View
  *
