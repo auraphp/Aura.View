@@ -46,7 +46,7 @@ class View extends AbstractView
      * @param string $name The name of the template to be rendered.
      *
      * @param array $vars Variables to `extract()` within the view as local
-     * variables. Closure-based templates will need to call `extract()` on
+     * variables. \Closure-based templates will need to call `extract()` on
      * their own.
      *
      * @return string

@@ -184,8 +184,6 @@ abstract class AbstractView
      *
      * @param string $key The template variable name.
      *
-     * @return null
-     *
      */
     public function __unset($key)
     {
@@ -216,8 +214,6 @@ abstract class AbstractView
      * are variable names, and the corresponding values are the variable values.
      * (This param is cast to an object.)
      *
-     * @return null
-     *
      */
     public function setData($data)
     {
@@ -228,11 +224,9 @@ abstract class AbstractView
      *
      * Adds to the view data.
      *
-     * @param array|Traversable $data An array or object where the keys or
+     * @param array|\Traversable $data An array or object where the keys or
      * properties are variable names, and the corresponding values are the
      * variable values; these are looped over and added to the view data.
-     *
-     * @return null
      *
      */
     public function addData($data)
@@ -272,8 +266,6 @@ abstract class AbstractView
      *
      * @param string $layout The name of the layout template to render.
      *
-     * @return null
-     *
      */
     public function setLayout($layout)
     {
@@ -309,8 +301,6 @@ abstract class AbstractView
      * Sets the name of the view template to render.
      *
      * @param string $view The name of the view template to render.
-     *
-     * @return null
      *
      */
     public function setView($view)
@@ -348,8 +338,6 @@ abstract class AbstractView
      *
      * @param TemplateRegistry $template_registry The template registry.
      *
-     * @return null
-     *
      */
     protected function setTemplateRegistry(TemplateRegistry $template_registry)
     {
@@ -362,7 +350,7 @@ abstract class AbstractView
      *
      * @param string $name The template name.
      *
-     * @return Closure
+     * @return \Closure
      *
      */
     protected function getTemplate($name)
@@ -420,8 +408,6 @@ abstract class AbstractView
      *
      * @param string $body The section body.
      *
-     * @return null
-     *
      */
     protected function setSection($name, $body)
     {
@@ -448,8 +434,6 @@ abstract class AbstractView
      *
      * @param string $name The section name.
      *
-     * @return null
-     *
      */
     protected function beginSection($name)
     {
@@ -460,8 +444,6 @@ abstract class AbstractView
     /**
      *
      * Ends buffering and retains output for the most-recent section.
-     *
-     * @return null
      *
      */
     protected function endSection()

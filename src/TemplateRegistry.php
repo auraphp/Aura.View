@@ -98,8 +98,6 @@ class TemplateRegistry
      * @param string|callable $spec A string path to a PHP include file, or a
      * callable.
      *
-     * @return null
-     *
      */
     public function set($name, $spec)
     {
@@ -127,7 +125,7 @@ class TemplateRegistry
      *
      * Is a namespace registered?
      *
-     * @param string $name The namespace.
+     * @param string $namespace The namespace.
      *
      * @return bool
      *
@@ -184,8 +182,6 @@ class TemplateRegistry
      * @param string $path The directories to add to the paths.
      * @param string|null $namespace The directory namespace
      *
-     * @return null
-     *
      */
     public function prependPath($path, $namespace = null)
     {
@@ -214,8 +210,6 @@ class TemplateRegistry
      *
      * @param array|string $path The directories to add to the paths.
      * @param string|null $namespace The directory namespace
-     *
-     * @return null
      *
      */
     public function appendPath($path, $namespace = null)
@@ -248,8 +242,6 @@ class TemplateRegistry
      *
      * @param array $paths The paths to set.
      *
-     * @return null
-     *
      */
     public function setPaths(array $paths)
     {
@@ -277,8 +269,6 @@ class TemplateRegistry
      * Sets the extension to be used when searching for templates via find().
      *
      * @param string $templateFileExtension
-     *
-     * @return null
      *
      */
     public function setTemplateFileExtension($templateFileExtension)
@@ -322,7 +312,7 @@ class TemplateRegistry
      * @param string $name namespaced template name
      *
      * @return array
-     * @throws InvalidArgumentException if invalid template name
+     * @throws \InvalidArgumentException if invalid template name
      *
      * @access protected
      */
@@ -408,7 +398,7 @@ class TemplateRegistry
 
     /**
      *
-     * Wraps a template file name in a Closure.
+     * Wraps a template file name in a \Closure.
      *
      * @param string $__FILE__ The file name.
      *

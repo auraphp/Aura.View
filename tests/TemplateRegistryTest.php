@@ -1,11 +1,13 @@
 <?php
 namespace Aura\View;
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
+use PHPUnit\Framework\TestCase;
 
 class TemplateRegistryTest extends TestCase
 {
-    protected function set_up()
+    protected TemplateRegistry $template_registry;
+
+    protected function setUp(): void
     {
         $this->template_registry = new TemplateRegistry;
     }
@@ -21,8 +23,8 @@ class TemplateRegistryTest extends TestCase
         $this->template_registry->set('foo', $foo);
         $this->assertTrue($this->template_registry->has('foo'));
 
-        $this->template = $this->template_registry->get('foo');
-        $this->assertSame($foo, $this->template);
+        $template = $this->template_registry->get('foo');
+        $this->assertSame($foo, $template);
 
         $this->expectException('Aura\View\Exception\TemplateNotFound');
         $this->template_registry->get('bar');

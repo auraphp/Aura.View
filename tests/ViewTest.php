@@ -1,13 +1,13 @@
 <?php
 namespace Aura\View;
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
+use PHPUnit\Framework\TestCase;
 
 class ViewTest extends TestCase
 {
     protected $view;
 
-    protected function set_up()
+    protected function setUp(): void
     {
         $view_factory = new ViewFactory;
         $this->view = $view_factory->newInstance();

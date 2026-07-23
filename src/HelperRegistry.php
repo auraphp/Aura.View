@@ -62,8 +62,6 @@ class HelperRegistry
      *
      * @param callable $callable The callable helper.
      *
-     * @return null
-     *
      */
     public function set($name, $callable)
     {
