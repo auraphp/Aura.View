@@ -58,6 +58,8 @@ The helper manager parameter is typed `?object`, so PHP rejects a non-object wit
 
 ```php
 <?php
+use Aura\View\ViewSpec;
+
 // 2.x
 $view = $view_factory->newInstance(
     $helpers,

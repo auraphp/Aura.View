@@ -66,8 +66,8 @@ yours to choose. See the README's *Escaping Output* section.
       // 6.x
       $view_factory->newInstance(
           $helpers,
-          new ViewSpec(map: $view_map, paths: $view_paths),
-          new ViewSpec(map: $layout_map, paths: $layout_paths),
+          new \Aura\View\ViewSpec(map: $view_map, paths: $view_paths),
+          new \Aura\View\ViewSpec(map: $layout_map, paths: $layout_paths),
       );
 
   The four settings that describe a registry -- `map`, `paths`, `namespaces`,

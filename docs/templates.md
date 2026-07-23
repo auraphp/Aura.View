@@ -160,6 +160,8 @@ Every _ViewSpec_ parameter is optional, so pass only what you need:
 
 ```php
 <?php
+use Aura\View\ViewSpec;
+
 new ViewSpec(
     map: [],          // array<string, string|callable>
     paths: [],        // list<string>
@@ -173,6 +175,8 @@ The `extension` corresponds to `setTemplateFileExtension()`, and the view and la
 
 ```php
 <?php
+use Aura\View\ViewSpec;
+
 $view = $view_factory->newInstance(
     view: new ViewSpec(paths: ['/path/to/views'], extension: '.phtml'),
     layout: new ViewSpec(paths: ['/path/to/layouts']),
@@ -186,6 +190,8 @@ It can also build a registry on its own, which is useful if you are assembling a
 
 ```php
 <?php
+use Aura\View\ViewSpec;
+
 $registry = (new ViewSpec(paths: ['/path/to/views']))->newRegistry();
 ?>
 ```
