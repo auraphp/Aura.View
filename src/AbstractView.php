@@ -96,6 +96,14 @@ abstract class AbstractView
 
     /**
      *
+     * Should parent() throw when it has nothing to resume into, instead of
+     * returning ''?
+     *
+     */
+    private bool $strict_parent = false;
+
+    /**
+     *
      * The template registry currently in use.
      *
      */
@@ -441,9 +449,17 @@ abstract class AbstractView
      * map, or the registry has no search paths. Overriding a template that
      * turns out not to shadow anything is a normal state during development.
      *
+     * That forgiveness is also a blind spot: a misconfigured search path
+     * produces exactly the same `''`, so overrides silently stop composing and
+     * nothing is raised. `setStrictParent(true)` turns these three cases into
+     * Exception\ParentNotFound for development and CI.
+     *
      * @param array<string, mixed> $vars Variables for the shadowed template.
      *
      * @throws Exception when called outside of a render.
+     *
+     * @throws Exception\ParentNotFound when there is nothing to resume into
+     * and strict parent mode is on.
      *
      */
     protected function parent(array $vars = []): string
@@ -457,14 +473,27 @@ abstract class AbstractView
         [$name, $path] = $frame;
         $registry = $this->template_registry;
 
-        if ($path === null || ! $registry instanceof SearchPathInterface) {
-            return '';
+        if (! $registry instanceof SearchPathInterface) {
+            return $this->noParent(
+                $name,
+                "the template registry has no search paths to resume along"
+            );
+        }
+
+        if ($path === null) {
+            return $this->noParent(
+                $name,
+                "it was registered in the map, which has no search path behind it"
+            );
         }
 
         $next = $registry->getNext($name, $path);
 
         if ($next === null) {
-            return '';
+            return $this->noParent(
+                $name,
+                "nothing after '{$path}' in the search paths has that name"
+            );
         }
 
         $template = $next->template->bindTo($this, static::class) ?? $next->template;
@@ -475,6 +504,55 @@ abstract class AbstractView
         } finally {
             $this->popRender();
         }
+    }
+
+    /**
+     *
+     * Should parent() throw when it has nothing to resume into?
+     *
+     * Off by default, so that an override written before the template it
+     * overrides exists is not an error. Turn it on in development and CI,
+     * where a search path that resolves to nothing is far more likely to be a
+     * misconfiguration than an intention -- otherwise it presents as missing
+     * markup with nothing raised.
+     *
+     * This takes a bool rather than reading the environment: Aura.View has no
+     * config layer and no dependencies, so deciding what "development" means
+     * belongs to whatever wires the _View_ up.
+     *
+     */
+    public function setStrictParent(bool $strict_parent): void
+    {
+        $this->strict_parent = $strict_parent;
+    }
+
+    /**
+     *
+     * Is strict parent mode on?
+     *
+     */
+    public function isStrictParent(): bool
+    {
+        return $this->strict_parent;
+    }
+
+    /**
+     *
+     * Answers a parent() call that has nothing to resume into: '' normally,
+     * an exception naming the template and the reason under strict mode.
+     *
+     * @throws Exception\ParentNotFound when strict parent mode is on.
+     *
+     */
+    protected function noParent(string $name, string $reason): string
+    {
+        if (! $this->strict_parent) {
+            return '';
+        }
+
+        throw new Exception\ParentNotFound(
+            "parent() found no template to render for '{$name}': {$reason}."
+        );
     }
 
     /**

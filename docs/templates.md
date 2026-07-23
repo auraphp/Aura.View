@@ -148,6 +148,35 @@ Chains can be any depth -- an application shadowing a module shadowing a core de
 
 Those three are the answers to a well-formed question: there *is* a current template, and nothing follows it.
 
+#### Strict Parent Mode
+
+That forgiveness has a cost: a search path with a typo, a path registered in the wrong order, or a registry that turns out to have no paths at all produces exactly the same `''`. Overrides quietly stop composing and start replacing -- the page renders, nothing is raised, and the only symptom is missing markup.
+
+Turn the three cases into _Aura\View\Exception\ParentNotFound_ while developing:
+
+```php
+<?php
+$view->setStrictParent(true);
+?>
+```
+
+The message names the template and why the lookup came up empty:
+
+```
+parent() found no template to render for 'read': nothing after
+'/app/templates' in the search paths has that name.
+```
+
+Leave it **off in production**, where the forgiving behaviour is what you want -- an override written before the template it overrides exists should not take a page down.
+
+It takes a bool rather than reading an environment variable on its own. Aura.View has no config layer and no dependencies, so deciding what "development" means belongs to whatever wires the _View_ up:
+
+```php
+<?php
+$view->setStrictParent((bool) getenv('APP_DEBUG'));
+?>
+```
+
 Calling `parent()` when there is no current template at all throws _Aura\View\Exception_ instead. Template code cannot reach this -- if a template is running, it was rendered, and a render always has a frame. It is a guard for code that steps outside the normal path: a _View_ subclass calling `parent()` directly, a template closure invoked without going through `render()`, or -- the one that matters -- a subclass that overrides `render()` and does not maintain the render stack:
 
 ```php

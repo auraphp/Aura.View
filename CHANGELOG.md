@@ -169,6 +169,21 @@ yours to choose. See the README's *Escaping Output* section.
   that turns out to shadow nothing is a normal state during development.
   Calling it outside a render throws `Aura\View\Exception`.
 
+- [ADD] **`setStrictParent()` / `isStrictParent()`, and
+  `Aura\View\Exception\ParentNotFound`.** `parent()` returning `''` when it
+  finds nothing is right for production but hides misconfiguration: a typo in a
+  search path, paths registered in the wrong order, or a registry with no
+  paths at all all produce the same `''`, so overrides silently stop composing
+  and the only symptom is missing markup. With strict parent mode on, those
+  three cases throw instead, naming the template and the reason:
+
+      parent() found no template to render for 'read': nothing after
+      '/app/templates' in the search paths has that name.
+
+  Off by default. It takes a bool rather than reading the environment itself --
+  Aura.View has no config layer and no dependencies, so what counts as
+  "development" belongs to whatever wires the _View_ up.
+
 - [ADD] **`SearchPathInterface::getNext()` and `getResolvedPath()`**, plus the
   readonly **`ResolvedTemplate`** (`name`, `template`, `path`) that `getNext()`
   returns. `getResolvedPath()` reports which directory satisfied a name -- the

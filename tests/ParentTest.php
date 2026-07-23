@@ -125,6 +125,70 @@ class ParentTest extends TestCase
         $view->callParent();
     }
 
+    public function testStrictParentIsOffByDefault()
+    {
+        // the forgiving default: an override written before the thing it
+        // overrides exists is a normal state, not an error
+        $this->assertSame('orphan()', $this->invoke('orphan'));
+    }
+
+    public function testStrictParentThrowsWhenNothingIsShadowed()
+    {
+        $this->view->setStrictParent(true);
+        $this->view->setView('orphan');
+
+        try {
+            ($this->view)();
+            $this->fail('Expected ParentNotFound.');
+        } catch (Exception\ParentNotFound $e) {
+            // the message has to say which template and where it looked, or
+            // it is no more useful than the '' it replaced
+            $this->assertStringContainsString('orphan', $e->getMessage());
+            $this->assertStringContainsString('fixtures/parent/app', $e->getMessage());
+        }
+    }
+
+    public function testStrictParentThrowsForAMappedTemplate()
+    {
+        $this->view->getViewRegistry()->set(
+            'mapped',
+            __DIR__ . '/fixtures/parent/app/orphan.php'
+        );
+        $this->view->setStrictParent(true);
+        $this->view->setView('mapped');
+
+        $this->expectException('Aura\View\Exception\ParentNotFound');
+        ($this->view)();
+    }
+
+    public function testStrictParentThrowsWhenTheRegistryHasNoSearchPaths()
+    {
+        // the compiled-registry trap: without this, every override in the
+        // application silently reverts to replacing
+        $registry = new FakeRegistryWithoutPaths;
+        $registry->set('read', __DIR__ . '/fixtures/parent/app/read.php');
+
+        $view = new View($registry, new TemplateRegistry);
+        $view->setStrictParent(true);
+        $view->setView('read');
+
+        $this->expectException('Aura\View\Exception\ParentNotFound');
+        $view();
+    }
+
+    public function testStrictParentDoesNotDisturbAResolvableChain()
+    {
+        $this->view->setStrictParent(true);
+        $this->assertSame('app(module(core))', $this->invoke('read'));
+    }
+
+    public function testStrictParentCanBeTurnedBackOff()
+    {
+        $this->view->setStrictParent(true);
+        $this->view->setStrictParent(false);
+        $this->assertSame('orphan()', $this->invoke('orphan'));
+    }
+
     public function testParentThrowsWhenASubclassOverridesRenderWithoutTheStack()
     {
         // the failure this guard exists for: a subclass reimplements render()
