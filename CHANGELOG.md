@@ -226,6 +226,17 @@ yours to choose. See the README's *Escaping Output* section.
 - [FIX] `$capture` and `$section` initialise to `[]` rather than null;
   appending to null is deprecated as of PHP 8.3.
 
+- [FIX] **`setPaths()` and `setNamespaces()` strip trailing directory
+  separators**, as `prependPath()` and `appendPath()` always have. Previously
+  the same directory had two spellings inside the registry depending on which
+  setter registered it, so `getPaths()` echoed back whatever it was given.
+  Beyond tidiness this broke `parent()`: the path recorded for a found
+  template is handed straight back to `getNext()` to resume the search, and a
+  directory stored one way but compared another made the shadowed template
+  unreachable -- `parent()` returned `''` instead of rendering it, going quiet
+  rather than failing loudly. `getPaths()` and `getNamespaces()` now return
+  normalised paths.
+
 - [FIX] `TemplateRegistry::setTemplateFileExtension()` now clears the cache of
   already-resolved templates, as every other path-mutating method already did. Changing
   the extension after a name had been resolved kept returning the stale hit

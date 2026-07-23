@@ -348,12 +348,15 @@ class TemplateRegistry implements TemplateRegistryInterface, SearchPathInterface
      *      // $registry->getPaths() reveals that the search order will
      *      // be '/path/1', '/path/2', '/path/3'.
      *
+     * Trailing directory separators are stripped, as prependPath() and
+     * appendPath() do.
+     *
      * @param list<string> $paths The paths to set.
      *
      */
     public function setPaths(array $paths): void
     {
-        $this->paths = $paths;
+        $this->paths = $this->normalizePaths($paths);
         $this->found = [];
         $this->foundIn = [];
     }
@@ -362,15 +365,46 @@ class TemplateRegistry implements TemplateRegistryInterface, SearchPathInterface
      *
      * Sets the namespaces directly.
      *
+     * Trailing directory separators are stripped, as prependPath() and
+     * appendPath() do.
+     *
      * @param array<string, list<string>> $namespaces A map of namespaces to
      * their search paths.
      *
      */
     public function setNamespaces(array $namespaces): void
     {
-        $this->namespaces = $namespaces;
+        $this->namespaces = [];
+
+        foreach ($namespaces as $namespace => $paths) {
+            $this->namespaces[$namespace] = $this->normalizePaths($paths);
+        }
+
         $this->found = [];
         $this->foundIn = [];
+    }
+
+    /**
+     *
+     * Strips trailing directory separators so that one directory has one
+     * spelling inside the registry.
+     *
+     * This matters beyond tidiness: the path recorded for a found template is
+     * handed straight back to getNext() to resume the search, so a directory
+     * stored one way and compared another makes a shadowed template
+     * unreachable -- parent() would go quiet rather than fail loudly.
+     *
+     * @param list<string> $paths
+     *
+     * @return list<string>
+     *
+     */
+    protected function normalizePaths(array $paths): array
+    {
+        return array_map(
+            static fn (string $path): string => rtrim($path, DIRECTORY_SEPARATOR),
+            $paths
+        );
     }
 
     /**

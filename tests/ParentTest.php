@@ -65,6 +65,19 @@ class ParentTest extends TestCase
         $this->assertSame('app(module(core))', $this->invoke('read'));
     }
 
+    public function testParentWorksWhenPathsHaveTrailingSeparators()
+    {
+        // a trailing slash is a spelling of the same directory, not a
+        // different one; parent() must not go quiet because of it
+        $this->view->getViewRegistry()->setPaths([
+            __DIR__ . '/fixtures/parent/app/',
+            __DIR__ . '/fixtures/parent/module/',
+            __DIR__ . '/fixtures/parent/core/',
+        ]);
+
+        $this->assertSame('app(module(core))', $this->invoke('read'));
+    }
+
     public function testParentReturnsEmptyStringForAMappedTemplate()
     {
         // an explicit map entry has no path behind it, so there is nothing to
