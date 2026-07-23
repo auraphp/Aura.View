@@ -1,8 +1,16 @@
 build:
+    # Pin the build image. Scrutinizer's default is old enough that its libxml
+    # (2.9.1) fails PHP 8.4's `libxml-2.0 >= 2.9.4` requirement, so it aborts
+    # while compiling PHP from source. default-jammy (Ubuntu 22.04) ships
+    # libxml 2.9.13. Same fix already applied in Aura.Html and Aura.Filter.
+    image: default-jammy
+    environment:
+        php: 8.4
     nodes:
         analysis:
             tests:
                 override:
                     - php-scrutinizer-run
+
 filter:
     paths: ["src/*"]
