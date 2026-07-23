@@ -51,6 +51,10 @@ class View extends AbstractView
      *
      * @param string $name The name of the template to be rendered.
      *
+     * The render is pushed onto the render stack for its duration, so that a
+     * template can ask for the one it shadows via `parent()`. Renders nest, and
+     * the frame is popped even when the template throws.
+     *
      * @param array<string, mixed> $vars Variables to `extract()` within the
      * view as local variables. \Closure-based templates will need to call
      * `extract()` on their own.
@@ -58,6 +62,13 @@ class View extends AbstractView
      */
     protected function render(string $name, array $vars = []): string
     {
-        return $this->captureTemplate($this->getTemplate($name), $vars);
+        $template = $this->getTemplate($name);
+        $this->pushRender($name, $this->getResolvedPath($name));
+
+        try {
+            return $this->captureTemplate($template, $vars);
+        } finally {
+            $this->popRender();
+        }
     }
 }

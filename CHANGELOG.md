@@ -149,6 +149,62 @@ yours to choose. See the README's *Escaping Output* section.
 - [ADD] **`Aura\View\Exception\HelperAlreadyRegistered`**, thrown by
   `HelperRegistry::set()` on a collision. See *Breaking*.
 
+- [ADD] **`parent()` -- extend a shadowed template instead of replacing it.**
+  Search paths are first-hit-wins, so a template in an earlier directory
+  shadows a later one and the shadowed version was *unreachable*: changing one
+  part of a package's template meant copying the whole file. `parent()`
+  renders the shadowed template by resuming the search after the directory the
+  current template came from, so only the difference lives in the application:
+
+      <?php $this->beginSection('extra') ?>
+          <p>Something only this application wants.</p>
+      <?php $this->endSection() ?>
+      <?= $this->parent() ?>
+
+  Chains are any depth, variables can be passed down with
+  `parent(['key' => $val])`, and namespaced names walk their own namespace's
+  paths. `parent()` returns `''` rather than throwing when there is nothing
+  further to render -- the template shadows nothing, came from the explicit
+  map, or the registry has no search paths -- because overriding a template
+  that turns out to shadow nothing is a normal state during development.
+  Calling it outside a render throws `Aura\View\Exception`.
+
+- [ADD] **`setStrictParent()` / `isStrictParent()`, and
+  `Aura\View\Exception\ParentNotFound`.** `parent()` returning `''` when it
+  finds nothing is right for production but hides misconfiguration: a typo in a
+  search path, paths registered in the wrong order, or a registry with no
+  paths at all all produce the same `''`, so overrides silently stop composing
+  and the only symptom is missing markup. With strict parent mode on, those
+  three cases throw instead, naming the template and the reason:
+
+      parent() found no template to render for 'read': nothing after
+      '/app/templates' in the search paths has that name.
+
+  Off by default. It takes a bool rather than reading the environment itself --
+  Aura.View has no config layer and no dependencies, so what counts as
+  "development" belongs to whatever wires the _View_ up.
+
+- [ADD] **`SearchPathInterface::getNext()` and `getResolvedPath()`**, plus the
+  readonly **`ResolvedTemplate`** (`name`, `template`, `path`) that `getNext()`
+  returns. `getResolvedPath()` reports which directory satisfied a name -- the
+  answer to "which package's template won?" -- and returns null for a mapped
+  or unresolvable name. `getNext()` is the resumption primitive behind
+  `parent()`. It returns a _ResolvedTemplate_ rather than a bare `\Closure`
+  because walking a chain past the first step needs the path the parent itself
+  came from, which a closure does not carry.
+
+  _TemplateRegistry_ now records the directory each found template came from
+  alongside the template itself; this cache is cleared with the existing one
+  whenever paths change.
+
+- [ADD] **A render stack on _AbstractView_.** `render()` pushes the template
+  name and its resolved path for the duration of the render and pops it in a
+  `finally`, so nested renders resolve `parent()` against the template actually
+  executing, and a template that throws does not leave a frame behind.
+  `parent()` shares the existing `captureTemplate()` for its own buffering.
+  Subclasses that override `render()` wholesale will need to push and pop
+  themselves for `parent()` to work inside them.
+
 - [ADD] **`ViewSpec`**, a readonly value object describing one template
   registry: `map`, `paths`, `namespaces`, and `extension`. Its `newRegistry()`
   method builds the corresponding _TemplateRegistry_, so it is useful when
@@ -182,8 +238,21 @@ yours to choose. See the README's *Escaping Output* section.
   moves to `AbstractView::captureTemplate()`, which records the buffer and
   capture depths on entry and restores both on failure.
 
-- [FIX] `$capture` and `$section` initialise to `[]` rather than null;
-  appending to null is deprecated as of PHP 8.3.
+- [FIX] `$capture` and `$section` initialise to `[]` rather than null, so
+  appending never relies on autovivification. (Appending to null still works
+  silently; it is autovivification from `false` that PHP 8.1 deprecated. The
+  explicit `[]` avoids depending on either.)
+
+- [FIX] **`setPaths()` and `setNamespaces()` strip trailing directory
+  separators**, as `prependPath()` and `appendPath()` always have. Previously
+  the same directory had two spellings inside the registry depending on which
+  setter registered it, so `getPaths()` echoed back whatever it was given.
+  Beyond tidiness this broke `parent()`: the path recorded for a found
+  template is handed straight back to `getNext()` to resume the search, and a
+  directory stored one way but compared another made the shadowed template
+  unreachable -- `parent()` returned `''` instead of rendering it, going quiet
+  rather than failing loudly. `getPaths()` and `getNamespaces()` now return
+  normalised paths.
 
 - [FIX] `TemplateRegistry::setTemplateFileExtension()` now clears the cache of
   already-resolved templates, as every other path-mutating method already did. Changing

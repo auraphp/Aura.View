@@ -188,6 +188,194 @@ class TemplateRegistryTest extends TestCase
         $this->assertResolvesTo($phtml, 'zim');
     }
 
+    /**
+     * Builds a registry where 'zim' exists in three stacked paths, so that
+     * '/first' shadows '/second' shadows '/third'.
+     */
+    protected function newShadowedRegistry(): FakeTemplateRegistry
+    {
+        $registry = new FakeTemplateRegistry;
+        $registry->appendPath('/first');
+        $registry->appendPath('/second');
+        $registry->appendPath('/third');
+
+        foreach (['/first', '/second', '/third'] as $path) {
+            $registry->fakefs[$path . DIRECTORY_SEPARATOR . 'zim.php'] = 'fake';
+        }
+
+        return $registry;
+    }
+
+    public function testGetResolvedPathReportsTheWinningDirectory()
+    {
+        $registry = $this->newShadowedRegistry();
+        $this->template_registry = $registry;
+
+        $this->assertResolvesTo('/first' . DIRECTORY_SEPARATOR . 'zim.php', 'zim');
+        $this->assertSame('/first', $registry->getResolvedPath('zim'));
+    }
+
+    public function testGetResolvedPathIsNullForAMappedTemplate()
+    {
+        // an explicit map entry has no search path behind it
+        $registry = new FakeTemplateRegistry;
+        $registry->set('zim', '/wherever/zim.php');
+
+        $this->assertNull($registry->getResolvedPath('zim'));
+    }
+
+    public function testGetResolvedPathIsNullForAnUnresolvableName()
+    {
+        $registry = new FakeTemplateRegistry;
+        $this->assertNull($registry->getResolvedPath('no-such-template'));
+    }
+
+    public function testGetNextWalksTheChain()
+    {
+        $registry = $this->newShadowedRegistry();
+
+        $second = $registry->getNext('zim', '/first');
+        $this->assertNotNull($second);
+        $this->assertSame('/second', $second->path);
+        $this->assertSame('zim', $second->name);
+
+        // and again, from the one we just got -- chains deeper than two
+        $third = $registry->getNext('zim', $second->path);
+        $this->assertNotNull($third);
+        $this->assertSame('/third', $third->path);
+    }
+
+    public function testGetNextReturnsTheTemplateItself()
+    {
+        $registry = $this->newShadowedRegistry();
+
+        ob_start();
+        $registry->getNext('zim', '/first')->template->__invoke();
+        $this->assertSame(
+            '/second' . DIRECTORY_SEPARATOR . 'zim.php',
+            ob_get_clean()
+        );
+    }
+
+    public function testGetNextIsNullAtTheEndOfTheChain()
+    {
+        $registry = $this->newShadowedRegistry();
+        $this->assertNull($registry->getNext('zim', '/third'));
+    }
+
+    public function testGetNextSkipsPathsThatDoNotHaveTheTemplate()
+    {
+        $registry = new FakeTemplateRegistry;
+        $registry->appendPath('/first');
+        $registry->appendPath('/gap');
+        $registry->appendPath('/third');
+        $registry->fakefs['/first' . DIRECTORY_SEPARATOR . 'zim.php'] = 'fake';
+        $registry->fakefs['/third' . DIRECTORY_SEPARATOR . 'zim.php'] = 'fake';
+
+        $next = $registry->getNext('zim', '/first');
+        $this->assertNotNull($next);
+        $this->assertSame('/third', $next->path);
+    }
+
+    public function testGetNextIsNullWhenTheAfterPathIsNotInTheList()
+    {
+        $registry = $this->newShadowedRegistry();
+        $this->assertNull($registry->getNext('zim', '/not-a-registered-path'));
+    }
+
+    public function testGetNextWalksNamespacedPaths()
+    {
+        $registry = new FakeTemplateRegistry;
+        $registry->appendPath('/unrelated');
+        $registry->appendPath('/ns-first', 'ns');
+        $registry->appendPath('/ns-second', 'ns');
+        $registry->fakefs['/unrelated' . DIRECTORY_SEPARATOR . 'zim.php'] = 'fake';
+        $registry->fakefs['/ns-first' . DIRECTORY_SEPARATOR . 'zim.php'] = 'fake';
+        $registry->fakefs['/ns-second' . DIRECTORY_SEPARATOR . 'zim.php'] = 'fake';
+
+        $next = $registry->getNext('ns::zim', '/ns-first');
+        $this->assertNotNull($next);
+        $this->assertSame('/ns-second', $next->path);
+
+        // the un-namespaced paths are not part of a namespaced chain
+        $this->assertNull($registry->getNext('ns::zim', '/ns-second'));
+    }
+
+    public function testGetNextIsNullForAnUnregisteredNamespace()
+    {
+        $registry = new FakeTemplateRegistry;
+        $this->assertNull($registry->getNext('ns::zim', '/anywhere'));
+    }
+
+    public function testSetPathsStripsTrailingSeparators()
+    {
+        // prependPath()/appendPath() have always trimmed; setPaths() must
+        // agree, or the same directory has two spellings inside the registry
+        $registry = new FakeTemplateRegistry;
+        $registry->setPaths(['/first' . DIRECTORY_SEPARATOR, '/second']);
+
+        $this->assertSame(['/first', '/second'], $registry->getPaths());
+    }
+
+    public function testSetNamespacesStripsTrailingSeparators()
+    {
+        $registry = new FakeTemplateRegistry;
+        $registry->setNamespaces([
+            'ns' => ['/first' . DIRECTORY_SEPARATOR, '/second'],
+        ]);
+
+        $this->assertSame(['/first', '/second'], $registry->getNamespacePaths('ns'));
+        $this->assertSame(['ns' => ['/first', '/second']], $registry->getNamespaces());
+    }
+
+    public function testConstructorStripsTrailingSeparators()
+    {
+        $registry = new FakeTemplateRegistry(
+            [],
+            ['/first' . DIRECTORY_SEPARATOR],
+            ['ns' => ['/second' . DIRECTORY_SEPARATOR]]
+        );
+
+        $this->assertSame(['/first'], $registry->getPaths());
+        $this->assertSame(['/second'], $registry->getNamespacePaths('ns'));
+    }
+
+    public function testGetNextWorksWhenPathsWereSetWithTrailingSeparators()
+    {
+        // the path recorded in $foundIn is fed straight back into getNext(),
+        // so the two must be spelled identically
+        $registry = new FakeTemplateRegistry;
+        $registry->setPaths([
+            '/first' . DIRECTORY_SEPARATOR,
+            '/second' . DIRECTORY_SEPARATOR,
+        ]);
+        $registry->fakefs['/first' . DIRECTORY_SEPARATOR . 'zim.php'] = 'fake';
+        $registry->fakefs['/second' . DIRECTORY_SEPARATOR . 'zim.php'] = 'fake';
+
+        $this->assertSame('/first', $registry->getResolvedPath('zim'));
+
+        $next = $registry->getNext('zim', $registry->getResolvedPath('zim'));
+        $this->assertNotNull($next);
+        $this->assertSame('/second', $next->path);
+    }
+
+    public function testGetNextWorksWhenNamespacesWereSetWithTrailingSeparators()
+    {
+        $registry = new FakeTemplateRegistry;
+        $registry->setNamespaces([
+            'ns' => [
+                '/first' . DIRECTORY_SEPARATOR,
+                '/second' . DIRECTORY_SEPARATOR,
+            ],
+        ]);
+        $registry->fakefs['/first' . DIRECTORY_SEPARATOR . 'zim.php'] = 'fake';
+        $registry->fakefs['/second' . DIRECTORY_SEPARATOR . 'zim.php'] = 'fake';
+
+        $next = $registry->getNext('ns::zim', $registry->getResolvedPath('ns::zim'));
+        $this->assertNotNull($next);
+        $this->assertSame('/second', $next->path);
+    }
+
     public function testGetNamespaces()
     {
         $this->template_registry = new FakeTemplateRegistry;

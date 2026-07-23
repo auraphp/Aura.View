@@ -96,6 +96,22 @@ interface SearchPathInterface
 
     /**
      *
+     * Gets the search path directory a name resolved from; null when the name
+     * came from an explicit map, or cannot be resolved.
+     *
+     */
+    public function getResolvedPath(string $name): ?string;
+
+    /**
+     *
+     * Gets the next template of this name, resuming the search after a given
+     * directory; null when nothing further in the chain has this name.
+     *
+     */
+    public function getNext(string $name, string $afterPath): ?ResolvedTemplate;
+
+    /**
+     *
      * Sets the file extension used when searching the paths for templates.
      *
      */

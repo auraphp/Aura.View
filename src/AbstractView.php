@@ -82,6 +82,28 @@ abstract class AbstractView
 
     /**
      *
+     * The stack of in-flight renders, innermost last. Each frame is the
+     * template name and the search path directory it resolved from (null when
+     * it came from an explicit map, or from a registry with no search paths).
+     *
+     * render() can nest, so parent() needs to know which template is currently
+     * executing rather than which one was rendered first.
+     *
+     * @var list<array{0: string, 1: string|null}>
+     *
+     */
+    private array $render_stack = [];
+
+    /**
+     *
+     * Should parent() throw when it has nothing to resume into, instead of
+     * returning ''?
+     *
+     */
+    private bool $strict_parent = false;
+
+    /**
+     *
      * The template registry currently in use.
      *
      */
@@ -336,6 +358,41 @@ abstract class AbstractView
 
     /**
      *
+     * Gets the search path directory a template name resolves from, or null
+     * when the registry in use cannot say.
+     *
+     */
+    protected function getResolvedPath(string $name): ?string
+    {
+        $registry = $this->template_registry;
+
+        return $registry instanceof SearchPathInterface
+            ? $registry->getResolvedPath($name)
+            : null;
+    }
+
+    /**
+     *
+     * Pushes a render frame; call popRender() when the render finishes.
+     *
+     */
+    protected function pushRender(string $name, ?string $path): void
+    {
+        $this->render_stack[] = [$name, $path];
+    }
+
+    /**
+     *
+     * Pops the innermost render frame.
+     *
+     */
+    protected function popRender(): void
+    {
+        array_pop($this->render_stack);
+    }
+
+    /**
+     *
      * Invokes a template and captures its output.
      *
      * Output is discarded rather than flushed if the template throws, so a
@@ -370,6 +427,132 @@ abstract class AbstractView
         }
 
         return (string) ob_get_clean();
+    }
+
+    /**
+     *
+     * Renders the template that the currently-executing one shadows.
+     *
+     * Ordinary resolution stops at the first hit, so a template earlier in the
+     * search path replaces a later one wholesale -- to change one part you
+     * copy the whole file. `parent()` resumes the search after the directory
+     * the current template came from, letting the override render the thing it
+     * overrode:
+     *
+     *     <?php $this->beginSection('extra') ?>
+     *         ...
+     *     <?php $this->endSection() ?>
+     *     <?= $this->parent() ?>
+     *
+     * Returns `''` -- rather than throwing -- when there is nothing further to
+     * render: the current template shadows nothing, it came from an explicit
+     * map, or the registry has no search paths. Overriding a template that
+     * turns out not to shadow anything is a normal state during development.
+     *
+     * That forgiveness is also a blind spot: a misconfigured search path
+     * produces exactly the same `''`, so overrides silently stop composing and
+     * nothing is raised. `setStrictParent(true)` turns these three cases into
+     * Exception\ParentNotFound for development and CI.
+     *
+     * @param array<string, mixed> $vars Variables for the shadowed template.
+     *
+     * @throws Exception when called outside of a render.
+     *
+     * @throws Exception\ParentNotFound when there is nothing to resume into
+     * and strict parent mode is on.
+     *
+     */
+    protected function parent(array $vars = []): string
+    {
+        $frame = end($this->render_stack);
+
+        if ($frame === false) {
+            throw new Exception('parent() called outside of a template render');
+        }
+
+        [$name, $path] = $frame;
+        $registry = $this->template_registry;
+
+        if (! $registry instanceof SearchPathInterface) {
+            return $this->noParent(
+                $name,
+                "the template registry has no search paths to resume along"
+            );
+        }
+
+        if ($path === null) {
+            return $this->noParent(
+                $name,
+                "it was registered in the map, which has no search path behind it"
+            );
+        }
+
+        $next = $registry->getNext($name, $path);
+
+        if ($next === null) {
+            return $this->noParent(
+                $name,
+                "nothing after '{$path}' in the search paths has that name"
+            );
+        }
+
+        $template = $next->template->bindTo($this, static::class) ?? $next->template;
+        $this->pushRender($name, $next->path);
+
+        try {
+            return $this->captureTemplate($template, $vars);
+        } finally {
+            $this->popRender();
+        }
+    }
+
+    /**
+     *
+     * Should parent() throw when it has nothing to resume into?
+     *
+     * Off by default, so that an override written before the template it
+     * overrides exists is not an error. Turn it on in development and CI,
+     * where a search path that resolves to nothing is far more likely to be a
+     * misconfiguration than an intention -- otherwise it presents as missing
+     * markup with nothing raised.
+     *
+     * This takes a bool rather than reading the environment: Aura.View has no
+     * config layer and no dependencies, so deciding what "development" means
+     * belongs to whatever wires the _View_ up.
+     *
+     */
+    public function setStrictParent(bool $strict_parent): void
+    {
+        $this->strict_parent = $strict_parent;
+    }
+
+    /**
+     *
+     * Is strict parent mode on?
+     *
+     */
+    public function isStrictParent(): bool
+    {
+        return $this->strict_parent;
+    }
+
+    /**
+     *
+     * Answers a parent() call that has nothing to resume into: '' normally,
+     * an exception naming the template and the reason under strict mode.
+     *
+     * @throws Exception\ParentNotFound when strict parent mode is on.
+     *
+     */
+    protected function noParent(string $name, string $reason): string
+    {
+        if (! $this->strict_parent) {
+            return '';
+        }
+
+        throw new Exception\ParentNotFound(
+            "parent() found no template to render for '{$name}': {$reason}."
+        );
     }
 
     /**
