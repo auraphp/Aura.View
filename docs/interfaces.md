@@ -1,6 +1,6 @@
 ## Interfaces
 
-Version 6.0 splits what used to be one concrete class into two interfaces, so that a framework can substitute a registry without extending _TemplateRegistry_. In 2.x, `setTemplateRegistry()` type-hinted the concrete class, which made substitution impossible without inheritance.
+Version 7.0 splits what used to be one concrete class into two interfaces, so that a framework can substitute a registry without extending _TemplateRegistry_. In 2.x, `setTemplateRegistry()` type-hinted the concrete class, which made substitution impossible without inheritance.
 
 ### TemplateRegistryInterface
 

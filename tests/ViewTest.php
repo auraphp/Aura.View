@@ -58,7 +58,7 @@ class ViewTest extends TestCase
 
     public function testHelpersMustBeAnObject()
     {
-        // as of 6.0 the helpers param is typed `?object`, so PHP rejects a
+        // as of 7.0 the helpers param is typed `?object`, so PHP rejects a
         // non-object before Exception\InvalidHelpersObject could be thrown.
         $this->expectException(\TypeError::class);
         /** @phpstan-ignore-next-line argument.type */

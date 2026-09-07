@@ -1,10 +1,10 @@
 # CHANGELOG
 
-## 6.0.0 (unreleased)
+## 7.0.0 (unreleased)
 
-The first release of the `6.x` line. The version jumps 2.x -> 6.x to keep step
-with the rest of the suite (Aura.Filter `6.x`, Aura.Auth `6.x`, Aura.Router
-`6.x`); there is no 3.x, 4.x, or 5.x.
+The first release of the `7.x` line. The version jumps 2.x -> 7.x to keep step
+with the rest of the suite, which is moving to `7.x` for its PHP 8.4 line;
+there is no 3.x, 4.x, 5.x, or 6.x of this package.
 
 **The license is now MIT**, changed from BSD-2-Clause. MIT is the suite
 convention; Aura.Auth and Aura.Router moved earlier, and Aura.Html's BSD was
@@ -63,7 +63,7 @@ yours to choose. See the README's *Escaping Output* section.
       // 2.x
       $view_factory->newInstance($helpers, $view_map, $view_paths, $layout_map, $layout_paths);
 
-      // 6.x
+      // 7.x
       $view_factory->newInstance(
           $helpers,
           new \Aura\View\ViewSpec(map: $view_map, paths: $view_paths),
@@ -107,7 +107,7 @@ yours to choose. See the README's *Escaping Output* section.
 - [DEP] `Aura\View\Exception\InvalidHelpersObject` is never thrown. The
   helpers parameter is typed `?object`, so PHP's own `\TypeError` rejects a
   non-object first. The class is retained so existing `catch` blocks still
-  resolve, and will be removed in 7.0.
+  resolve, and will be removed in 8.0.
 
 ### Added
 
