@@ -1,6 +1,6 @@
 ## Upgrading from 2.x
 
-**If you only ever called Aura.View, you likely have nothing to change beyond the PHP version.** Version 7.0 adds native types throughout; that breaks classes which *extend* Aura.View, not code which *calls* it.
+**Most calling code needs nothing beyond the PHP version.** Version 7.0 adds native types throughout, and that breaks classes which *extend* Aura.View rather than code which *calls* it. Three changes do reach callers, so check those: the five-argument positional form of `ViewFactory::newInstance()` (step 7), invoking a view with no view template set (step 8), and catching _InvalidHelpersObject_ (step 4).
 
 The version jumps 2.x to 7.x to keep step with the rest of the suite, which is moving to `7.x` for its PHP 8.4 line. There is no 3.x, 4.x, 5.x, or 6.x of this package.
 
