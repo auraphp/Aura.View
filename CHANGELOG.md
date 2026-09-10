@@ -1,10 +1,10 @@
 # CHANGELOG
 
-## 7.0.0 (unreleased)
+## 7.0.0-beta1
 
-The first release of the `7.x` line. The version jumps 2.x -> 7.x; there is no
-3.x, 4.x, 5.x, or 6.x of this package. Pre-releases leading up to it -- such as
-`7.0.0-beta1` -- are cut against this section.
+The first release of the `7.x` line, and a beta: everything below is complete
+and tested, but the API may still be adjusted before `7.0.0` final. The version
+jumps 2.x -> 7.x; there is no 3.x, 4.x, 5.x, or 6.x of this package.
 
 **The license is now MIT**, changed from BSD-2-Clause. MIT is more permissive
 than BSD-2-Clause, so this relaxes rather than restricts what consumers may
