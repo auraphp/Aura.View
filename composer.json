@@ -27,7 +27,7 @@
     "require-dev": {
         "phpunit/phpunit": "^12.0",
         "phpstan/phpstan": "^2.0",
-        "aura/html": "^7.0@dev"
+        "aura/html": "^7.0@beta"
     },
     "suggest": {
         "aura/html": "For HTML escapers and helpers, including form and input helpers. Aura.View is media-type agnostic and ships no escaper by design; pass Aura.Html's HelperLocator to ViewFactory::newInstance() to use its helpers."

@@ -2,7 +2,7 @@
 
 **Most calling code needs nothing beyond the PHP version.** Version 7.0 adds native types throughout, and that breaks classes which *extend* Aura.View rather than code which *calls* it. Three changes do reach callers, so check those: the five-argument positional form of `ViewFactory::newInstance()` (step 7), invoking a view with no view template set (step 8), and catching _InvalidHelpersObject_ (step 4).
 
-The version jumps 2.x to 7.x to keep step with the rest of the suite, which is moving to `7.x` for its PHP 8.4 line. There is no 3.x, 4.x, 5.x, or 6.x of this package.
+The version jumps 2.x to 7.x. There is no 3.x, 4.x, 5.x, or 6.x of this package.
 
 Work through these in order.
 
@@ -88,7 +88,7 @@ Invoking a _View_ with no view template set now returns `''` (wrapped in the lay
 
 ### Things That Are Not A Problem
 
-- **Setter chaining.** 7.0 types setters `: void`, but 2.x setters returned `null`, so no chain ever worked. There is nothing to un-chain. Aura.View is a service, not a specification builder; the suite's fluent interfaces (Aura.SqlQuery, Aura.Html, Aura.Router) are all builders.
+- **Setter chaining.** 7.0 types setters `: void`, but 2.x setters returned `null`, so no chain ever worked. There is nothing to un-chain. Aura.View is a service, not a specification builder; fluency buys nothing when there is no spec to assemble.
 
 - **The Aura.Html wiring.** `$view_factory->newInstance($helpers)` with a _HelperLocator_ works exactly as it did in 2.x, with no adapter. See [Using Aura.Html Helpers](helpers.md#using-aurahtml-helpers).
 
