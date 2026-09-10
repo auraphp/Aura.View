@@ -1,17 +1,15 @@
 # CHANGELOG
 
-## 7.0.0 (unreleased)
+## 7.0.0-beta1
 
-The first release of the `7.x` line. The version jumps 2.x -> 7.x to keep step
-with the rest of the suite, which is moving to `7.x` for its PHP 8.4 line;
-there is no 3.x, 4.x, 5.x, or 6.x of this package.
+The first release of the `7.x` line, and a beta: everything below is complete
+and tested, but the API may still be adjusted before `7.0.0` final. The version
+jumps 2.x -> 7.x; there is no 3.x, 4.x, 5.x, or 6.x of this package.
 
-**The license is now MIT**, changed from BSD-2-Clause. MIT is the suite
-convention; Aura.Auth and Aura.Router moved earlier, and Aura.Html's BSD was
-corrected as an oversight. MIT is more permissive than BSD-2-Clause, so this
-relaxes rather than restricts what consumers may do. The `LICENSE` file, the
-`composer.json` `license` field, and all 12 `src/**.php` headers are updated;
-copyright is `2011-2026, Aura for PHP`.
+**The license is now MIT**, changed from BSD-2-Clause. MIT is more permissive
+than BSD-2-Clause, so this relaxes rather than restricts what consumers may
+do. The `LICENSE` file, the `composer.json` `license` field, and all 12
+`src/**.php` headers are updated; copyright is `2011-2026, Aura for PHP`.
 
 Aura.View still has **no runtime dependencies**. It ships no escaper, by
 design -- the package is media-type agnostic, so escaping stays explicit and
@@ -27,8 +25,8 @@ yours to choose. See the README's *Escaping Output* section.
   signature or it will fatal on load. Direct callers are unaffected.
 
 - [BRK] **Setters return `void`, they are not fluent.** Aura.View is a service,
-  not a specification builder -- the suite's fluent interfaces (Aura.SqlQuery,
-  Aura.Html, Aura.Router) are all builders. Setter calls cannot be chained.
+  not a specification builder -- fluency buys nothing when there is no spec to
+  assemble. Setter calls cannot be chained.
   Note that adding *any* return type is the break here; `void` versus `static`
   only decides which break is spent.
 
