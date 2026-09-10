@@ -18,10 +18,10 @@ use Aura\View\Exception as Exception;
  *
  * @package Aura.View
  *
- * @deprecated since 6.0. The helpers parameter is now typed `?object`, so PHP
+ * @deprecated since 7.0. The helpers parameter is now typed `?object`, so PHP
  * itself rejects a non-object with a \TypeError before this exception could be
  * thrown. Retained only so that existing `catch` blocks still resolve; nothing
- * in this package throws it. It will be removed in 7.0.
+ * in this package throws it. It will be removed in 8.0.
  *
  */
 class InvalidHelpersObject extends Exception
